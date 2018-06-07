@@ -1,0 +1,8 @@
+C:\Users\wicky\Documents\Visual Studio 2010\Projects\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.dll
+C:\Users\wicky\Documents\Visual Studio 2010\Projects\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.pdb
+C:\Users\wicky\Documents\Visual Studio 2010\Projects\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.dll
+C:\Users\wicky\Documents\Visual Studio 2010\Projects\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.pdb
+D:\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.dll
+D:\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.pdb
+D:\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.dll
+D:\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.pdb

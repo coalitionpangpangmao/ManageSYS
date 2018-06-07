@@ -1,0 +1,204 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/chili-1.7.pack.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
+    <script type="text/javascript" src="js/jquery.dimensions.js"></script>
+    <script type="text/javascript" src="js/jquery.accordion.js"></script>
+    <script language="javascript" type="text/javascript">
+        jQuery().ready(function () {
+            jQuery('#navigation').accordion({
+                header: '.head',
+                navigation1: true,
+                event: 'click',
+                fillSpace: true,
+                animated: 'bounceslide'
+            });
+            $('.subhead').next('ul').hide();
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('.subhead').click(function () {
+                var $ul = $(this).next('ul');
+                //   $('dd').find('ul').slideUp();
+                if ($ul.is(':visible')) {
+                    $(this).next('ul').slideUp();
+                } else {
+                    $(this).next('ul').slideDown();
+                }
+            });
+        })	
+    </script>
+    <style type="text/css">
+        body
+        {
+            margin: 0px;
+            padding: 0px;
+            font-size: 12px;
+        }
+        #navigation
+        {
+            margin: 0px;
+            padding: 0px;
+            width: 147px;
+        }
+        #navigation a.head
+        {
+            cursor: pointer;
+            background: url(images/main_34.gif) no-repeat scroll;
+            display: block;
+            font-weight: bold;
+            margin: 0px;
+            padding: 5px 0 5px;
+            text-align: center;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        #navigation ul
+        {
+            border-width: 0px;
+            margin: 0px;
+            padding: 0px;
+            text-indent: 0px;
+        }
+        #navigation li
+        {
+            list-style: none;
+            display: inline;
+        }
+        #navigation li li a
+        {
+            display: block;
+            font-size: 12px;
+            text-decoration: none;
+            text-align: center;
+            padding: 3px;
+        }
+        
+        #navigation li li a:hover
+        {
+            background: url(images/tab_bg.gif) repeat-x;
+            border: solid 1px #adb9c2;
+        }
+        
+        #navigation li li a.subhead
+        {
+            display: block;
+            font-size: 12px;
+             font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            padding: 3px;
+            background: url(images/list.gif) no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div style="height: 100%;">
+        <ul id="navigation">
+            <li><a class="head">系统与权限配置</a>
+                <ul>
+                    <li><a href="Authority/GroupConfig.aspx" target="rightFrame">角色管理</a></li>
+                    <li><a href="Authority/LoginRecord.aspx" target="rightFrame">日志管理</a></li>
+                    <li><a href="Authority/UserConfig.aspx" target="rightFrame">人员管理</a></li>
+                    <li><a href="SysConfig/AptConfig.aspx" target="rightFrame">组织机构配置</a></li>
+                    <li><a href="SysConfig/ExcelModel.aspx" target="rightFrame">报表模版管理</a></li>
+                    <li><a href="SysConfig/TeamShift.aspx" target="rightFrame">班组班时配置</a></li>
+                    <li><a href="SysConfig/ApprovalMode.aspx" target="rightFrame">审批模版配置</a></li>
+                    <li><a href="Approval/APRVMonthPlan.aspx" target="rightFrame">审批管理</a></li>
+                </ul>
+            </li>
+            <li><a class="head">工艺管理</a>
+                <ul>
+                    <li><a href="Craft/Model.aspx" target="rightFrame">工艺模型管理</a></li>
+                    <li><a href="Craft/Prdct.aspx" target="rightFrame">产品管理</a></li>
+                    <li><a href="Craft/Recipe.aspx" target="rightFrame">配方管理</a></li>
+                    <li><a href="Craft/Tech_Std.aspx" target="rightFrame">工艺标准管理</a></li>
+                    <li><a href="Craft/MateriaMain.aspx" target="rightFrame">物料编码管理</a></li>
+                    <li><a href="Craft/Tech_Path.aspx" target="rightFrame">工艺路径管理</a></li>
+                    <li><a href="Craft/Inspect.aspx" target="rightFrame">工艺检查项目</a></li>
+                </ul>
+            </li>
+               <li><a class="head">库存管理</a>
+                <ul>
+                     <li><a href="Product/StorageMater.aspx" target="rightFrame">原料库管理</a></li>
+                    <li><a href="Product/StorageAux.aspx" target="rightFrame">辅料库管理</a></li>
+                    <li><a href="Product/Storage.aspx" target="rightFrame">库存查询</a></li> 
+                </ul>
+            </li>
+            <li><a class="head">生产管理</a>
+                <ul>
+                    <li><a href="Product/SeasonPlan.aspx" target="rightFrame">季度计划管理</a></li>
+                    <li><a href="Product/Plan.aspx" target="rightFrame">月度计划管理</a></li>
+                    <li><a href="Product/Schedual.aspx" target="rightFrame">生产计划排班</a></li>
+                     <li><a href="Product/ShiftChange.aspx" target="rightFrame">生产班组交接班</a></li> 
+                    <li><a href="Product/Report.aspx" target="rightFrame">生产统计表</a></li>
+                     <li><a href="Product/Report.aspx" target="rightFrame">生产评估体系</a></li>
+                    <li><a href="Product/DataInput.aspx" target="rightFrame">数据手动录入</a></li>                  
+                </ul>
+            </li>
+            <li><a class="head">质量分析与评估</a>
+                <ul>
+                    <li><a href="Quality/CollectSet.aspx" target="rightFrame">采集设置</a></li>
+                    <li><a href="Quality/QualitySet.aspx" target="rightFrame">质量考核标准</a></li>
+                    <li><a href="Quality/PointTrend.aspx" target="rightFrame">趋势图分析</a></li>
+                    <li><a href="Quality/PointTrend.aspx" target="rightFrame">工艺浏览</a></li>
+                    <li><a href="Quality/Statistic.aspx" target="rightFrame">质量统计数据</a></li>
+                    <li><a href="Quality/Comparison.aspx" target="rightFrame">批间比对</a></li>
+                    <li><a href="Quality/CraftEvent.aspx" target="rightFrame">工艺事件确认</a></li>
+                    <li><a href="Quality/EventDeal.aspx" target="rightFrame">工艺事件处理</a></li>
+                    <li><a href="Quality/ShiftAnalyze.aspx" target="rightFrame">每日班组评估</a></li>
+                    <li><a href="Quality/MonthlyAnlz.aspx" target="rightFrame">车间月度评估</a></li>
+                </ul>
+            </li>
+            <li><a class="head">设备管理</a>
+                <ul>
+                    <li><a href="Device/EquipmentInfo.aspx" target="rightFrame">设备台帐</a></li>
+                    <li><a href="Device/StorageParts.aspx" target="rightFrame">备件管理</a></li>
+                    <li><a href="Device/FRDB.aspx" target="rightFrame">故障库维护</a></li>  
+                     <li><a href="Device/ElctrcShift.aspx" target="rightFrame">维修交接班</a></li>  
+                       <li><cite></cite><a class="subhead">计量设备校准</a>
+                        <ul>
+                            <li><a href="Device/CalibratePlan.aspx" target="rightFrame">校准计划与派工</a></li>
+                            <li><a href="Device/ManulCalibrate.aspx" target="rightFrame">人工校准</a></li>
+                            <li><a href="Device/AutoCalibrate.aspx" target="rightFrame">自动取样校准</a></li>                          
+                        </ul>
+                    </li>
+                    <li><cite></cite><a class="subhead">设备维保管理</a>
+                        <ul>
+                            <li><a href="Device/MtncPlan.aspx" target="rightFrame">维保计划与派工</a></li>
+                            <li><a href="Device/MtncExe.aspx" target="rightFrame">维保执行情况</a></li>                          
+                        </ul>
+                    </li>
+                    <li><cite></cite><a class="subhead">设备维修管理</a>
+                        <ul>
+                            <li><a href="Device/EmgrpExe.aspx" target="rightFrame">应急维修</a></li>
+                            <li><a href="Device/RepairPlan.aspx" target="rightFrame">维修计划与派工</a></li>
+                            <li><a href="Device/RepairExe.aspx" target="rightFrame">维修计划执行</a></li>                          
+                        </ul>
+                    </li>
+                    <li><cite></cite><a class="subhead">设备润滑管理</a>
+                        <ul>
+                            <li><a href="Device/LbrctPlan.aspx" target="rightFrame">润滑计划与派工</a></li>
+                            <li><a href="Device/LbrctExe.aspx" target="rightFrame">润滑执行</a></li>  
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a class="head">能源管理</a>
+                <ul>
+                    <li><a href="Energy/DeviceInfo.aspx" target="rightFrame">能耗种类维护</a></li>
+                    <li><a href="Energy/Statistics.aspx" target="rightFrame">能源统计数据</a></li>
+                    <li><a href="Energy/DataInput.aspx" target="rightFrame">能源手动录入</a></li>
+                    <li><a href="Energy/Comparison.aspx" target="rightFrame">能耗比对分析</a></li>
+                    <li><a href="" target="rightFrame">能源检查</a></li>
+                    <li><a href="Energy/Report.aspx" target="rightFrame">能源报表</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

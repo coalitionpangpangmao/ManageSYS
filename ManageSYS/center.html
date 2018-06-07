@@ -1,0 +1,61 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <style type="text/css">
+        body
+        {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <table cellspacing="0" cellpadding="0" style="height: 100%; width: 100%; border-style: none;
+        border-width: 0px">
+        <tr>
+            <td width="8" bgcolor="#353c44">
+                &nbsp;
+            </td>
+            <td width="147" valign="top" id="lefttd">
+                <iframe height="100%" width="100%"  frameborder="0" src="left.html" name="leftFrame"
+                    id="leftFrame" title="leftFrame"></iframe>
+            </td>
+            <td width="10" bgcolor="#add2da" class="t3" onclick="switchSysBar()">
+                <span id="switchPoint" title="关闭/打开左栏">
+                    <img src="images/open.gif" name="img1" id="img1" alt="" /></span>
+            </td>
+            <td valign="top">
+                <iframe height="100%" width="100%"  frameborder="0" src="default.html"
+                    name="rightFrame" id="rightFrame" title="rightFrame"></iframe>
+            </td>
+            <td width="8" bgcolor="#353c44">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+
+        function switchSysBar() {
+            debugger;
+            var locate = location.href.replace('center.html', '');
+            var ssrc = document.all("img1").src.replace(locate, '');
+            if (ssrc == "images/open.gif") {
+                document.all("img1").src = "images/close.gif";
+                $("#leftFrame").hide();
+                $("#lefttd").hide();              
+              
+            }
+            else {
+                document.all("img1").src = "images/open.gif";
+                $("#leftFrame").show();
+                $("#lefttd").show();             
+            }
+        }
+    </script>
+</body>
+</html>

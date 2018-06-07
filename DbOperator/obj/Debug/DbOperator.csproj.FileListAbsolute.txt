@@ -1,0 +1,7 @@
+D:\ManageSYS\DbOperator\bin\Debug\DbOperator.dll
+D:\ManageSYS\DbOperator\bin\Debug\DbOperator.pdb
+D:\ManageSYS\DbOperator\bin\Debug\FactoryDbPool.dll
+D:\ManageSYS\DbOperator\bin\Debug\FactoryDbPool.pdb
+D:\ManageSYS\DbOperator\obj\Debug\DbOperator.csprojResolveAssemblyReference.cache
+D:\ManageSYS\DbOperator\obj\Debug\DbOperator.dll
+D:\ManageSYS\DbOperator\obj\Debug\DbOperator.pdb
