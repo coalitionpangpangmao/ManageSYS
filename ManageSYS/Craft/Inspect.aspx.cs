@@ -46,7 +46,9 @@ public partial class Craft_Inspect : System.Web.UI.Page
         opt.UpDateOra("delete from ht_qlt_inspect_proj where PROJ_CODE = '" + txtCode.Text + "'");
             string[] seg = { "SECTION_CODE","PROJ_CODE","PROJ_NAME","PROJ_AREA","INSPECT_TYPE_CODE","REMARK","CREATE_ID","CREATE_NAME","CREATE_TIME" };
             string[] value = {listSection2.SelectedValue, txtCode.Text,txtName.Text,listArea.SelectedValue,listType2.SelectedValue,txtRemark.Text,"cookieID","cookieName",System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")};
-            opt.InsertData(seg, value, "ht_qlt_inspect_proj");
+            string log_message = opt.InsertData(seg, value, "ht_qlt_inspect_proj")=="Success" ? "检查项目保存成功":"检查项目保存失败";
+            log_message += ",保存参数："+string.Join(" ", value);
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             bindGrid();
        
     }
@@ -84,7 +86,9 @@ public partial class Craft_Inspect : System.Web.UI.Page
                     string projcode = GridView1.DataKeys[i].Values.ToString();                   
                     string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where PROJ_CODE = '" + projcode + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query)=="Success" ? "删除检查项目成功":"删除检查项目失败";
+                    log_message += ", 检查项目编码：" + projcode;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }           
             bindGrid();

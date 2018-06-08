@@ -5,3 +5,10 @@ D:\ManageSYS\DbOperator\bin\Debug\FactoryDbPool.pdb
 D:\ManageSYS\DbOperator\obj\Debug\DbOperator.csprojResolveAssemblyReference.cache
 D:\ManageSYS\DbOperator\obj\Debug\DbOperator.dll
 D:\ManageSYS\DbOperator\obj\Debug\DbOperator.pdb
+D:\xyproject\ManageSYS\DbOperator\bin\Debug\DbOperator.dll
+D:\xyproject\ManageSYS\DbOperator\bin\Debug\DbOperator.pdb
+D:\xyproject\ManageSYS\DbOperator\bin\Debug\FactoryDbPool.dll
+D:\xyproject\ManageSYS\DbOperator\bin\Debug\FactoryDbPool.pdb
+D:\xyproject\ManageSYS\DbOperator\obj\Debug\DbOperator.csprojResolveAssemblyReference.cache
+D:\xyproject\ManageSYS\DbOperator\obj\Debug\DbOperator.dll
+D:\xyproject\ManageSYS\DbOperator\obj\Debug\DbOperator.pdb

@@ -6,3 +6,7 @@ D:\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.dll
 D:\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.pdb
 D:\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.dll
 D:\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.pdb
+D:\xyproject\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.dll
+D:\xyproject\ManageSYS\FactoryDbPool\bin\Debug\FactoryDbPool.pdb
+D:\xyproject\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.dll
+D:\xyproject\ManageSYS\FactoryDbPool\obj\Debug\FactoryDbPool.pdb
