@@ -188,6 +188,16 @@
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td width="100">
+                                            备注
+                                        </td>
+                                        <td colspan="3">
+                                            <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="80px" 
+                                                Width="600px"></asp:TextBox>
+                                        </td>
+
+                                    </tr>
                                 </tbody>
                             </table>
                             <div class="listtitle" style="margin-top: 10px">

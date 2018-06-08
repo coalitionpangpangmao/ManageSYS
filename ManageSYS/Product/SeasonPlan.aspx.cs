@@ -222,8 +222,8 @@ public partial class Product_Plan : System.Web.UI.Page
         string planname = txtYear.Text + "-" + listSeason2.SelectedValue + "生产计划";
        
       opt.UpDateOra("delete from  HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'");
-      string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME",  "CREATE_ID    ", "CREATOR", "CREATE_TIME" };
-      string[] value = { txtYear.Text, listSeason2.SelectedValue, planname ,  "cookieID", "cookieNAME", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+      string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID    ", "CREATOR", "CREATE_TIME", "REMARK" };
+      string[] value = { txtYear.Text, listSeason2.SelectedValue, planname ,  "cookieID", "cookieNAME", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtRemark.Text };
       opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN");
       hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");           
      
