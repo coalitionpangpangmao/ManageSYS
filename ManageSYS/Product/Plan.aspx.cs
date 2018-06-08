@@ -237,8 +237,8 @@ public partial class Product_Plan : System.Web.UI.Page
         }
         else
         {
-            string[] seg = { "PLAN_YEAR", "PROD_MONTH", "PLAN_NAME","PLAN_TIME", "CREATE_ID    ","CREATOR","CREATE_TIME"};
-            string[] value = { txtYear.Text,listMonth.SelectedValue,planname + "生产月计划",planname,"cookieID","cookieNAME",System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+            string[] seg = { "PLAN_YEAR", "PROD_MONTH", "PLAN_NAME","PLAN_TIME", "CREATE_ID    ","CREATOR","CREATE_TIME","REMARK"};
+            string[] value = { txtYear.Text,listMonth.SelectedValue,planname + "生产月计划",planname,"cookieID","cookieNAME",System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtRemark.Text };
             opt.InsertData(seg, value, "ht_prod_month_plan");
             hidePlanID.Value = opt.GetSegValue(query, "ID");
            
