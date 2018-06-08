@@ -79,7 +79,9 @@ public partial class Product_Plan : System.Web.UI.Page
                     {
                         string query = "update ht_prod_month_plan set ISSUED_STATUS = '1'  where ID = '" + id + "'";
                        DataBaseOperator opt =new DataBaseOperator();
-                        opt.UpDateOra(query);
+                        string log_message = opt.UpDateOra(query) == "Success" ? "月度计划下发成功":"月度计划下发失败";
+                        log_message += ",计划ID：" + id;
+                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                     }
                     else
                     {
@@ -94,7 +96,7 @@ public partial class Product_Plan : System.Web.UI.Page
             Response.Write(ee.Message);
         }
     }
-    protected void btnGridDel_Click(object sender, EventArgs e)//计划删除
+    protected void btnGridDel_Click(object sender, EventArgs e)//计划删除此处应当添加数据库事务
     {
         try
         {
@@ -161,7 +163,9 @@ public partial class Product_Plan : System.Web.UI.Page
            DataBaseOperator opt =new DataBaseOperator();
             if (opt.createApproval(subvalue))
             {
-                opt.UpDateOra("update ht_prod_month_plan set B_FLOW_STATUS = '0'  where ID = '" + id + "'"); 
+                string log_message = opt.UpDateOra("update ht_prod_month_plan set B_FLOW_STATUS = '0'  where ID = '" + id + "'")== "Success" ? "月度生产计划提交审批成功":"月度生产计划提交审批失败";
+                log_message += ",ID：" + id;
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             
         }
@@ -239,7 +243,9 @@ public partial class Product_Plan : System.Web.UI.Page
         {
             string[] seg = { "PLAN_YEAR", "PROD_MONTH", "PLAN_NAME","PLAN_TIME", "CREATE_ID    ","CREATOR","CREATE_TIME"};
             string[] value = { txtYear.Text,listMonth.SelectedValue,planname + "生产月计划",planname,"cookieID","cookieNAME",System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-            opt.InsertData(seg, value, "ht_prod_month_plan");
+            string log_message = opt.InsertData(seg, value, "ht_prod_month_plan") == "Success" ? "添加月度生产任务成功":"添加月度生产任务失败";
+            log_message += ", 参数：" + string.Join(" ", value);
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             hidePlanID.Value = opt.GetSegValue(query, "ID");
            
         }
@@ -272,7 +278,9 @@ public partial class Product_Plan : System.Web.UI.Page
                     string mtr_code = ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text;
                     string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code +  "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除生产任务成功":"删除生产任务失败";
+                    log_message += ", 任务编号:" + mtr_code;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid2(hidePlanID.Value);
@@ -291,7 +299,9 @@ public partial class Product_Plan : System.Web.UI.Page
             string mtr_code = ((TextBox)GridView2.Rows[Rowindex].FindControl("txtPlanNo")).Text;
             string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
            DataBaseOperator opt =new DataBaseOperator();
-            opt.UpDateOra(query);
+            string log_message = opt.UpDateOra(query)== "Success" ? "删除月度生产任务成功":"删除月度生产任务失败";
+            log_message += ",任务编号：" + mtr_code;
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)
@@ -316,14 +326,18 @@ public partial class Product_Plan : System.Web.UI.Page
             {
                 string[] seg = { "plan_Sort", "prod_code", "plan_output", "is_del" };
             string[] value = {  ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text,((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue , ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text,"0"};
-            opt.UpDateData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL", " where MONTH_PLAN_ID = " + hidePlanID.Value + " and plan_no = '" + mtr_code + "'");
+                string log_message = opt.UpDateData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL", " where MONTH_PLAN_ID = " + hidePlanID.Value + " and plan_no = '" + mtr_code + "'") == "Success" ? "生产任务保存成功":"生产任务保存失败";
+                log_message += ",参数;：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }         
           
             else
             {
                 string[] seg = { "plan_Sort", "plan_no", "prod_code", "plan_output", "MONTH_PLAN_ID" };
             string[] value = {  ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, mtr_code,((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue , ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text,hidePlanID.Value};
-            opt.InsertData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL");
+                string log_message = opt.InsertData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL") == "Success" ? "生产任务保存成功":"生产任务保存失败";
+                log_message += ", 参数：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             bindGrid2(hidePlanID.Value);
         }

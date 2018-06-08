@@ -122,7 +122,9 @@ public partial class Product_ShiftChange : System.Web.UI.Page
         hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
         string[] seg = {"SHIFT_MAIN_ID","INSPECT_DATE","SHIFT_CODE","TEAM_CODE","PROD_CODE","PLAN_NO","OUTPUT_VL","CREATE_ID","SHIFT_ID","SUCC_ID","DEVICESTATUS","QLT_STATUS","SCEAN_STATUS","REMARK" };
         string[] value = {hdID.Value,txtDate.Text,listShift.SelectedValue,listTeam.SelectedValue,listProd.SelectedValue,txtPlanNo.Text,txtOutput.Text,"cookieID",txtOlder.Text,txtNewer.Text,txtDevice.Text,txtQlt.Text,txtScean.Text,txtRemark.Text };
-        opt.InsertData(seg, value, "HT_PROD_SHIFTCHG");
+        string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG")=="Success" ? "交接班详情保存成功":"交接班详情保存失败";
+        log_message += ",参数;" + string(" ", value);
+        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
 
     }
     protected DataSet gridTypebind()
@@ -196,7 +198,9 @@ public partial class Product_ShiftChange : System.Web.UI.Page
                     string mtr_code = ((DropDownList)GridView2.Rows[i].FindControl("listMater")).SelectedValue;
                     string query = "update ht_prod_shiftchg_detail set IS_DEL = '1'  where mater_code = '" + mtr_code + "' and SHIFT_MAIN_ID = '" + hdID.Value + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query)=="Success" ? "交接明细删除成功":"交接明细删除失败";
+                    log_message += ", 交接明细编码：" + mtr_code;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid2();
@@ -207,7 +211,7 @@ public partial class Product_ShiftChange : System.Web.UI.Page
         }
     }
 
-    protected void btnGrid2Save_Click(object sender, EventArgs e)
+    protected void btnGrid2Save_Click(object sender, EventArgs e)//该方法应该添加oracle事务
     {
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;        
@@ -215,7 +219,9 @@ public partial class Product_ShiftChange : System.Web.UI.Page
         opt.UpDateOra("delete from HT_PROD_SHIFTCHG_DETAIL where SHIFT_MAIN_ID = '" + hdID.Value + "' and mater_code = '" + ((DropDownList)GridView2.Rows[rowIndex].FindControl("listMater")).SelectedValue + "'");
         string[] seg = { "SHIFT_MAIN_ID", "mater_code", "mater_vl", "bz_unit", "remark" };
         string[] value = { hdID.Value, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listMater")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtAmount")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtUnit")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtDescpt")).Text };
-        opt.InsertData(seg, value, "HT_PROD_SHIFTCHG_DETAIL");
+        string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG_DETAIL")=="Success" ? "交接明细保存成功":"交接明细保存失败";
+        log_message += ",交接明细编码：" + hdID.Value;
+        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
     }
        
  

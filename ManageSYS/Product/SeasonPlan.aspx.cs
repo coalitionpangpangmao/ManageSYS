@@ -83,7 +83,10 @@ public partial class Product_Plan : System.Web.UI.Page
                     {
                         string query = "update ht_prod_Season_plan set ISSUED_STATUS = '1'  where ID = '" + id + "'";
                        DataBaseOperator opt =new DataBaseOperator();
-                        opt.UpDateOra(query);
+                        string log_message = opt.UpDateOra(query)== "Success" ? "生产计划下发成功":"生产计划下发失败";
+                        log_message += ",计划ID:" + id;
+                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+
                     }
                     else
                     {
@@ -98,7 +101,7 @@ public partial class Product_Plan : System.Web.UI.Page
             Response.Write(ee.Message);
         }
     }
-    protected void btnGridDel_Click(object sender, EventArgs e)//计划删除
+    protected void btnGridDel_Click(object sender, EventArgs e)//计划删除, 此处应该使用事物进行操作
     {
         try
         {
@@ -162,7 +165,9 @@ public partial class Product_Plan : System.Web.UI.Page
            DataBaseOperator opt =new DataBaseOperator();
             if (opt.createApproval(subvalue))
             {
-                opt.UpDateOra("update ht_prod_Season_plan set FLOW_STATUS = '0'  where ID = '" + id + "'"); 
+                string log_message = opt.UpDateOra("update ht_prod_Season_plan set FLOW_STATUS = '0'  where ID = '" + id + "'")== "Success" ? "提交审批成功":"提交审批失败";
+                log_message += ",生产计划ID：" + id;
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             
         }
@@ -216,7 +221,7 @@ public partial class Product_Plan : System.Web.UI.Page
             string str = ee.Message;
         }
     }
-    protected void btnModify_Click(object sender, EventArgs e)
+    protected void btnModify_Click(object sender, EventArgs e)//此处应该使用事物
     {
        DataBaseOperator opt =new DataBaseOperator();
         string planname = txtYear.Text + "-" + listSeason2.SelectedValue + "生产计划";
@@ -256,7 +261,9 @@ public partial class Product_Plan : System.Web.UI.Page
                     string mtr_code = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除生产计划成功":"删除生产计划失败";
+                    log_message += ",生产任务ID：" + mtr_code;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid2(hidePlanID.Value);
@@ -275,7 +282,9 @@ public partial class Product_Plan : System.Web.UI.Page
             string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
             string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
            DataBaseOperator opt =new DataBaseOperator();
-            opt.UpDateOra(query);
+            string log_message = opt.UpDateOra(query)== "Success" ? "删除生产计划成功":"删除生产计划失败";
+            log_message += ",生产任务ID：" + mtr_code;
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)
@@ -300,14 +309,17 @@ public partial class Product_Plan : System.Web.UI.Page
             {
                 string[] seg = { "prod_code","TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3" ,"IS_DEL"};
                 string[] value = { ((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount1")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount2")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount3")).Text, "0" };
-                opt.UpDateData(seg, value, "ht_prod_season_plan_Detail", " where MONTH_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'");
+                string log_message = opt.UpDateData(seg, value, "ht_prod_season_plan_Detail", " where MONTH_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'") == "Success" ? "保存生产计划成功":"保存生产计划失败";
+                log_message += ",参数:" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }         
           
             else
             {
                 string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "QUARTER_PLAN_ID" };
                 string[] value = { ((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount1")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount2")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount3")).Text, hidePlanID.Value };
-            opt.InsertData(seg, value, "ht_prod_season_plan_Detail");
+                string log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "保存生产计划成功":"保存生产计划失败";
+                log_message += ",参数;" + string.Join(" ", value);
             }
             bindGrid2(hidePlanID.Value);
         }
