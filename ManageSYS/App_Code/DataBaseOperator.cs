@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Data.Common;
 using System.Data;
 using System.Web.UI.WebControls;
-using DbOperator;
+using MSYS.DAL;
 
 public class DataBaseOperator
 {
