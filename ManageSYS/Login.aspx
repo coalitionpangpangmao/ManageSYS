@@ -16,16 +16,20 @@
     <div id="center_left"></div>
     <div id="center_middle">
       <div class="user">
-        <label>用户名：
-        <input type="text" name="user" id="user" />
+        <label>用户名：       
+            <asp:TextBox ID="user" name="user" runat="server"></asp:TextBox>
         </label>
       </div>
       <div class="user">
-        <label>密　码：
-        <input type="password" name="pwd" id="pwd" />
+        <label>密　码：       
+        <asp:TextBox ID="pwd" name="pwd"  runat="server" TextMode="Password"></asp:TextBox>
         </label>
       </div>
-      
+         <div>
+        <label>       
+            <asp:CheckBox ID="CheckBox1" runat="server" Text="记住密码 " />
+        </label>
+      </div>
     </div>
     <div id="center_middle_right"></div>
     <div id="center_submit">
@@ -36,6 +40,7 @@
       <div class="button">
         <asp:ImageButton ID="btnReset" src="images/cz.gif" width="57" height="20" 
               runat="server" BorderStyle="None" onclick="btnReset_Click" />
+          <asp:HiddenField ID="hdPwd" runat="server" />
       </div>
     </div>
     <div id="center_right"></div>
