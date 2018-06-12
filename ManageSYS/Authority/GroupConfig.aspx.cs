@@ -19,43 +19,21 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
         }
  
     }
-    protected void btnSave_Click(object sender, EventArgs e)
-    {
-        Button btn = (Button)sender;
-        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string id = GridView1.DataKeys[rowIndex].Value.ToString();
-        if (id == "")
-            ScriptManager.RegisterStartupScript(UpdatePanel2, this.GetType(), "", "alert('请输入权限ID');", true);
-        else
-        {
-           DataBaseOperator opt =new DataBaseOperator();
-            opt.UpDateOra("delete from   ht_svr_sys_menu  where f_ID = '" + id + "'");
 
-            string[] seg = { "F_ID", "F_MENU", "F_URL", "F_PRNT_MENU", "F_DESCRIPT", "F_TYPE" };
-            string[] value = { id, ((TextBox)GridView1.Rows[rowIndex].FindControl("txtMenu")).Text, ((TextBox)GridView1.Rows[rowIndex].FindControl("txtURL")).Text, ((TextBox)GridView1.Rows[rowIndex].FindControl("txtPrntMenu")).Text, ((TextBox)GridView1.Rows[rowIndex].FindControl("txtDscrp")).Text, ((DropDownList)GridView1.Rows[rowIndex].FindControl("listType")).SelectedValue };
-            opt.InsertData(seg, value, "ht_svr_sys_menu");
-            bindData();
-        }
-      
-       
-    }
-    protected void btnDelete_Click(object sender, EventArgs e)
+    protected DataSet bindprt()
     {
-        Button btn = (Button)sender;
-        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string id = GridView1.DataKeys[rowIndex].Value.ToString();
-        string query = "update  ht_svr_sys_menu  set is_del = '1' where f_ID = '" + id + "'";
-       DataBaseOperator opt =new DataBaseOperator();
-        opt.UpDateOra(query);
-        bindData();
+        DataBaseOperator opt = new DataBaseOperator();
+        return opt.CreateDataSetOra("select * from ht_svr_prt_menu where IS_DEL = '0' order by ID");
     }
+
+  
 
     protected void btnAdds_Click(object sender, EventArgs e)
     {
         try
         {
-            string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_prnt_menu as 父节点名,t.f_menu as 权限名称,t.f_url as URL ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t where is_del = '0'  order by t.F_ID ";
-           DataBaseOperator opt =new DataBaseOperator();
+            string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_pid as 父节点名,t.f_menu as 权限名称,t.f_mapid as Mapping ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t   where t.is_del = '0'  order by t.F_ID";
+            DataBaseOperator opt = new DataBaseOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             string newID = (Convert.ToInt16(opt.GetSegValue("select max(F_ID) as ID from ht_svr_sys_menu", "ID")) + 1).ToString().PadLeft(5, '0');
@@ -65,12 +43,13 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
                 data.Columns.Add("权限类型");
                 data.Columns.Add("父节点名");
                 data.Columns.Add("权限名称");
-                data.Columns.Add("URL");
-                data.Columns.Add("描述");               
+                data.Columns.Add("Mapping");
+                data.Columns.Add("描述");
+
             }
             else
                 data = set.Tables[0];
-            object[] value = { newID, "", "", "", "", "",  };
+            object[] value = { newID, "", "", "", "", "" };
             data.Rows.Add(value);
             GridView1.DataSource = data;
             GridView1.DataBind();
@@ -81,16 +60,22 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
                     DataRowView mydrv = data.DefaultView[i];
 
                     ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue = mydrv["权限类型"].ToString();
-                    ((TextBox)GridView1.Rows[i].FindControl("txtID")).Text = mydrv["权限ID"].ToString();
-                    ((TextBox)GridView1.Rows[i].FindControl("txtPrntMenu")).Text = mydrv["父节点名"].ToString();
-                    ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
-                    ((TextBox)GridView1.Rows[i].FindControl("txtURL")).Text = mydrv["URL"].ToString();
-                    ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
-                    if (mydrv["权限类型"].ToString() == "1")
-                    {
-                        ((Button)GridView1.Rows[i].FindControl("btnSave")).Enabled = false;
-                        ((Button)GridView1.Rows[i].FindControl("btnDel")).Enabled = false;
 
+                    ((TextBox)GridView1.Rows[i].FindControl("txtID")).Text = mydrv["权限ID"].ToString();
+                    ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
+                    opt.bindDropDownList((DropDownList)GridView1.Rows[i].FindControl("listMap"), "select F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
+                    ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
+                    ((DropDownList)GridView1.Rows[i].FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
+                    ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
+                    if (mydrv["权限类型"].ToString() == "0")
+                    {
+                        ((Button)GridView1.Rows[i].FindControl("btnSave")).Visible = false;
+                        ((DropDownList)GridView1.Rows[i].FindControl("listType")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtID")).Enabled = false;
+                        ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Enabled = false;
+                        ((DropDownList)GridView1.Rows[i].FindControl("listMap")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Enabled = false;
                     }
 
                 }
@@ -103,8 +88,8 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
     }
     protected void bindData()
     {
-        string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_prnt_menu as 父节点名,t.f_menu as 权限名称,t.f_url as URL ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t where is_del = '0'  order by t.F_ID ";
-       DataBaseOperator opt =new DataBaseOperator();
+        string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_pid as 父节点名,t.f_menu as 权限名称,t.f_mapid as Mapping ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t   where t.is_del = '0'  order by t.F_ID";
+        DataBaseOperator opt = new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -116,22 +101,63 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
 
                 ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue = mydrv["权限类型"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtID")).Text = mydrv["权限ID"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtPrntMenu")).Text = mydrv["父节点名"].ToString();
+                ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtURL")).Text = mydrv["URL"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
-                if (mydrv["权限类型"].ToString() == "1")
-                {
-                    ((Button)GridView1.Rows[i].FindControl("btnSave")).Enabled = false;
-                    ((Button)GridView1.Rows[i].FindControl("btnDel")).Enabled = false;
 
+                opt.bindDropDownList((DropDownList)GridView1.Rows[i].FindControl("listMap"), "select F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
+                ((DropDownList)GridView1.Rows[i].FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
+                ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
+                if (mydrv["权限类型"].ToString() == "0")
+                {
+                    ((Button)GridView1.Rows[i].FindControl("btnSave")).Visible = false;
+                    ((DropDownList)GridView1.Rows[i].FindControl("listType")).Enabled = false;
+                    ((TextBox)GridView1.Rows[i].FindControl("txtID")).Enabled = false;
+                    ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).Enabled = false;
+                    ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Enabled = false;
+                    ((DropDownList)GridView1.Rows[i].FindControl("listMap")).Enabled = false;
+                    ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Enabled = false;
                 }
             }
         }
- 
+
     }
 
- 
+
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string id = GridView1.DataKeys[rowIndex].Value.ToString();
+     
+            GridViewRow row = GridView1.Rows[rowIndex];          
+            DataBaseOperator opt = new DataBaseOperator();
+            ///判断URL是否在数据库中有MAP映射，每个URL页面有唯一的URL           
+           
+            opt.UpDateOra("delete from   ht_svr_sys_menu  where f_ID = '" + id + "'");
+            string[] seg = { "F_ID", "F_MENU", "F_MAPID", "F_PID", "F_DESCRIPT", "F_TYPE" };
+            string[] value = { id, ((TextBox)row.FindControl("txtMenu")).Text, ((DropDownList)row.FindControl("listMap")).SelectedValue, ((DropDownList)row.FindControl("listPrt")).SelectedValue, ((TextBox)row.FindControl("txtDscrp")).Text, ((DropDownList)row.FindControl("listType")).SelectedValue };
+            opt.InsertData(seg, value, "ht_svr_sys_menu");
+            bindData();
+    }
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string id = GridView1.DataKeys[rowIndex].Value.ToString();
+        string query = "update  ht_svr_sys_menu  set is_del = '1' where f_ID = '" + id + "'";
+       DataBaseOperator opt =new DataBaseOperator();
+        opt.UpDateOra(query);
+        bindData();
+    }
+
+  
+    protected void listPrt_OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        DropDownList list = (DropDownList)sender;
+        int rowIndex = ((GridViewRow)list.NamingContainer).RowIndex;
+        DataBaseOperator opt = new DataBaseOperator();
+        opt.bindDropDownList((DropDownList)GridView1.Rows[rowIndex].FindControl("listMap"), "select F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + list.SelectedValue + "'", "URL", "F_MAPID");
+    }
 
     protected void RightTree_SelectedNodeChanged(object sender, EventArgs e)
     {
