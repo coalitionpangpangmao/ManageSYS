@@ -199,17 +199,18 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="tools">
+                    <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnview" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <asp:Button ID="btnSegDel" runat="server" Text="删除" CssClass="btndel" OnClick="btnSegDel_Click" />
+                </div>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnUpdTab2" />
                         <asp:AsyncPostBackTrigger ControlID="hideTreeSel2" />
                     </Triggers>
                 </asp:UpdatePanel>
-                <div class="tools">
-                    <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnview" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="btnSegDel" runat="server" Text="删除" CssClass="btndel" OnClick="btnSegDel_Click" />
-                </div>
+                
             </div>
             <script type="text/javascript">
                 $("#usual1 ul").idTabs(); 

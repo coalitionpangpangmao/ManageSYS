@@ -4,7 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ManageSYS", "ManageSYS\", "{C8523636-97AF-437C-8CD9-95C47EF16BB9}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{A941B43C-5C79-45DD-917C-30586267DEE7}|MSYS.DAL.dll;"
+		ProjectReferences = "{A941B43C-5C79-45DD-917C-30586267DEE7}|MSYS.DAL.dll;{99E06C26-C6BC-4B58-BEAD-903BF1629D95}|MSYS.Web.dll;{64998E34-2770-41C6-8046-9976ABBD5B90}|MSYS.Common.dll;{459B092F-96C5-4FC2-BF1B-44EB40B96B2A}|MSYS.Data.dll;{D88AD759-6B4E-44DE-84D3-8504653DC11D}|MSYS.Security.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/ManageSYS"
 		Debug.AspNetCompiler.PhysicalPath = "ManageSYS\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ManageSYS\"
@@ -29,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Data", "MSYS.Data\MSYS.Data.csproj", "{459B092F-96C5-4FC2-BF1B-44EB40B96B2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Common", "MSYS.Common\MSYS.Common.csproj", "{64998E34-2770-41C6-8046-9976ABBD5B90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Security", "MSYS.Security\MSYS.Security.csproj", "{D88AD759-6B4E-44DE-84D3-8504653DC11D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{64998E34-2770-41C6-8046-9976ABBD5B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64998E34-2770-41C6-8046-9976ABBD5B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64998E34-2770-41C6-8046-9976ABBD5B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

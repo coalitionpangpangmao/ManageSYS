@@ -222,12 +222,12 @@ public partial class SysConfig_ExcelModel : System.Web.UI.Page
           try
           {
              DataBaseOperator opt =new DataBaseOperator();
-              DataSet temp = opt.CreateDataSetOra("select * from HT_SYS_EXCEL_SEG where F_SHEET = '" + Sheet1.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'");
+             DataSet temp = opt.CreateDataSetOra("select * from HT_SYS_EXCEL_SEG where F_SHEETINDEX = '" + Index.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'");
               
               if (temp != null && temp.Tables[0].Select().GetLength(0) > 0)
               {
-                  string[] seg = { "F_SQL", "F_SHEETINDEX", "F_SYNCHRO_TIME" };
-                  string[] value = { SQLText.Text, Index.Text, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") };
+                  string[] seg = { "F_SQL", "F_SHEET", "F_SYNCHRO_TIME" };
+                  string[] value = { SQLText.Text, Sheet1.Text, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") };
                   string condition = " where F_SHEET='"
                     + Sheet1.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'";
                   if(opt.UpDateData(seg, value,"HT_SYS_EXCEL_SEG", condition)=="Success")
@@ -247,7 +247,7 @@ public partial class SysConfig_ExcelModel : System.Web.UI.Page
                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "插入失败，插入报名为" + ReportName.Text + "工作表名为" + Sheet1.Text + "位置为" + DesC.Text.Trim() + DesR.Text.Trim() + "的记录");
               }
               tvHtml = InitTree();
-              ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);
+              ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "initTreetoggle();", true);
           }
           catch (Exception ee)
           {
@@ -289,8 +289,8 @@ public partial class SysConfig_ExcelModel : System.Web.UI.Page
     protected void btnSegDel_Click(object sender, EventArgs e)
     {
        DataBaseOperator opt =new DataBaseOperator();
-        string query = "delete from HT_SYS_EXCEL_SEG where  F_SHEET='"
-                     + Sheet1.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'";
+       string query = "delete from HT_SYS_EXCEL_SEG where  F_SHEETINDEX='"
+                     + Index.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'";
         if (opt.UpDateOra(query) == "Success")
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "数据填充保存成功，数据参数：" + Sheet1.Text + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID"));
         else
