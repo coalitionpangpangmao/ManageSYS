@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99E06C26-C6BC-4B58-BEAD-903BF1629D95}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MSYS.Web</RootNamespace>
+    <AssemblyName>MSYS.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IBasePage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysSessionCollection.cs" />
+    <Compile Include="UserCache.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSYS.Common\MSYS.Common.csproj">
+      <Project>{64998E34-2770-41C6-8046-9976ABBD5B90}</Project>
+      <Name>MSYS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.DAL\MSYS.DAL.csproj">
+      <Project>{A941B43C-5C79-45DD-917C-30586267DEE7}</Project>
+      <Name>MSYS.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.Data\MSYS.Data.csproj">
+      <Project>{459B092F-96C5-4FC2-BF1B-44EB40B96B2A}</Project>
+      <Name>MSYS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.Security\MSYS.Security.csproj">
+      <Project>{D88AD759-6B4E-44DE-84D3-8504653DC11D}</Project>
+      <Name>MSYS.Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
