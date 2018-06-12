@@ -11,31 +11,28 @@
 <script type="text/javascript" src="js/jquery.easing.js"></script>
 <script type="text/javascript" src="js/jquery.dimensions.js"></script>
 <script type="text/javascript" src="js/jquery.accordion.js"></script>
-  <script language="javascript" type="text/javascript">
-      jQuery().ready(function () {
-          jQuery('#navigation').accordion({
-              header: '.head',
-              navigation1: true,
-              event: 'click',
-              fillSpace: true,
-              animated: 'bounceslide'
-          });
-          $('.subhead').next('ul').hide();
-      });
- 
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            $('.subhead').click(function () {
-                var $ul = $(this).next('ul');
-                //   $('dd').find('ul').slideUp();
-                if ($ul.is(':visible')) {
-                    $(this).next('ul').slideUp();
-                } else {
-                    $(this).next('ul').slideDown();
-                }
-            });
-        })	
+   <script language="javascript" type="text/javascript">
+       jQuery().ready(function () {
+           jQuery('#navigation').accordion({
+               header: '.head',
+               navigation1: true,
+               event: 'click',
+               fillSpace: true,
+               animated: 'bounceslide'
+           });
+           $('.subhead').next('ul').hide();
+       });
+       $(function () {
+           $('.subhead').click(function () {
+               var $ul = $(this).next('ul');
+               //   $('dd').find('ul').slideUp();
+               if ($ul.is(':visible')) {
+                   $(this).next('ul').slideUp();
+               } else {
+                   $(this).next('ul').slideDown();
+               }
+           });
+       })	
     </script>
     <style type="text/css">
         body
