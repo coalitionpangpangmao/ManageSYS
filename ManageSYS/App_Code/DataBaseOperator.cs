@@ -107,7 +107,7 @@ public class DataBaseOperator
             string temp = data.Tables[0].Rows[0][seg].ToString();
             return temp;
         }
-        else return "";
+        else return "NoRecord";
     }
     //查询语句后  行列倒置
     protected DataSet ShiftTable(string query)
@@ -148,6 +148,15 @@ public class DataBaseOperator
         return set;
     }
 
+    //查询是否有符合条件的记录
+    public bool hasRecord(string query)
+    {
+        DataSet data = CreateDataSetOra(query);
+        if (data != null && data.Tables[0].Rows.Count > 0)
+            return true;
+        else
+            return false;
+    }
     #region Approval
     //审批相关操作
     public bool createApproval(string[] keys)//启动审批/*TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id, 单独登录url,*/
