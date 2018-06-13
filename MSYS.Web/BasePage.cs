@@ -6,7 +6,6 @@ using System.Configuration;
 using System.Data;
 using System.Web;
 using System.Web.SessionState;
-using MSYS.Common;
 using MSYS.DAL;
 using MSYS.Data;
 using System.Linq;
@@ -55,7 +54,7 @@ namespace MSYS.Web
                 _session = HttpContext.Current.Session;
                 if (Session["User"] == null)
                 {                  
-                    Response.Redirect("../Login.aspx");
+                    Response.Redirect("Login.aspx");
                 }
                
                 this.m_sessionId = _session.SessionID;

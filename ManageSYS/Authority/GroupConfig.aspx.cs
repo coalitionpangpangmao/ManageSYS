@@ -239,7 +239,7 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
         Acesslist.Nodes.Clear();
         Denylist.Nodes.Clear();
        DataBaseOperator opt =new DataBaseOperator();
-        DataSet temp = opt.CreateDataSetOra("select * from ht_svr_sys_menu order by F_ID");
+       DataSet temp = opt.CreateDataSetOra("select * from ht_svr_sys_menu where is_del = '0' order by F_ID ");
         DataRow[] Rows = temp.Tables[0].Select();
         int strlength =  Convert.ToInt16(temp.Tables[0].Compute("Max(F_ID)", null));
 

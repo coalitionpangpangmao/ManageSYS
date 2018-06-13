@@ -13,16 +13,7 @@
 <script type="text/javascript" src="js/jquery.accordion.js"></script>
    <script language="javascript" type="text/javascript">
        jQuery().ready(function () {
-           jQuery('#navigation').accordion({
-               header: '.head',
-               navigation1: true,
-               event: 'click',
-               fillSpace: true,
-               animated: 'bounceslide'
-           });
            $('.subhead').next('ul').hide();
-       });
-       $(function () {
            $('.subhead').click(function () {
                var $ul = $(this).next('ul');
                //   $('dd').find('ul').slideUp();
@@ -32,7 +23,35 @@
                    $(this).next('ul').slideDown();
                }
            });
-       })	
+           jQuery('#navigation').accordion({
+               header: '.head',
+               navigation1: true,
+               event: 'click',
+               fillSpace: false,
+               animated: 'bounceslide'
+           });
+           
+       });
+    
+       function resize() {
+           jQuery('#navigation').accordion({
+               header: '.head',
+               navigation1: true,
+               event: 'click',
+               fillSpace: false,
+               animated: 'bounceslide'
+           });          
+           $('.subhead').next('ul').hide();
+           $('.subhead').click(function () {
+               var $ul = $(this).next('ul');
+               //   $('dd').find('ul').slideUp();
+               if ($ul.is(':visible')) {
+                   $(this).next('ul').slideUp();
+               } else {
+                   $(this).next('ul').slideDown();
+               }
+           });
+       }
     </script>
     <style type="text/css">
         body
@@ -98,13 +117,10 @@
         }
     </style>
 </head>
-<body>
- <form id="form" runat="server">
+<body> 
 <div  style="height:100%;">
 <%=SysHtml %>
- 
 </div>
-</form>
 </body>
 </html>
 

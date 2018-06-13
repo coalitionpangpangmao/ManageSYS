@@ -7,7 +7,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>鑫源再源梗丝生产管理系统</title>
 <link rel="stylesheet" type="text/css" href="css/main.css"/>
-<script type="text/javascript" src="../js/js.js"></script>
+
+<script type ="text/javascript">
+    if (self.location != top.location) {
+        top.location.href = 'Default.aspx';
+    }
+</script>
 </head>
 <body>
 <div id="top"> </div>

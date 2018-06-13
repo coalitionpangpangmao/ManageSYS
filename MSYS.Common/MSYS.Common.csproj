@@ -42,12 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="General.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ISysConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SysConfig.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

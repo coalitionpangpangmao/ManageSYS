@@ -170,6 +170,7 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
         if ("NoRecord" == (mapID = opt.GetSegValue("select * from ht_inner_map where URL = '" + ((TextBox)row.FindControl("txtURL")).Text + "'", "MAPID")))
         {
             mapID = id;
+            opt.UpDateOra("delete from   HT_INNER_MAP  where MAPID = '" + mapID + "'");
             opt.InsertData(new string[] { "MAPID", "URL" }, new string[] { mapID, ((TextBox)row.FindControl("txtURL")).Text }, "HT_INNER_MAP");
         }
         //在权限表中插入菜单权限 
