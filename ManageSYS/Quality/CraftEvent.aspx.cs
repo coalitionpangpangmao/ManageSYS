@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Quality_CraftEvent : System.Web.UI.Page
+public partial class Quality_CraftEvent : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtStartTime.Text = System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") + " 00:00:00";

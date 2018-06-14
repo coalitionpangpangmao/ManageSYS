@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-public partial class Craft_Tech_Process : System.Web.UI.Page
+public partial class Craft_Tech_Process : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {

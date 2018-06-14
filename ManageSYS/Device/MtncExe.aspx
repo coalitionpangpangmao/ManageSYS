@@ -126,7 +126,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btn1" Width="75"
+                                            <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btn1 auth" Width="75"
                                                 OnClick="btnGrid1View_Click" />
                                         </ItemTemplate>
                                         <ItemStyle Width="80px" />
@@ -381,7 +381,7 @@
                     </asp:UpdatePanel>
                 </div>
                    <div align="center">
-                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview" OnClick="btnSave_Click" />
+                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSave_Click" />
                             </div>
             </div>
         </div>

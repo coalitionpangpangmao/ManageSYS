@@ -12,10 +12,11 @@ public partial class left : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            string userID = "0700001";// Session["UserID"].ToString();
-            SysHtml = initLevel1Menu(userID);
-         //   this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>resize();</script>", true);
-         
+            if (Session["User"] != null)
+            {
+                string userID = ((MSYS.Data.SysUser)Session["User"]).Id;
+                SysHtml = initLevel1Menu(userID);
+            }
         }
     }
     protected string initLevel1Menu(string userID)

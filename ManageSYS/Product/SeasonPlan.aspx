@@ -102,8 +102,8 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     生产计划表<span style="position: relative; float: right">
-                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1" OnClick="btnIssued_Click" />
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1" OnClick="btnGridDel_Click" />
+                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
+                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />
                     </span>
                 </div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -125,19 +125,19 @@
                                 <asp:BoundField DataField="编制人" HeaderText="编制人" />
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1" Width="75"
+                                        <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1 auth" Width="75"
                                             OnClick="btnGridEdit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1" Width="75"
+                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
                                             OnClick="btnSubmit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="75" OnClick="btnFLow_Click" />
+                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75" OnClick="btnFLow_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -162,7 +162,7 @@
                         <ContentTemplate>
                             <div class="listtitle">
                                 季度生产计划<span style="position: relative; float: right" class="click2">
-                                    <input id="Button2" type="button" value="保存" class="btnmodify" />
+                                    <input id="Button2" type="button" value="保存" class="btnmodify auth" />
                                 </span>
                             </div>
                             <table class="tablelist">
@@ -202,9 +202,9 @@
                             </table>
                             <div class="listtitle" style="margin-top: 10px">
                                 生产任务编制<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
-                                    CssClass="btnadd" Text="新增" OnClick="btnAdd_Click" />
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" OnClick="btnDelSel_Click" />
+                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
                                 </span>
                             </div>
                             <asp:HiddenField ID="hidePlanID" runat="server" />
@@ -271,12 +271,12 @@
                                     </asp:TemplateField>
                                    <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid2Save_Click" />
+                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1" OnClick="btnGrid2Del_Click" />
+                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid2Del_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

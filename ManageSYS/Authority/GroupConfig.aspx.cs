@@ -7,10 +7,11 @@ using System.Web.UI.WebControls;
 using System.Data;
 
 
-public partial class Authority_GroupConfig : System.Web.UI.Page
+public partial class Authority_GroupConfig : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             bindData();
@@ -248,10 +249,11 @@ public partial class Authority_GroupConfig : System.Web.UI.Page
         for (int i = 0; i < Rows.GetLength(0); i++)
         {
             int index = Convert.ToInt16(Rows[i]["F_ID"].ToString())-1;
+            string type = Rows[i]["F_TYPE"].ToString() == "0" ? "菜单" : "操作";
             if (right.Substring(index, 1) == "0")
-                AddListItem(Rows[i]["F_MENU"].ToString(), Rows[i]["F_ID"].ToString(), Denylist);
+                AddListItem(type + "_"+ Rows[i]["F_MENU"].ToString(), Rows[i]["F_ID"].ToString(), Denylist);
             else
-                AddListItem(Rows[i]["F_MENU"].ToString(), Rows[i]["F_ID"].ToString(), Acesslist);
+                AddListItem(type + "_"+ Rows[i]["F_MENU"].ToString(), Rows[i]["F_ID"].ToString(), Acesslist);
         }
         Right.Text = right;
     }

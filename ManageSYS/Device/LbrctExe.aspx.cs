@@ -6,10 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
-public partial class Device_LbrctExe : System.Web.UI.Page
+public partial class Device_LbrctExe : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtStart.Text = System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd");

@@ -47,11 +47,11 @@
     <div class="mainbox">
         <div class="mainleft">
             <div class="leftinfo">
-                <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode= "Conditional">
+                <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="listtitle">
                             报表</div>
-                        <% = tvHtml %>                         
+                        <% = tvHtml %>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="SaveBook" />
@@ -83,9 +83,9 @@
                             width="600"></iframe>
                     </div>
                     <div class="tools">
-                        <asp:Button ID="SaveBook" runat="server" Text="保存" OnClick="SaveBook_Click" CssClass="btnview" />
+                        <asp:Button ID="SaveBook" runat="server" Text="保存" OnClick="SaveBook_Click" CssClass="btnview  auth" />
                         &nbsp;&nbsp;&nbsp;
-                        <asp:Button ID="Delete" runat="server" Text="删除" OnClick="Delete_Click" CssClass="btndel" />
+                        <asp:Button ID="Delete" runat="server" Text="删除" OnClick="Delete_Click" CssClass="btndel  auth" />
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
@@ -108,9 +108,9 @@
                                                 CssClass="dfinput" SelectionMode="Multiple"></asp:ListBox>
                                         </td>
                                         <td width="150">
-                                            <asp:Button ID="Add" runat="server" Text="<<<" OnClick="Add_Click" CssClass="btn1" />
+                                            <asp:Button ID="Add" runat="server" Text="<<<" OnClick="Add_Click" CssClass="btn1 auth" />
                                             &nbsp;
-                                            <asp:Button ID="Del" runat="server" Text=">>>" OnClick="Del_Click" CssClass="btn1" />
+                                            <asp:Button ID="Del" runat="server" Text=">>>" OnClick="Del_Click" CssClass="btn1 auth" />
                                         </td>
                                         <td>
                                             <asp:ListBox ID="Templist" runat="server" Height="100px" Width="160px" OnSelectedIndexChanged="Templist_SelectedIndexChanged"
@@ -200,17 +200,16 @@
                             </table>
                         </div>
                         <div class="tools">
-                    <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnview" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="btnSegDel" runat="server" Text="删除" CssClass="btndel" OnClick="btnSegDel_Click" />
-                </div>
+                            <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnview  auth" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <asp:Button ID="btnSegDel" runat="server" Text="删除" CssClass="btndel  auth" OnClick="btnSegDel_Click" />
+                        </div>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnUpdTab2" />
                         <asp:AsyncPostBackTrigger ControlID="hideTreeSel2" />
                     </Triggers>
                 </asp:UpdatePanel>
-                
             </div>
             <script type="text/javascript">
                 $("#usual1 ul").idTabs(); 
@@ -219,7 +218,7 @@
                 $('.tablelist tbody tr:odd').addClass('odd');
             </script>
         </div>
-        <!--mainright end-->     
+        <!--mainright end-->
     </div>
     </form>
 </body>

@@ -343,8 +343,8 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <asp:Button ID="WeightSet" runat="server" Text="设置" CssClass="btn1" />
-                                                            <asp:Button ID="WeightFresh" runat="server" Text="刷新" CssClass="btn1" />
+                                                            <asp:Button ID="WeightSet" runat="server" Text="设置" CssClass="btn1 auth" />
+                                                            <asp:Button ID="WeightFresh" runat="server" Text="刷新" CssClass="btn1 auth" />
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -394,8 +394,8 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <asp:Button ID="SetRst" runat="server" Text="设置" CssClass="btn1" />
-                                                            <asp:Button ID="Flesh" runat="server" Text="刷新" CssClass="btn1" />
+                                                            <asp:Button ID="SetRst" runat="server" Text="设置" CssClass="btn1 auth" />
+                                                            <asp:Button ID="Flesh" runat="server" Text="刷新" CssClass="btn1 auth" />
                                                         </td>
                                                     </tr>
                                                 </tbody>

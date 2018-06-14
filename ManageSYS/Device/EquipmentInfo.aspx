@@ -98,7 +98,7 @@
                         查询条件<span style="position: relative; float: right">
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" 
                             onclick="btnSearch_Click" />   
-                            <asp:Button ID="btnUpdate" runat="server" Text="查询" CssClass="btnview" 
+                            <asp:Button ID="btnUpdate" runat="server"  CssClass="btnhide" 
                             onclick="btnUpdate_Click" /> 
                              <asp:HiddenField ID="hdcode" runat="server" /> </span>
 
@@ -127,9 +127,9 @@
                 <div class="listtitle" style="margin-top: 10px">
                     设备列表<span style="position: relative; float: right"><asp:Button 
                     ID="Button1" runat="server"
-                    CssClass="btnadd" Text="新增" onclick="btnAdd_Click"  />                   
+                    CssClass="btnadd  auth" Text="新增" onclick="btnAdd_Click"  />                   
                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" onclick="btnCkAll_Click" />
-                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" onclick="btnDelSel_Click" />
+                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" onclick="btnDelSel_Click" />
                     </span></div>
                    <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
@@ -139,7 +139,7 @@
                      <Columns>
                         <asp:TemplateField >
                         <ItemTemplate>                                                  
-                            <asp:Button ID="btnGridview" runat="server" Text="设备详情"  CssClass = "btn1" OnClick = "btnGridview_Click" Width = "80px"/>                    
+                            <asp:Button ID="btnGridview" runat="server" Text="设备详情"  CssClass = "btn1 auth" OnClick = "btnGridview_Click" Width = "80px"/>                    
                         </ItemTemplate>
                         </asp:TemplateField >       
                          <asp:TemplateField  HeaderText = "润滑记录">
@@ -282,7 +282,7 @@
         <tr>
         <td colspan="6" align="center">
             <asp:Button ID="btnAdd" runat="server" Text="重置"  CssClass = "btnset"/>
-            <asp:Button ID="btnModify" runat="server" Text="保存"  CssClass = "btnview"/>           
+            <asp:Button ID="btnModify" runat="server" Text="保存"  CssClass = "btnview  auth"/>           
 
         </td>
         </tr>
@@ -352,10 +352,10 @@
                             </tr>
                             <tr>
                             <td colspan="4" align="center">
-                                <asp:Button ID="btn3Save" runat="server" Text="保存"  CssClass = "btnview" 
+                                <asp:Button ID="btn3Save" runat="server" Text="保存"  CssClass = "btnview  auth" 
                                     onclick="btn3Save_Click"/>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:Button ID="btn3Del" runat="server" Text="删除"  CssClass = "btndel" 
+                                <asp:Button ID="btn3Del" runat="server" Text="删除"  CssClass = "btndel auth" 
                                     onclick="btn3Del_Click"/>
                             </td>
                             </tr>

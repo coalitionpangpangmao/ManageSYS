@@ -6,11 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Craft_Recipe : System.Web.UI.Page
+public partial class Craft_Recipe : MSYS.Web.BasePage
 {
     protected string tvHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             tvHtml = InitTree();

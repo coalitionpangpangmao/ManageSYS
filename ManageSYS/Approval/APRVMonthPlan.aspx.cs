@@ -6,11 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Approval_APRVMonthPlan : System.Web.UI.Page
+public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
 {
     protected string AprvtableHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtStarttime.Text = System.DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");

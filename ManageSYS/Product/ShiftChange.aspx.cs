@@ -7,10 +7,11 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Drawing;
-public partial class Product_ShiftChange : System.Web.UI.Page
+public partial class Product_ShiftChange : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtStartDate.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
@@ -46,7 +47,7 @@ public partial class Product_ShiftChange : System.Web.UI.Page
                 else
                 {
                     btn.Text = "填写";
-                    btn.CssClass = "btn1";
+                    btn.CssClass = "btn1 auth";
                 }
                 
             }

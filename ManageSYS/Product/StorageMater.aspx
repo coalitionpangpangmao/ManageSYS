@@ -86,8 +86,8 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     原料领退表<span style="position: relative; float: right">
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel" OnClick="btnGridDel_Click" />
-                        <asp:Button ID="btnGridNew" runat="server" Text="新建" class="btnadd" OnClick="btnGridNew_Click" />
+                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" />
+                        <asp:Button ID="btnGridNew" runat="server" Text="新建" class="btnadd  auth" OnClick="btnGridNew_Click" />
                     </span>
                 </div>
                 <div>
@@ -110,9 +110,9 @@
                                 <asp:BoundField DataField="状态" HeaderText="状态" />
                                 <asp:BoundField DataField="编制人" HeaderText="编制人" />
                                 <asp:BoundField DataField="收发人" HeaderText="收发人" />
-                                <asp:TemplateField ItemStyle-Width="80">
+                                <asp:TemplateField >
                                     <ItemTemplate>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1" Width="75"
+                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
                                             OnClick="btnSubmit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -122,9 +122,9 @@
                                             OnClick="btnGridIssue_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField ItemStyle-Width="80">
+                                <asp:TemplateField >
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridopt" runat="server" Text="出入库" CssClass="btn1" Width="75"
+                                        <asp:Button ID="btnGridopt" runat="server" Text="出入库" CssClass="btn1 auth" Width="75"
                                             OnClick="btnGridopt_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -157,7 +157,7 @@
                         <asp:RadioButton ID="rdIn" runat="server" Text="退库" GroupName="Storage" />
                            <asp:Button ID="btnReset" runat="server" Text="重置" CssClass= "btnset"
                                             OnClick="btnReset_Click" />
-                        <input id="Button2" type="button" value="保存" class="btnmodify" />
+                        <input id="Button2" type="button" value="保存" class="btnmodify auth" />
                     </span>
                 </div>
                 <div>
@@ -271,11 +271,11 @@
                 </div>
                 <div class="listtitle" style="margin-top: 10px">
                     领退明细<span style="position: relative; float: right">
-                      <asp:Button ID="btnCreate" runat="server" CssClass="btnview" 
+                      <asp:Button ID="btnCreate" runat="server" CssClass="btnview auth" 
                         Text="按明细生成领退单" OnClick="btnCreate_Click" Width="160px" />
-                    <asp:Button ID="btnAdd" runat="server"  CssClass="btnadd" Text="新增" OnClick="btnAdd_Click" />
+                    <asp:Button ID="btnAdd" runat="server"  CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" OnClick="btnDelSel_Click" />
+                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
                       
                     </span>
                 </div>
@@ -337,7 +337,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1" Width="75"
+                                        <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
                                             OnClick="btnGrid2Save_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>

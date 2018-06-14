@@ -116,9 +116,9 @@
                 <div class="listtitle" style="margin-top: 10px">
                     故障库列表<span style="position: relative; float: right"><asp:Button 
                     ID="btnAdd" runat="server"
-                    CssClass="btnadd" Text="新增" onclick="btnAdd_Click"  />                   
+                    CssClass="btnadd  auth" Text="新增" onclick="btnAdd_Click"  />                   
                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" onclick="btnCkAll_Click" />
-                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" onclick="btnDelSel_Click" />
+                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" onclick="btnDelSel_Click" />
                     </span></div>
                     <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
@@ -130,7 +130,7 @@
                             <asp:CheckBox ID="chk" runat="server" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                     <asp:TemplateField >
+                     <asp:TemplateField  ControlStyle-Width = "110px">
                      <ItemTemplate>
                             <asp:Button ID="btnGridView" runat="server" Text="查看详情" cssclass ="btn1" onclick="btnGridView_Click"  Width = "90px"/>
                         </ItemTemplate>
@@ -141,7 +141,7 @@
                                 
                      <asp:TemplateField >
                         <ItemTemplate>
-                            <asp:Button ID="btnGridDel" runat="server" Text="删除" cssclass ="btn1" onclick="btnGridDel_Click" />
+                            <asp:Button ID="btnGridDel" runat="server" Text="删除" cssclass ="btn1 auth" onclick="btnGridDel_Click" />
                               </ItemTemplate>
                     </asp:TemplateField>           
                      </Columns>
@@ -297,7 +297,7 @@
                             </tr>
                             <tr>
                             <td colspan="6" align="center">
-                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btnview" OnClick = "btnSave_Click" />
+                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btnview auth" OnClick = "btnSave_Click" />
                             </td></tr>
                         </tbody>
                     </table>

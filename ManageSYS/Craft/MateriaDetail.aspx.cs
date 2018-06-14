@@ -5,12 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-public partial class Craft_MateriaDetail : System.Web.UI.Page
+public partial class Craft_MateriaDetail : MSYS.Web.BasePage
 {
-    protected void Page_Load(object sender, EventArgs e)
+   protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
-        {
+        base.PageLoad(sender, e);
            DataBaseOperator opt =new DataBaseOperator();
             opt.bindDropDownList(listType, "select  MATTREE_CODE ,  MATTREE_NAME ,  PARENT_ID    from HT_PUB_MATTREE where  is_del = '0'", "MATTREE_NAME", "MATTREE_CODE");
             try
@@ -24,7 +23,7 @@ public partial class Craft_MateriaDetail : System.Web.UI.Page
             }
             catch
             { }
-        }
+      
     }
     protected void bindData(string mtr_code)
     {

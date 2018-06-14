@@ -6,12 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Craft_Tech_Std : System.Web.UI.Page
+public partial class Craft_Tech_Std : MSYS.Web.BasePage
 {
     protected string tvHtml;
     protected string subtvHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
            DataBaseOperator opt =new DataBaseOperator();

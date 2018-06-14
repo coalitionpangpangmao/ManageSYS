@@ -49,7 +49,6 @@
                 <div class="listtitle">
                     查询条件<span style="position: relative; float: right">
                         <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
-                        
                     </span>
                 </div>
                 <table class="tablelist">
@@ -71,10 +70,10 @@
                 <div style="overflow: scroll; width: 100%; height: 300px;">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                         <asp:HiddenField ID="hdID" runat="server" />
+                            <asp:HiddenField ID="hdID" runat="server" />
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AllowPaging="False"
                                 AutoGenerateColumns="False" PageSize="12">
-                                <Columns>                                 
+                                <Columns>
                                     <asp:BoundField DataField="日期" HeaderText="日期" />
                                     <asp:BoundField DataField="班组" HeaderText="班组" />
                                     <asp:BoundField DataField="班时" HeaderText="班时" />
@@ -82,7 +81,7 @@
                                     <asp:BoundField DataField="结束时间" HeaderText="结束时间" />
                                     <asp:TemplateField HeaderText="操作">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1" OnClick="btnGrid1Edit_Click" />
+                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -90,7 +89,8 @@
                                 <RowStyle CssClass="gridrow" />
                             </asp:GridView>
                         </ContentTemplate>
-                        <Triggers><asp:AsyncPostBackTrigger  ControlID = "btnSearch"/>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -98,16 +98,14 @@
         </div>
         <div id="tab2" class="tabson">
             <div class="framelist">
-                <div class="listtitle" >
+                <div class="listtitle">
                     交接班详情<span style="position: relative; float: right">
-                                                <asp:Button ID="btnSave" runat="server" Text="保存" class=
-                                                "btnview"  OnClick = "btnSave_Click"/>                       
-                                            </span>
+                        <asp:Button ID="btnSave" runat="server" Text="保存" class="btnview auth" OnClick="btnSave_Click" />
+                    </span>
                 </div>
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                        
                             <table class="tablelist">
                                 <tbody>
                                     <tr>
@@ -121,14 +119,14 @@
                                             班时
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listShift" runat="server" CssClass = "drpdwnlist">
+                                            <asp:DropDownList ID="listShift" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
-                                            </td>
+                                        </td>
                                         <td width="100">
                                             班组
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listTeam" runat="server" CssClass = "drpdwnlist">
+                                            <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -137,7 +135,7 @@
                                             牌号
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listProd" runat="server" CssClass = "drpdwnlist">
+                                            <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
                                         <td width="100">
@@ -160,13 +158,13 @@
                                         <td>
                                             <asp:TextBox ID="txtOutput" runat="server" class="dfinput1"></asp:TextBox>
                                         </td>
-                                      <td width="100">
+                                        <td width="100">
                                             交班人
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtOlder" runat="server" class="dfinput1"></asp:TextBox>
                                         </td>
-                                          <td width="100">
+                                        <td width="100">
                                             接班人
                                         </td>
                                         <td>
@@ -212,15 +210,16 @@
                                     <tr>
                                         <th colspan="6" height="40px">
                                             班组交接明细列表<span style="position: relative; float: right">
-                                             <asp:Button ID="btnAdd" runat="server" Text="增加" class="btn1"  OnClick = "btnAdd_Click" />
-                                                <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1"  OnClick = "btnCkAll_Click"/>
-                                                <asp:Button ID="btnDelSel" runat="server" Text="删除" class="btn1" OnClick = "btnDelSel_Click"/>
+                                                <asp:Button ID="btnAdd" runat="server" Text="增加" class="btn1 auth" OnClick="btnAdd_Click" />
+                                                <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1 auth" OnClick="btnCkAll_Click" />
+                                                <asp:Button ID="btnDelSel" runat="server" Text="删除" class="btn1 auth" OnClick="btnDelSel_Click" />
                                             </span>
                                         </th>
                                     </tr>
                                     <tr>
                                         <td colspan="6">
-                                            <asp:GridView ID="GridView2" runat="server" class="grid"  AllowPaging="False"    AutoGenerateColumns="False" PageSize="12">
+                                            <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
+                                                PageSize="12">
                                                 <Columns>
                                                     <asp:TemplateField>
                                                         <ItemTemplate>
@@ -229,7 +228,8 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="物料名称">
                                                         <ItemTemplate>
-                                                            <asp:DropDownList ID="listMater" runat="server" CssClass = "drpdwnlist" Width = "120px" DataSource = "<%#gridTypebind()%>" DataTextField = "material_name" DataValueField = "material_code">
+                                                            <asp:DropDownList ID="listMater" runat="server" CssClass="drpdwnlist" Width="120px"
+                                                                DataSource="<%#gridTypebind()%>" DataTextField="material_name" DataValueField="material_code">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
@@ -250,7 +250,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="操作">
                                                         <ItemTemplate>
-                                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1"  OnClick = "btnGrid2Save_Click"/>
+                                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
@@ -263,13 +263,13 @@
                             </table>
                         </ContentTemplate>
                         <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID = "btnSave" />
-                        <asp:AsyncPostBackTrigger ControlID = "GridView1" />
-                        <asp:AsyncPostBackTrigger ControlID = "Gridview2" />
-                        <asp:AsyncPostBackTrigger ControlID = "btnAdd" />
-                        <asp:AsyncPostBackTrigger ControlID = "btnckAll" />
-                        <asp:AsyncPostBackTrigger ControlID = "btnDelSel" />
-                         </Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnSave" />
+                            <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID="Gridview2" />
+                            <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                            <asp:AsyncPostBackTrigger ControlID="btnckAll" />
+                            <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
+                        </Triggers>
                     </asp:UpdatePanel>
                 </div>
             </div>

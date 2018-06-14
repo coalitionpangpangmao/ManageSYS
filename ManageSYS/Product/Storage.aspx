@@ -118,8 +118,8 @@
                
                 <div class="listtitle" style="margin-top: 10px">
                     原料库存<span style="position: relative; float: right" >
-                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1" 
-                      />  <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1" />               
+                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" 
+                      />  <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" />               
                 </span></div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>
@@ -209,7 +209,7 @@
                
                 <div class="listtitle" style="margin-top: 10px">
                    SAP库存<span style="position: relative; float: right" >
-                        <asp:Button ID="Button2" runat="server" Text="下发" class="btn1"/>  <asp:Button ID="Button3" runat="server" Text="删除" class="btn1" />               
+                        <asp:Button ID="Button2" runat="server" Text="下发" class="btn1 auth"/>  <asp:Button ID="Button3" runat="server" Text="删除" class="btn1 auth" />               
                 </span></div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>

@@ -9,12 +9,14 @@ using System.Web.SessionState;
 using MSYS.DAL;
 using MSYS.Data;
 using System.Linq;
+
+
 namespace MSYS.Web
 {
     public class BasePage : Page
     {
         // Fields
-        private static HttpSessionState _session;       
+        private static HttpSessionState _session;
         private string m_sessionId;
         private string m_mappingId;
         private string m_uniqId;
@@ -35,7 +37,7 @@ namespace MSYS.Web
        Request.Url.AbsoluteUrl: http://www.test.com/testweb/default.aspx
        Request.Url.Host: http://www.test.com/
        Request.Url.LocalPath: /testweb/default.aspx * */
-      
+
 
         //构造函数
         static BasePage()
@@ -44,19 +46,20 @@ namespace MSYS.Web
 
         public BasePage()
         {
-          
-                
+
+
         }
 
         protected void PageLoad(object sender, EventArgs e)
         {
-            //判断HasRight是否为真，如果为真，即有当前页面操作权限，Show所有操作按钮设置属性，如果为假，Hide所有操作按钮            
+            //判断HasRight是否为真，如果为真，即有当前页面操作权限，Show所有操作按钮设置属性，如果为假，Hide所有操作按钮  
+            if (Session["User"] == null)
+            {
+                Response.Redirect("/ManageSYS/Login.aspx");
+            }
+            if (!IsPostBack)
+            {
                 _session = HttpContext.Current.Session;
-                if (Session["User"] == null)
-                {                  
-                    Response.Redirect("Login.aspx");
-                }
-               
                 this.m_sessionId = _session.SessionID;
                 this.m_uniqId = Guid.NewGuid().ToString();
                 this.m_isHasRight = false;
@@ -72,9 +75,38 @@ namespace MSYS.Web
                                 select right;
                     foreach (SysRight s in query)
                         this.m_isHasRight = true;
+                }             
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            Control myControl1 = FindControl("UpdatePanel1");
+            Control myControl2 = FindControl("UpdatePanel2");
+            if (this.m_isHasRight)
+            {
+                if (myControl1 == null && myControl2 == null)
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "show", "<script>$('.auth').show();</script>", false);
+                else
+                {
+                    if (myControl1 != null)
+                        ScriptManager.RegisterStartupScript(myControl1, this.Page.GetType(), "show1", "<script>$('.auth').show();</script>", false);
+                    if (myControl2 != null)
+                        ScriptManager.RegisterStartupScript(myControl2, this.Page.GetType(), "show2", "<script>$('.auth').show();</script>", false);
                 }
+            }
+            else
+            {
+                if (myControl1 == null && myControl2 == null)
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "show", "<script>$('.auth').hide();</script>", false);
+                else
+                {
+                    if (myControl1 != null)
+                        ScriptManager.RegisterStartupScript(myControl1, this.Page.GetType(), "show1", "<script>$('.auth').hide();</script>", false);
+                    if (myControl2 != null)
+                        ScriptManager.RegisterStartupScript(myControl2, this.Page.GetType(), "show2", "<script>$('.auth').hide();</script>", false);
+                }
+
+            }
           
-            
+
         }
         // Properties
         public virtual bool HasRight
@@ -113,7 +145,7 @@ namespace MSYS.Web
             }
         }
 
-      
+
         //方法
         //对Session键值操作
         public static void SetSession(string key, object value)
@@ -144,7 +176,7 @@ namespace MSYS.Web
         }
 
 
-       //注册JS及Style
+        //注册JS及Style
         public void RegisterScript(string path)
         {
             this.RegisterScript(path, HttpContext.Current.Application["ProjectName"].ToString() + "/js/");
@@ -161,7 +193,7 @@ namespace MSYS.Web
 
         public void RegisterStyle(string path)
         {
-          //  this.RegisterStyle(path, UserCache.Skin);
+            //  this.RegisterStyle(path, UserCache.Skin);
         }
 
         public void RegisterStyle(string path, string skin)
@@ -173,11 +205,11 @@ namespace MSYS.Web
             this.Page.Header.Controls.Add(child);
         }
 
-     
+
 
 
 
 
     }
- 
+
 }

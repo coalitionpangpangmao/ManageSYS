@@ -65,7 +65,7 @@
      
         </tbody>
         </table>
-        <div class="tools">
+        <div class="tools auth">
     
     	<ul class="toolbar">
         <li class="click"><span><img src="../images/t01.png" /></span>添加</li>

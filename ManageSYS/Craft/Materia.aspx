@@ -98,13 +98,13 @@
                 </Triggers>
             </asp:UpdatePanel>
         </div>
-        <div class="tools">
+        <div class="tools  auth">
             <ul class="toolbar">
-                <li class="click1"><span>
+                <li class="click1 auth"><span>
                     <img src="../images/t01.png" /></span>添加</li>
-                <li class="click2"><span>
+                <li class="click2  auth"><span>
                     <img src="../images/t02.png" /></span>修改</li>
-                <li class="click3"><span>
+                <li class="click3  auth"><span>
                     <img src="../images/t03.png" /></span>删除</li>
                 <asp:Button ID="Button1" runat="server" OnClick="btnUpdate_Click" CssClass="btnhide" />
                 <asp:HiddenField ID="HiddenField1" runat="server" />

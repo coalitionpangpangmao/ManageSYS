@@ -87,8 +87,8 @@ public class GridViewTemplate : ITemplate
                 {
                     System.Web.UI.WebControls.Button btn = new Button();
                     btn.ID = "btn_" + P_ColumnName;
-                    btn.EnableViewState = true;                   
-                    btn.CssClass = "btn1";
+                    btn.EnableViewState = true;
+                    btn.CssClass = "btn1  auth";
                     btn.Text = "保存";
                     btn.Click += new EventHandler(btn_Click);
                     //tb.Text = "";

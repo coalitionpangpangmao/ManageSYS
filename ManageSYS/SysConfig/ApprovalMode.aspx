@@ -85,7 +85,7 @@
                     <div class="listtitle">
                         模版流程表<span style="position: relative; float: right">
                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                            <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" OnClick="btnDelSel_Click" />
+                            <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click" />
                         </span>
                     </div>
                     <div >
@@ -121,12 +121,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
+                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1" OnClick="btnDel_Click" />
+                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDel_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

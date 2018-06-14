@@ -65,7 +65,7 @@ function tabClick(code) {
         <td colspan="2">
            <div class="listtitle">
                 工艺标准信息<span style="position: relative; float: right" >                    
-                   <asp:Button ID="btnModify" runat="server"  CssClass = "btnmodify" Text = "保存"
+                   <asp:Button ID="btnModify" runat="server"  CssClass = "btnmodify auth" Text = "保存"
                     OnClick = "btnModify_Click"/>     
                     <asp:Button ID="btnUpdate" runat="server"  CssClass = "btnhide"
                     OnClick = "btnUpdate_Click"/>               
@@ -179,7 +179,7 @@ function tabClick(code) {
                复制为标准  
                <asp:DropDownList ID="listtechC" runat="server" CssClass = "drpdwnlist">
                </asp:DropDownList>              
-                   <asp:Button ID="btnCopy" runat="server"  CssClass = "btnmodify" Text = "复制"
+                   <asp:Button ID="btnCopy" runat="server"  CssClass = "btnmodify auth" Text = "复制"
                     OnClick = "btnCopy_Click"/> 
             </div>
             </td>
@@ -197,7 +197,7 @@ function tabClick(code) {
            <div class="listtitle">
                 工艺参数标准表<span style="position: relative; float: right">                
                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" onclick="btnCkAll_Click" />
-                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" onclick="btnDelSel_Click" />
+                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" onclick="btnDelSel_Click" />
                     <asp:HiddenField ID="hideprc" runat="server" Value = "7020201" />
                     <asp:Button ID="UpdateGrid" runat="server" CssClass = "btnhide" OnClick = "UpdateGrid_Click" />
                     </span>
@@ -260,13 +260,13 @@ function tabClick(code) {
                  
                      <asp:TemplateField >
                         <ItemTemplate>
-                            <asp:Button ID="btnSave" runat="server" Text="保存" cssclass ="btn1" onclick="btnSave_Click" />
+                            <asp:Button ID="btnSave" runat="server" Text="保存" cssclass ="btn1 auth" onclick="btnSave_Click" />
                            
                         </ItemTemplate>
                     </asp:TemplateField>    
                      <asp:TemplateField >
                         <ItemTemplate>
-                            <asp:Button ID="btnDel" runat="server" Text="删除" cssclass ="btn1" onclick="btnDel_Click" />
+                            <asp:Button ID="btnDel" runat="server" Text="删除" cssclass ="btn1 auth" onclick="btnDel_Click" />
                            
                         </ItemTemplate>
                     </asp:TemplateField>                

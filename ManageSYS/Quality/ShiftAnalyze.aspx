@@ -31,10 +31,10 @@
        CssClass = "dfinput1"></asp:TextBox>  
     <asp:DropDownList ID="listTeam" runat="server" CssClass = "drpdwnlist" Width = "80px">
     </asp:DropDownList>
-    <asp:Button ID="btnSearch" runat="server"  CssClass = "btn1" Text="查找" />
+    <asp:Button ID="btnSearch" runat="server"  CssClass = "btn1 auth" Text="查找" />
         &nbsp;&nbsp;
         <asp:Button ID="btnExport" runat="server"  Text="导出" 
-        CssClass="btn1"  />
+        CssClass="btn1 auth"  />
     </td></tr>	
         <tr><td>
          <asp:GridView ID="GridAll" runat="server"  class="grid" 

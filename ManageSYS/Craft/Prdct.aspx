@@ -112,16 +112,17 @@
                  <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="产品编码" 
                         AllowPaging="True"  >
                      <Columns>
+                     <asp:TemplateField >
+                        <ItemTemplate>                                                  
+                                  <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass = "btn1 auth" Width = "100px"  OnClick = "btnSubmit_Click"/>      
+                        </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField ItemStyle-Width="110">
                         <ItemTemplate> 
                             <asp:Button ID="btnGridDetail" runat="server" Text="产品详情" CssClass = "btn1" Width = "100px"  OnClick = "btnGridDetail_Click"/>                
                         </ItemTemplate>
                         </asp:TemplateField >
-                          <asp:TemplateField  ItemStyle-Width="110">
-                        <ItemTemplate>                                                  
-                                  <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass = "btn1" Width = "100px"  OnClick = "btnSubmit_Click"/>      
-                        </ItemTemplate>
-                        </asp:TemplateField>
+                          
                          <asp:TemplateField  ItemStyle-Width="110">
                           <ItemTemplate>                                                  
                                  <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass = "btn1" Width = "100px"  OnClick = "btnFLow_Click"/>  
@@ -242,11 +243,11 @@
             </asp:UpdatePanel> 
               <div class="tools">  
     	<ul class="toolbar">
-       <li class="click1"><span>
+       <li class="click1 auth"><span>
                     <img src="../images/t01.png" /></span>添加</li>
-                <li class="click2"><span>
+                <li class="click2  auth"><span>
                     <img src="../images/t02.png" /></span>修改</li>
-                <li class="click3"><span>
+                <li class="click3  auth"><span>
                     <img src="../images/t03.png" /></span>删除</li>
         </ul>
     </div>    

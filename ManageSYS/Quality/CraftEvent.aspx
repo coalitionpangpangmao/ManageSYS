@@ -40,7 +40,7 @@
         onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" ></asp:TextBox>
     &nbsp;&nbsp;     
     <asp:Button ID="btnSearch" runat="server" Height="25px" Width="72px" Text="查找" 
-                CssClass="btn1" onclick="btnSearch_Click"/>
+                CssClass="btn1 auth" onclick="btnSearch_Click"/>
         
         </td></tr></table>
         <div id="tab1" class="tabson">             
@@ -94,7 +94,7 @@
     </asp:DropDownList>
   扣分
     <asp:TextBox ID="txtScore" runat="server" CssClass = "dfinput1" Width = "70px"></asp:TextBox>
-     <asp:Button ID="btnSave" runat="server" Text="保存记录" CssClass="btn1"  
+     <asp:Button ID="btnSave" runat="server" Text="保存记录" CssClass="btn1 auth"  
         Width = "80px" onclick="btnSave_Click"/>
 </td></tr>
 </table>
@@ -150,7 +150,7 @@
                  </tr>
                  <tr>  
                <td colspan="4" align="center">
-                    <asp:Button ID="btnAddData" runat="server" Text="添加记录" CssClass="btn1" 
+                    <asp:Button ID="btnAddData" runat="server" Text="添加记录" CssClass="btn1 auth" 
                         Width = "80px" onclick="btnAddData_Click"></asp:Button>
                     
                 </td>
@@ -211,7 +211,7 @@
                 </td>
                 </tr><tr>
                    <td height="30" colspan="4" align="center">
-                    <asp:Button ID="AddRecord" runat="server" Text="添加记录" CssClass="btn1"  
+                    <asp:Button ID="AddRecord" runat="server" Text="添加记录" CssClass="btn1 auth"  
                            Width = "80px" onclick="AddRecord_Click"
                         ></asp:Button>                       
                 </td>       

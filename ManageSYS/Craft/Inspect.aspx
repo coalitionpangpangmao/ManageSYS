@@ -78,7 +78,7 @@
                 <div class="listtitle" style="margin-top: 10px">
                     检查项目列表  <span style="position: relative; float: right" >                        
                         <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnGrid1CkAll_Click" />
-                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel" Text="删除" OnClick="btnGrid1DelSel_Click" /></span></div>
+                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnGrid1DelSel_Click" /></span></div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>                
                  <asp:GridView ID="GridView1" runat="server" class="grid" 
@@ -124,7 +124,7 @@
                 <ContentTemplate>       
                 <div class="listtitle">
                         编辑<span style="position: relative; float: right">
-                            <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview" 
+                            <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview auth" 
                             onclick="btnSave_Click" />   </span>
                     </div>                    
                     <table class="tablelist">

@@ -49,8 +49,8 @@
                                 AutoPostBack="True" onselectedindexchanged="listVersion_SelectedIndexChanged">
                             </asp:DropDownList>
                             <span style="position: relative; float: right"> 
-                              <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel" OnClick = "btnDel_Click" />                              
-                                <asp:Button ID="btnModify" runat="server" Text="保存" class="btnmodify" OnClick = "btnModify_Click" />
+                              <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel auth" OnClick = "btnDel_Click" />                              
+                                <asp:Button ID="btnModify" runat="server" Text="保存" class="btnmodify auth" OnClick = "btnModify_Click" />
                             </span>
                         </div>
                         <table class="tablelist">
@@ -141,7 +141,7 @@
                复制为标准  
                <asp:DropDownList ID="listtechC" runat="server" CssClass = "drpdwnlist">
                </asp:DropDownList>              
-                   <asp:Button ID="btnCopy" runat="server"  CssClass = "btnmodify" Text = "复制"
+                   <asp:Button ID="btnCopy" runat="server"  CssClass = "btnmodify auth" Text = "复制"
                     OnClick = "btnCopy_Click"/> 
             </div>
             </td>
@@ -159,9 +159,9 @@
                         <div style="margin-top: 10px; margin-left: 10px; width: 900px;">
                             <div class="listtitle">
                                 质量标准参数表<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
-                                    CssClass="btnadd" Text="新增" OnClick="btnAdd_Click" />
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" OnClick="btnDelSel_Click" />
+                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
                                     
                     <asp:HiddenField ID="hideprc" runat="server" Value = "70202" />
                     <asp:Button ID="UpdateGrid" runat="server" CssClass = "btnhide" OnClick = "UpdateGrid_Click" />
@@ -220,12 +220,12 @@
                                                 </asp:TemplateField>
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
-                                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
+                                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
-                                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1" OnClick="btnGridDel_Click" />
+                                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGridDel_Click" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>

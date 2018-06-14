@@ -6,10 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
-public partial class Device_MtncExe : System.Web.UI.Page
+public partial class Device_MtncExe : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtStart.Text = System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd");
@@ -45,7 +46,7 @@ public partial class Device_MtncExe : System.Web.UI.Page
                 else
                 {
                     btn.Text = "编辑";
-                    btn.CssClass = "btn1";
+                    btn.CssClass = "btn1 auth";
                 }
                 ((DropDownList)GridView1.Rows[i].FindControl("listGridarea")).SelectedValue = mydrv["区域"].ToString();
                 ((DropDownList)GridView1.Rows[i].FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();

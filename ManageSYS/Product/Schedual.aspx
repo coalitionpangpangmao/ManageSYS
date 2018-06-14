@@ -48,7 +48,7 @@
         <div class="framelist">
             <div class="listtitle">
                 排班管理<span style="position: relative; float: right">
-                    <asp:Button ID="btnAdd" runat="server" Text="自动排班" CssClass="btnview"  OnClick = "btnAdd_Click" Width = "100"/>
+                    <asp:Button ID="btnAdd" runat="server" Text="自动排班" CssClass="btnview auth"  OnClick = "btnAdd_Click" Width = "100"/>
                 </span>
             </div>
             <table class="tablelist">
@@ -121,9 +121,9 @@
             </table>
             <div class="listtitle" style="margin-top: 10px">
                 生产日历<span style="position: relative; float: right">
-                    <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1"  OnClick = "btnckAll_Click"/>
-                    <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1"  OnClick = "btnGridDel_Click"/>
-                    <asp:Button ID="btnGridEdit" runat="server" Text="保存" class="btn1"  OnClick = "btnGridEdit_Click"/>
+                    <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1 auth"  OnClick = "btnckAll_Click"/>
+                    <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth"  OnClick = "btnGridDel_Click"/>
+                    <asp:Button ID="btnGridEdit" runat="server" Text="保存" class="btn1 auth"  OnClick = "btnGridEdit_Click"/>
                 </span>
             </div>
             <div style="overflow: scroll; width: 100%; height: 300px;" >

@@ -11,6 +11,7 @@ public partial class Authority_ChgPsd : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
 
     }
     protected void btnConfirm_Click(object sender, EventArgs e)

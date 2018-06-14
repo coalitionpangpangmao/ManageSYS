@@ -7,7 +7,7 @@
     <title>菜单项配置</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript">       
+    <script type="text/javascript">
         $().ready(function () { $("#gridPanel").scrollTop = $("#hdScrollY").val(); });
         function saveScroll() {
             var y = $("#gridPanel").scrollTop();
@@ -25,72 +25,83 @@
             <li><a href="#">菜单配置</a></li>
         </ul>
     </div>
-   
-        <asp:ScriptManager ID="ScriptManager1" runat="server">
-        </asp:ScriptManager>
-   <div class="mainbox">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    <div class="mainbox">
         <div class="configmainleft">
-          <div class="listtitle">
+            <div class="listtitle">
                 父级菜单配置
             </div>
             <div>
-        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
+                <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
                     <ContentTemplate>
                         <asp:HiddenField ID="hdScrollY" runat="server" />
                         <table>
                             <tr>
-                                <td  >
-                                <div style="border: thin solid #a7b5bc; height: 180px; overflow: scroll;" valign="top">
-                                    <asp:TreeView ID="RightTree" runat="server" Width="150px" OnSelectedNodeChanged="RightTree_SelectedNodeChanged">
-                                    </asp:TreeView></div>
+                                <td>
+                                    <div style="border: thin solid #a7b5bc; height: 180px; overflow: scroll;" valign="top">
+                                        <asp:TreeView ID="RightTree" runat="server" Width="150px" OnSelectedNodeChanged="RightTree_SelectedNodeChanged">
+                                        </asp:TreeView>
+                                    </div>
                                 </td>
-                                </tr>
-                                <tr><td>
-                                <table class = "tablelist">
-                                <tr>
-                                <td>菜单名</td>
-                                <td><asp:TextBox ID="txtMenu" runat="server" class="dfinput1" ></asp:TextBox>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td>菜单级数</td>
-                                <td><asp:DropDownList ID="listLevel" runat="server" class="drpdwnlist"
-                                                    Height="25px">
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="tablelist">
+                                        <tr>
+                                            <td>
+                                                菜单名
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtMenu" runat="server" class="dfinput1"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                菜单级数
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listLevel" runat="server" class="drpdwnlist" Height="25px">
                                                     <asp:ListItem></asp:ListItem>
                                                     <asp:ListItem Value='1'>一级</asp:ListItem>
                                                     <asp:ListItem Value='2'>二级</asp:ListItem>
                                                 </asp:DropDownList>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td>父菜单</td>
-                                <td><asp:DropDownList ID="listPrt" runat="server" class="drpdwnlist"
-                                                    Height="25px" >
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                父菜单
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listPrt" runat="server" class="drpdwnlist" Height="25px">
                                                 </asp:DropDownList>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="50px">
+                                                <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnview auth" OnClick="btnSave2_Click" />
+                                                &nbsp;&nbsp
+                                                <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel  auth" OnClick="btnDel_Click" />
+                                                &nbsp;&nbsp
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
-                                </tr>
-                                <tr ><td colspan="2" height="50px">
-                                 <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnview" OnClick="btnSave2_Click" />
-                                                &nbsp;&nbsp
-                                                <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel" OnClick="btnDel_Click" />
-                                                &nbsp;&nbsp
-                                </td></tr>
-                                </table>                                
-                                </td></tr>
+                            </tr>
                         </table>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnSave2" />
                         <asp:AsyncPostBackTrigger ControlID="btnDel" />
-                        <asp:AsyncPostBackTrigger ControlID = "RightTree" />
+                        <asp:AsyncPostBackTrigger ControlID="RightTree" />
                     </Triggers>
                 </asp:UpdatePanel>
-                </div>
-       </div>
+            </div>
+        </div>
         <div class="configmainright">
-         <div class="listtitle">
+            <div class="listtitle">
                 页面URL映射<span style="position: relative; float: right">
-                    <asp:Button ID="btnAdds" runat="server" CssClass="btnadd" Text="新增" OnClick="btnAdds_Click" />
+                    <asp:Button ID="btnAdds" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdds_Click" />
                 </span>
             </div>
             <div id="gridPanel" onscroll="saveScroll()" style="height: 300px; overflow: scroll">
@@ -132,8 +143,8 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="操作" HeaderStyle-HorizontalAlign="Center">
                                     <ItemTemplate>
-                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
-                                        <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1" OnClick="btnDelete_Click" />
+                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />
+                                        <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -148,7 +159,7 @@
                 </asp:UpdatePanel>
             </div>
         </div>
-    </div>       
+    </div>
     </form>
 </body>
 </html>

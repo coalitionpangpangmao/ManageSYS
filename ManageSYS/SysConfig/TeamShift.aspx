@@ -5,42 +5,23 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>班组班时配置</title>
-<link href="../css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.js"></script>
-<script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-  <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
-   <script type="text/javascript">
-   /*    $().ready(function () {
-           $(".hintfont").val("请输入两位顺序编码XX");
-           $(".hintfont").addClass("hintfont");
-           $(".hintfont").mousedown(function () {
-               debugger;
-               if ("请输入两位顺序编码XX" == $("#hintfont").val()) {
-                   $(".hintfont").val("");
-                   $(".hintfont").removeClass("hintfont");
-               }
-           });
-           $("#txtCodeT").blur(function () {
-               debugger;
-               if ("" == $("#hintfont").val()) {
-                   $(".hintfont").val("请输入两位顺序编码XX");
-                   $(".hintfont").addClass("hintfont");
-               }
-           });
-       }); */
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function GridClick(code) {
 
-       function GridClick(code) {
-       
-           $('#tabtop2').click();     
-           $('#hdcode').attr('value',  code.substr(4));         
-           $('#btnUpdate').click();
-       }
+            $('#tabtop2').click();
+            $('#hdcode').attr('value', code.substr(4));
+            $('#btnUpdate').click();
+        }
     </script>
 </head>
 <body>
     <form id="form1" runat="server">
-            <asp:ScriptManager ID="ScriptManager1" runat="server">
-        </asp:ScriptManager>
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
@@ -52,167 +33,162 @@
         <div id="usual1" class="usual">
             <div class="itab">
                 <ul>
-                    <li><a href="#tab1" class="selected" id = "tabtop1">班组配置</a></li>
-                    <li><a href="#tab2"  id = "tabtop2">班时配置</a></li>
+                    <li><a href="#tab1" class="selected" id="tabtop1">班组配置</a></li>
+                    <li><a href="#tab2" id="tabtop2">班时配置</a></li>
                 </ul>
             </div>
-            
         </div>
         <div id="tab1" class="tabson">
-                <div class = "framelist">
+            <div class="framelist">
                 <div class="listtitle">
                     编辑<span style="position: relative; float: right">
-                            <asp:Button ID="btnSaveT" runat="server" Text="保存" CssClass="btnview" 
-                        onclick="btnSaveT_Click"  /> </span>
-                    </div>
+                        <asp:Button ID="btnSaveT" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSaveT_Click" />
+                    </span>
+                </div>
                 <table class="tablelist">
-                        <tbody>
-                            <tr>
-                                <td width="100">
-                                    班组名称
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtNameT" runat="server" CssClass="dfinput1" ></asp:TextBox>
-                                </td>
-                                <td width="100">
-                                    班组编码
-                                </td>
-                                <td>
-                                
-                                    <asp:TextBox ID="txtCodeT" runat="server" class="dfinput1 hintfont"  Text = "请输入两位顺序编码XX" onmousedown = "if('请输入两位顺序编码XX' == this.value){ this.value = ''}" onblur = "if('' == this.value){this.className = 'dfinput1 hintfont';this.value ='请输入两位顺序编码XX';}else{this.className = 'dfinput1 showfont';} " ></asp:TextBox>
-                                </td>
-                                <td width="100">
-                                    车间
-                                </td>
-                                <td width="100">
-                                    <asp:DropDownList ID="listLineT" runat="server" CssClass = "drpdwnlist">
-                                        <asp:ListItem Value="703">再造梗丝生产线</asp:ListItem>
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>                         
-                          <tr>
-                          <td>
-
-                          </td></tr>     
-                        </tbody>
-                    </table>
-                    <div class="listtitle">
-                        列表  
-                    </div>
-                    <div>
-                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                    <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="班组编码"   AllowPaging="True"  >
-                    <Columns>
-                         <asp:TemplateField>
+                    <tbody>
+                        <tr>
+                            <td width="100">
+                                班组名称
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNameT" runat="server" CssClass="dfinput1"></asp:TextBox>
+                            </td>
+                            <td width="100">
+                                班组编码
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtCodeT" runat="server" class="dfinput1 hintfont" Text="请输入两位顺序编码XX"
+                                    onmousedown="if('请输入两位顺序编码XX' == this.value){ this.value = ''}" onblur="if('' == this.value){this.className = 'dfinput1 hintfont';this.value ='请输入两位顺序编码XX';}else{this.className = 'dfinput1 showfont';} "></asp:TextBox>
+                            </td>
+                            <td width="100">
+                                车间
+                            </td>
+                            <td width="100">
+                                <asp:DropDownList ID="listLineT" runat="server" CssClass="drpdwnlist">
+                                    <asp:ListItem Value="703">再造梗丝生产线</asp:ListItem>
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="listtitle">
+                    列表
+                </div>
+                <div>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="班组编码" AllowPaging="True">
+                                <Columns>
+                                    <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1" OnClick="btnGrid1Del_Click" />
+                                            <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnGrid1Del_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                    </Columns>
-                     <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
-            </asp:GridView>
-             </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnSaveT" />
-                        <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                    </Triggers>
-                </asp:UpdatePanel>
-                    </div>
+                                </Columns>
+                                <HeaderStyle CssClass="gridheader" />
+                                <RowStyle CssClass="gridrow" />
+                            </asp:GridView>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnSaveT" />
+                            <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
             </div>
-             </div> 
-        
+        </div>
         <div id="tab2" class="tabson">
-                <div class = "framelist">
+            <div class="framelist">
                 <div class="listtitle">
                     编辑<span style="position: relative; float: right">
-                            <asp:Button ID="btnSaveS" runat="server" Text="保存" CssClass="btnview" 
-                        onclick="btnSaveS_Click"  /> </span>
-                    </div>
+                        <asp:Button ID="btnSaveS" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSaveS_Click" />
+                    </span>
+                </div>
                 <table class="tablelist">
-                        <tbody>
-                            <tr>
-                                <td width="100">
-                                    班时名称
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtNameS" runat="server" class="dfinput1"></asp:TextBox>
-                                </td>
-                                <td width="100">
-                                    班时编码
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtCodeS" runat="server" class="dfinput1 hintfont" Text = "请输入两位顺序编码XX" onmousedown = "if('请输入两位顺序编码XX' == this.value){ this.value = ''}" onblur = "if('' == this.value){this.className = 'dfinput1 hintfont';this.value ='请输入两位顺序编码XX';}else{this.className = 'dfinput1 showfont';} "></asp:TextBox>
-                                </td>
-                                <td width="100">
-                                    车间
-                                </td>
-                                <td width="100">
-                                    <asp:DropDownList ID="listLineS" runat="server" CssClass = "drpdwnlist">
-                                      <asp:ListItem Value="703">再造梗丝生产线</asp:ListItem>
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>                         
-                         <tr>
-                                <td width="100">
-                                    开始时间
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtStarttime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'HH:mm:ss'})"></asp:TextBox>
-                                </td>
-                                <td width="100">
-                                    结束时间
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtEndtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'HH:mm:ss'})"></asp:TextBox>
-                                </td>
-                                <td width="100">
-                                  是否跨天
-                                </td>
-                                <td width="100">
-                                    <asp:CheckBox ID="ckInter" runat="server" Text=" " />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="listtitle">
-                        列表  
-                    </div>
-                    <div>
-                      <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                    <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="班时编码"   AllowPaging="True"  >
-                    <Columns>
-                         <asp:TemplateField>
+                    <tbody>
+                        <tr>
+                            <td width="100">
+                                班时名称
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNameS" runat="server" class="dfinput1"></asp:TextBox>
+                            </td>
+                            <td width="100">
+                                班时编码
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtCodeS" runat="server" class="dfinput1 hintfont" Text="请输入两位顺序编码XX"
+                                    onmousedown="if('请输入两位顺序编码XX' == this.value){ this.value = ''}" onblur="if('' == this.value){this.className = 'dfinput1 hintfont';this.value ='请输入两位顺序编码XX';}else{this.className = 'dfinput1 showfont';} "></asp:TextBox>
+                            </td>
+                            <td width="100">
+                                车间
+                            </td>
+                            <td width="100">
+                                <asp:DropDownList ID="listLineS" runat="server" CssClass="drpdwnlist">
+                                    <asp:ListItem Value="703">再造梗丝生产线</asp:ListItem>
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100">
+                                开始时间
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtStarttime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'HH:mm:ss'})"></asp:TextBox>
+                            </td>
+                            <td width="100">
+                                结束时间
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtEndtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'HH:mm:ss'})"></asp:TextBox>
+                            </td>
+                            <td width="100">
+                                是否跨天
+                            </td>
+                            <td width="100">
+                                <asp:CheckBox ID="ckInter" runat="server" Text=" " />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="listtitle">
+                    列表
+                </div>
+                <div>
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="班时编码" AllowPaging="True">
+                                <Columns>
+                                    <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1" OnClick="btnGrid2Del_Click" />
+                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnGrid2Del_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                    </Columns>
-                     <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
-            </asp:GridView>
-             </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnSaveS" />
-                        <asp:AsyncPostBackTrigger ControlID="GridView2" />
-                    </Triggers>
-                </asp:UpdatePanel>
-                    </div>
+                                </Columns>
+                                <HeaderStyle CssClass="gridheader" />
+                                <RowStyle CssClass="gridrow" />
+                            </asp:GridView>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnSaveS" />
+                            <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
             </div>
-             </div>   
-
-           
-      
+        </div>
     </div>
     <script type="text/javascript">
         $("#usual1 ul").idTabs(); 
     </script>
-    
     <script type="text/javascript">
         $('.tablelist tbody tr:odd').addClass('odd');
-	</script>
+    </script>
     </form>
 </body>
 </html>

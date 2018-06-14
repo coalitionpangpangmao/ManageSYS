@@ -6,13 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Authority_LoginRecord : System.Web.UI.Page
+public partial class Authority_LoginRecord : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            bindGrid("");
+            bindGrid("");           
         }
     }
     protected void bindGrid(string search)

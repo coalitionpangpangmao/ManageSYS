@@ -31,10 +31,10 @@
        CssClass = "dfinput1"></asp:TextBox>  至
  <asp:TextBox ID="txtEndTime" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
        CssClass = "dfinput1"></asp:TextBox>  
-    <asp:Button ID="btnSearch" runat="server"  CssClass = "btn1" Text="查找" />
+    <asp:Button ID="btnSearch" runat="server"  CssClass = "btn1 auth" Text="查找" />
         &nbsp;&nbsp;
         <asp:Button ID="btnExport" runat="server"  Text="导出" 
-        CssClass="btn1"  />
+        CssClass="btn1 auth"  />
     </td></tr>	
         
         </table>

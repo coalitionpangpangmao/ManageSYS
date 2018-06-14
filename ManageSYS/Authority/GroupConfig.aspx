@@ -50,11 +50,11 @@
             <div id="tab1" class="tabson">
                 <div class="listtitle">
                     权限明细表<span style="position: relative; float: right">
-                        <asp:Button ID="btnAdds" runat="server" CssClass="btnadd" Text="新增" OnClick="btnAdds_Click" />
+                        <asp:Button ID="btnAdds" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdds_Click" />
                     </span>
                 </div>
                 <div id="gridPanel" onscroll="saveScroll()" style="height: 300px; overflow: scroll">
-                    <asp:UpdatePanel ID="updtpanel1" runat="server" UpdateMode ="Conditional">
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode ="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                                 DataKeyNames="权限ID">
@@ -100,8 +100,8 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="操作" HeaderStyle-HorizontalAlign="Center">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
-                                            <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1" OnClick="btnDelete_Click" />
+                                            <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
+                                            <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -157,9 +157,9 @@
                                                         </div>
                                                     </td>
                                                     <td align="center" width="100">
-                                                        <asp:Button ID="btnAdd" runat="server" Text="<<" class="btn1" OnClick="btnAdd_Click" /><br />
+                                                        <asp:Button ID="btnAdd" runat="server" Text="<<" class="btn1  auth" OnClick="btnAdd_Click" /><br />
                                                         <br />
-                                                        <asp:Button ID="btnMinus" runat="server" Text=">>" class="btn1" OnClick="btnMinus_Click" />
+                                                        <asp:Button ID="btnMinus" runat="server" Text=">>" class="btn1  auth" OnClick="btnMinus_Click" />
                                                     </td>
                                                     <td style="border: thin solid #a7b5bc;">
                                                         <li style="font-size: small; font-weight: bold; vertical-align: middle;">未分配权限</li>
@@ -183,11 +183,11 @@
                                         <li>
                                             <label>
                                                 &nbsp;</label>&nbsp;&nbsp;
-                                            <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnview" OnClick="btnSave2_Click" />
+                                            <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnview  auth" OnClick="btnSave2_Click" />
                                             &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel" OnClick="btnDel_Click" />
+                                            <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel  auth" OnClick="btnDel_Click" />
                                             &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <asp:Button ID="btnReset" runat="server" Text="重置" class="btnset" OnClick="btnReset_Click" /></li>
+                                            <asp:Button ID="btnReset" runat="server" Text="重置" class="btnset  auth" OnClick="btnReset_Click" /></li>
                                     </ul>
                                 </td>
                             </tr>

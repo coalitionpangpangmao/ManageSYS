@@ -13,6 +13,7 @@
         function saveScroll() {
             var y = $("#gridPanel").scrollTop();
             $("#hdScrollY").val(y);
+
         }
     </script>
 </head>
@@ -28,12 +29,13 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     <div class="rightinfo">
-        <div class="gridtools">
+        <div class="gridtools  auth">
             <ul class="toolbar">
-                <asp:Button ID="btnAdd" CssClass="btnadd" runat="server" OnClick="btnAdd_Click" Text="添加" />
-                <asp:Button ID="btnView" CssClass="btnmodify" runat="server" OnClick="btnView_Click"
+                <asp:Button ID="btnAdd" CssClass="btnadd  auth" runat="server" OnClick="btnAdd_Click"
+                    Text="添加" />
+                <asp:Button ID="btnView" CssClass="btnmodify  auth" runat="server" OnClick="btnView_Click"
                     Text="查看" />
-                <asp:Button ID="btnDel" CssClass="btndel" runat="server" Text="删除" OnClick="btnDel_Click" />
+                <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
             </ul>
         </div>
         <div id="gridPanel" onscroll="saveScroll()" style="height: 350px; overflow: scroll">
@@ -91,7 +93,7 @@
                                         父级标识
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="listParent" runat="server" CssClass = "drpdwnlist">
+                                        <asp:DropDownList ID="listParent" runat="server" CssClass="drpdwnlist">
                                         </asp:DropDownList>
                                     </td>
                                 </tr>

@@ -6,11 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
-public partial class Product_Plan : System.Web.UI.Page
+public partial class Product_Plan : MSYS.Web.BasePage
 {
-  
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             bindGrid1();

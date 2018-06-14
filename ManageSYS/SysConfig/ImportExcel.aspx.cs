@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class SysConfig_ImportExcel : System.Web.UI.Page
+public partial class SysConfig_ImportExcel : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
 
     }
     protected void Import_Click(object sender, EventArgs e)

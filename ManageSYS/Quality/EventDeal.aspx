@@ -67,7 +67,7 @@
                 ></asp:TextBox><asp:DropDownList ID="listType" runat="server" CssClass = "drpdwnlist">
             </asp:DropDownList>
             &nbsp;
-            <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btn1" />
+            <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btn1 auth" />
             
         </td></tr>
         <tr><th>

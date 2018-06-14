@@ -1,38 +1,9 @@
 --------------------------------------------
 -- Export file for user ZS18              --
--- Created by wicky on 2018/6/5, 11:15:04 --
+-- Created by wicky on 2018/6/14, 9:01:58 --
 --------------------------------------------
 
 spool db.log
-
-prompt
-prompt Creating table G_SECTION_RATE
-prompt =============================
-prompt
-create table ZS18.G_SECTION_RATE
-(
-  F_BATCH          VARCHAR2(20),
-  F_SECTION        VARCHAR2(20),
-  F_SECTION_WEIGHT FLOAT,
-  F_SECTION_SCORE  FLOAT,
-  F_SYNCHRO_TIME   VARCHAR2(19),
-  F_IS_GAP         VARCHAR2(6),
-  F_SHIFT          VARCHAR2(4),
-  F_DONE           VARCHAR2(1) default 0,
-  F_GAP_TIME       FLOAT default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 320K
-    next 8K
-    minextents 1
-  );
-comment on table ZS18.G_SECTION_RATE
-  is '绩效考核工序得分';
 
 prompt
 prompt Creating table HT_EQ_EQP_CLS
@@ -1295,6 +1266,49 @@ alter table ZS18.HT_EQ_STG_PICKUP_DETAIL
   maxtrans 255;
 
 prompt
+prompt Creating table HT_INNER_MAP
+prompt ===========================
+prompt
+create table ZS18.HT_INNER_MAP
+(
+  URL    VARCHAR2(255) not null,
+  REMARK VARCHAR2(255),
+  MAPID  VARCHAR2(5) not null,
+  IS_DEL VARCHAR2(1) default 0
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_MAP
+  is '页面映射表';
+comment on column ZS18.HT_INNER_MAP.URL
+  is 'URL';
+comment on column ZS18.HT_INNER_MAP.REMARK
+  is '描述';
+alter table ZS18.HT_INNER_MAP
+  add constraint PK_MAPID primary key (MAPID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
 prompt Creating table HT_PROD_MANUAL_RECODE
 prompt ====================================
 prompt
@@ -1365,7 +1379,8 @@ create table ZS18.HT_PROD_MONTH_PLAN
   B_FLOW_ID     VARCHAR2(64),
   E_FLOW_ID     VARCHAR2(64),
   PLAN_TIME     VARCHAR2(8),
-  IS_VALID      VARCHAR2(1) default 0
+  IS_VALID      VARCHAR2(1) default 0,
+  REMARK        VARCHAR2(512)
 )
 tablespace ZS_DATA
   pctfree 10
@@ -4367,20 +4382,66 @@ alter table ZS18.HT_SVR_ORG_GROUP
   );
 
 prompt
+prompt Creating table HT_SVR_PRT_MENU
+prompt ==============================
+prompt
+create table ZS18.HT_SVR_PRT_MENU
+(
+  ID        VARCHAR2(2) not null,
+  NAME      VARCHAR2(50),
+  IS_DEL    VARCHAR2(1) default 0,
+  PID       VARCHAR2(2),
+  MENULEVEL VARCHAR2(1) default 1
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_SVR_PRT_MENU
+  is '父菜单项';
+comment on column ZS18.HT_SVR_PRT_MENU.ID
+  is 'ID';
+comment on column ZS18.HT_SVR_PRT_MENU.NAME
+  is '名字';
+comment on column ZS18.HT_SVR_PRT_MENU.PID
+  is '父菜单ID';
+comment on column ZS18.HT_SVR_PRT_MENU.MENULEVEL
+  is '标识几级菜单';
+alter table ZS18.HT_SVR_PRT_MENU
+  add constraint PK_PRTMENUID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
 prompt Creating table HT_SVR_SYS_MENU
 prompt ==============================
 prompt
 create table ZS18.HT_SVR_SYS_MENU
 (
-  F_MENU      VARCHAR2(32) not null,
-  F_URL       VARCHAR2(255) not null,
-  F_PRNT_MENU VARCHAR2(32),
-  F_DESCRIPT  VARCHAR2(255),
-  F_ID        VARCHAR2(5) not null,
-  F_PID       VARCHAR2(5),
-  F_TYPE      VARCHAR2(2) default 0 not null,
-  IS_PRTMENU  CHAR(1) default 0 not null,
-  IS_DEL      VARCHAR2(1) default 0
+  F_MENU     VARCHAR2(32) not null,
+  F_MAPID    VARCHAR2(255) not null,
+  F_DESCRIPT VARCHAR2(255),
+  F_ID       VARCHAR2(5) not null,
+  F_PID      VARCHAR2(5),
+  F_TYPE     VARCHAR2(2) default 0 not null,
+  IS_DEL     VARCHAR2(1) default 0
 )
 tablespace ZS_DATA
   pctfree 10
@@ -4395,18 +4456,14 @@ tablespace ZS_DATA
   );
 comment on column ZS18.HT_SVR_SYS_MENU.F_MENU
   is '菜单';
-comment on column ZS18.HT_SVR_SYS_MENU.F_URL
-  is 'URL';
-comment on column ZS18.HT_SVR_SYS_MENU.F_PRNT_MENU
-  is '父菜单';
+comment on column ZS18.HT_SVR_SYS_MENU.F_MAPID
+  is 'URL映射ID';
 comment on column ZS18.HT_SVR_SYS_MENU.F_DESCRIPT
   is '描述';
 comment on column ZS18.HT_SVR_SYS_MENU.F_PID
   is '父菜单ID';
 comment on column ZS18.HT_SVR_SYS_MENU.F_TYPE
   is '权限类型： 0菜单  1 操作   2     ';
-comment on column ZS18.HT_SVR_SYS_MENU.IS_PRTMENU
-  is '是否是父菜单';
 alter table ZS18.HT_SVR_SYS_MENU
   add constraint MENU_ID primary key (F_ID)
   using index 
@@ -4465,12 +4522,12 @@ create table ZS18.HT_SVR_USER
   EMAIL        VARCHAR2(50),
   LEVELGROUPID VARCHAR2(50),
   RELATION     VARCHAR2(100),
-  IS_LOCAL     VARCHAR2(2) default 0,
-  IS_DELETE    VARCHAR2(2) default 0,
-  IS_SYNC      VARCHAR2(10) default 0,
-  C_STATE      VARCHAR2(10),
+  IS_LOCAL     VARCHAR2(1) default 0,
+  IS_DELETE    VARCHAR2(1) default 0,
+  IS_SYNC      VARCHAR2(1) default 0,
+  C_STATE      VARCHAR2(1) default 0,
   DESCRIPTION  VARCHAR2(1024),
-  ROLE         VARCHAR2(50)
+  ROLE         VARCHAR2(5)
 )
 tablespace ZS_DATA
   pctfree 10
@@ -4514,11 +4571,11 @@ comment on column ZS18.HT_SVR_USER.IS_DELETE
 comment on column ZS18.HT_SVR_USER.IS_SYNC
   is '是否同步';
 comment on column ZS18.HT_SVR_USER.C_STATE
-  is '''新增''';
+  is '是否在用';
 comment on column ZS18.HT_SVR_USER.DESCRIPTION
   is '描述';
 comment on column ZS18.HT_SVR_USER.ROLE
-  is '角色';
+  is '角色ID';
 alter table ZS18.HT_SVR_USER
   add constraint PK_USER_ID primary key (ID)
   using index 
@@ -4587,13 +4644,13 @@ prompt
 create table ZS18.HT_SYS_EXCEL_SEG
 (
   F_ID           INTEGER not null,
-  F_BOOK_ID      INTEGER,
+  F_BOOK_ID      INTEGER not null,
   F_SHEET        VARCHAR2(128),
   F_SQL          VARCHAR2(255),
-  F_DES          VARCHAR2(8),
+  F_DES          VARCHAR2(8) not null,
   F_DESX         VARCHAR2(3),
   F_DESY         VARCHAR2(3),
-  F_SHEETINDEX   INTEGER,
+  F_SHEETINDEX   INTEGER not null,
   F_SYNCHRO_TIME VARCHAR2(19),
   IS_DEL         VARCHAR2(1) default 0
 )
@@ -4626,6 +4683,20 @@ comment on column ZS18.HT_SYS_EXCEL_SEG.F_SHEETINDEX
   is '工作表索引';
 comment on column ZS18.HT_SYS_EXCEL_SEG.F_SYNCHRO_TIME
   is '时间';
+alter table ZS18.HT_SYS_EXCEL_SEG
+  add constraint PK_EXCEL_SEG primary key (F_BOOK_ID, F_DES, F_SHEETINDEX)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table HT_TECH_STDD_CODE
@@ -4641,9 +4712,8 @@ create table ZS18.HT_TECH_STDD_CODE
   E_DATE         DATE,
   CONTROL_STATUS VARCHAR2(16),
   CREATE_ID      VARCHAR2(32),
-  CREATOR        VARCHAR2(32),
   CREATE_DATE    DATE,
-  CREATE_DEPT    VARCHAR2(32),
+  CREATE_DEPT_ID VARCHAR2(32),
   MODIFY_ID      VARCHAR2(32),
   MODIFY_TIME    DATE,
   IS_VALID       VARCHAR2(1) default 0,
@@ -4678,12 +4748,10 @@ comment on column ZS18.HT_TECH_STDD_CODE.CONTROL_STATUS
   is '受控状态';
 comment on column ZS18.HT_TECH_STDD_CODE.CREATE_ID
   is '创建人标识';
-comment on column ZS18.HT_TECH_STDD_CODE.CREATOR
-  is '编制人';
 comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DATE
   is '编制日期';
-comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DEPT
-  is '编制部门';
+comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DEPT_ID
+  is '编制部门ID';
 comment on column ZS18.HT_TECH_STDD_CODE.MODIFY_ID
   is '修改人标识';
 comment on column ZS18.HT_TECH_STDD_CODE.MODIFY_TIME
@@ -4822,7 +4890,7 @@ prompt
 create sequence ZS18.EXCELSEG_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 13
+start with 16
 increment by 1
 nocache;
 

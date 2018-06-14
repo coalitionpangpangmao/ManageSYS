@@ -41,7 +41,7 @@
             <div class="framelist">
                 <div class="listtitle" >
                     维修计划执行与处理<span style="position: relative; float: right">
-                       <asp:CheckBox ID="ckFault" runat="server" Text="应急维修 "  onclick = "ckFaultClick()" />  <asp:Button ID="btnSumit" runat="server" Text="上报" CssClass="btnview" OnClick = "btnSumit_Click" />
+                       <asp:CheckBox ID="ckFault" runat="server" Text="应急维修 "  onclick = "ckFaultClick()" />  <asp:Button ID="btnSumit" runat="server" Text="上报" CssClass="btnview  auth" OnClick = "btnSumit_Click" />
                     </span><span>  </span>
                 </div>
                  <div>
@@ -236,7 +236,7 @@
                 </div>
                 <div  align="center">  
                            
-                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btnview" OnClick = "btnSave_Click" />
+                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btnview  auth" OnClick = "btnSave_Click" />
                           </div>
             </div>
       

@@ -6,7 +6,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>日志管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>    
+     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
+      <script type="text/javascript" src="../js/jquery.js"></script>
+     <script type ="text/javascript">
+         $.ready(function () {
+             debugger;
+             $(".btn").hide();
+         });
+     </script> 
 </head>
 <body >
  <form id="form1" runat="server">
@@ -28,7 +35,7 @@
                 Text="查询" CssClass="btn" onclick="btnSearch_Click" />
                   &nbsp;
                   <asp:Button ID="btnDelete" runat="server" Height="25px" Width="72px" 
-                Text="删除" CssClass="btn" onclick="btnDelete_Click" />  
+                Text="删除" CssClass="btn auth" onclick="btnDelete_Click" />  
         </div>
          <asp:UpdatePanel ID="updtpanel"  runat="server">
             <ContentTemplate>
@@ -47,7 +54,7 @@
             </Triggers>
         </asp:UpdatePanel>
     </div>
- 
+  
     </form>
 </body>
 </html>

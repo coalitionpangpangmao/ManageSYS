@@ -100,7 +100,7 @@
                                     <asp:BoundField DataField="备注" HeaderText="备注" />                                 
                                     <asp:TemplateField ItemStyle-Width="80">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75" OnClick = "btnGridview_Click" />
+                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick = "btnGridview_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -195,7 +195,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
                                         <ItemTemplate>
-                                           <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1" Width="75"
+                                           <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
                                             OnClick="btnGrid2Save_Click" />
                                         </ItemTemplate>
                                         <ItemStyle Width="80px" />

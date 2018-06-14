@@ -22,7 +22,7 @@
       <div>
             <div class="listtitle">
                 配方信息<span style="position: relative; float: right" class = "click2">
-                  <asp:Button ID="btnModify" class="btnmodify" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
+                  <asp:Button ID="btnModify" class="btnmodify  auth" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
                     <asp:HiddenField ID="hdcode" runat="server" />     
                     <asp:Button ID="btnUpdate" runat="server" Text="Button"  CssClass = "btnhide" OnClick = "btnUpdate_Click"/>             
                 </span>
@@ -129,9 +129,9 @@
             <div class="listtitle">
                 配方详情<span style="position: relative; float: right"><asp:Button 
                     ID="btnAdd" runat="server"
-                    CssClass="btnadd" Text="新增" onclick="btnAdd_Click"  />                   
-                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" onclick="btnCkAll_Click" />
-                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" onclick="btnDelSel_Click" />
+                    CssClass="btnadd  auth" Text="新增" onclick="btnAdd_Click"  />                   
+                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset  auth" Text="全选" onclick="btnCkAll_Click" />
+                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" onclick="btnDelSel_Click" />
                     </span>
             </div>
             <div>
@@ -181,13 +181,13 @@
                     </asp:TemplateField>
                      <asp:TemplateField >
                         <ItemTemplate>
-                            <asp:Button ID="btnSave" runat="server" Text="保存" cssclass ="btn1" onclick="btnSave_Click" />
+                            <asp:Button ID="btnSave" runat="server" Text="保存" cssclass ="btn1  auth" onclick="btnSave_Click" />
                            
                         </ItemTemplate>
                     </asp:TemplateField>    
                      <asp:TemplateField >
                         <ItemTemplate>
-                            <asp:Button ID="btnDel" runat="server" Text="删除" cssclass ="btn1" onclick="btnDel_Click" />
+                            <asp:Button ID="btnDel" runat="server" Text="删除" cssclass ="btn1  auth" onclick="btnDel_Click" />
                            
                         </ItemTemplate>
                     </asp:TemplateField>                

@@ -26,7 +26,7 @@
                     <div>
                         <div class="listtitle">
                             配方信息<span style="position: relative; float: right" class="click2">
-                                <asp:Button ID="btnModify" class="btnmodify" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
+                                <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
                                 <asp:HiddenField ID="hdcode" runat="server" />
                                 <asp:Button ID="btnUpdate" runat="server" Text="Button" CssClass="btnhide" OnClick="btnUpdate_Click" />
                             </span>
@@ -142,9 +142,9 @@
     <div id="tab1" class="tabson">
         <div class="listtitle">
             配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
-                CssClass="btnadd" Text="新增" OnClick="btnAdd_Click" />
+                CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                 <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                <asp:Button ID="btnDelSel" runat="server" CssClass="btndel" Text="删除" OnClick="btnDelSel_Click" />
+                <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
             </span>
         </div>
         <div>
@@ -178,12 +178,12 @@
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
+                                    <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1" OnClick="btnDel_Click" />
+                                    <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -205,9 +205,9 @@
     <div id="tab2" class="tabson">
         <div class="listtitle">
             配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2" runat="server"
-                CssClass="btnadd" Text="新增" OnClick="btnAdd2_Click" />
+                CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" />
                 <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
-                <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel" Text="删除" OnClick="btnDelSel2_Click" />
+                <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" />
             </span>
         </div>
         <div>
@@ -241,12 +241,12 @@
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
+                                    <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1" OnClick="btnDel_Click" />
+                                    <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

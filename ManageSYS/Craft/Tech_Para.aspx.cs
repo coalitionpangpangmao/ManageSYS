@@ -6,15 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Craft_Tech_Para : System.Web.UI.Page
+public partial class Craft_Tech_Para : MSYS.Web.BasePage
 {
-    protected void Page_Load(object sender, EventArgs e)
+   protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
-        {
+        base.PageLoad(sender, e);
            DataBaseOperator opt =new DataBaseOperator();
             opt.bindDropDownList(listProcess, "select g1.process_code, g2.remark ||'_'|| g1.process_name as name   from ht_pub_inspect_process g1 left join ht_pub_tech_section g2 on g2.section_code = substr(g1.process_code,1,5) where g1.is_valid = '1' and g1.is_del = '0' order by g1.process_code", "name", "process_code");
-        }
+       
     }
     protected void bindData(string paracode)
     {

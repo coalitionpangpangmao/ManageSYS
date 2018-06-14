@@ -6,10 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class SysConfig_AptConfig : System.Web.UI.Page
+public partial class SysConfig_AptConfig : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
            DataBaseOperator opt =new DataBaseOperator();

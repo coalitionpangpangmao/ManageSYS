@@ -6,11 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Quality_Statistic : System.Web.UI.Page
+public partial class Quality_Statistic : MSYS.Web.BasePage
 {
     protected string tvHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
+        base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             tvHtml = InitTree();

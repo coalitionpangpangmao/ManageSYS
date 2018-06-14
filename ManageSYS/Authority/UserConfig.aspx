@@ -28,13 +28,13 @@
         </ul>
     </div>
     <div class="rightinfo">
-    <div class="gridtools">    
+    <div class="gridtools  auth">    
     	<ul class="toolbar">
-      <asp:Button ID="btnAdd" CssClass = "btnadd" runat = "server" OnClick="btnAdd_Click" Text="添加" /> 
+      <asp:Button ID="btnAdd" CssClass = "btnadd auth" runat = "server" OnClick="btnAdd_Click" Text="添加" /> 
        
-       <asp:Button ID="btnView" CssClass = "btnview" runat = "server" OnClick="btnView_Click" Text="查看" />
+       <asp:Button ID="btnView" CssClass = "btnview  auth" runat = "server" OnClick="btnView_Click" Text="查看" />
       
-       <asp:Button ID="btnDel" CssClass="btndel" runat="server" Text="删除" OnClick="btnDel_Click" />
+       <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
                      
         </ul>
      </div>
