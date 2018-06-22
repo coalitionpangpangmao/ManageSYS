@@ -19,6 +19,10 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listtechC,"select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
+            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "NAME", "ID");           
+            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where is_delete = '0'", "NAME", "ID");
+             opt.bindDropDownList(listProd, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
+             opt.bindDropDownList(listAprv, "select * from ht_inner_aprv_status ", "NAME", "ID");
             tvHtml = InitTree();
             subtvHtml = InitTreePrcss();
             
@@ -142,8 +146,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            string[] seg = { "TECH_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATOR", "CREATE_DATE", "CREATE_DEPT", "REMARK" };
-            string[] value = { txtName.Text, txtPro.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, txtCreator.Text, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text};
+            string[] seg = { "TECH_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
+            string[] value = { txtName.Text, listProd.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
             string condition = " where FORMULA_CODE = '" + txtCode.Text + "'";
             string log_message = opt.UpDateData(seg, value, "HT_TECH_STDD_CODE", condition)=="Success" ? "保存标准成功":"保存标准失败";
             log_message += ", 保存数据：" + string.Join(" ", value);
@@ -153,36 +157,39 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         else
         {
 
-            string[] seg = { "TECH_CODE", "TECH_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATOR", "CREATE_DATE", "CREATE_DEPT", "REMARK" };
-            string[] value = { txtCode.Text, txtName.Text, txtPro.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, txtCreator.Text, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
+            string[] seg = { "TECH_CODE", "TECH_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
+            string[] value = { txtCode.Text, txtName.Text, listProd.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
             string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE")=="Success" ? "保存标准成功":"保存标准失败";
             log_message += ",保存数据：" + string.Join(" ", value);
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         }
         bindGrid(txtCode.Text, hideprc.Value);
         tvHtml = InitTree();
+        opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
+        opt.bindDropDownList(listtechC, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
 
     }
     
     protected void bindData(string rcpcode)
     {
-        string query = "select tech_code  as 标准编码,tech_name  as 标准名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATOR  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT  as 编制部门,REMARK  as 备注,is_valid from ht_tech_stdd_code where is_del = '0' and tech_code  = '" + rcpcode + "'";
+        string query = "select tech_code  as 标准编码,tech_name  as 标准名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid ,FLOW_STATUS from ht_tech_stdd_code where is_del = '0' and tech_code  = '" + rcpcode + "'";
        DataBaseOperator opt =new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             txtCode.Text = rcpcode;
             txtName.Text = data.Tables[0].Rows[0]["标准名称"].ToString();
-            txtPro.Text = data.Tables[0].Rows[0]["产品编码"].ToString();
+            listProd.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
             txtVersion.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate.Text = data.Tables[0].Rows[0]["结束日期"].ToString();
             listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
-            txtCreator.Text = data.Tables[0].Rows[0]["编制人"].ToString();
+            listCreator.SelectedValue = data.Tables[0].Rows[0]["编制人"].ToString();
             txtCrtDate.Text = data.Tables[0].Rows[0]["编制日期"].ToString();
             listCrtApt.SelectedValue = data.Tables[0].Rows[0]["编制部门"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["备注"].ToString();
-            ckValid.Checked = Convert.ToBoolean(Convert.ToInt16(data.Tables[0].Rows[0]["is_valid"].ToString()));
+            ckValid.Checked = ("1" == data.Tables[0].Rows[0]["is_valid"].ToString());
+            listAprv.SelectedValue = data.Tables[0].Rows[0]["FLOW_STATUS"].ToString();
         }
         bindGrid(rcpcode, hideprc.Value);
     }
@@ -364,5 +371,64 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             Response.Write(ee.Message);
         }
 
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        if (listProd.SelectedValue != "")
+        {
+            DataBaseOperator opt = new DataBaseOperator();
+            string str = opt.GetSegValue("select Max(tech_CODE) as code  from ht_tech_stdd_code t where PROD_CODE = '" + listProd.SelectedValue + "'", "CODE");
+            if (str == "")
+                str = "000000000000";
+            txtCode.Text = "TCH" + listProd.SelectedValue +  (Convert.ToInt16(str.Substring(10)) + 1).ToString().PadLeft(2, '0');
+            MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+            listCreator.SelectedValue = user.Id;
+            txtCrtDate.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
+            listCrtApt.SelectedValue = user.OwningBusinessUnitId;
+
+            txtName.Text = "";         
+            txtVersion.Text = "";
+            txtExeDate.Text = "";
+            txtEndDate.Text = "";
+            listStatus.SelectedValue = "";
+            txtDscpt.Text = "";
+            ckValid.Checked = false;
+        }
+    }
+
+    protected void btnFLow_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string ID = GridView1.DataKeys[rowIndex].Value.ToString();
+        string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
+        DataBaseOperator opt = new DataBaseOperator();
+        GridView3.DataSource = opt.CreateDataSetOra(query);
+        GridView3.DataBind();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+    }
+    protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
+    {
+        try
+        {           
+            /*启动审批TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id,URL 单独登录url*/
+            //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
+            string[] subvalue = { "工艺标准:" + txtName.Text, "04", txtCode.Text, Page.Request.UserHostName.ToString() };
+            DataBaseOperator opt = new DataBaseOperator();
+            if (opt.createApproval(subvalue))
+            {
+                string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABSEG") + " = '0'  where FORMULA_CODE = '" +  txtCode.Text + "'") == "Success" ? "提交审批成功," : "提交审批失败，";
+                if (log_message == "提交审批成功") listAprv.SelectedValue = "0";
+                log_message += "业务数据ID：" + txtCode.Text;
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                
+            }
+          
+
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
     }
 }

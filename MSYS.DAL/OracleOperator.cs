@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Data.OracleClient;
 using System.Data.Common;
 using System.Data;
-
+using System.Collections;
 namespace MSYS.DAL
 {
     public class OracleOperator : IDbOperator
@@ -74,5 +74,53 @@ namespace MSYS.DAL
             }
         }
 
+
+        public string TransactionCommand(ArrayList commandStringList)
+        {
+           
+            IFactoryDbPool pool = OracleConnectionSingletion.CreateInstance();
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OracleConnectionString"];
+            OracleConnectionSingletion.ConnectionString = settings.ConnectionString;
+          
+            //Borrow the SqlConnection object from the pool
+            DbConnection myConn = pool.BorrowDBConnection();
+            OracleTransaction m_OraTrans = ((OracleConnection)myConn).BeginTransaction();//创建事务对象
+            DbCommand sqlcom = new OracleCommand();
+            sqlcom.Connection = myConn;
+            sqlcom.Transaction = m_OraTrans;
+
+            int influenceRowCount = 0;
+            try
+            {
+                foreach (string commandString in commandStringList)
+                {                   
+                    sqlcom.CommandText = commandString;
+                    influenceRowCount += sqlcom.ExecuteNonQuery();
+                }
+                if (influenceRowCount == commandStringList.Count)
+                {
+                    m_OraTrans.Commit();
+                    return "Success";
+                }
+                else
+                {
+                    m_OraTrans.Rollback();
+                    return "Failed";
+                }
+            }
+            catch (Exception ee)
+            {
+                if (sqlcom != null)
+                    sqlcom.Dispose();
+                m_OraTrans.Rollback();
+                return ee.Message;
+            }
+            finally
+            {
+                sqlcom.Dispose();
+                pool.ReturnDBConnection(myConn);
+            }
+
+        }
     }
 }

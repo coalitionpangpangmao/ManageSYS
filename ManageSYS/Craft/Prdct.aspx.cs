@@ -28,25 +28,43 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select PROD_CODE  as 产品编码,PROD_NAME  as 产品名称,PACK_NAME  as 包装规格,HAND_MODE  as 加工方式,is_valid as 是否有效,(case B_FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_pub_prod_design where is_del = '0'";
+        string query = "select PROD_CODE  as 产品编码,PROD_NAME  as 产品名称,PACK_NAME  as 包装规格,HAND_MODE  as 加工方式,is_valid as 是否有效,(case B_FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态 from ht_pub_prod_design where is_del = '0'";
+        if (txtCodeS.Text != "")
+            query += " and prod_code = '" + txtCodeS.Text + "'";
+        if (txtNameS.Text != "")
+            query += " and proD_name = '" + txtNameS.Text + "'";
        DataBaseOperator opt =new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
             GridView1.DataSource = data;
             GridView1.DataBind();
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+                {
+                    DataRowView mydrv = data.Tables[0].DefaultView[i];
+                    ((Label)GridView1.Rows[i].FindControl("labGrid1Status")).Text = mydrv["审批状态"].ToString();
+                }
+            }
    
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        string query = "select PROD_CODE  as 产品编码,PROD_NAME  as 产品名称,PACK_NAME  as 包装规格,HAND_MODE  as 加工方式,is_valid as 是否有效,(case B_FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态 from ht_pub_prod_design where is_del = '0'";
-        if (txtCodeS.Text != "")
-            query += " and prod_code = '" + txtCodeS.Text + "'";
-        if (txtNameS.Text != "")
-            query += " and pro_name = '" + txtNameS.Text + "'";
+        bindGrid();
 
-       DataBaseOperator opt =new DataBaseOperator();
-        GridView1.DataSource = opt.CreateDataSetOra(query);
-        GridView1.DataBind();
+    }
+
+
+
+    protected void btnGrid1Del_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string prod_code = GridView1.DataKeys[rowIndex].Value.ToString();
+
+        DataBaseOperator opt = new DataBaseOperator();
+        opt.UpDateOra("update ht_pub_prod_design set is_del = '1' where PROD_CODE = '" + prod_code + "'");
+        bindGrid();
     }
     protected void btnGridDetail_Click(object sender, EventArgs e)
     {
@@ -61,7 +79,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             txtCode.Text = data.Tables[0].Rows[0]["PROD_CODE"].ToString();
             txtName.Text = data.Tables[0].Rows[0]["PROD_NAME"].ToString();
             txtPack.Text = data.Tables[0].Rows[0]["PACK_NAME"].ToString();
-            txtHand.Text = data.Tables[0].Rows[0]["HAND_MODE"].ToString();
+           listType.SelectedValue = data.Tables[0].Rows[0]["HAND_MODE"].ToString();
             listTechStd.SelectedValue = data.Tables[0].Rows[0]["TECH_STDD_CODE"].ToString();
             listMtrl.SelectedValue = data.Tables[0].Rows[0]["MATER_FORMULA_CODE"].ToString();
             listAux.SelectedValue = data.Tables[0].Rows[0]["AUX_FORMULA_CODE"].ToString();
@@ -99,7 +117,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
            DataBaseOperator opt =new DataBaseOperator();
             if (opt.createApproval(subvalue))
             {
-                string log_message = opt.UpDateOra("update HT_PUB_PROD_DESIGN set B_FLOW_STATUS = '0'  where ID = '" + id + "'")=="Success"?"提交审批成功":"提交审批失败";
+                string log_message = opt.UpDateOra("update HT_PUB_PROD_DESIGN set B_FLOW_STATUS = '0'  where PROD_CODE = '" + id + "'") == "Success" ? "提交审批成功" : "提交审批失败";
                 log_message += ", 业务数据ID：" + id;
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
@@ -114,25 +132,24 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();       
-            string[] seg = {"PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE","REMARK"};
-            string[] value = {txtCode.Text,txtName.Text,txtPack.Text,txtHand.Text,listTechStd.SelectedValue,listMtrl.SelectedValue,listAux.SelectedValue,listcoat.SelectedValue,listqlt.SelectedValue,txtValue.Text,txtDscpt.Text };
-            string log_message = opt.InsertData(seg, value, "HT_PUB_PROD_DESIGN")=="Success"? "添加产品信息成功,":"添加产品信息失败,";
-            log_message += "产品信息：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-            bindGrid();
+        DataBaseOperator opt = new DataBaseOperator();
+        string str = opt.GetSegValue("select Max(PROD_CODE) as code from ht_pub_prod_design where substr(Prod_code,0,4) = '703" + listType.SelectedValue + "'", "CODE");
+        if (str == "")
+            str = "0000000";
+        txtCode.Text = "703" + listType.SelectedValue + (Convert.ToInt16(str.Substring(4)) + 1).ToString().PadLeft(3, '0');
        
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
-        string[] seg = { "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK", "IS_VALID" };
-        string[] value = { txtName.Text, txtPack.Text, txtHand.Text, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text, "0" };
-        string condition = " where PROD_CODE = '" + txtCode.Text + "'";
-        string log_message = opt.UpDateData(seg, value, "HT_PUB_PROD_DESIGN", condition)=="Success"?"修改产品信息成功，":"修改产品信息失败，";
+
+        DataBaseOperator opt = new DataBaseOperator();
+        opt.UpDateOra("delete from HT_PUB_PROD_DESIGN where PROD_CODE = '" + txtCode.Text + "'");
+        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK" };
+        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text };
+        string log_message = opt.InsertData(seg, value, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
         log_message += "产品信息：" + string.Join(" ", value);
         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-            bindGrid();
+        bindGrid();     
        
     }
     protected void btnDel_Click(object sender, EventArgs e)

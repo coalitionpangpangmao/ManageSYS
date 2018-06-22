@@ -182,6 +182,13 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         opt.UpDateOra("delete from   ht_svr_sys_menu  where f_ID = '" + RightID + "'");
         string[] seg = { "F_ID", "F_MENU", "F_MAPID", "F_PID", "F_DESCRIPT", "F_TYPE" };
         string[] value = { RightID, ((TextBox)row.FindControl("txtMenu")).Text, mapID, ((DropDownList)row.FindControl("listPrt")).SelectedValue, ((TextBox)row.FindControl("txtDscrp")).Text, "0" };
+       
+        //插入操作权限
+        if("Success" == opt.InsertData(seg, value, "ht_svr_sys_menu"))
+        value[0] = (Convert.ToInt16(RightID) + 1).ToString().PadLeft(5, '0');        
+        value[5] = "1";
+         if(value[1] == "")
+             value[1] = "子框架" + ((DropDownList)row.FindControl("listPrt")).SelectedItem.Text;
         opt.InsertData(seg, value, "ht_svr_sys_menu");
         bindData();
 
@@ -204,7 +211,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     protected DataSet bindprt()
     {
         DataBaseOperator opt = new DataBaseOperator();
-        return opt.CreateDataSetOra("select * from ht_svr_prt_menu where IS_DEL = '0' order by ID");
+        return opt.CreateDataSetOra("select NAME,ID from ht_svr_prt_menu where IS_DEL = '0' union select '' as Name,'' as ID from dual  order by ID");
     }
 
 

@@ -33,8 +33,10 @@
             <ul class="toolbar">
                 <asp:Button ID="btnAdd" CssClass="btnadd  auth" runat="server" OnClick="btnAdd_Click"
                     Text="添加" />
+                        &nbsp; &nbsp;
                 <asp:Button ID="btnView" CssClass="btnmodify  auth" runat="server" OnClick="btnView_Click"
                     Text="查看" />
+                        &nbsp; &nbsp;
                 <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
             </ul>
         </div>

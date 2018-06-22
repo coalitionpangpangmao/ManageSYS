@@ -12,16 +12,7 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            try
-            {
-                string session_code = Request["session_code"].ToString();
-                if (session_code != "")
-                {
-                    bindData(session_code);
-                }
-            }
-            catch
-            { }
+           
         }
     }
     protected void bindData(string session_code)
@@ -44,21 +35,31 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        string[] seg = { "SECTION_CODE", "SECTION_NAME", "REMARK", "IS_VALID" };
-        string[] value = {txtCode.Text,txtName.Text,txtDscrp.Text,Convert.ToInt16(rdValid.Checked).ToString()};
-       DataBaseOperator opt =new DataBaseOperator();
-        opt.InsertData(seg, value, "HT_PUB_TECH_SECTION");
-        
+        DataBaseOperator opt = new DataBaseOperator();
+        string str = opt.GetSegValue("select Max(Section_code) as Code from ht_pub_tech_section t", "CODE");
+        if (str == "")
+            str = "00000";
+        txtCode.Text = "703" + (Convert.ToInt16(str.Substring(3)) + 1).ToString().PadLeft(2, '0');   
     }
 
     protected void btnModify_Click(object sender, EventArgs e)
     {
-        string[] seg = {  "SECTION_NAME", "REMARK", "IS_VALID" };
-        string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString() };
-        string condition = " where SECTION_CODE = '" + txtCode.Text + "'";
-       DataBaseOperator opt =new DataBaseOperator();
-        opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", condition);
-        
+        DataBaseOperator opt = new DataBaseOperator();
+        DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_TECH_SECTION where SECTION_CODE = '" + txtCode.Text + "'");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string[] seg = { "SECTION_NAME", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME" };
+            string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(),((MSYS.Data.SysUser)Session["user"]).Id,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+            string condition = " where SECTION_CODE = '" + txtCode.Text + "'";
+            opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", condition);
+        }
+        else
+        {
+            string[] seg = { "SECTION_CODE", "SECTION_NAME", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME" };
+            string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(),((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+
+            opt.InsertData(seg, value, "HT_PUB_TECH_SECTION");
+        }
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {

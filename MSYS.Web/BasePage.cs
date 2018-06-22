@@ -57,10 +57,9 @@ namespace MSYS.Web
             {
                 Response.Redirect("/ManageSYS/Login.aspx");
             }
-            if (!IsPostBack)
-            {
+           
                 _session = HttpContext.Current.Session;
-                this.m_sessionId = _session.SessionID;
+                this.SessionId = _session.SessionID;
                 this.m_uniqId = Guid.NewGuid().ToString();
                 this.m_isHasRight = false;
                 this.m_mappingId = string.Empty;
@@ -76,7 +75,7 @@ namespace MSYS.Web
                     foreach (SysRight s in query)
                         this.m_isHasRight = true;
                 }             
-            }
+            
             ////////////////////////////////////////////////////////////////////////////////////////////
             Control myControl1 = FindControl("UpdatePanel1");
             Control myControl2 = FindControl("UpdatePanel2");

@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Data.Common;
 using System.Data;
-
+using System.Collections;
 namespace MSYS.DAL
 {
     public class SQLOperator : IDbOperator
@@ -50,7 +50,7 @@ namespace MSYS.DAL
             IFactoryDbPool pool = SQLConnectionSingletion.CreateInstance();
             try
             {
-                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OracleConnectionString"];
+                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["SqlConnectionString"];
                 SQLConnectionSingletion.ConnectionString = settings.ConnectionString;
                 //Borrow the SqlConnection object from the pool
                 myConn = pool.BorrowDBConnection();
@@ -74,5 +74,50 @@ namespace MSYS.DAL
             }
         }
 
+        public string TransactionCommand(ArrayList commandStringList)
+        {
+
+            IFactoryDbPool pool = SQLConnectionSingletion.CreateInstance();
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["SqlConnectionString"];
+            OracleConnectionSingletion.ConnectionString = settings.ConnectionString;
+            //Borrow the SqlConnection object from the pool
+            DbConnection myConn = pool.BorrowDBConnection();
+            SqlTransaction m_OraTrans = ((SqlConnection)myConn).BeginTransaction();//创建事务对象
+            DbCommand sqlcom = new SqlCommand();
+            sqlcom.Connection = myConn;
+            sqlcom.Transaction = m_OraTrans;
+            int influenceRowCount = 0;
+            try
+            {
+                foreach (string commandString in commandStringList)
+                {
+                    sqlcom.CommandText = commandString;
+                    influenceRowCount += sqlcom.ExecuteNonQuery();
+                }
+                if (influenceRowCount == commandStringList.Count)
+                {
+                    m_OraTrans.Commit();
+                    return "Success";
+                }
+                else
+                {
+                    m_OraTrans.Rollback();
+                    return "Failed";
+                }
+            }
+            catch (Exception ee)
+            {
+                if (sqlcom != null)
+                    sqlcom.Dispose();
+                m_OraTrans.Rollback();
+                return ee.Message;
+            }
+            finally
+            {
+                sqlcom.Dispose();
+                pool.ReturnDBConnection(myConn);
+            }
+
+        }
     }
 }

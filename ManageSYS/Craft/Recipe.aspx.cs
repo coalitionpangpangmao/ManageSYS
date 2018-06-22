@@ -47,7 +47,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     public string InitTreeRecipe(string prod_code)
     {
        DataBaseOperator opt =new DataBaseOperator();
-        DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,creator as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,creator as 编辑人员,is_valid as 是否有效  from ht_qa_aux_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,creator as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
+        DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_aux_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
              string tvHtml = "<ul>";

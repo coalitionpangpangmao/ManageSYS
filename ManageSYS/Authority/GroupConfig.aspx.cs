@@ -24,7 +24,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     protected DataSet bindprt()
     {
         DataBaseOperator opt = new DataBaseOperator();
-        return opt.CreateDataSetOra("select * from ht_svr_prt_menu where IS_DEL = '0' order by ID");
+        return opt.CreateDataSetOra("select NAME,ID from ht_svr_prt_menu where IS_DEL = '0' union select '' as Name,'' as ID from dual  order by ID");
     }
 
   
@@ -64,7 +64,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
 
                     ((TextBox)GridView1.Rows[i].FindControl("txtID")).Text = mydrv["权限ID"].ToString();
                     ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
-                    opt.bindDropDownList((DropDownList)GridView1.Rows[i].FindControl("listMap"), "select F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
+                    opt.bindDropDownList((DropDownList)GridView1.Rows[i].FindControl("listMap"), "select distinct F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
                     ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
                     ((DropDownList)GridView1.Rows[i].FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
                     ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();

@@ -32,21 +32,32 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        string[] seg = { "PROCESS_CODE", "PROCESS_NAME", "REMARK", "IS_VALID" };
-        string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString()};
-       DataBaseOperator opt =new DataBaseOperator();
-        opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS");
-        
+
+        DataBaseOperator opt = new DataBaseOperator();
+        string str = opt.GetSegValue("select max(Process_code) as code  from ht_pub_inspect_process where substr(process_code,0,5) = '" + list2Section.SelectedValue + "'", "CODE");
+        if (str == "")
+            str = "0000000";
+        txtCode.Text = list2Section.SelectedValue + (Convert.ToInt16(str.Substring(5)) + 1).ToString().PadLeft(2, '0');
+       
     }
   
     protected void btnModify_Click(object sender, EventArgs e)
     {
-        string[] seg = {  "PROCESS_NAME", "REMARK", "IS_VALID" };
-        string[] value = {  txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString() };
-        string condition = " where PROCESS_CODE = '" + txtCode.Text + "'";
-       DataBaseOperator opt =new DataBaseOperator();
-        opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition);
-        
+         DataBaseOperator opt = new DataBaseOperator();
+          DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_INSPECT_PROCESS where PROCESS_CODE = '" + txtCode.Text + "'");
+          if (data != null && data.Tables[0].Rows.Count > 0)
+          {
+              string[] seg = { "PROCESS_NAME", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME" };
+              string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+              string condition = " where PROCESS_CODE = '" + txtCode.Text + "'";
+              opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition);
+          }
+          else
+          {
+              string[] seg = { "PROCESS_CODE", "PROCESS_NAME", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME" };
+              string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+              opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS");
+          }
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
@@ -65,5 +76,6 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
     protected void list2Section_SelectedIndexChanged(object sender, EventArgs e)
     {
         txt2pcode.Text = list2Section.SelectedValue;
+        txtCode.Text = "";
     }
 }

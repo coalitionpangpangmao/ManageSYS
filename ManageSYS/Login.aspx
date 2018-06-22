@@ -10,7 +10,7 @@
 
 <script type ="text/javascript">
     if (self.location != top.location) {
-        top.location.href = 'Default.aspx';
+        top.location.href = 'Login.aspx';
     }
 </script>
 </head>
