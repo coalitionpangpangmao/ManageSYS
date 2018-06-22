@@ -7,7 +7,7 @@ using System.Data.Common;
 using System.Data;
 using System.Web.UI.WebControls;
 using MSYS.DAL;
-
+using System.Collections;
 public class DbOperator
 {
     private IDbOperator dboperator = null;
@@ -42,7 +42,21 @@ public class DbOperator
     {
         return dboperator.CreateDataSet(query);
     }
+    public string TransactionCommand(ArrayList commandStringList)
+    {
+        return dboperator.TransactionCommand(commandStringList);
+    }
     public string UpDateData(string[] seg, string[] value, string table, string condition)
+    {
+        string query = CreateUpdateStr(seg, value, table, condition);
+        if (query!= "")
+        {          
+            return UpDateOra(query);
+        }
+        else
+            return "Error!!";
+    }
+    private string CreateUpdateStr(string[] seg, string[] value, string table, string condition)
     {
         if (seg.Length == value.Length)
         {
@@ -54,12 +68,22 @@ public class DbOperator
                     query += ",";
             }
             query += condition;
+            return query;
+        }
+        else
+            return "";
+    }
+    public string InsertData(string[] seg, string[] value, string table)
+    {
+        string query = InsertDatastr(seg, value, table);
+        if (query != "")
+        {
             return UpDateOra(query);
         }
         else
             return "Error!!";
     }
-    public string InsertData(string[] seg, string[] value, string table)
+    private string InsertDatastr(string[] seg, string[] value, string table)
     {
         if (seg.Length == value.Length)
         {
@@ -78,10 +102,10 @@ public class DbOperator
                     query += ",";
             }
             query += ")";
-            return UpDateOra(query);
+            return query;
         }
         else
-            return "Error!!";
+            return "";
     }
     //插入日志记录
     public string InsertTlog(string user, string cmt, string record)
@@ -163,6 +187,8 @@ public class DbOperator
         else
             return false;
     }
+
+
     #region Approval
     //审批相关操作
     public bool createApproval(string[] keys)//启动审批/*TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id, 单独登录url,*/
