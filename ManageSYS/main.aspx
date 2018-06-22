@@ -6,6 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>鑫源再源梗丝生产管理系统</title>
+<script type ="text/javascript">
+    if (self.location != top.location) {
+        top.location.href = 'main.aspx';
+    }
+</script>
 </head>
 
 <frameset rows="127,*,11" frameborder="no" border="0" framespacing="0">

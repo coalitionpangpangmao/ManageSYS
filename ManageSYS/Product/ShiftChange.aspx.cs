@@ -121,8 +121,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     {
        DataBaseOperator opt =new DataBaseOperator();
         hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
-        string[] seg = {"SHIFT_MAIN_ID","INSPECT_DATE","SHIFT_CODE","TEAM_CODE","PROD_CODE","PLAN_NO","OUTPUT_VL","CREATE_ID","SHIFT_ID","SUCC_ID","DEVICESTATUS","QLT_STATUS","SCEAN_STATUS","REMARK" };
-        string[] value = {hdID.Value,txtDate.Text,listShift.SelectedValue,listTeam.SelectedValue,listProd.SelectedValue,txtPlanNo.Text,txtOutput.Text,"cookieID",txtOlder.Text,txtNewer.Text,txtDevice.Text,txtQlt.Text,txtScean.Text,txtRemark.Text };
+        string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK", "OUTPLUS" };
+        string[] value = {hdID.Value,txtDate.Text,listShift.SelectedValue,listTeam.SelectedValue,listProd.SelectedValue,txtPlanNo.Text,txtOutput.Text,"cookieID",txtOlder.Text,txtNewer.Text,txtDevice.Text,txtQlt.Text,txtScean.Text,txtRemark.Text,txtOutPlus.Text };
         opt.InsertData(seg, value, "HT_PROD_SHIFTCHG");
 
     }

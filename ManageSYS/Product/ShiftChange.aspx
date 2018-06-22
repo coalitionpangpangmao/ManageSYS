@@ -9,6 +9,7 @@
     <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
+      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <script type="text/javascript">
 
         function GridClick() {
@@ -58,8 +59,8 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStartDate" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStopDate" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStartDate" runat="server" class="dfinput1"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStopDate" runat="server" class="dfinput1"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                         </tr>
                     </tbody>
@@ -129,8 +130,7 @@
                                             <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
-                                    </tr>
-                                    <tr>
+                                  
                                         <td width="100">
                                             牌号
                                         </td>
@@ -138,6 +138,8 @@
                                             <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
+                                          </tr>
+                                    <tr>
                                         <td width="100">
                                             计划号
                                         </td>
@@ -149,15 +151,8 @@
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtEditor" runat="server" class="dfinput1" Enabled="false"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="100">
-                                            当班产量(箱)
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtOutput" runat="server" class="dfinput1"></asp:TextBox>
-                                        </td>
+                                        </td>                                 
+                                     
                                         <td width="100">
                                             交班人
                                         </td>
@@ -172,10 +167,24 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                       <td width="100">
+                                            当班产量(箱)
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtOutput" runat="server" class="dfinput1"></asp:TextBox>
+                                        </td>
+                                           <td width="100">
+                                            零头重量(kg)
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtOutPlus" runat="server" class="dfinput1"></asp:TextBox>
+                                        </td>
+                                        </tr>
+                                    <tr>
                                         <td width="100" height="55">
                                             设备运行情况
                                         </td>
-                                        <td colspan="5">
+                                        <td colspan="7">
                                             <asp:TextBox ID="txtDevice" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
                                                 Width="500px"></asp:TextBox>
                                         </td>
@@ -184,7 +193,7 @@
                                         <td width="100" height="55">
                                             工艺质量情况
                                         </td>
-                                        <td colspan="5">
+                                        <td colspan="7">
                                             <asp:TextBox ID="txtQlt" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
                                                 Width="500px"></asp:TextBox>
                                         </td>
@@ -193,7 +202,7 @@
                                         <td width="100" height="55">
                                             现场情况
                                         </td>
-                                        <td colspan="5">
+                                        <td colspan="7">
                                             <asp:TextBox ID="txtScean" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
                                                 Width="500px"></asp:TextBox>
                                         </td>
@@ -202,13 +211,13 @@
                                         <td width="100" height="55px">
                                             备注
                                         </td>
-                                        <td colspan="5">
+                                        <td colspan="7">
                                             <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
                                                 Width="500px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th colspan="6" height="40px">
+                                        <th colspan="8" height="40px">
                                             班组交接明细列表<span style="position: relative; float: right">
                                                 <asp:Button ID="btnAdd" runat="server" Text="增加" class="btn1 auth" OnClick="btnAdd_Click" />
                                                 <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1 auth" OnClick="btnCkAll_Click" />
@@ -217,7 +226,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td colspan="6">
+                                        <td colspan="8">
                                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
                                                 PageSize="12">
                                                 <Columns>

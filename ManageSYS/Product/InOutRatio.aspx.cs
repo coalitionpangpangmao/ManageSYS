@@ -6,11 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Product_InOutRatio : System.Web.UI.Page
+public partial class Product_InOutRatio : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-     //   base.PageLoad(sender, e);
+       base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");

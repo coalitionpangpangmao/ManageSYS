@@ -12,24 +12,28 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-          
+            DataBaseOperator opt = new DataBaseOperator();
+            opt.bindDropDownList(listPro, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
+            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "NAME", "ID");
+            opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
+            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where is_delete = '0'", "NAME", "ID");
         }
     }
     protected void bindData()
     {
-        string query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATOR  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
+        string query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
        DataBaseOperator opt =new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if(data!= null && data.Tables[0].Rows.Count > 0)
         {
             txtCode.Text = hdcode.Value;
             txtName.Text = data.Tables[0].Rows[0]["配方名称"].ToString();
-            txtPro.Text = data.Tables[0].Rows[0]["产品编码"].ToString();
+            listPro.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
             txtVersion.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate.Text = data.Tables[0].Rows[0]["结束日期"].ToString();
             listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
-            txtCreator.Text = data.Tables[0].Rows[0]["编制人"].ToString();
+            listCreator.SelectedValue = data.Tables[0].Rows[0]["编制人"].ToString();
             txtCrtDate.Text = data.Tables[0].Rows[0]["编制日期"].ToString();
             listCrtApt.SelectedValue = data.Tables[0].Rows[0]["编制部门"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["备注"].ToString();
@@ -98,8 +102,8 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         hdcode.Value = txtCode.Text;
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            string[] seg = { "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATOR", "CREATE_DATE", "CREATE_DEPT", "REMARK" };
-            string[] value = { txtName.Text, txtPro.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, txtCreator.Text, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
+            string[] seg = { "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
+            string[] value = { txtName.Text, listPro.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
             string condition = " where FORMULA_CODE = '" + txtCode.Text + "'";
             string log_message = opt.UpDateData(seg, value, "ht_qa_coat_formula", condition)=="Success" ? "回填夜配方保存成功":"回填夜配方保存失败";
             log_message += ",保存参数:" + string.Join(" ", value);
@@ -109,8 +113,8 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         else
         {
 
-            string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATOR", "CREATE_DATE", "CREATE_DEPT", "REMARK" };
-            string[] value = { txtCode.Text, txtName.Text, txtPro.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, txtCreator.Text, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
+            string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
+            string[] value = { txtCode.Text, txtName.Text, listPro.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
             string log_message = opt.InsertData(seg, value, "ht_qa_coat_formula")=="Success" ? "回填夜配方保存成功":"回填夜配方保存失败";
             log_message += ",保存参数：" + string.Join(" ", value);
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -119,6 +123,8 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         bindGrid2();
 
     }
+
+
 
     protected void btnAdd_Click(object sender, EventArgs e)  //没有实现
     {
@@ -367,5 +373,36 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
 
 
     }
-   
+
+
+    protected void btnAddR_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            
+            DataBaseOperator opt = new DataBaseOperator();
+            string str = opt.GetSegValue("select Max(Formula_code) as code from ht_qa_coat_formula ", "CODE");
+            if (str == "")
+                str = "00000000";
+            txtCode.Text = "70308" + (Convert.ToInt16(str.Substring(5)) + 1).ToString().PadLeft(3, '0');
+            MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+            listCreator.SelectedValue = user.Id;
+            txtCrtDate.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
+            listCrtApt.SelectedValue = user.OwningBusinessUnitId;
+
+
+            txtName.Text = "";
+            listPro.SelectedValue = "";
+            txtVersion.Text = "";
+            txtExeDate.Text = "";
+            txtEndDate.Text = "";
+            listStatus.SelectedValue = "";
+            txtDscpt.Text = "";
+            ckValid.Checked = false;
+        }
+        catch (Exception error)
+        {
+
+        }
+    }
 }

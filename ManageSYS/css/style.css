@@ -153,6 +153,7 @@ h2{font-weight:normal;}
 .mainbox{padding:8px;position:relative;
     top: 0px;
     left: 0px;
+    height:100%;
 }
 /*.mainleft{padding-right:298px;}
 .mainright{width:298px;position:absolute; top:8px; right:8px;}*/
@@ -160,7 +161,7 @@ h2{font-weight:normal;}
 .mainright{margin-left:220px !important;
    margin-left:26%; 
  /*  height:auto !important; */ }
-.leftinfo{border:#d3dbde solid 1px; height:600px;margin-right: 5px;}
+.leftinfo{border:#d3dbde solid 1px; height:550px;margin-right: 5px;position:relative;}
 .dfsublist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;margin-top:10px;margin-left:10px;}
 .dflist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;}
 .framelist{border:#d3dbde solid 1px; position:relative;width:90%; float:left;}
@@ -347,14 +348,15 @@ h2{font-weight:normal;}
 .btnpatch{border:solid 1px #a7b5bc;width:80px;height:35px; background:url(../images/leftico03.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 /* 状态框 */
 .labstatu
-{   
+{
     height: 20px;
     background: #993333;
     font-size: 12px;
     font-weight: bold;
     color: #fff;
     border-radius: 10px;
-   
+    text-align: center;
+    line-height: 20px;
 }
 
 
@@ -418,7 +420,19 @@ h2{font-weight:normal;}
 .tiphead a:hover{background:url(../images/close1.png) no-repeat;}
 .gridinfo{position:absolute;top:50px;left:10px; padding:5px; margin-right:10px; }
 .shadebtn{position:relative; top:20px; }
-.gridtools{clear:both; height:40px; margin-bottom:8px;margin-top:8px;background:url(../images/th.gif) repeat-x;}
+.gridtools
+{
+    position: relative;
+    clear: both;
+    height: 32px;
+    padding: 3px;
+    background-color: #F2F2FF;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border-bottom-style: solid;
+    border-bottom-color: #cbcbcb;
+}
 
 
 /*提示框字体*/

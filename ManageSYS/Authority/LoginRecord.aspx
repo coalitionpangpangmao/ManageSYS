@@ -39,7 +39,7 @@
         </div>
          <asp:UpdatePanel ID="updtpanel"  runat="server">
             <ContentTemplate>
-        <div style="overflow: auto">
+        <div style="overflow: auto; height: 350px;">
         <asp:GridView ID="GridView1" runat="server" Width="900px" CssClass="datable" border="0"
             CellPadding="2" CellSpacing="1">
             <RowStyle CssClass="lupbai" />           

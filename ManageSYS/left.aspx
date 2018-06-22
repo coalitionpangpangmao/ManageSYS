@@ -25,7 +25,7 @@
            });
            jQuery('#navigation').accordion({
                header: '.head',
-               navigation1: true,
+               navigation: true,
                event: 'click',
                fillSpace: false,
                animated: 'bounceslide'

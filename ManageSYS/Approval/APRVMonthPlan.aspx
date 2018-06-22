@@ -42,7 +42,7 @@
         <div id="usual1" class="usual">
             <div class="itab">
                 <ul>
-                    <li><a href="#tab1" class="selected" id="tabtop1">生产任务审批表</a></li>
+                    <li><a href="#tab1" class="selected" id="tabtop1">审批表</a></li>
                     <li><a href="#tab2" id="tabtop2">业务明细</a></li>
                     <li><a href="#tab3" id="tabtop3">审批单详情</a></li>
                 </ul>
