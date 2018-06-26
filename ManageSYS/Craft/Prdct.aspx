@@ -8,33 +8,7 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".click1").click(function () {
-                $("#addtip").fadeIn(200);
-            });
-
-            $(".click2").click(function () {
-                $("#mdftip").fadeIn(200);
-            });
-
-            $(".click3").click(function () {
-                $("#deltip").fadeIn(200);
-            });
-
-            $(".tiptop a").click(function () {
-                $(".tip").fadeOut(200);
-            });
-
-            $(".sure").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-            $(".cancel").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-        });
+    <script type="text/javascript">       
         function GridClick() {
             $('#tabtop2').click();
 
@@ -143,6 +117,7 @@
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
+                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
@@ -277,6 +252,7 @@
                         <asp:GridView ID="GridView3" runat="server" class="grid">
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
+                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>

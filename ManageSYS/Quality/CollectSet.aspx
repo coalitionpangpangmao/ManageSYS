@@ -253,7 +253,7 @@
                                 <div style="overflow: auto; height: 100px">
                                     <asp:GridView ID="GridView1" runat="server" class="grid">
                                         <HeaderStyle CssClass="gridheader" />
-                                        <RowStyle CssClass="gridrow" />
+                                         <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                                     </asp:GridView>
                                 </div>
                             </td>

@@ -6,9 +6,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>辅料库管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
+       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -74,8 +74,8 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td>
                                 <asp:RadioButton ID="rdOut1" runat="server" Text="领用" GroupName="Storage1" Checked="True" />
@@ -134,7 +134,7 @@
                                 </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
+                             <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
@@ -173,13 +173,13 @@
                                 生产日期
                             </td>
                             <td>
-                                <asp:TextBox ID="txtPrdctdate" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtPrdctdate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td width="100">
                                 失效日期
                             </td>
                             <td>
-                                <asp:TextBox ID="txtValiddate" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtValiddate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td width="100">
                                 领用部门
@@ -312,7 +312,7 @@
                                 </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
+                             <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
@@ -352,7 +352,7 @@
                     <ContentTemplate>
                         <asp:GridView ID="GridView3" runat="server" class="grid">
                             <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
+                             <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>

@@ -8,39 +8,9 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".click1").click(function () {
-                $("#addtip").fadeIn(200);
-            });
-
-            $(".click2").click(function () {
-                $("#mdftip").fadeIn(200);
-            });
-
-            $(".click3").click(function () {
-                $("#deltip").fadeIn(200);
-            });
-
-            $(".tiptop a").click(function () {
-                $(".tip").fadeOut(200);
-            });
-
-            $(".sure").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-            $(".cancel").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-        });
+    <script type="text/javascript">      
         function GridClick(code) {
-            window.parent.tab2Click(code);
-        /*    $('#tabtop2', parent.document).click();
-            debugger;
-            $('#Frame2', parent.document).contents().find("'*[id$=hdcode]'").attr('value', code.substr(4));
-            $('#Frame2', parent.document).contents().find("'*[id$=btnUpdate]'").click();*/
+            window.parent.tab2Click(code);        
         }
     </script>
 </head>
@@ -72,7 +42,7 @@
                                     分类编码
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtCode" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
@@ -95,21 +65,19 @@
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                    <asp:AsyncPostBackTrigger ControlID = "btnAdd" />
                 </Triggers>
             </asp:UpdatePanel>
         </div>
-        <div class="tools  auth">
-            <ul class="toolbar">
-                <li class="click1 auth"><span>
-                    <img src="../images/t01.png" /></span>添加</li>
-                <li class="click2  auth"><span>
-                    <img src="../images/t02.png" /></span>修改</li>
-                <li class="click3  auth"><span>
-                    <img src="../images/t03.png" /></span>删除</li>
-                <asp:Button ID="Button1" runat="server" OnClick="btnUpdate_Click" CssClass="btnhide" />
-                <asp:HiddenField ID="HiddenField1" runat="server" />
-            </ul>
-        </div>
+      <div class="gridtools  auth">               
+                    <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
+                        Text="新增" />
+                    &nbsp; &nbsp;
+                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
+                        Text="保存" />
+                    &nbsp; &nbsp;
+                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />               
+            </div>
         <div class="listtitle" style="margin-top: 10px">
             物料列表</div>
         <div>
@@ -117,14 +85,20 @@
                 <ContentTemplate>
                     <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="物料编码" AllowPaging="True">
                         <Columns>
+                         <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:Button  ID="btnGridDel" runat="server" Text="删除" CssClass = "btn1" Width = "90px"  OnClick = "btnGridDel_Click"/>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="gridcode" onclick="GridClick(this.innerText)" Text="物料详情"></asp:Label>
+                                    <asp:Button  ID="btnDetail" runat="server" Text="物料详情" CssClass = "btn1" Width = "90px"  OnClick = "btnDetail_Click"/>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
                         <HeaderStyle CssClass="gridheader" />
                         <RowStyle CssClass="gridrow" />
+                        <AlternatingRowStyle CssClass="gridalterrow" />
                     </asp:GridView>
                 </ContentTemplate>
                 <Triggers>
@@ -137,57 +111,7 @@
             </asp:UpdatePanel>
         </div>
     </div>
-    <div class="tip" id="addtip">
-        <div class="tiptop">
-            <span>提示信息</span><a></a></div>
-        <div class="tipinfo">
-            <span>
-                <img src="../images/ticon.png" /></span>
-            <div class="tipright">
-                <p>
-                    是否确认添加此条记录 ？</p>
-                <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-            </div>
-        </div>
-        <div class="tipbtn">
-            <asp:Button ID="btnAdd" class="sure" runat="server" Text="确定" OnClick="btnAdd_Click" />&nbsp;
-            <input name="" type="button" class="cancel" value="取消" />
-        </div>
-    </div>
-    <div class="tip" id="mdftip">
-        <div class="tiptop">
-            <span>提示信息</span><a></a></div>
-        <div class="tipinfo">
-            <span>
-                <img src="../images/ticon.png" /></span>
-            <div class="tipright">
-                <p>
-                    确认修改此条记录 ？</p>
-                <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-            </div>
-        </div>
-        <div class="tipbtn">
-            <asp:Button ID="btnModify" class="sure" runat="server" Text="确定" OnClick="btnModify_Click" />&nbsp;
-            <input name="" type="button" class="cancel" value="取消" />
-        </div>
-    </div>
-    <div class="tip" id="deltip">
-        <div class="tiptop">
-            <span>提示信息</span><a></a></div>
-        <div class="tipinfo">
-            <span>
-                <img src="../images/ticon.png" /></span>
-            <div class="tipright">
-                <p>
-                    确认删除此条记录 ？</p>
-                <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-            </div>
-        </div>
-        <div class="tipbtn">
-            <asp:Button ID="btnDel" class="sure" runat="server" Text="确定" OnClick="btnDel_Click" />&nbsp;
-            <input name="" type="button" class="cancel" value="取消" />
-        </div>
-    </div>
+  
     <script type="text/javascript">
         $('.tablelist tbody tr:odd').addClass('odd');
     </script>

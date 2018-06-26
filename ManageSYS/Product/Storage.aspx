@@ -6,10 +6,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>库存查询</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
-<link href="../css/select.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
 <script type="text/javascript" src="../js/select-ui.min.js"></script>
+   <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
    <script type="text/javascript">
        $(document).ready(function () {
            $(".click1").click(function () {
@@ -117,10 +117,7 @@
                     </table>
                
                 <div class="listtitle" style="margin-top: 10px">
-                    原料库存<span style="position: relative; float: right" >
-                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" 
-                      />  <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" />               
-                </span></div>
+                    原料库存</div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>
                 
@@ -145,7 +142,7 @@
                          <asp:BoundField DataField="单重(kg)" HeaderText="单重(kg)" />                                             
                   </Columns>
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
             </asp:GridView>
                   </ContentTemplate>
                 <Triggers>
@@ -208,9 +205,7 @@
                     </table>
                
                 <div class="listtitle" style="margin-top: 10px">
-                   SAP库存<span style="position: relative; float: right" >
-                        <asp:Button ID="Button2" runat="server" Text="下发" class="btn1 auth"/>  <asp:Button ID="Button3" runat="server" Text="删除" class="btn1 auth" />               
-                </span></div>
+                   SAP库存</div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>
                 <div style="overflow: scroll">

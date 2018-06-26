@@ -45,7 +45,7 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
     public string InitTreeM(string mattree_code)
     {
        DataBaseOperator opt =new DataBaseOperator();
-        DataSet data = opt.CreateDataSetOra("select mattree_code,mattree_name  from ht_pub_mattree where IS_DEL = '0' and  PK_PARENT_CLASS = '" + mattree_code + "' order by mattree_code ");
+       DataSet data = opt.CreateDataSetOra("select mattree_code,mattree_name  from ht_pub_mattree where IS_DEL = '0' and  PARENT_CODE = '" + mattree_code + "' order by mattree_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";

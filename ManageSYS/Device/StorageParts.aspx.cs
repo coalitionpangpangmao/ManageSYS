@@ -18,7 +18,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
            DataBaseOperator opt =new DataBaseOperator();
             opt.bindDropDownList(listApts, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group", "F_NAME", "F_CODE");
-            opt.bindDropDownList(listEditor, "select ID,Name  from ht_svr_user where is_delete = '0'", "NAME", "ID");
+            opt.bindDropDownList(listEditor, "select ID,Name  from ht_svr_user where IS_DEL = '0'", "NAME", "ID");
            
             
             bindGrid1();

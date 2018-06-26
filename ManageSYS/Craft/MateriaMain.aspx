@@ -32,7 +32,7 @@ function tab1Click(code) {
 function tab2Click(code) {
     debugger;
     $('#tabtop2').click();
-    $("#Frame2").contents().find("'*[id$=hdcode]'").attr('value', code.substr(4));
+    $("#Frame2").contents().find("'*[id$=hdcode]'").attr('value', code);
 
     $("#Frame2").contents().find("'*[id$=btnUpdate]'").click();
 }

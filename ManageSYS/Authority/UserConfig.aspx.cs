@@ -22,7 +22,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
 
     protected void bindData()
     {
-        string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, r.f_name  as 组织机构名称,s.f_role as 角色, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DELETE = '0' order by t.ID";
+        string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, r.f_name  as 组织机构名称,s.f_role as 角色, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DEL = '0' order by t.ID";
        DataBaseOperator opt =new DataBaseOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();
@@ -72,7 +72,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
                 listApt.SelectedValue = data.Tables[0].Rows[0]["LEVELGROUPID"].ToString();
                 rdLocal.Checked = (data.Tables[0].Rows[0]["IS_LOCAL"].ToString() == "1");
                 rdAsyn.Checked = (data.Tables[0].Rows[0]["IS_SYNC"].ToString() == "1");
-                rdDel.Checked = (data.Tables[0].Rows[0]["IS_DELETE"].ToString() == "1");
+                rdDel.Checked = (data.Tables[0].Rows[0]["IS_DEL"].ToString() == "1");
                 txtDscp.Text = data.Tables[0].Rows[0]["DESCRIPTION"].ToString();
                 listRole.SelectedValue = data.Tables[0].Rows[0]["ROLE"].ToString();
             }              
@@ -108,7 +108,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     {
        DataBaseOperator opt =new DataBaseOperator();
  	opt.UpDateOra("delete from ht_svr_user  where ID = '" + txtID.Text + "'");
-        string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DELETE", "DESCRIPTION", "ROLE" };
+        string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE" };
         string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtPswd.Text, txtEmail.Text, listApt.SelectedValue,  Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };
         if(opt.InsertData(seg, value, "ht_svr_user")!="Success")
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户失败， 数据值：" + string.Join(" ", value));

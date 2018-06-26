@@ -8,34 +8,9 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript" src="../js/select-ui.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".click1").click(function () {
-                $("#addtip").fadeIn(200);
-            });
-
-            $(".click2").click(function () {
-                $("#mdftip").fadeIn(200);
-            });
-
-            $(".click3").click(function () {
-                $("#deltip").fadeIn(200);
-            });
-
-            $(".tiptop a").click(function () {
-                $(".tip").fadeOut(200);
-            });
-
-            $(".sure").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-            $(".cancel").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-        });
+       
         function GridClick(code) {
             $('#tabtop2').click();
 
@@ -83,40 +58,44 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     月度生产计划表<span style="position: relative; float: right">
-                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />
+                           <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click" />
                     </span>
-                </div>
+                </div>                 
+                <div style="overflow: auto">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AllowPaging="True"
                             AutoGenerateColumns="False">
                             <Columns>
-                                <asp:TemplateField>
+                                  <asp:TemplateField HeaderText="审批状态">
                                     <ItemTemplate>
-                                        <asp:CheckBox ID="chk" runat="server" />
+                                        <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="50" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="下发状态">
+                                    <ItemTemplate>
+                                        <asp:Label ID="labIssue" runat="server"  CssClass="labstatu"  Width="50" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                
                                 <asp:BoundField DataField="计划名" HeaderText="计划名" />
                                 <asp:BoundField DataField="是否有调整" HeaderText="是否有调整" />
-                                <asp:BoundField DataField="审批状态" HeaderText="审批状态" />
-                                <asp:BoundField DataField="下发状态" HeaderText="下发状态" />
                                 <asp:BoundField DataField="编制人" HeaderText="编制人" />
-                                <asp:TemplateField>
+                               <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1 auth" Width="75"
                                             OnClick="btnGridEdit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                  <asp:TemplateField>
+                                <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
                                             OnClick="btnSubmit_Click" />
@@ -128,19 +107,29 @@
                                             OnClick="btnFLow_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
+                             <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnIssued" />
-                        <asp:AsyncPostBackTrigger ControlID="btnGridDel" />
+                    <Triggers>                       
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="btnModify" />
                          <asp:AsyncPostBackTrigger ControlID="Gridview1" />
+                         
                     </Triggers>
                 </asp:UpdatePanel>
+            </div>
             </div>
         </div>
         <div id="tab2" class="tabson">
@@ -150,7 +139,7 @@
                         <ContentTemplate>
                         <div class="listtitle">
                     月度生产计划<span style="position: relative; float: right" class="click2">
-                        <input id="Button2" type="button" value="保存" class="btnmodify auth" />
+                       <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />
                     </span>
                 </div>
                             <table class="tablelist">
@@ -160,7 +149,7 @@
                                             年度
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtYear" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:TextBox ID="txtYear" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy'})"></asp:TextBox>
                                         </td>
                                         <td width="100">
                                             月份
@@ -219,7 +208,7 @@
                                     <asp:TemplateField HeaderText="计划号" SortExpression="计划号">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号"
-                                                CssClass="tbinput1"></asp:TextBox>
+                                                CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="产品规格" SortExpression="产品规格">
@@ -247,34 +236,19 @@
                                     </asp:TemplateField>
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
-                                <RowStyle CssClass="gridrow" />
+                                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                             </asp:GridView>
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID = "btnAddPlan" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
             </div>
-            <div class="tip" id="mdftip">
-                <div class="tiptop">
-                    <span>提示信息</span><a></a></div>
-                <div class="tipinfo">
-                    <span>
-                        <img src="../images/ticon.png" /></span>
-                    <div class="tipright">
-                        <p>
-                            确认保存此条记录 ？</p>
-                        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-                    </div>
-                </div>
-                <div class="tipbtn">
-                    <asp:Button ID="btnModify" class="sure" runat="server" Text="确定" OnClick="btnModify_Click" />&nbsp;
-                    <input name="" type="button" class="cancel" value="取消" />
-                </div>
-            </div>
+            
         </div>
 
          <div class="aprvinfo" id="flowinfo">
@@ -285,7 +259,7 @@
                     <ContentTemplate>        
                <asp:GridView ID="GridView3" runat="server" class="grid" >
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
             </asp:GridView> 
             </ContentTemplate>
             <Triggers>

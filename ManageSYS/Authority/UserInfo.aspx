@@ -87,7 +87,8 @@
                                             组织机构名称
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist">
+                                            <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist" 
+                                                Enabled="False">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -96,7 +97,8 @@
                                             角色
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listRole" runat="server" CssClass="drpdwnlist">
+                                            <asp:DropDownList ID="listRole" runat="server" CssClass="drpdwnlist" 
+                                                Enabled="False">
                                             </asp:DropDownList>
                                         </td>
                                           <td width="120">

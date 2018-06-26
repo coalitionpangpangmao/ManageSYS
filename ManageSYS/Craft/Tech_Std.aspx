@@ -105,7 +105,7 @@
                                                     标准编码
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtCode" runat="server" class="dfinput1"></asp:TextBox>
+                                                    <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
                                                 </td>
                                                 <td width="100">
                                                     产品编码
@@ -203,6 +203,7 @@
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                                     <asp:AsyncPostBackTrigger ControlID = "btnAdd" />
+                                    <asp:AsyncPostBackTrigger ControlID = "btnSubmit" />
                                 </Triggers>
                             </asp:UpdatePanel>
             </div>
@@ -286,6 +287,7 @@
                                     </Columns>
                                     <HeaderStyle CssClass="gridheader" />
                                     <RowStyle CssClass="gridrow" />
+                                     <AlternatingRowStyle CssClass="gridalterrow" />
                                 </asp:GridView>
                      </ContentTemplate>
                         <Triggers>
@@ -314,6 +316,7 @@
                     <asp:GridView ID="GridView3" runat="server" class="grid">
                         <HeaderStyle CssClass="gridheader" />
                         <RowStyle CssClass="gridrow" />
+                         <AlternatingRowStyle CssClass="gridalterrow" />
                     </asp:GridView>
                 </ContentTemplate>
                 <Triggers>

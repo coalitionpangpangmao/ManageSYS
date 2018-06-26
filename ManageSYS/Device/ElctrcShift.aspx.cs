@@ -19,8 +19,8 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
            DataBaseOperator opt =new DataBaseOperator();
             opt.bindDropDownList(listShift, "select t.shift_code,t.shift_name  from ht_sys_shift t where t.is_valid = '1' and t.is_del = '0' order by t.shift_code", "shift_name", "shift_code");
             opt.bindDropDownList(listTeam, "select t.team_code,t.team_name  from ht_sys_team t where t.is_valid = '1' and t.is_del = '0' order by t.team_code", "team_name", "team_code");
-            opt.bindDropDownList(listolder, "select ID,name from ht_svr_user where is_delete = '0' ", "name", "ID");
-            opt.bindDropDownList(listnewer, "select ID,name from ht_svr_user where is_delete = '0' ", "name", "ID");
+            opt.bindDropDownList(listolder, "select ID,name from ht_svr_user where IS_DEL = '0' ", "name", "ID");
+            opt.bindDropDownList(listnewer, "select ID,name from ht_svr_user where IS_DEL = '0' ", "name", "ID");
             bindGrid1();
          
            

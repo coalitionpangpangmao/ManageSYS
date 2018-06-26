@@ -15,9 +15,9 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
         {
             DataBaseOperator opt = new DataBaseOperator();
             opt.bindDropDownList(listPro, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
-            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "NAME", "ID");
+            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "CTRL_NAME", "ID");
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
-            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where is_delete = '0'", "NAME", "ID");
+            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where IS_DEL = '0'", "NAME", "ID");
         }
     }
     protected void bindData()
@@ -193,8 +193,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
     }
     protected void btnDelSel_Click(object sender, EventArgs e)
     {
-        try
-        {
+       
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
@@ -208,36 +207,27 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
                 }
             }
             bindGrid();
-        }
-        catch (Exception ee)
-        {
-            Response.Write(ee.Message);
-        }
+       
     }    
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        try
-        {
+       
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             if (Rowindex >= 0)
             {
-               DataBaseOperator opt =new DataBaseOperator();               
-                    opt.UpDateOra("delete from ht_qa_mater_formula_detail  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'");              
-                     string[] seg = { "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "MATER_FLAG" };
-                     string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtAmountM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtGroupM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listGridType")).SelectedValue };
-                string log_message = opt.InsertData(seg, value, "ht_qa_mater_formula_detail")=="Success"?"物料保存成功":"物料保存失败";
+                DataBaseOperator opt = new DataBaseOperator();
+                opt.UpDateOra("delete from ht_qa_mater_formula_detail  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'");
+                string[] seg = { "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "MATER_FLAG" };
+                string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtAmountM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtGroupM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listGridType")).SelectedValue };
+                string log_message = opt.InsertData(seg, value, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += ",物料编码：" + txtCode.Text;
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-              
+
                 bindGrid();
             }
-        }
-        catch (Exception ee)
-        {
-            Response.Write(ee.Message);
-        }
+    
  
 
     }
@@ -254,8 +244,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
         txtCrtDate.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
         listCrtApt.SelectedValue = user.OwningBusinessUnitId;
 
-        txtName.Text = "";
-        listPro.SelectedValue = "";
+        txtName.Text = "";        
         txtVersion.Text = "";
         txtExeDate.Text = "";
         txtEndDate.Text = "";

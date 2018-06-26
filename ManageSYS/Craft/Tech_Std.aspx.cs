@@ -19,8 +19,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listtechC,"select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
-            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "NAME", "ID");           
-            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where is_delete = '0'", "NAME", "ID");
+            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "CTRL_NAME", "ID");           
+            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where IS_DEL = '0'", "NAME", "ID");
              opt.bindDropDownList(listProd, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
              opt.bindDropDownList(listAprv, "select * from ht_inner_aprv_status ", "NAME", "ID");
             tvHtml = InitTree();
@@ -124,8 +124,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         {
             foreach (DataRow row in data.Tables[0].Rows)
             {
-               string[] seg = { "PARA_CODE", "PARA_NAME", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "PROCESS_CODE",  "TECH_CODE" };
-               string[] value = { row["PARA_CODE"].ToString(), row["PARA_NAME"].ToString(), row["VALUE"].ToString(), row["UPPER_LIMIT"].ToString(), row["LOWER_LIMIT"].ToString(), row["EER_DEV"].ToString(), row["UNIT"].ToString(), row["PROCESS_CODE"].ToString(), listtechC.SelectedValue};
+               string[] seg = { "PARA_CODE",  "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "PROCESS_CODE",  "TECH_CODE" };
+               string[] value = { row["PARA_CODE"].ToString(),  row["VALUE"].ToString(), row["UPPER_LIMIT"].ToString(), row["LOWER_LIMIT"].ToString(), row["EER_DEV"].ToString(), row["UNIT"].ToString(), row["PROCESS_CODE"].ToString(), listtechC.SelectedValue};
                 string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE_DETAIL")=="Success" ? "复制标准成功":"复制标准失败";
                 log_message += ",复制数据："+string.Join(" ", value);
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -207,7 +207,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     protected void bindGrid(string rcpcode, string prccode)
     {
 
-        string query = "select PARA_CODE as 参数编码,PARA_NAME as 参数名,VALUE as 标准值,UPPER_LIMIT as 上限,LOWER_LIMIT as 下限,EER_DEV as 允差,UNIT as 单位  from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "'";
+        string query = "select PARA_CODE as 参数编码,VALUE as 标准值,UPPER_LIMIT as 上限,LOWER_LIMIT as 下限,EER_DEV as 允差,UNIT as 单位  from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "'";
             if (prccode.Length >= 7)
                 query += " and   PROCESS_CODE = '" + prccode.Substring(0, 7) + "'";
            DataBaseOperator opt =new DataBaseOperator();
@@ -216,8 +216,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             if (data == null)
             {
                 data = new DataTable();
-                data.Columns.Add("参数编码");
-                data.Columns.Add("参数名");
+                data.Columns.Add("参数编码");               
                 data.Columns.Add("标准值");
                 data.Columns.Add("上限");
                 data.Columns.Add("下限");
@@ -225,7 +224,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 data.Columns.Add("单位");
                
             }
-            object[] value = { "", "", 0, 0, 0, 0, ""};
+            object[] value = { "",  0, 0, 0, 0, ""};
             data.Rows.Add(value);
             GridView1.DataSource = data;
             GridView1.DataBind();
@@ -331,8 +330,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 DataSet data = opt.CreateDataSetOra(query);
                 if (data != null && data.Tables[0].Rows.Count > 0)
                 {                    
-                    string[] seg = {"PARA_CODE", "PARA_NAME", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT","EER_DEV", "UNIT", "PROCESS_CODE" ,"IS_DEL"};
-                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listParaName")).SelectedItem.Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text, hideprc.Value ,"0"};
+                    string[] seg = {"PARA_CODE",  "VALUE", "UPPER_LIMIT", "LOWER_LIMIT","EER_DEV", "UNIT", "PROCESS_CODE" ,"IS_DEL"};
+                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text,  ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text, hideprc.Value ,"0"};
                     string condition =  "where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
                     string log_message = opt.UpDateData(seg, value, "HT_TECH_STDD_CODE_DETAIL", condition)=="Success" ? "保存参数成功":"保存参数失败";
                     log_message += ", 保存数据:" + string.Join(" ", value);
@@ -340,8 +339,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 }
                 else
                 {
-                    string[] seg = { "PARA_CODE", "PARA_NAME", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "PROCESS_CODE",  "TECH_CODE" };
-                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listParaName")).SelectedItem.Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text, hideprc.Value, txtCode.Text };
+                    string[] seg = { "PARA_CODE",  "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "PROCESS_CODE",  "TECH_CODE" };
+                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text, hideprc.Value, txtCode.Text };
                     string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE_DETAIL")=="Success" ? "保存参数成功":"保存参数失败";
                     log_message += ", 保存数据：" + string.Join(" ", value);
                     opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -393,6 +392,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             listStatus.SelectedValue = "";
             txtDscpt.Text = "";
             ckValid.Checked = false;
+            listAprv.SelectedValue = "";
         }
     }
 
@@ -417,7 +417,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             DataBaseOperator opt = new DataBaseOperator();
             if (opt.createApproval(subvalue))
             {
-                string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABSEG") + " = '0'  where FORMULA_CODE = '" +  txtCode.Text + "'") == "Success" ? "提交审批成功," : "提交审批失败，";
+                string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABSEG") + " = '0'  where TECH_CODE = '" + txtCode.Text + "'") == "Success" ? "提交审批成功," : "提交审批失败，";
                 if (log_message == "提交审批成功") listAprv.SelectedValue = "0";
                 log_message += "业务数据ID：" + txtCode.Text;
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);

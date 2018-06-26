@@ -115,6 +115,7 @@
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
+                                 <AlternatingRowStyle CssClass="gridalterrow" />
                             </asp:GridView>
                         </ContentTemplate>
                         <Triggers>
@@ -266,6 +267,7 @@
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
+                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
@@ -290,6 +292,7 @@
                         <asp:GridView ID="GridView3" runat="server" class="grid">
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
+                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>

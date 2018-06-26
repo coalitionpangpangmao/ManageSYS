@@ -336,6 +336,16 @@ h2{font-weight:normal;}
     cursor: pointer;
     background-color: #993333;
 }
+.btngrey
+{
+    width: 50px;
+    height: 20px;
+    background: no-repeat;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;   
+    background-color: #F4F4F4;
+}
 .btn1{width:50px;height:20px; background:url(../images/btnbg.png) no-repeat; font-size:12px;font-weight:bold;color:#fff; cursor:pointer;}
 .btnSelect{width:140px;height:35px; background:#fcfdfd; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 .btnUnsel{width:140px;height:35px; background:url(../images/btnbg.png) no-repeat; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;}
@@ -354,8 +364,7 @@ h2{font-weight:normal;}
     font-size: 12px;
     font-weight: bold;
     color: #fff;
-    border-radius: 10px;
-    text-align: center;
+    border-radius: 10px;   
     line-height: 20px;
 }
 
@@ -364,7 +373,8 @@ h2{font-weight:normal;}
 
 .grid{border:solid 1px #cbcbcb; width:100%; clear:both;}
 .gridheader{background:url(../images/th.gif) repeat-x; height:34px; line-height:34px; border-bottom:solid 1px #b6cad2; text-indent:11px; text-align:left;}
-.gridrow{line-height:25px; text-indent:11px; border-right: dotted 1px #c7c7c7;}
+.gridrow{line-height:25px; text-indent:11px; border-right: dotted 1px #c7c7c7;background-color: #FFFFFF;}
+.gridalterrow{line-height:25px; text-indent:11px; border-right: dotted 1px #c7c7c7; background-color: #F2F9FF;}
 
 
 /*Approvaltable*/

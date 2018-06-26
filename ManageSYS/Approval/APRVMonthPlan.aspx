@@ -113,6 +113,7 @@
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
+                                 <AlternatingRowStyle CssClass="gridalterrow" />
                             </asp:GridView>
                         </ContentTemplate>
                         <Triggers>
@@ -120,6 +121,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnAprvAll" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID="btnSearch" />
+                            <asp:AsyncPostBackTrigger ControlID = "btnSure" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -162,6 +164,7 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid">
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
+                                 <AlternatingRowStyle CssClass="gridalterrow" />
                             </asp:GridView>
                         </div>
                     </ContentTemplate>
@@ -196,6 +199,7 @@
                     <asp:GridView ID="GridView3" runat="server" class="grid">
                         <HeaderStyle CssClass="gridheader" />
                         <RowStyle CssClass="gridrow" />
+                         <AlternatingRowStyle CssClass="gridalterrow" />
                     </asp:GridView>
                 </ContentTemplate>
                 <Triggers>

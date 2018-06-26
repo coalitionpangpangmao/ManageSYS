@@ -44,7 +44,7 @@
                             <asp:BoundField DataField="费用" HeaderText="费用" />
                         </Columns>
                         <HeaderStyle CssClass="gridheader" />
-                        <RowStyle CssClass="gridrow" />
+                         <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                     </asp:GridView>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                         <asp:BoundField DataField="费用" HeaderText="费用" />
                     </Columns>
                     <HeaderStyle CssClass="gridheader" />
-                    <RowStyle CssClass="gridrow" />
+                     <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
                 </asp:GridView>
             </div>
         </div>

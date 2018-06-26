@@ -11,7 +11,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     {
         base.PageLoad(sender, e);
         if (!IsPostBack)
-        {
+        {           
             bindGrid();
             initView();
         }
@@ -19,13 +19,13 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select proj_code as 检查项目编码,proj_name as 检查项目,s.section_name as 所属工段,r.proj_area as 所属区域,r.inspect_type_code as 检查类型,r.create_name as 编制人,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.section_code where r.is_del = '0' and r.is_valid = '1' ";
+        string query = "select proj_code as 检查项目编码,proj_name as 检查项目,s.section_name as 所属工段,r.proj_area as 所属区域,t.type_name as 检查类型,r.create_name as 编制人,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.section_code left join ht_qlt_inspect_type t on t.type_code = r.inspect_type_code where r.is_del = '0' and r.is_valid = '1' ";
         if(txtProj.Text != "")
             query += " and  r.proj_name like '%" + txtProj.Text + "%'";
         if(listSection.SelectedValue != "")
             query += " and  r.section_code = '" + listSection.SelectedValue + "'";
         if(listtype.SelectedValue != "")
-            query += " and r.inspect_type_code = '" + listtype.SelectedValue + "'";
+            query += " and t.type_name = '" + listtype.SelectedItem.Text + "'";
        DataBaseOperator opt =new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -39,6 +39,8 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
        DataBaseOperator opt =new DataBaseOperator();
         opt.bindDropDownList(listSection, "select section_code,section_name  from ht_pub_tech_section t where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
         opt.bindDropDownList(listSection2, "select section_code,section_name  from ht_pub_tech_section t where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
+        opt.bindDropDownList(listtype, "select type_code,type_name from ht_qlt_inspect_type where is_del = '0'", "type_name", "type_code");
+        opt.bindDropDownList(listType2, "select type_code,type_name from ht_qlt_inspect_type where is_del = '0'", "type_name", "type_code");
         
     }
     protected void btnSave_Click(object sender, EventArgs e)

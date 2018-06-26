@@ -11,18 +11,8 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
     {
         base.PageLoad(sender, e);
            DataBaseOperator opt =new DataBaseOperator();
-            opt.bindDropDownList(listType, "select  MATTREE_CODE ,  MATTREE_NAME ,  PARENT_ID    from HT_PUB_MATTREE where  is_del = '0'", "MATTREE_NAME", "MATTREE_CODE");
-            try
-            {
-              
-                string mtr_code = Request["mtr_code"].ToString();
-                if (mtr_code != "")
-                {
-                    bindData(mtr_code);
-                }
-            }
-            catch
-            { }
+           opt.bindDropDownList(listType, "select  MATTREE_CODE ,  MATTREE_NAME ,  PARENT_CODE    from HT_PUB_MATTREE where  is_del = '0' order by PARENT_CODE", "MATTREE_NAME", "MATTREE_CODE");
+           
       
     }
     protected void bindData(string mtr_code)
