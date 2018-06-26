@@ -14,7 +14,7 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         if (!IsPostBack)
         {
             DataBaseOperator opt = new DataBaseOperator();
-            opt.bindDropDownList(listProcess, "select g1.process_code, g2.remark ||'_'|| g1.process_name as name   from ht_pub_inspect_process g1 left join ht_pub_tech_section g2 on g2.section_code = substr(g1.process_code,1,5) where g1.is_valid = '1' and g1.is_del = '0' order by g1.process_code", "name", "process_code");
+            opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
         }
        
     }
@@ -31,14 +31,15 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
                 txtCode.Text = paracode;
                 txtName.Text = row["PARA_NAME"].ToString();
                 txtUnit.Text = row["PARA_UNIT"].ToString();
-                txtTag.Text = row["PARA_TAG"].ToString();
+                txtSetTag.Text = row["SET_TAG"].ToString();
+                txtValueTag.Text = row["VALUE_TAG"].ToString();
                 setType(row["PARA_TYPE"].ToString());
                 txtDscrp.Text = row["REMARK"].ToString();
                 rdValid.Checked = ("1" == row["IS_VALID"].ToString());
-                opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.section_code = '" + txtCode.Text.Substring(0, 7) + "'", "EQ_NAME", "IDKEY");
+                opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.section_code = '" + txtCode.Text.Substring(0, 5) + "'", "EQ_NAME", "IDKEY");
                 listEquip.SelectedValue = row["EQUIP_CODE"].ToString();
-                listProcess.SelectedValue = paracode.Substring(0, 7);
-                txt2pcode.Text = paracode.Substring(0, 7);
+                listSection.SelectedValue = paracode.Substring(0, 5);
+                
             }
         }
         catch (Exception error)
@@ -51,10 +52,10 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
     {
 
         DataBaseOperator opt = new DataBaseOperator();
-        string str = opt.GetSegValue("select max(para_code) as CODE from ht_pub_tech_para where substr(para_code,0,7)= '" + listProcess.SelectedValue + "'", "CODE");
+        string str = opt.GetSegValue("select max(para_code) as CODE from ht_pub_tech_para where substr(para_code,0,5)= '" + listSection.SelectedValue + "'", "CODE");
         if (str == "")
             str = "000000000";
-        txtCode.Text = listProcess.SelectedValue + (Convert.ToInt16(str.Substring(7)) + 1).ToString().PadLeft(2, '0');
+        txtCode.Text = listSection.SelectedValue + (Convert.ToInt16(str.Substring(5)) + 1).ToString().PadLeft(5, '0');
       
     }
     protected string getType()
@@ -94,17 +95,18 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_TECH_PARA where PARA_CODE = '" + txtCode.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            string[] seg = { "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "EQUIP_CODE", "PARA_TAG"};
-            string[] value = { txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtTag.Text };
+            string[] seg = { "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" };
+            string[] value = { txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text,txtValueTag.Text };
             string condition = " where PARA_CODE = '" + txtCode.Text + "'";
             opt.UpDateData(seg, value, "HT_PUB_TECH_PARA", condition);
         }
         else
         {
-            string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "PARA_TAG" };
-            string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtTag.Text };
+            string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" };
+            string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text };
             opt.InsertData(seg, value, "HT_PUB_TECH_PARA");
         }
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "error", "updateModel();", true);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
@@ -119,12 +121,12 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
 
     }
 
-  
-    protected void listProcess_SelectedIndexChanged(object sender, EventArgs e)
+
+    protected void listSection_SelectedIndexChanged(object sender, EventArgs e)
     {
-        txt2pcode.Text = listProcess.SelectedValue;
+       
         DataBaseOperator opt = new DataBaseOperator();
-        opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.process_code = '" + txt2pcode.Text + "'", "EQ_NAME", "IDKEY");
+        opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.Section_code = '" + listSection.SelectedValue + "'", "EQ_NAME", "IDKEY");
         txtCode.Text = "";
     }
 }

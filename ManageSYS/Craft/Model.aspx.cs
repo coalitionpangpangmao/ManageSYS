@@ -31,8 +31,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
           foreach (DataRow row in rows)
             {               
                // tvHtml += "<li ><a href='Tech_Session.aspx?session_code=" + row["section_code"].ToString() + "' target='sessionFrame'><span class='folder'  onclick = \"$('#tabtop1').click()\">" + row["section_name"].ToString() + "</span></a>";  
-                tvHtml += "<li ><span class='folder'  onclick = \"tab1Click(" + row["section_code"].ToString() + ")\">" + row["section_name"].ToString() + "</span>";  
-               tvHtml +=  InitTreeProcess( row["section_code"].ToString());
+                tvHtml += "<li ><span class='folder'  onclick = \"tab1Click(" + row["section_code"].ToString() + ")\">" + row["section_name"].ToString() + "</span>";
+                tvHtml += InitTreeEquip(row["section_code"].ToString());
                 tvHtml += "</li>";
             }
           tvHtml += "</ul>";
@@ -42,21 +42,42 @@ public partial class Craft_Model : MSYS.Web.BasePage
             return "";
     }
 
-    public string InitTreeProcess( string section_code)
+    
+
+    public string InitTreeEquip(string section_code)
     {
-       DataBaseOperator opt =new DataBaseOperator();
-        DataSet data = opt.CreateDataSetOra("select h.process_code,h.process_name from  ht_pub_inspect_process h where substr(h.process_code,1,5) = '" + section_code + "' and h.IS_VALID = '1' and h.IS_DEL = '0' order by h.process_code");
+        DataBaseOperator opt = new DataBaseOperator();
+        DataSet data = opt.CreateDataSetOra("select IDKEY,EQ_NAME from ht_eq_eqp_tbl where section_code  = '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' order by IDKEY");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-               // tvHtml += "<li ><a href='Tech_Process.aspx?process_code=" + row["process_code"].ToString() + "'  target='ProcessFrame'><span class='folder'  onclick = \"$('#tabtop2').click()\">" + row["process_name"].ToString() + "</span></a>";        
-                tvHtml += "<li ><span class='folder'  onclick = \"tab2Click(" + row["process_code"].ToString() + ")\">" + row["process_name"].ToString() + "</span>";
-              
-               tvHtml += InitTreePara(row["process_code"].ToString());
-               tvHtml += "</li>";
+                // tvHtml += "<li ><a href='Tech_Process.aspx?process_code=" + row["process_code"].ToString() + "'  target='ProcessFrame'><span class='folder'  onclick = \"$('#tabtop2').click()\">" + row["process_name"].ToString() + "</span></a>";        
+                tvHtml += "<li ><span class='folder'  onclick = \"tab2Click(" + row["IDKEY"].ToString() + ")\">" + row["EQ_NAME"].ToString() + "</span>";
+
+                tvHtml += InitTreePara(row["IDKEY"].ToString());
+                tvHtml += "</li>";
+            }
+            tvHtml += "</ul>";
+            return tvHtml;
+        }
+        else
+            return "";
+    }
+    public string InitTreePara(string IDkey)
+    {
+        DataBaseOperator opt = new DataBaseOperator();
+        DataSet data = opt.CreateDataSetOra("select Para_code,para_name from ht_pub_tech_para where equip_code = '" + IDkey + "' and IS_VALID = '1' and IS_DEL = '0'  order by para_code");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string tvHtml = "<ul>";
+            DataRow[] rows = data.Tables[0].Select();
+            foreach (DataRow row in rows)
+            {                
+                tvHtml += "<li ><span class='file'  onclick = \"tab3Click(" + row["para_code"].ToString() + ")\">" + row["para_name"].ToString() + "</span>";
+                tvHtml += "</li>";
             }
             tvHtml += "</ul>";
             return tvHtml;
@@ -65,26 +86,55 @@ public partial class Craft_Model : MSYS.Web.BasePage
             return "";
     }
 
-    public string InitTreePara( string process_code)
+    protected void btnUpdate_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
-        DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,7) =  '" + process_code + "' and IS_VALID = '1' and IS_DEL = '0'  order by para_code");
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string tvHtml = "<ul>";
-            DataRow[] rows = data.Tables[0].Select();
-            foreach (DataRow row in rows)
-            {
-               // tvHtml += "<li ><a href='Tech_Para.aspx?para_code=" + row["para_code"].ToString() + "' target='ProcessFrame'><span class='file'  onclick = \"$('#tabtop4').click()\">" + row["para_name"].ToString() + "</span></a>";
-                tvHtml += "<li ><span class='file'  onclick = \"tab3Click(" + row["para_code"].ToString() + ")\">" + row["para_name"].ToString() + "</span>";
-                tvHtml += "</li>";
-            }
-            tvHtml += "</ul>";
-            return tvHtml;
-        }
-        else
-            return "";          
-    }
+        tvHtml = InitTree();
 
+        ScriptManager.RegisterStartupScript(UpdatePanel1,this.Page.GetType(),"updatetree"," $('#browser').treeview({ toggle: function () { console.log('%s was toggled.', $(this).find('>span').text());}});",true);
+    }
+    //public string InitTreePara( string process_code)
+    //{
+    //   DataBaseOperator opt =new DataBaseOperator();
+    //    DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,7) =  '" + process_code + "' and IS_VALID = '1' and IS_DEL = '0'  order by para_code");
+    //    if (data != null && data.Tables[0].Rows.Count > 0)
+    //    {
+    //        string tvHtml = "<ul>";
+    //        DataRow[] rows = data.Tables[0].Select();
+    //        foreach (DataRow row in rows)
+    //        {
+    //           // tvHtml += "<li ><a href='Tech_Para.aspx?para_code=" + row["para_code"].ToString() + "' target='ProcessFrame'><span class='file'  onclick = \"$('#tabtop4').click()\">" + row["para_name"].ToString() + "</span></a>";
+    //            tvHtml += "<li ><span class='file'  onclick = \"tab3Click(" + row["para_code"].ToString() + ")\">" + row["para_name"].ToString() + "</span>";
+    //            tvHtml += "</li>";
+    //        }
+    //        tvHtml += "</ul>";
+    //        return tvHtml;
+    //    }
+    //    else
+    //        return "";          
+    //}
+
+
+    //public string InitTreeProcess(string section_code)
+    //{
+    //    DataBaseOperator opt = new DataBaseOperator();
+    //    DataSet data = opt.CreateDataSetOra("select h.process_code,h.process_name from  ht_pub_inspect_process h where substr(h.process_code,1,5) = '" + section_code + "' and h.IS_VALID = '1' and h.IS_DEL = '0' order by h.process_code");
+    //    if (data != null && data.Tables[0].Rows.Count > 0)
+    //    {
+    //        string tvHtml = "<ul>";
+    //        DataRow[] rows = data.Tables[0].Select();
+    //        foreach (DataRow row in rows)
+    //        {
+    //            // tvHtml += "<li ><a href='Tech_Process.aspx?process_code=" + row["process_code"].ToString() + "'  target='ProcessFrame'><span class='folder'  onclick = \"$('#tabtop2').click()\">" + row["process_name"].ToString() + "</span></a>";        
+    //            tvHtml += "<li ><span class='folder'  onclick = \"tab2Click(" + row["process_code"].ToString() + ")\">" + row["process_name"].ToString() + "</span>";
+
+    //            tvHtml += InitTreePara(row["process_code"].ToString());
+    //            tvHtml += "</li>";
+    //        }
+    //        tvHtml += "</ul>";
+    //        return tvHtml;
+    //    }
+    //    else
+    //        return "";
+    //}
    
 }

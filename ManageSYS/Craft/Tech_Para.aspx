@@ -10,6 +10,11 @@
     
 </head>
 <body>
+<script type = "text/javascript">
+    function updateModel() {
+        window.parent.update();
+    }
+</script>
     <form id="form1" runat="server">
       <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
@@ -30,15 +35,18 @@
     <table class="tablelist">    	
         <tbody>
         <tr>
-        <td width="100">所属工序段</td>
+        <td width="100">所属工艺段</td>
         <td>
-            <asp:DropDownList ID="listProcess" runat="server" CssClass = "drpdwnlist" 
-                onselectedindexchanged="listProcess_SelectedIndexChanged" 
+            <asp:DropDownList ID="listSection" runat="server" CssClass = "drpdwnlist" 
+                onselectedindexchanged="listSection_SelectedIndexChanged" 
                 AutoPostBack="True"  >
             </asp:DropDownList>
         </td>
-        <td  width="100">编码</td>
-        <td><asp:TextBox ID="txt2pcode" runat="server" class="dfinput1"  Enabled = "false"  ></asp:TextBox></td>
+        <td>所属设备</td>
+       <td>
+           <asp:DropDownList ID="listEquip" runat="server" CssClass = "drpdwnlist">
+           </asp:DropDownList>
+       </td>
         </tr>
         <tr>
         <td width="100">参数点编码</td>
@@ -57,13 +65,9 @@
       
         </tr>
         <tr>
-       <td>所属设备</td>
-       <td>
-           <asp:DropDownList ID="listEquip" runat="server" CssClass = "drpdwnlist">
-           </asp:DropDownList>
-       </td>
+      
         <td  width="100">类型</td>
-        <td>
+        <td colspan="3">
             <p>
                 <asp:CheckBox ID="ckCenterCtrl" runat="server" Text="集控显示" />
                 <asp:CheckBox ID="ckRecipePara" runat="server" Text="工艺参数" />
@@ -76,9 +80,13 @@
         </td>       
         </tr>
           <tr>
-         <td width="100">集控标签地址</td>
-        <td colspan="3"><asp:TextBox ID="txtTag" runat="server" class="dfinput1" 
-                Width="500px"    ></asp:TextBox></td></tr>    
+         <td width="100">设定标签地址</td>
+        <td ><asp:TextBox ID="txtSetTag" runat="server" class="dfinput1" 
+                Width="200px"    ></asp:TextBox></td>
+                 <td width="100">反馈标签地址</td>
+        <td ><asp:TextBox ID="txtValueTag" runat="server" class="dfinput1" 
+                Width="200px"    ></asp:TextBox></td>
+                </tr>    
         <tr>
          <td width="100">备注</td>
         <td colspan="3"><asp:TextBox ID="txtDscrp" runat="server" class="dfinput1" 
@@ -92,7 +100,7 @@
         <asp:AsyncPostBackTrigger ControlID = "btnDel" />
         <asp:AsyncPostBackTrigger ControlID = "btnModify" />
          <asp:AsyncPostBackTrigger ControlID = "txtCode" />
-         <asp:AsyncPostBackTrigger ControlID = "listProcess" />
+         <asp:AsyncPostBackTrigger ControlID = "listSection" />
         </Triggers>           
         </asp:UpdatePanel>
  </div>
