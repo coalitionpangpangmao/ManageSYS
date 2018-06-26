@@ -97,21 +97,13 @@ namespace MSYS.DAL
                     sqlcom.CommandText = commandString;
                     influenceRowCount += sqlcom.ExecuteNonQuery();
                 }
-                if (influenceRowCount == commandStringList.Count)
-                {
-                    m_OraTrans.Commit();
-                    return "Success";
-                }
-                else
-                {
-                    m_OraTrans.Rollback();
-                    return "Failed";
-                }
+               
+                m_OraTrans.Commit();
+                return "Success";               
+             
             }
             catch (Exception ee)
-            {
-                if (sqlcom != null)
-                    sqlcom.Dispose();
+            {                
                 m_OraTrans.Rollback();
                 return ee.Message;
             }

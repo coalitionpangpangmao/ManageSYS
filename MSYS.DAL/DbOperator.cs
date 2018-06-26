@@ -48,15 +48,15 @@ public class DbOperator
     }
     public string UpDateData(string[] seg, string[] value, string table, string condition)
     {
-        string query = CreateUpdateStr(seg, value, table, condition);
-        if (query!= "")
-        {          
+        string query = UpdateStr(seg, value, table, condition);
+        if (query != "")
+        {
             return UpDateOra(query);
         }
         else
             return "Error!!";
     }
-    private string CreateUpdateStr(string[] seg, string[] value, string table, string condition)
+    public string UpdateStr(string[] seg, string[] value, string table, string condition)
     {
         if (seg.Length == value.Length)
         {
@@ -83,7 +83,7 @@ public class DbOperator
         else
             return "Error!!";
     }
-    private string InsertDatastr(string[] seg, string[] value, string table)
+    public string InsertDatastr(string[] seg, string[] value, string table)
     {
         if (seg.Length == value.Length)
         {

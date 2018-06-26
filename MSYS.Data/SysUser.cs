@@ -109,7 +109,7 @@ namespace MSYS.Data
             this.UserRoleID = sysUserRow["ROLE"].ToString();
             this.UserRole = sysUserRow["F_ROLE"].ToString();
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select r.id as userid,s.f_menu,s.f_type,s.F_MAPID,s.f_id   from HT_SVR_USER r left join HT_SVR_SYS_ROLE t on r.role = t.f_id left join HT_SVR_SYS_MENU s on substr (t.f_right,s.f_id,1) = '1'  where r.id = '" + this.Id + "'");
+            DataSet data = opt.CreateDataSetOra("select r.id as userid,s.f_menu,s.f_type,s.F_MAPID,s.f_id   from HT_SVR_USER r left join HT_SVR_SYS_ROLE t on r.role = t.f_id left join HT_SVR_SYS_MENU s on substr (t.f_right,s.f_id,1) = '1'  where r.id = '" + this.Id + "' and s.f_menu is not null");
             UserRights = new SysRightCollection();
             if (data != null && data.Tables[0].Rows.Count > 0)
             {

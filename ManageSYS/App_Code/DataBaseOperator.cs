@@ -42,7 +42,7 @@ public class DataBaseOperator
     }
     public string UpDateData(string[] seg, string[] value, string table, string condition)
     {
-        string query = CreateUpdateStr(seg, value, table, condition);
+        string query = UpdateStr(seg, value, table, condition);
         if (query != "")
         {
             return UpDateOra(query);
@@ -50,7 +50,7 @@ public class DataBaseOperator
         else
             return "Error!!";
     }
-    private string CreateUpdateStr(string[] seg, string[] value, string table, string condition)
+    public string UpdateStr(string[] seg, string[] value, string table, string condition)
     {
         if (seg.Length == value.Length)
         {
@@ -77,7 +77,7 @@ public class DataBaseOperator
         else
             return "Error!!";
     }
-    private string InsertDatastr(string[] seg, string[] value, string table)
+    public string InsertDatastr(string[] seg, string[] value, string table)
     {
         if (seg.Length == value.Length)
         {
@@ -182,6 +182,7 @@ public class DataBaseOperator
         else
             return false;
     }
+
     #region Approval
     //审批相关操作
     public bool createApproval(string[] keys)//启动审批/*TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id, 单独登录url,*/
@@ -206,7 +207,7 @@ public class DataBaseOperator
                         {
                             enable = "1";
                             string[] subseg = { "GONGWEN_ID", "ROLENAME", "POS", "WORKITEMID", "ISENABLE", "USERID", "USERNAME", "OPINIONTIME", "COMMENTS", "STATUS" };
-                            string[] subvalue = { id, row["ROLE"].ToString(), row["INDEX_NO"].ToString(), row["FLOW_NAME"].ToString(), enable, "cookieId", "cookieName", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "提交", "2" };
+                            string[] subvalue = { id, row["ROLE"].ToString(), row["INDEX_NO"].ToString(), row["FLOW_NAME"].ToString(), enable, user.Id, user.Name, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "提交", "2" };
                             InsertData(subseg, subvalue, "HT_PUB_APRV_OPINION");
                         }
                         else
@@ -256,10 +257,13 @@ public class DataBaseOperator
                 data = CreateDataSetOra("select status,GONGWEN_ID from ht_pub_aprv_opinion where pos = (select Max(pos) from ht_pub_aprv_opinion where gongwen_ID = (select gongwen_ID from ht_pub_aprv_opinion where id = '" + ID + "')) and id = '" + ID + "'");
                 if (data != null && data.Tables[0].Rows.Count > 0 && data.Tables[0].Rows[0][0].ToString() == "2")
                 {
-                    UpDateOra("Update HT_PUB_APRV_FLOWINFO set STATE = '2' where id = '" + flowid + "'");
+                    ArrayList commandlist = new ArrayList();
+                    commandlist.Add("Update HT_PUB_APRV_FLOWINFO set STATE = '2' where id = '" + flowid + "'");
+                    commandlist.Add("update " + table + " set " + tableseg + " = '2' where " + busid + " = '" + busvalue + "'");
+                    TransactionCommand(commandlist);                  
                 }
                 //将业务主表的审批字段置为己通过
-                UpDateOra("update " + table + " set " + tableseg + " = '2' where " + busid + " = '" + busvalue + "'");
+               
             }
             return true;
 
