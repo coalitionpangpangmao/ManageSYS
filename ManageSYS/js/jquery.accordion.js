@@ -63,6 +63,7 @@ $.ui.accordion = function(container, options) {
 
 	if ( options.fillSpace ) {
 		var maxHeight = $(container).parent().height();
+       
 		options.headers.each(function() {
 			maxHeight -= $(this).outerHeight();
 		});
