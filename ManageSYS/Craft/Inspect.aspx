@@ -45,35 +45,39 @@
                     <tbody>
                         <tr>
                             <td width="100">
-                                检查项目
-                            </td>
-                            <td>
-                                <asp:TextBox ID="txtProj" runat="server" class="dfinput1"></asp:TextBox>
-                            </td>
-                            <td width="100">
-                                工艺段
-                            </td>
-                            <td>
-                                <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist">
-                                </asp:DropDownList>
-                            </td>
-                            <td width="100">
                                 检查类型
                             </td>
                             <td width="100">
-                                <asp:DropDownList ID="listtype" runat="server" CssClass="drpdwnlist">                                   
+                                <asp:DropDownList ID="listtype" runat="server" CssClass="drpdwnlist" AutoPostBack="True"
+                                    OnSelectedIndexChanged="listtype_SelectedIndexChanged">
                                 </asp:DropDownList>
+                            </td>
+                            <td width="100">
+                                分组
+                            </td>
+                            <td>
+                             <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                                <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist">
+                                </asp:DropDownList>
+                                </ContentTemplate>
+                                <Triggers>
+                                 <asp:AsyncPostBackTrigger ControlID="listtype" />
+                                </Triggers>
+                                </asp:UpdatePanel>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     检查项目列表 <span style="position: relative; float: right">
+                     
                         <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnGrid1CkAll_Click" />
                         <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnGrid1DelSel_Click" /></span></div>
+                        <div style="height: 275px; overflow: auto">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                             DataKeyNames="检查项目编码">
                             <Columns>
                                 <asp:TemplateField>
@@ -81,12 +85,10 @@
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:BoundField DataField="检查类型" HeaderText="检查类型" />
+                                <asp:BoundField DataField="分组" HeaderText="分组" />
                                 <asp:BoundField DataField="检查项目编码" HeaderText="检查项目编码" />
                                 <asp:BoundField DataField="检查项目" HeaderText="检查项目" />
-                                <asp:BoundField DataField="所属工段" HeaderText="所属工段" />
-                                <asp:BoundField DataField="所属区域" HeaderText="所属区域" />
-                                <asp:BoundField DataField="检查类型" HeaderText="检查类型" />
-                                <asp:BoundField DataField="编制人" HeaderText="编制人" />
                                 <asp:BoundField DataField="备注" HeaderText="备注" />
                                 <asp:TemplateField HeaderText="操作">
                                     <ItemTemplate>
@@ -104,8 +106,10 @@
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="btnGrid1CkAll" />
                         <asp:AsyncPostBackTrigger ControlID="btnGrid1DelSel" />
+                       
                     </Triggers>
                 </asp:UpdatePanel>
+                </div>
             </div>
         </div>
         <div id="tab2" class="tabson">
@@ -114,58 +118,61 @@
                     <ContentTemplate>
                         <div class="listtitle">
                             编辑<span style="position: relative; float: right">
+                               <asp:Button ID="btnAdd" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnAdd_Click" />
                                 <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave_Click" />
                             </span>
                         </div>
                         <table class="tablelist">
                             <tbody>
+                            <tr>
+                                    <td width="100">
+                                        检查类型:
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="listType2" runat="server" CssClass="drpdwnlist" 
+                                            AutoPostBack="True" onselectedindexchanged="listType2_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td width="100">
+                                        检查分组:
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="listSection2" runat="server" CssClass="drpdwnlist">
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+
                                 <tr>
+                                    <td width="100">
+                                        检验项目编码:
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
+                                    </td>
                                     <td width="100">
                                         检验项目名称:
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtName" runat="server" class="dfinput1"></asp:TextBox>
                                     </td>
-                                    <td width="100">
-                                        检验项目编码:
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtCode" runat="server" class="dfinput1"></asp:TextBox>
-                                    </td>
                                 </tr>
+                                
                                 <tr>
-                                    <td width="100">
-                                        工艺段:
+                                  <td width="100">
+                                        单位:
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="listSection2" runat="server" CssClass="drpdwnlist">
-                                        </asp:DropDownList>
-                                    </td>
-                                    <td width="100">
-                                        所属区域:
-                                    </td>
-                                    <td>
-                                        <asp:DropDownList ID="listArea" runat="server" CssClass="drpdwnlist">
-                                            <asp:ListItem></asp:ListItem>
-                                            <asp:ListItem>再造梗丝车间</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="100">
-                                        检查类型:
-                                    </td>
-                                    <td>
-                                        <asp:DropDownList ID="listType2" runat="server" CssClass="drpdwnlist">                                          
-                                        </asp:DropDownList>
+                                        <asp:TextBox ID="txtUnit" runat="server" class="dfinput1"></asp:TextBox>
                                     </td>
                                     <td width="100">
                                         编制人:
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtEditor" runat="server" class="dfinput1"></asp:TextBox>
+                                        <asp:DropDownList ID="listCreator" runat="server" 
+                                            CssClass="drpdwnlist" Enabled="False" >
+                                        </asp:DropDownList>
                                     </td>
-                                </tr>
+                                      </tr>
                                 <tr>
                                     <td>
                                         备注
@@ -180,6 +187,7 @@
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                        <asp:AsyncPostBackTrigger ControlID = "btnAdd" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
