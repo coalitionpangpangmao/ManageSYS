@@ -59,14 +59,14 @@
 
                  <asp:GridView ID="GridView1" runat="server" class="grid" >
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
             </asp:GridView> </div>
             </td>
              <td   colspan="2" valign="top" >
             <div style="width: 100%; height: 200px; overflow: auto;">
                  <asp:GridView ID="GridView2" runat="server" class="grid" >
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
             </asp:GridView> </div>
             </td>
 </tr>
@@ -161,7 +161,7 @@
                     <div style="width: 100%; height: 200px; overflow: auto;"> 
              <asp:GridView ID="GridView3" runat="server" class="grid" >
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
             </asp:GridView> 
                 </div>
             </td></tr>   
@@ -222,7 +222,7 @@
                     <div style="width: 100%; height: 150px; overflow: auto;"> 
              <asp:GridView ID="GridView4" runat="server" class="grid" >
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
             </asp:GridView> 
                 </div>
             </td></tr>                

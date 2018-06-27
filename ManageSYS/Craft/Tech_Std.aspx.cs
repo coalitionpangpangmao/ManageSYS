@@ -19,7 +19,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listtechC,"select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
-            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "CTRL_NAME", "ID");           
+            opt.bindDropDownList(listStatus, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");           
             opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where IS_DEL = '0'", "NAME", "ID");
              opt.bindDropDownList(listProd, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
              opt.bindDropDownList(listAprv, "select * from ht_inner_aprv_status ", "NAME", "ID");

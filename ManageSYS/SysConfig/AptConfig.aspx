@@ -33,10 +33,10 @@
             <ul class="toolbar">
                 <asp:Button ID="btnAdd" CssClass="btnadd  auth" runat="server" OnClick="btnAdd_Click"
                     Text="添加" />
-                        &nbsp; &nbsp;
+                &nbsp; &nbsp;
                 <asp:Button ID="btnView" CssClass="btnmodify  auth" runat="server" OnClick="btnView_Click"
                     Text="查看" />
-                        &nbsp; &nbsp;
+                &nbsp; &nbsp;
                 <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
             </ul>
         </div>
@@ -56,6 +56,7 @@
                         </Columns>
                         <HeaderStyle CssClass="gridheader" />
                         <RowStyle CssClass="gridrow" />
+                        <AlternatingRowStyle CssClass="gridalterrow" />
                     </asp:GridView>
                 </ContentTemplate>
                 <Triggers>
@@ -107,37 +108,33 @@
                                         <asp:TextBox ID="txtType" runat="server" class="dfinput1"></asp:TextBox>
                                     </td>
                                     <td width="100">
-                                        路径
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtpath" runat="server" class="dfinput1"></asp:TextBox>
-                                    </td>
-                                    <td width="100">
                                         权重
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtWeight" runat="server" class="dfinput1"></asp:TextBox>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td width="100">
-                                        SAP标识
+                                        主数据标识
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtSapID" runat="server" class="dfinput1"></asp:TextBox>
                                     </td>
-                                    <td width="100">
-                                        SAP记录标识
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtSAPrecodeID" runat="server" class="dfinput1"></asp:TextBox>
-                                    </td>
+                                </tr>
+                                <tr>
                                     <td width="120">
                                         角色
                                     </td>
                                     <td>
                                         <asp:DropDownList ID="listRole" runat="server" CssClass="drpdwnlist">
                                         </asp:DropDownList>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
                                     </td>
                                 </tr>
                             </tbody>

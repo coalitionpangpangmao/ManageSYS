@@ -88,7 +88,7 @@
                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click" />
                         </span>
                     </div>
-                    <div >
+                    <div>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
                             <Columns>
                                 <asp:TemplateField>
@@ -116,7 +116,8 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="发送环节名">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtFlowname" runat="server" DataValueField="发送环节名" DataTextField="发送环节名" Width = "150px"   CssClass="tbinput"></asp:TextBox>
+                                        <asp:TextBox ID="txtFlowname" runat="server" DataValueField="发送环节名" DataTextField="发送环节名"
+                                            Width="150px" CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
@@ -132,6 +133,7 @@
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
+                            <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </div>
                 </ContentTemplate>

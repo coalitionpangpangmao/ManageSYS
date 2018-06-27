@@ -23,7 +23,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
     protected void bindGrid1()
     {
-        string query = "select g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g.TOTAL_OUTPUT as 计划总产量,g.UNIT as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join ht_inner_ctrl_status g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' where g.is_del = '0'";
+        string query = "select g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g.TOTAL_OUTPUT as 计划总产量,g.UNIT as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' where g.is_del = '0'";
         if (txtYears.Text != "")
             query += " and g.plan_year = '" + txtYears.Text + "'";
         if (listSeason.SelectedValue != "")

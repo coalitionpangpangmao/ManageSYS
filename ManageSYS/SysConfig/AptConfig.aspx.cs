@@ -59,11 +59,10 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
                 txtCode.Text = data.Tables[0].Rows[0]["F_CODE"].ToString();
                 txtName.Text = data.Tables[0].Rows[0]["F_NAME"].ToString();
                 listParent.SelectedValue = data.Tables[0].Rows[0]["F_PARENTID"].ToString();
-                txtType.Text = data.Tables[0].Rows[0]["F_PRITYPE"].ToString();
-                txtpath.Text = data.Tables[0].Rows[0]["F_PATH"].ToString();
+                txtType.Text = data.Tables[0].Rows[0]["F_PRITYPE"].ToString();                
                 txtWeight.Text = data.Tables[0].Rows[0]["F_WEIGHT"].ToString();
-                txtSapID.Text = data.Tables[0].Rows[0]["F_SAPID"].ToString();
-                txtSAPrecodeID.Text = data.Tables[0].Rows[0]["F_SAP_RECORD_ID"].ToString();
+                txtSapID.Text = data.Tables[0].Rows[0]["F_KEY"].ToString();
+              
                 listRole.SelectedValue = data.Tables[0].Rows[0]["F_ROLE"].ToString();
             }
             ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
@@ -87,8 +86,8 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
     {       
        DataBaseOperator opt =new DataBaseOperator();        
         opt.UpDateOra("delete from HT_SVR_ORG_GROUP  where F_CODE = '" + txtCode.Text + "'");
-        string[] seg = { "F_CODE", "F_NAME", "F_PARENTID", "F_PRITYPE", "F_PATH", "F_WEIGHT", "F_SAPID", "F_SAP_RECORD_ID", "F_ROLE" };
-        string[] value = { txtCode.Text, txtName.Text, listParent.SelectedValue, txtType.Text, txtpath.Text, txtWeight.Text, txtSapID.Text, txtSAPrecodeID.Text, listRole.SelectedValue };      
+        string[] seg = { "F_CODE", "F_NAME", "F_PARENTID", "F_PRITYPE","F_WEIGHT", "F_KEY", "F_ROLE" };
+        string[] value = { txtCode.Text, txtName.Text, listParent.SelectedValue, txtType.Text,txtWeight.Text, txtSapID.Text,  listRole.SelectedValue };      
         opt.InsertData(seg, value, "HT_SVR_ORG_GROUP");
         bindData();
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
@@ -112,16 +111,15 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
         txtCode.Text = "";
         txtName.Text = "";
         listParent.SelectedValue = "";
-        txtType.Text = "";
-        txtpath.Text = "";
+        txtType.Text = "";     
         txtWeight.Text = "";
         txtSapID.Text = "";
-        txtSAPrecodeID.Text = "";      
+        
     } 
   
     protected void bindData()
     {
-        string query = "select  F_CODE   as 组织机构代码,F_NAME  as 组织机构名称,F_PRITYPE  as 类型,F_PATH  as 路径,F_WEIGHT  as 权重,F_PARENTID  as 父级标识,F_SAPID  as SAP标识,F_SAP_RECORD_ID  as SAP记录标识,F_ROLE as 默认角色 from HT_SVR_ORG_GROUP order by F_CODE";
+        string query = "select  F_CODE   as 组织机构代码,F_NAME  as 组织机构名称,F_PRITYPE  as 类型,F_WEIGHT  as 权重,F_PARENTID  as 父级标识,F_KEY  as 主数据标识,F_ROLE as 默认角色 from HT_SVR_ORG_GROUP order by F_CODE";
        DataBaseOperator opt =new DataBaseOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();

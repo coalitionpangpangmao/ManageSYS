@@ -22,7 +22,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join ht_inner_ctrl_status g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
+        string query = "select g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
         if (txtStart.Text != "" && txtStart.Text != "")
             query += " and PLAN_TIME between '" + txtStart.Text + "' and  '" + txtStop.Text + "'";
         DataBaseOperator opt = new DataBaseOperator();

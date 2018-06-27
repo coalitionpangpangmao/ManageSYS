@@ -22,7 +22,7 @@ public partial class left : System.Web.UI.Page
     protected string initLevel1Menu(string userID)
     {
         string resultHtml = " \t<ul id='navigation'>\r\n";
-        string query = "select distinct r.ID as userID,t.f_role ,t.f_right,q.name as prtName,q.menulevel ,q.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid  where  q.menulevel = '1' and r.ID = '" + userID + "' order by q.ID";
+        string query = "select distinct q.name as prtName ,q.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid and q.menulevel = '1' where   r.ID = '" + userID + "' and q.id is not null union select distinct q1.name as prtName,q1.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid and q.menulevel = '2' left join ht_svr_prt_menu q1 on q1.id = q.pid   where   r.ID = '" + userID + "' and q1.id is not null order by prtID";
        DataBaseOperator opt =new DataBaseOperator();
            DataSet data = opt.CreateDataSetOra(query);
            if (data != null && data.Tables[0].Rows.Count > 0)

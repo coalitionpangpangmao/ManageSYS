@@ -15,7 +15,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
         {
             DataBaseOperator opt = new DataBaseOperator();
             opt.bindDropDownList(listPro, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
-            opt.bindDropDownList(listStatus, "select * from ht_inner_ctrl_status t", "CTRL_NAME", "ID");
+            opt.bindDropDownList(listStatus, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where IS_DEL = '0'", "NAME", "ID");
         }

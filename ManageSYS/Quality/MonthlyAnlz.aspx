@@ -66,7 +66,7 @@
                     <asp:BoundField DataField="批开始时间" HeaderText="批开始时间"  />   
                 </Columns> 
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />              
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />              
             </asp:GridView>
         </td></tr>
             <tr><th>异常情况汇总
@@ -84,7 +84,7 @@
                     <asp:BoundField DataField="扣分" HeaderText="扣分"  />      
                 </Columns> 
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />              
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />              
             </asp:GridView>
         </td></tr>
         </table>
@@ -109,7 +109,7 @@
                     <asp:BoundField DataField="批开始时间" HeaderText="批开始时间"  />   
                 </Columns> 
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />              
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />              
             </asp:GridView>
         </td></tr>
             <tr><th>异常情况汇总
@@ -127,7 +127,7 @@
                     <asp:BoundField DataField="扣分" HeaderText="扣分"  />      
                 </Columns> 
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />              
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />              
             </asp:GridView>
         </td></tr>
         </table>
@@ -151,7 +151,7 @@
                     <asp:BoundField DataField="批开始时间" HeaderText="批开始时间"  />   
                 </Columns> 
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />              
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />              
             </asp:GridView>
         </td></tr>
             <tr><th>异常情况汇总
@@ -169,7 +169,7 @@
                     <asp:BoundField DataField="扣分" HeaderText="扣分"  />      
                 </Columns> 
                      <HeaderStyle CssClass="gridheader" />
-                <RowStyle CssClass="gridrow" />              
+                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />              
             </asp:GridView>
         </td></tr>
         </table>

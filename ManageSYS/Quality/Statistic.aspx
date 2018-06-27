@@ -14,21 +14,21 @@
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
     <script type="text/javascript">
-	$(document).ready(function(){
-		$("#browser").treeview({
-			toggle: function() {
-				console.log("%s was toggled.", $(this).find(">span").text());
-			}
-		});
-});
-function treeClick(code) {
-    $("#hdPrcd").val(code);
-    $("#btnPara").click();
-  
-    //在charframe中添加控件，完成数据刷新
-}
+        $(document).ready(function () {
+            $("#browser").treeview({
+                toggle: function () {
+                    console.log("%s was toggled.", $(this).find(">span").text());
+                }
+            });
+        });
+        function treeClick(code) {
+            $("#hdPrcd").val(code);
+            $("#btnPara").click();
 
-</script>
+            //在charframe中添加控件，完成数据刷新
+        }
+
+    </script>
 </head>
 <body>
     <script type="text/javascript" src="../code/highcharts.js"></script>
@@ -47,26 +47,29 @@ function treeClick(code) {
     <div class="mainbox">
         <div class="mainleft">
             <div class="leftinfo">
-              <div class="listtitle">
-                    查询条件    <asp:HiddenField ID="hdPrcd" runat="server" />
-                        <asp:Button ID="btnPara" runat="server"  CssClass = "btnhide" OnClick = "btnPara_Click" /></div>
+                <div class="listtitle">
+                    查询条件
+                    <asp:HiddenField ID="hdPrcd" runat="server" />
+                    <asp:Button ID="btnPara" runat="server" CssClass="btnhide" OnClick="btnPara_Click" /></div>
                 <div>
-                <table class = "tablelist">               
-                 <tr>
-                <td>开始时间
-                </td>
-                <td>
-                    <asp:TextBox ID="txtBtime" runat="server" CssClass = "tbinput1"></asp:TextBox>
-                </td>
-                </tr>
-                <tr>
-                 <td>结束时间
-                </td>
-                <td>
-                    <asp:TextBox ID="txtEtime" runat="server" CssClass = "tbinput1"></asp:TextBox>
-                </td>
-                </tr>
-                </table>
+                    <table class="tablelist">
+                        <tr>
+                            <td>
+                                开始时间
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtBtime" runat="server" CssClass="tbinput1"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                结束时间
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtEtime" runat="server" CssClass="tbinput1"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="listtitle">
                     工艺模型</div>
@@ -76,25 +79,27 @@ function treeClick(code) {
         </div>
         <!--mainleft end-->
         <div class="mainright">
-        <div   class="framelist">  
-    <div class="listtitle">统计数据</div>  
-    <div>
-      <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-      <ContentTemplate>
-       <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" >
-                                            
-                                            <HeaderStyle CssClass="gridheader" />
-                                            <RowStyle CssClass="gridrow" />
-                                        </asp:GridView> 
-          </ContentTemplate> 
-          <Triggers>
-          <asp:AsyncPostBackTrigger  ControlID ="btnPara" />
-          </Triggers>
-      </asp:UpdatePanel></div>
+            <div class="framelist">
+                <div class="listtitle">
+                    统计数据</div>
+                <div>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <ContentTemplate>
+                            <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
+                                <HeaderStyle CssClass="gridheader" />
+                                <RowStyle CssClass="gridrow" />
+                                <AlternatingRowStyle CssClass="gridalterrow" />
+                            </asp:GridView>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnPara" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
             </div>
             <!--mainright end-->
         </div>
-        </div>
+    </div>
     </form>
 </body>
 </html>

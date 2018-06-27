@@ -27,7 +27,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0'", "PROD_NAME", "PROD_CODE");
         opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS < '4' and is_DEL = '0'", "PLAN_NO", "PLAN_NO");
         opt.bindDropDownList(listStorage, "select * from ht_inner_mat_depot", "NAME", "ID");
-        // opt.bindDropDownList(listStatus, "select ID,ISSUE_NAME from ht_inner_ctrl_status ", "ISSUE_NAME", "ID");
+        // opt.bindDropDownList(listStatus, "select ID,ISSUE_NAME from HT_INNER_BOOL_DISPLAY ", "ISSUE_NAME", "ID");
         opt.bindDropDownList(listStatus, "select * from ht_inner_aprv_status ", "NAME", "ID");
         opt.bindDropDownList(listCreator, "select ID,Name from ht_svr_user where is_del = '0'", "Name", "ID");
         bindGrid1();
@@ -36,7 +36,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     {
         try
         {
-            string query = "select g.out_date as 领退日期,r.strg_name as 出入库类型，t.ISSUE_Name as 下发状态,g.order_sn as 单据号 ,g1.YG as 烟梗总量,g2.SP as 碎片总量,k.name as 仓库,s.name as 审批状态,h.name as 编制人,j.name as 收发人  from ht_strg_materia g left join (select main_code, sum(original_demand) as yg from ht_strg_mater_sub where main_code = '' and mater_flag = 'YG' group by main_code ) g1 on g1.main_code = g.order_sn left join (select main_code, sum(original_demand) as sp from ht_strg_mater_sub where main_code = '' and mater_flag = 'SP' group by main_code ) g2 on g2.main_code = g.order_sn left join ht_inner_ctrl_status r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join ht_inner_ctrl_status t on t.id = g.issue_status left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id left join ht_inner_mat_depot k on k.id = g.ware_house_id  where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and g.IS_DEL = '0'";
+            string query = "select g.out_date as 领退日期,r.strg_name as 出入库类型，t.ISSUE_Name as 下发状态,g.order_sn as 单据号 ,g1.YG as 烟梗总量,g2.SP as 碎片总量,k.name as 仓库,s.name as 审批状态,h.name as 编制人,j.name as 收发人  from ht_strg_materia g left join (select main_code, sum(original_demand) as yg from ht_strg_mater_sub where main_code = '' and mater_flag = 'YG' group by main_code ) g1 on g1.main_code = g.order_sn left join (select main_code, sum(original_demand) as sp from ht_strg_mater_sub where main_code = '' and mater_flag = 'SP' group by main_code ) g2 on g2.main_code = g.order_sn left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join HT_INNER_BOOL_DISPLAY t on t.id = g.issue_status left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id left join ht_inner_mat_depot k on k.id = g.ware_house_id  where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and g.IS_DEL = '0'";
             if (rdOut1.Checked)
                 query += " and g.strg_type = '0'";
             else
