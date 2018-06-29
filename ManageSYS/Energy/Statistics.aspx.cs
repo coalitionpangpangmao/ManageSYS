@@ -6,12 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Energy_Statistics : MSYS.Web.BasePage
+public partial class Energy_Statistics : System.Web.UI.Page
 {
     protected string tvHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
-        base.PageLoad(sender, e);
+        //base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             tvHtml = InitTree();

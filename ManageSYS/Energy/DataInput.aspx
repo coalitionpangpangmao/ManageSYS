@@ -10,7 +10,7 @@
 
     <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function () { 
         $(".click").click(function () {
             $(".tip").fadeIn(200);
         });
@@ -45,24 +45,38 @@
  <table class="tablelist">    	
         <tbody>
         <tr>
-        <td width="100">数据类型</td>
-        <td><asp:TextBox ID="txtID" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">工艺段</td>
-        <td><asp:TextBox ID="TextBox1" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">参数值</td>
-        <td><asp:TextBox ID="TextBox2" runat="server" class="dfinput1"    ></asp:TextBox></td>
+        <td width="100">能耗点</td>
+        <td>
+                 <asp:DropDownList ID="enegyConsumptionPoint" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+        </td>
+        <td  width="100">工序名</td>
+        <td>
+                 <asp:DropDownList ID="processName" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+        </td>
+        <td  width="100">单位</td>
+        <td>
+            <asp:DropDownList ID="department" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+        </td>
       
         </tr> 
         <tr>
-        <td width="100">父级标识</td>
-        <td><asp:TextBox ID="TextBox3" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">班组</td>
-        <td><asp:TextBox ID="TextBox4" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">班次</td>
-        <td><asp:TextBox ID="TextBox5" runat="server" class="dfinput1"    ></asp:TextBox></td>
+        <td width="100">开始时间</td>
+        <td>
+             <asp:TextBox ID="StartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>   
+        </td>
+        <td  width="100">结束时间</td>
+        <td>
+            <asp:TextBox ID="EndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox> 
+        </td>
+        <td  width="100">能耗总量</td>
+        <td><asp:TextBox ID="energyConsumption" runat="server" class="dfinput1"    ></asp:TextBox></td>
       
         </tr>
-     
+        <tr>
+            <td colspan="6">
+                备注:<asp:TextBox TextMode="MultiLine" ID="remark" runat="server" class="dfinput1"  style="width:100%;height:200px"></asp:TextBox>
+            </td>
+        </tr>
         </tbody>
         </table>
         <div class="tools">
@@ -82,7 +96,7 @@
         查看详情
         </th>
         </tr>
-        </thead>
+        </thead> 
         <tbody>
         <tr>
         <td colspan="6">
@@ -122,5 +136,6 @@
             $('.tablelist tbody tr:odd').addClass('odd');
 	</script>   
 </form>
+<script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>  
 </body>
 </html>

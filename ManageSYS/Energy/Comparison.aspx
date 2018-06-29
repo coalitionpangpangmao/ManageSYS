@@ -125,6 +125,7 @@
                                 <th>
                                     数据点：<asp:DropDownList ID="listpara" runat="server" CssClass="drpdwnlist" >
                                     </asp:DropDownList>
+                                    能源类型：<asp:DropDownList ID="energytype" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     时间：<asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"></asp:TextBox>
                                     至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"></asp:TextBox>

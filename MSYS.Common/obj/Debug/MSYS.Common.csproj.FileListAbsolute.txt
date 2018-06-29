@@ -1,0 +1,4 @@
+D:\xy_sec_edition\ManageSYS\MSYS.Common\bin\Debug\MSYS.Common.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Common\bin\Debug\MSYS.Common.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Common\obj\Debug\MSYS.Common.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Common\obj\Debug\MSYS.Common.pdb

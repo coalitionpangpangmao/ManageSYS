@@ -1,0 +1,4 @@
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\bin\Debug\MSYS.DAL.dll
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\bin\Debug\MSYS.DAL.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\obj\Debug\MSYS.DAL.dll
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\obj\Debug\MSYS.DAL.pdb

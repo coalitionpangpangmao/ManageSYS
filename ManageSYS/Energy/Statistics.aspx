@@ -56,12 +56,11 @@
         </div>
         <!--mainleft end-->
         <div class="mainright">
-            
          
                 <div class="framelist">
                     <div class="listtitle">
-                        类型查询与维护<span style="position: relative; float: right">
-                            <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview"  />
+                        能源统计数据<span style="position: relative; float: right">
+                            
                             <asp:Button ID="btnUpdate" runat="server" CssClass="btnhide" />
                             <asp:HiddenField ID="hdcode" runat="server" />
                         </span>
@@ -73,37 +72,37 @@
                                     <tbody>
                                         <tr>
                                             <td width="100">
-                                                分类名称
+                                                起始时间
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtName" runat="server" class="dfinput1"></asp:TextBox>
+                                                <asp:TextBox ID="StartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>   
                                             </td>
                                             <td width="100">
-                                                分类编码
+                                                结束时间
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtCode" runat="server" class="dfinput1"></asp:TextBox>
+                                                <asp:TextBox ID="EndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox> 
+                 
                                             </td>
                                         </tr>
                                         <tr>
                                             <td width="100">
-                                                父级分类
+                                                能源类型
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
                                             <td width="100">
-                                                是否有效
-                                            </td>
-                                            <td>
-                                                <asp:CheckBox ID="ckValid" runat="server" />
+                                                <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview"  />
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div>
-                                    <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
+                                <div id="energychart">
+                                    <div id="columnchart" style="width:50% ;float:left"></div>
+                                    <div id="piechart" style="width:50%; float:right"></div>
+                                    <!--<asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
                                         <Columns>
                                             <asp:TemplateField HeaderText="选择">
                                                 <ItemTemplate>
@@ -113,7 +112,7 @@
                                         </Columns>
                                         <HeaderStyle CssClass="gridheader" />
                                         <RowStyle CssClass="gridrow" />
-                                    </asp:GridView>
+                                    </asp:GridView>-->
                                 </div>
                             </ContentTemplate>
                             <Triggers>
@@ -129,5 +128,8 @@
     </script>
     </div>
     </form>
+    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>  
+    <script type="text/javascript" src="../code/highcharts.js"></script>
+    <script type="text/javascript" src="../js/energychart.js"></script>
 </body>
 </html>

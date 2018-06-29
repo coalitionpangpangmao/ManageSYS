@@ -6,13 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Energy_Comparison : MSYS.Web.BasePage
+public partial class Energy_Comparison : System.Web.UI.Page
 {
     protected string tvHtml;
     protected string JavaHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
-        base.PageLoad(sender, e);
+        //base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");

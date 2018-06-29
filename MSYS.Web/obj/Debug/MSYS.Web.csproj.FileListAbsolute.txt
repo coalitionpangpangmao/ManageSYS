@@ -1,0 +1,13 @@
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Web.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Web.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Common.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.DAL.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Data.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Security.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Common.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.DAL.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Data.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Web\bin\Debug\MSYS.Security.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Web\obj\Debug\MSYS.Web.csprojResolveAssemblyReference.cache
+D:\xy_sec_edition\ManageSYS\MSYS.Web\obj\Debug\MSYS.Web.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Web\obj\Debug\MSYS.Web.pdb

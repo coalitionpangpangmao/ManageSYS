@@ -19,7 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ManageSYS", "ManageSYS\", "
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "13373"
+		VWDPort = "35898"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.DAL", "MSYS.DAL\MSYS.DAL.csproj", "{A941B43C-5C79-45DD-917C-30586267DEE7}"
