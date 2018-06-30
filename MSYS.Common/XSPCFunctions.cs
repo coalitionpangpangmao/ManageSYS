@@ -1,4 +1,4 @@
-﻿namespace SPCLib
+﻿namespace MSYS.Common
 {
     using System;
     //针对数据组的操作

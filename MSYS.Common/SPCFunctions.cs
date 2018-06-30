@@ -1,5 +1,5 @@
 ﻿
-namespace SPCLib
+namespace MSYS.Common
 {
     using System;
     //针对一组数据的操作
@@ -57,7 +57,7 @@ namespace SPCLib
         {
         }
         //带入双精度数组和规格上下限
-        public SPCFunctions(object[] array, double usl, double lsl)
+        public SPCFunctions(double[] array, double usl, double lsl)
         {            
             this.USL = usl;
             this.LSL = lsl;
@@ -67,9 +67,9 @@ namespace SPCLib
             this.max = Convert.ToDouble(array[0]);
             this.min = Convert.ToDouble(array[0]);
             double sum = 0;
+            this.Samples = array;
             for (int i = 0; i < this.count; i++)
-            {
-                this.Samples[i] = Convert.ToDouble(array[i]);
+            {               
                 sum += this.Samples[i];
                 if (this.max < this.Samples[i])
                     this.max = this.Samples[i];
@@ -110,6 +110,58 @@ namespace SPCLib
 
         }
 
+        public SPCFunctions(object[] array, double usl, double lsl)
+        {
+            this.USL = usl;
+            this.LSL = lsl;
+            this.count = array.Length;
+            this.upcount = 0;
+            this.downcount = 0;
+            this.max = Convert.ToDouble(array[0]);
+            this.min = Convert.ToDouble(array[0]);
+            double sum = 0;
+            for (int i = 0; i < this.count; i++)
+            {
+                this.Samples[i] = Convert.ToDouble(array[i]);
+                sum += this.Samples[i];
+                if (this.max < this.Samples[i])
+                    this.max = this.Samples[i];
+                if (this.min > this.Samples[i])
+                    this.min = this.Samples[i];
+
+
+                if (this.Samples[i] > this.USL)
+                    this.upcount++;
+                else if (this.Samples[i] < this.LSL)
+                    this.downcount++;
+                else
+                    continue;
+            }
+            this.passcount = this.count - this.upcount - this.downcount;
+            this.uprate = this.upcount / this.count;
+            this.downrate = this.downcount / this.count;
+            this.passrate = 1 - this.uprate - this.downrate;
+            this.avg = sum / count;
+            double sum2 = 0;
+            sum = 0;
+            for (int i = 0; i < this.count; i++)
+            {
+                sum += (this.Samples[i] - this.avg) * (this.Samples[i] - this.avg);
+                sum2 += Math.Abs(this.Samples[i] - this.avg);
+            }
+            this.var = sum / (this.count - 1);
+            this.absdev = Math.Sqrt(sum2 / (this.count - 1));
+            this.stddev = Math.Sqrt(this.var);
+            this.Range = this.max - this.min;
+            this.Cp = (this.USL - this.LSL) / (6 * this.stddev);
+            this.Cr = 6 * this.stddev / (this.USL - this.LSL);
+            this.K = SPC_K();
+            this.Cpu = SPC_Cpu();
+            this.Cpl = SPC_Cpl();
+            this.Cpk = SPC_Cpk();
+            this.Cpm = SPC_Cpm();
+
+        }
         public void setSamples(double[] samples)
         {
             this.count = samples.Length;
