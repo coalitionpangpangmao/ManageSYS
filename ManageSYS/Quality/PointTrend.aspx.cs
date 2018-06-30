@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-using SPCLib;
+using MSYS.Common;
 public partial class Quality_PointTrend : MSYS.Web.BasePage
 {
     protected string tvHtml;
@@ -74,7 +74,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
     protected void btnPara_Click(object sender, EventArgs e)
     {
         ///////////////////从IH数据库中读取数据////////////////////////////////////////////////
-        IHDataOpt ihopt = new IHDataOpt();
+        MSYS.Common.IHDataOpt ihopt = new MSYS.Common.IHDataOpt();
         DataTable data = ihopt.GetIHOrgDataSet(ihopt.GetTimeSeg(txtBtime.Text, txtEtime.Text, hdPrcd.Value, listPlanno.SelectedValue));
         GridView1.DataSource = data;
         GridView1.DataBind();

@@ -130,7 +130,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
                 string paracode = item.Value;
                 string starttime = item.Text.Substring(item.Text.IndexOf('_') + 1, item.Text.IndexOf('~') - item.Text.IndexOf('_'));
                 string stoptime = item.Text.Substring(item.Text.IndexOf('~'));
-                IHDataOpt ihopt = new IHDataOpt();
+                MSYS.Common.IHDataOpt ihopt = new MSYS.Common.IHDataOpt();
                 DataRowCollection rows = ihopt.GetData(starttime, stoptime, paracode);
                 datahtml += " data:[";
                 foreach (DataRow row in rows)

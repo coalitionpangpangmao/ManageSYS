@@ -1,0 +1,68 @@
+﻿@charset "utf-8";
+
+*{font-size:9pt;border:0;margin:0;padding:0;}
+html, body{  padding:0px; margin:0 auto;min-width:980px; }
+
+ul{display:block;margin:0;padding:0;list-style:none;}
+li{display:block;margin:0;padding:0;list-style: none;}
+img{border:0;}
+dl,dt,dd,span{margin:0;padding:0;display:block;}
+a,a:focus{text-decoration:none;color:#000;outline:none;blr:expression(this.onFocus=this.blur());}
+a:hover{color:#00a4ac;text-decoration:none;}
+table{border-collapse:collapse;border-spacing: 0;}
+cite{font-style:normal;}
+h2{font-weight:normal;}
+
+
+
+.place{height:40px; background:url(../images/righttop.gif) repeat-x;}
+.place span{line-height:40px; font-weight:bold;float:left; margin-left:12px;}
+.placeul li{float:left; line-height:40px; padding-left:7px; padding-right:12px; background:url(../images/rlist.gif) no-repeat right;}
+.placeul li:last-child{background:none;}
+
+
+
+.mainbox{ width: 100%;    position: absolute;    top: 0px;    bottom: 0px;}
+
+#flowdiv{ position:absolute; width: 100%;  top: 45px; left: 0px; bottom: 0px;}
+#FlowFrame
+{
+    position:absolute; width: 100%;  height:100%;
+}
+
+/*MainFlow*/
+.mainflow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/All.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.areaZZGS1{    position: absolute;    top: 10%;    left: 20%;    width:20%;    height:20%;    cursor:pointer;}
+.areaZZGS1:hover{ background-color:rgba(255,100,100,0.2);}
+.areaZZGS2{    position: absolute;    top: 40%;    left: 10%;    width:20%;    height:20%;    cursor:pointer;}
+.areaZZGS2:hover{ background-color:rgba(255,100,100,0.2);}
+.areaZZGS3{    position: absolute;    top: 20%;    left: 30%;    width:20%;    height:20%;    cursor:pointer;}
+.areaZZGS3:hover{ background-color:rgba(255,100,100,0.2);}
+.areaZZGS4{    position: absolute;    top: 30%;    left: 50%;    width:20%;    height:20%;    cursor:pointer;}
+.areaZZGS4:hover{ background-color:rgba(255,100,100,0.2);}
+.areaZZGS5{    position: absolute;    top: 50%;    left: 70%;    width:20%;    height:20%;    cursor:pointer;}
+.areaZZGS5:hover{ background-color:rgba(255,100,100,0.2);}
+
+/*ZZGS1flow*/
+.ZZGS1flow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/ZZGS1.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.areaDev1{    position: absolute;    top: 10%;    left: 20%;    width:20%;    height:20%;    cursor:pointer;}
+.areaDev1:hover{ background-color:rgba(255,100,100,0.2);}
+
+
+.ZZGS2flow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/ZZGS2.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.ZZGS3flow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/ZZGS3.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.ZZGS4flow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/ZZGS4.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.ZZGS5flow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/ZZGS5.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.ZZGS6flow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/ZZGS6.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+
+
+
+
+
+
+
+
+
+
+
+

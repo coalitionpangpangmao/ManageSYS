@@ -1,0 +1,82 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+	 <title>test</title>	
+      <script type="text/javascript" src="../js/jquery.js"></script>
+       <style type="text/css">
+     .search{float: left;height: 22px;width: 165px;margin: 0px;padding: 0px;}
+.search .input2{padding-top:2px;height:22px;width: 155px;font-size:12px;}
+.btn{ padding:0px; margin:0px; float:left;}
+.label{color:#ccc;position:absolute;left:12px;top:0px;display:block;height:22px;line-height:22px;font-size:12px;}
+span.submit{cursor:pointer;position:absolute;left:138px;top:0px;width:20px;height:20px;text-indent:-999em;}
+.text{width:154px; HEIGHT: 200px;margin:5px 0px;padding: 0px;  background-color:#fff; overflow:hidden; position:fixed;   border:1px solid #404040;}
+.text ul {margin: 0px;padding: 0px;text-align: left;clear: left;height: auto;width: 153px;}
+.text li{height: auto;width: 153px;margin: 0px;padding: 0px;background-color:#fff;position:relative;text-indent: 5px;}
+.text p{line-height: 20px;font-size: 10px;font-family: Verdana, Arial, Helvetica, sans-serif;margin: 0px;padding: 0px;text-align: justify;font-weight: normal;color: #000000;text-indent: 10px;height: 20px;}</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("body").click = function () {
+            debugger;
+            var event = e || window.event;
+            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+            var x = event.pageX || event.clientX + scrollX;
+            // x = parseInt(x) - 200;
+            var y = event.pageY || event.clientY + scrollY;
+            var obj = $("#keytext");
+            var obj1 = $("#keyword");
+            if (!(
+        (x > obj.offsetLeft && x < (obj.offsetLeft + obj.clientWidth) && y > obj.offsetTop && y < (obj.offsetTop + obj.clientHeight)) || (x > obj1.offsetLeft && x < (obj1.offsetLeft + obj1.clientWidth) && y > obj1.offsetTop && y < (obj1.offsetTop + obj1.clientHeight))
+        )) {
+                $("#keytext").hide();
+            }
+        } 
+    });
+        
+    function keySelectHistory(e) {
+        var event = e || window.event;
+        var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        var x = event.pageX || event.clientX + scrollX;
+       // x = parseInt(x) - 200;
+        var y = event.pageY || event.clientY + scrollY;
+        $("#keytext").css({ "position": "fix", "top": y + "px", "left": x + "px" });
+        $('#keytext').show();
+    }
+    function keySelectHistory2() {
+        var key = document.getElementById('keyword').value;
+        var sendData = "key=" + key + "";      
+      // $.post("demo_ajax_gethint.html",{suggest:txt},function(result){
+      //  $("span").html(result);
+        var result = $.post("faultDbHandler.ashx", sendData, function (result) { receive_CallBack(result) });
+        $("#keyword").focusout(function () { clickkey(); });
+    }
+    function receive_CallBack(result) {        
+        if (result == false) { document.getElementById('keytext').innerHTML = ""; }
+        document.getElementById('keytext').className = "text";
+        document.getElementById('keytext').innerHTML = result;
+    }
+
+    function clickkey() {       
+        $("#keyword").val(arguments[0]);
+        $("#keytext").hide();
+    } 
+ 
+</script>
+	</head>
+
+
+	<body>
+<div class="inputdiv" style="top:215px;">
+<div class="search">
+<input name="keyword" type="text" class="input2" id="keyword" value=""  style="float:left;" onkeyup="keySelectHistory2()" onchange ="keySelectHistory2()"  onclick="keySelectHistory()"  />//文本输入框
+<input name="drpservicearea" id="drpservicearea" type="hidden" />//选择后的数字值
+<span  class="submit" onclick="return keySelectHistory();"></span></div>//下拉框的点击
+</div> 
+
+<div class="text" id = "keytext" style="display:none">
+</div>//下拉框效果    
+
+	</body>
+</html>
