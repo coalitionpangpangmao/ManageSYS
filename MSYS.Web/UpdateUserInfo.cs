@@ -8,7 +8,7 @@ using System.Xml;
 using System.Collections;
 namespace MSYS.Web
 {
-    public class UpdateUserInfo:UpdateFromMater
+    public class UpdateUserInfo:UpdateFromMaster
     {
         public UpdateUserInfo()
         {

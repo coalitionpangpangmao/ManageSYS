@@ -5,16 +5,16 @@ using System.Text;
 using System.Xml;
 namespace MSYS.Web
 {
-    public abstract class UpdateFromMater
+    public abstract class UpdateFromMaster
     {
         protected string[] seg = null;
         protected string rootname;
         protected string tablename;
-        public UpdateFromMater()
+        public UpdateFromMaster()
         {
 
         }
-        public UpdateFromMater(string[] segname, string root, string table)
+        public UpdateFromMaster(string[] segname, string root, string table)
         {
             this.seg = segname;
             this.rootname = root;

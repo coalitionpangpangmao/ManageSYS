@@ -8,7 +8,7 @@ using System.Xml;
 using System.Collections;
 namespace MSYS.Web
 {
-    public class UpdateDeptInfo:UpdateFromMater
+    public class UpdateDeptInfo:UpdateFromMaster
     {
         public UpdateDeptInfo()
         {
