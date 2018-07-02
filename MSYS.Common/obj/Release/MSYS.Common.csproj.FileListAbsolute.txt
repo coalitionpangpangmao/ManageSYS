@@ -1,0 +1,4 @@
+D:\xy_sec_edition\ManageSYS\MSYS.Common\bin\Release\MSYS.Common.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Common\bin\Release\MSYS.Common.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Common\obj\Release\MSYS.Common.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Common\obj\Release\MSYS.Common.pdb

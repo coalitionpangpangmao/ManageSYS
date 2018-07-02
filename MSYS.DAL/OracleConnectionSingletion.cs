@@ -15,7 +15,7 @@ namespace MSYS.DAL
         private OracleConnectionSingletion() { }       
 
         private static string connectionString =
-            @"Data Source=ORCL;User ID=zs18;Password= zs18;Unicode=True";
+            @"Data Source=ORCL;User ID=Zs18;Password= zs18;Unicode=True";
 
         public static OracleConnectionSingletion CreateInstance()
         {

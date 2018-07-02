@@ -1,0 +1,4 @@
+D:\xy_sec_edition\ManageSYS\MSYS.Security\bin\Debug\MSYS.Security.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Security\bin\Debug\MSYS.Security.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Security\obj\Debug\MSYS.Security.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Security\obj\Debug\MSYS.Security.pdb

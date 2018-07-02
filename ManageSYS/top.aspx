@@ -66,6 +66,8 @@ a img {
             <td width="35" class="STYLE7"><div align="center"><a href="javascript:window.parent.frames['mainFrame'].frames['rightFrame'].location.reload();;" target="rightFrame">刷新</a></div></td>
             <td width="21" class="STYLE7"><img src="images/main_21.gif" width="19" height="14" /></td>
             <td width="35" class="STYLE7"><div align="center"><a href="#" target="_parent">帮助</a></div></td>
+            <td width="21" class="STYLE7"><img src="images/main_21.gif" width="19" height="14" /></td>
+            <td width="35" class="STYLE7"><div align="center"><a href="./monitor/monitor.aspx" target="rightFrame">状态</a></div></td>
             <td>&nbsp;</td>
           </tr>
         </table></td>

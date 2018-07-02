@@ -1,0 +1,7 @@
+D:\xy_sec_edition\ManageSYS\MSYS.Data\bin\Release\MSYS.Data.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Data\bin\Release\MSYS.Data.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Data\bin\Release\MSYS.DAL.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Data\bin\Release\MSYS.DAL.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.Data\obj\Release\MSYS.Data.csprojResolveAssemblyReference.cache
+D:\xy_sec_edition\ManageSYS\MSYS.Data\obj\Release\MSYS.Data.dll
+D:\xy_sec_edition\ManageSYS\MSYS.Data\obj\Release\MSYS.Data.pdb

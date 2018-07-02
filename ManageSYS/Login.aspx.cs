@@ -45,6 +45,7 @@ public partial class Login : MSYS.Web.BasePage
         string userID = user.Text;
          
         string userPwd =  MSYS.Security.Encrypt.GetMD5String(pwd.Text);
+        System.Diagnostics.Debug.WriteLine(userPwd);
         DbOperator opt = new DbOperator();
         DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
          

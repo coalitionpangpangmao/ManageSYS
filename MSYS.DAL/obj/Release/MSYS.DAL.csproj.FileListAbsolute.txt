@@ -1,0 +1,4 @@
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\bin\Release\MSYS.DAL.dll
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\bin\Release\MSYS.DAL.pdb
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\obj\Release\MSYS.DAL.dll
+D:\xy_sec_edition\ManageSYS\MSYS.DAL\obj\Release\MSYS.DAL.pdb
