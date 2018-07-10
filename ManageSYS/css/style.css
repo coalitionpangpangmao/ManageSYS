@@ -157,7 +157,8 @@ h2{font-weight:normal;}
 /* 状态框 */
 .labstatu{height: 20px; background: #993333;  font-size: 12px; font-weight: bold;color: #fff;
     border-radius: 10px;    line-height: 20px;}
-
+.labstatuGreen{height: 20px; background: #119911;  font-size: 12px; font-weight: bold;color: #fff;
+    border-radius: 10px;    line-height: 20px;}
 /*gridview1*/
 .datable {background-color: #9FD6FF; color:#333333; font-size:12px;}
 .datable tr {height:25px;}

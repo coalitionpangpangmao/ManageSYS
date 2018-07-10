@@ -32,6 +32,7 @@ h2{font-weight:normal;}
 
 /*MainFlow*/
 .mainflow{background-position: center center; position:absolute; width: 100%; background-image: url(../images/flowChart/All.png); background-repeat: no-repeat;  background-size: 100% 100%;top: 0px; left: 0px; bottom: 0px;}
+.btnBack{position: absolute; border:solid 1px #a7b5bc;top:50px;left:10px;width:80px;height:35px; background:url(../../images/leftico03.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 .areaZZGS1{    position: absolute;    top: 10%;    left: 20%;    width:20%;    height:20%;    cursor:pointer;}
 .areaZZGS1:hover{ background-color:rgba(255,100,100,0.2);}
 .areaZZGS2{    position: absolute;    top: 40%;    left: 10%;    width:20%;    height:20%;    cursor:pointer;}

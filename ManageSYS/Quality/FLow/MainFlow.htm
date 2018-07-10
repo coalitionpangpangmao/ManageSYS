@@ -5,20 +5,37 @@
     <title></title>
     <link href="../../css/flowchart.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../js/jquery.js"></script> 
+    <script type = "text/javascript">
+        function clickArea(area) {
+            debugger;
+            var sendData = "area=" + area + "";
 
+            var result = $.post("../../Response/FlowChartHandler.ashx", 
+                                 sendData,
+                                 function (result) {
+                                        $(".mainbox").empty();
+                                        $(".mainbox").append(result);
+                                });
+        }
+
+        function clickEquip(code) {
+            window.location.href = '../DataAnlz.aspx?Equip_Code=12321432432'
+        }
+    </script>
 </head>
 <body style=" margin:0px; padding:0px; ">  
    <div   class ="mainbox"  >
     <div id = "flowchart" class = "mainflow" >
-    <div class = "areaZZGS1" onclick = "window.location.href = 'ZZGS1Flow.htm';">
+   
+    <div class = "areaZZGS1" onclick = "clickArea('ZZGS1')">
     </div>
-      <div class = "areaZZGS2" onclick = "window.location.href = 'ZZGS2Flow.htm';">
+      <div class = "areaZZGS2" onclick = "clickArea('ZZGS2')">
     </div>
-      <div class = "areaZZGS3" onclick = "window.location.href = 'ZZGS3Flow.htm';">
+      <div class = "areaZZGS3" onclick = "clickArea('ZZGS3')">
     </div>
-      <div class = "areaZZGS4" onclick = "window.location.href = 'ZZGS4Flow.htm';">
+      <div class = "areaZZGS4" onclick = "clickArea('ZZGS4')">
     </div>
-      <div class = "areaZZGS5" onclick = "window.location.href = 'ZZGS5Flow.htm';">
+      <div class = "areaZZGS5" onclick = "clickArea('ZZGS5')">
     </div>
     </div>
    </div>
