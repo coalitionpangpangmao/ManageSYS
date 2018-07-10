@@ -12,14 +12,15 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            bindGrid();        
+            bindGrid1();
+            bindGrid2();
         }
  
     }
   
-    protected void bindGrid()
+    protected void bindGrid1()
     {
-        string query = "select PROD_CODE  as 产品编码,PROD_NAME  as 产品名称,PACK_NAME  as 包装规格,HAND_MODE  as 加工方式,is_valid as 是否有效,(case B_FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态 from ht_pub_prod_design where is_del = '0'";
+        string query = "select section_code ,Weight,remark from ht_pub_tech_section  where is_del = '0' and is_valid = '1' order by section_code";
        
        DataBaseOperator opt =new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -30,19 +31,57 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
                 for (int i = 0; i < data.Tables[0].Rows.Count; i++)
                 {
                     DataRowView mydrv = data.Tables[0].DefaultView[i];
-                    ((Label)GridView1.Rows[i].FindControl("labGrid1Status")).Text = mydrv["审批状态"].ToString();
+                    ((DropDownList)GridView1.Rows[i].FindControl("listSection")).SelectedValue = mydrv["section_code"].ToString();
+                    ((TextBox)GridView1.Rows[i].FindControl("txtWeight")).Text = mydrv["Weight"].ToString();
+                    ((TextBox)GridView1.Rows[i].FindControl("txtRemark")).Text = mydrv["remark"].ToString();
+
                 }
             }
    
     }
-    protected DataSet bindInspect()
+    protected void bindGrid2()
     {
-        return null;
+        string query = "select ID,NAME,WEIGHT,REMARK from ht_qlt_weight where is_del = '0' and is_valid = '1' order by ID";
+        DataBaseOperator opt = new DataBaseOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView2.DataSource = data;
+        GridView2.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+            {
+                DataRowView mydrv = data.Tables[0].DefaultView[i];              
+                ((TextBox)GridView2.Rows[i].FindControl("txtWeight")).Text = mydrv["Weight"].ToString();
+                ((TextBox)GridView2.Rows[i].FindControl("txtRemark")).Text = mydrv["remark"].ToString();
+
+            }
+        }
+    }
+    protected DataSet bindSection()
+    {
+        DataBaseOperator opt = new DataBaseOperator();
+
+        return opt.CreateDataSetOra("select section_name, section_code  from ht_pub_tech_section  where is_del = '0' and is_valid = '1' order by section_code");
     }
 
-    protected void btnSave_Click(object sender, EventArgs e)
+    protected void btnGrid1Save_Click(object sender, EventArgs e)
     {
+        Button btn = (Button)sender;
+        int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string[] seg = {  "Weight", "remark" };
+        string[] value = { ((TextBox)GridView1.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView1.Rows[rowindex].FindControl("txtRemark")).Text };
+            DataBaseOperator opt = new DataBaseOperator();
+            opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue + "'");
+    }
 
+    protected void btnGrid2Save_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string[] seg = { "Weight", "remark" ,"CREATE_ID","CREATE_DATE"};
+        string[] value = { ((TextBox)GridView2.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView2.Rows[rowindex].FindControl("txtRemark")).Text,((MSYS.Data.SysUser)Session["User"]).Id,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+        DataBaseOperator opt = new DataBaseOperator();
+        opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[rowindex].Value.ToString() + "'");
     }
   
 

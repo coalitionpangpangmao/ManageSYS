@@ -35,17 +35,17 @@
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
-                            DataKeyNames="检查项目编码">
+                            DataKeyNames="section_code">
                             <Columns>
                                 <asp:TemplateField HeaderText = "工艺段">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listSection" runat="server" CssClass = 'drpdwnlist'  DataSource = "<%#bindInspect() %>"  DataTextField = "INSPECT_TYPE"  DataValueField = "ID">
+                                        <asp:DropDownList ID="listSection" runat="server" CssClass = 'drpdwnlist'  DataSource = "<%#bindSection() %>"  DataTextField = "SECTION_NAME"  DataValueField = "SECTION_CODE">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText = "权重">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtUpper" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
+                                        <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                  <asp:TemplateField HeaderText = "备注">
@@ -55,7 +55,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="操作">
                                     <ItemTemplate>
-                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
+                                        <asp:Button ID="btnGrid1Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid1Save_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -70,56 +70,41 @@
                 </asp:UpdatePanel>
               
         </div>
+        </div>
         <div id="tab2" class="tabson">
            <div class="framelist"> 
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <table class = "tablelist">
-                        <thead>
-                        <td>考核项</td>
-                        <td>权重</td>
-                         <td>备注</td>
-                        <td>操作</td>
-                        </thead>
-                        <tr>
-                        <td>月度在线评测得分</td>
-                         <td>
-                             <asp:TextBox ID="txtWeight1" runat="server" CssClass = 'dfinput1'></asp:TextBox>
-                         </td>
-                           <td>
-                             <asp:TextBox ID="txtRemark1" runat="server" CssClass = 'dfinput1'></asp:TextBox>
-                         </td>
-                          <td>
-                              <asp:Button ID="btnSave1" runat="server" Text="保存"  CssClass = 'btn1'/>
-                          </td>
-                        </tr>
-                        <tr>
-                        <td>成品理化指标得分</td>
-                         <td>
-                             <asp:TextBox ID="txtWeight2" runat="server" CssClass = 'dfinput1'></asp:TextBox>
-                         </td>
-                           <td>
-                             <asp:TextBox ID="txtRemark2" runat="server" CssClass = 'dfinput1'></asp:TextBox>
-                         </td>
-                          <td>
-                              <asp:Button ID="btnSave2" runat="server" Text="保存"  CssClass = 'btn1'/>
-                          </td>
-                        </tr>
-                        <tr>
-                        <td>感官评测得分</td>
-                         <td>
-                             <asp:TextBox ID="txtWeight3" runat="server" CssClass = 'dfinput1'></asp:TextBox>
-                         </td>
-                           <td>
-                             <asp:TextBox ID="txtRemark3" runat="server" CssClass = 'dfinput1'></asp:TextBox>
-                         </td>
-                          <td>
-                              <asp:Button ID="btnSave3" runat="server" Text="保存"  CssClass = 'btn1'/>
-                          </td>
-                        </tr>
-                        </table>
+                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                            DataKeyNames="ID">
+                            <Columns>
+                                
+                                <asp:BoundField DataField="NAME" HeaderText="考核项" />
+                                
+                                <asp:TemplateField HeaderText = "权重">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField HeaderText = "备注">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="操作">
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid2Save_Click" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <HeaderStyle CssClass="gridheader" />
+                            <RowStyle CssClass="gridrow" />
+                            <AlternatingRowStyle CssClass="gridalterrow" />
+                        </asp:GridView>
                     </ContentTemplate>
-                  
+                    <Triggers>                      
+                        <asp:AsyncPostBackTrigger ControlID="GridView2" />                     
+                    </Triggers>
                 </asp:UpdatePanel>
              
         </div>
@@ -128,9 +113,7 @@
     <script type="text/javascript">
         $("#usual1 ul").idTabs(); 
     </script>
-    <script type="text/javascript">
-        $('.tablelist tbody tr:odd').addClass('odd');
-    </script>
+   
     </form>
 </body>
 </html>
