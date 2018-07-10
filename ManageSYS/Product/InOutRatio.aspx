@@ -92,9 +92,9 @@
 
 </head>
 <body>
-    <script type="text/javascript" src="../code/highcharts.js"></script>
-    <script type="text/javascript" src="../code/modules/series-label.js"></script>
-    <script type="text/javascript" src="../code/modules/exporting.js"></script>
+    <script type="text/javascript" src="../js/code/highcharts.js"></script>
+    <script type="text/javascript" src="../../modules/series-label.js"></script>
+    <script type="text/javascript" src="../../modules/exporting.js"></script>
       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <form id="Form1" runat="server">
     <div class="place">

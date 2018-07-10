@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DataAnlz.aspx.cs" Inherits="Quality_PointTrend" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DataAnlz.aspx.cs" Inherits="Quality_DataAnlz" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,9 +47,9 @@
         </div>
     </div>
     </form>
-    <script type="text/javascript" src="../code/highcharts.js"></script>
-    <script type="text/javascript" src="../code/modules/series-label.js"></script>
-    <script type="text/javascript" src="../code/modules/exporting.js"></script>
+    <script type="text/javascript" src="../js/code/highcharts.js"></script>
+    <script type="text/javascript" src="../../modules/series-label.js"></script>
+    <script type="text/javascript" src="../../modules/exporting.js"></script>
     <script type="text/javascript" src="../js/msys/dataAnlz.js"></script>
 </body>
 </html>
