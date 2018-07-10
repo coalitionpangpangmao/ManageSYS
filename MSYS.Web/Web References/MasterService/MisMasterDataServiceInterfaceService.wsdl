@@ -4,8 +4,44 @@
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="getDeptInfo" type="tns:getDeptInfo" />
       <xs:element name="getDeptInfoResponse" type="tns:getDeptInfoResponse" />
+      <xs:element name="getEquiInfo" type="tns:getEquiInfo" />
+      <xs:element name="getEquiInfoResponse" type="tns:getEquiInfoResponse" />
+      <xs:element name="getMarbasclassInfo" type="tns:getMarbasclassInfo" />
+      <xs:element name="getMarbasclassInfoResponse" type="tns:getMarbasclassInfoResponse" />
+      <xs:element name="getMaterialInfo" type="tns:getMaterialInfo" />
+      <xs:element name="getMaterialInfoResponse" type="tns:getMaterialInfoResponse" />
       <xs:element name="getUserInfo" type="tns:getUserInfo" />
       <xs:element name="getUserInfoResponse" type="tns:getUserInfoResponse" />
+      <xs:complexType name="getMaterialInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMaterialInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEquiInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEquiInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMarbasclassInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMarbasclassInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getDeptInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="contentXml" type="xs:string" />
@@ -31,16 +67,46 @@
   <wsdl:message name="getUserInfo">
     <wsdl:part name="parameters" element="tns:getUserInfo" />
   </wsdl:message>
+  <wsdl:message name="getMaterialInfo">
+    <wsdl:part name="parameters" element="tns:getMaterialInfo" />
+  </wsdl:message>
+  <wsdl:message name="getMaterialInfoResponse">
+    <wsdl:part name="parameters" element="tns:getMaterialInfoResponse" />
+  </wsdl:message>
   <wsdl:message name="getDeptInfo">
     <wsdl:part name="parameters" element="tns:getDeptInfo" />
   </wsdl:message>
   <wsdl:message name="getDeptInfoResponse">
     <wsdl:part name="parameters" element="tns:getDeptInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="getEquiInfoResponse">
+    <wsdl:part name="parameters" element="tns:getEquiInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMarbasclassInfo">
+    <wsdl:part name="parameters" element="tns:getMarbasclassInfo" />
+  </wsdl:message>
   <wsdl:message name="getUserInfoResponse">
     <wsdl:part name="parameters" element="tns:getUserInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="getMarbasclassInfoResponse">
+    <wsdl:part name="parameters" element="tns:getMarbasclassInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getEquiInfo">
+    <wsdl:part name="parameters" element="tns:getEquiInfo" />
+  </wsdl:message>
   <wsdl:portType name="MisMasterDataServiceInterface">
+    <wsdl:operation name="getMaterialInfo">
+      <wsdl:input name="getMaterialInfo" message="tns:getMaterialInfo" />
+      <wsdl:output name="getMaterialInfoResponse" message="tns:getMaterialInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getEquiInfo">
+      <wsdl:input name="getEquiInfo" message="tns:getEquiInfo" />
+      <wsdl:output name="getEquiInfoResponse" message="tns:getEquiInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getMarbasclassInfo">
+      <wsdl:input name="getMarbasclassInfo" message="tns:getMarbasclassInfo" />
+      <wsdl:output name="getMarbasclassInfoResponse" message="tns:getMarbasclassInfoResponse" />
+    </wsdl:operation>
     <wsdl:operation name="getDeptInfo">
       <wsdl:input name="getDeptInfo" message="tns:getDeptInfo" />
       <wsdl:output name="getDeptInfoResponse" message="tns:getDeptInfoResponse" />
@@ -52,12 +118,39 @@
   </wsdl:portType>
   <wsdl:binding name="MisMasterDataServiceInterfaceServiceSoapBinding" type="tns:MisMasterDataServiceInterface">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getMaterialInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getMaterialInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMaterialInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEquiInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getEquiInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getEquiInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getDeptInfo">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getDeptInfo">
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getDeptInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMarbasclassInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getMarbasclassInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMarbasclassInfoResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

@@ -51,7 +51,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="IBasePage.cs" />
-    <Compile Include="UpdateFromMater.cs" />
+    <Compile Include="UpdateFromMaster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -59,12 +59,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="UpdateDeptInfo.cs" />
+    <Compile Include="UpdateMarclassInfo.cs" />
+    <Compile Include="UpdateUserInfo.cs" />
+    <Compile Include="UpdateMaterialInfo.cs" />
+    <Compile Include="UpdateEquipInfo.cs" />
     <Compile Include="Web References\MasterService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="UpdateUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSYS.Common\MSYS.Common.csproj">
