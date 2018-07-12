@@ -109,7 +109,7 @@
             <li class="click3  auth"><span>
                 <img src="../images/t03.png" /></span>删除</li>
             <asp:Button ID="btnUpdate" runat="server" OnClick="btnUpdate_Click" CssClass="btnhide" />
-            <asp:HiddenField ID="hdcode" runat="server" />
+            <asp:HiddenField ID="hdcode" runat="server" onvaluechanged="hdcode_ValueChanged" />
         </ul>
     </div>
     <div class="tip" id="addtip">

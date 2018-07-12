@@ -66,4 +66,8 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
     {
         txt2pcode.Text = list2Section.SelectedValue;
     }
+    protected void hdcode_ValueChanged(object sender, EventArgs e)
+    {
+
+    }
 }

@@ -22,7 +22,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">工艺管理</a></li>
-            <li><a href="#">工艺检查项目</a></li>
+            <li><a href="#">工艺检查项目</a></li> 
         </ul>
     </div>
     <div class="formbody">
@@ -30,7 +30,7 @@
             <div class="itab">
                 <ul>
                     <li><a href="#tab1" class="selected" id = "tabtop1">检查项目列表</a></li>
-                    <li><a href="#tab2"  id = "tabtop2">信息编辑</a></li>
+                    <li><a href="#tab2">up</a></li>
                 </ul>
             </div>
             
