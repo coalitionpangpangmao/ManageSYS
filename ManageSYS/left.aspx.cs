@@ -45,7 +45,7 @@ public partial class left : System.Web.UI.Page
         string query = "select distinct r.ID as userID,t.f_role ,t.f_right,q.name as prtName,q.menulevel ,q.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid  and q.pid = '" + prtID + "'  where  q.menulevel = '2' and r.ID = '" + userID + "' order by q.ID";
         DataBaseOperator opt = new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
-        resultHtml += "<ul>\r\n";
+        resultHtml += "<ul style='height: 300px;'>\r\n";
         resultHtml += addChildMenu(prtID, userID);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {

@@ -128,9 +128,13 @@ h2{font-weight:normal;}
 
 /*tab*/
 .itab{height:36px; border-bottom:solid 1px #d0dee5; position:relative; border-left:solid 1px #d3dbde;}
-.itab ul li{float:left;height:37px; line-height:37px; background:url(../images/itabbg.png) repeat-x; border-right:solid 1px #d3dbde;}
+.itab ul li{position:relative;float:left;height:37px; line-height:37px; background:url(../images/itabbg.png) repeat-x; border-right:solid 1px #d3dbde;}
 .itab ul li a{font-size:14px; color:#000; padding-left:25px; padding-right:25px;}
 .itab ul li a.selected{ height:37px; display:block; background:url(../images/itabbg1.png) repeat-x; font-weight:bold;}
+.itab ul li span { top: 15px; right: 0px; width: 10px;height: 10px; background-image: url(../images/close.png);        background-repeat: no-repeat;
+        background-size: 100% 100%;        display: block;        position: absolute;    }
+.itab ul li span:hover    {        top: 15px;        right: 0px;        width: 10px;        height: 10px;        background-image: url(../images/close1.png);
+        background-repeat: no-repeat;        background-size: 100% 100%;        display: block;        position: absolute; }
 .tabson{margin:18px 0px;}
 .formtext{height:45px; padding-left:25px; line-height:20px; color:#848383;}
 .formtext b{color:#d70101;}

@@ -1,0 +1,62 @@
+﻿.reporttable
+{
+    border: 3px solid #666699;
+    width: 100%;
+    clear: both;
+    padding-left: 50px;
+   
+}
+.reporttable thead th
+{
+    height: 45px;
+    border-bottom: solid 1px #b6cad2;
+    text-indent: 18px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #666699;
+    font-size: xx-large;
+    font-weight: normal;
+}
+.reporttable tbody th
+{
+    height: 30px;
+    text-indent: 14px;
+    border-right: dotted 1px #c7c7c7;
+    border: 1px solid #666699;
+    font-size: medium;
+    font-weight: normal;
+    background-color: #AAAAFF;
+}
+.reporttable td
+{
+    height: 30px;
+    text-indent: 14px;
+    border-right: dotted 1px #c7c7c7;
+    border: 1px solid #666699;
+    font-size: medium;
+    font-weight: normal;
+}
+.reporttxt
+{
+    line-height: 25px;
+    text-indent: 12px;
+    border-style: none;
+    font-size: 14px;
+    height: 30px;
+    width: 98%;
+}
+.innertable
+{
+     border: 0px solid #666699;
+    width: 100%;
+    clear: both;
+}
+.innertable td
+{
+    height: 25px;
+    text-indent: 14px;
+    border-right: dotted 1px #c7c7c7;
+    border: 1px solid #666699;
+    font-size: medium;
+    font-weight: normal;
+}

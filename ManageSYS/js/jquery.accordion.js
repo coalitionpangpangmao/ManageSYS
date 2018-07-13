@@ -61,7 +61,8 @@ $.ui.accordion = function(container, options) {
 	options.headers = $(container).find(options.header);
 	options.active = findActive(options.headers, options.active);
 
-	if ( options.fillSpace ) {
+	if (options.fillSpace) {
+	    debugger;
 		var maxHeight = $(container).parent().height();
        
 		options.headers.each(function() {
