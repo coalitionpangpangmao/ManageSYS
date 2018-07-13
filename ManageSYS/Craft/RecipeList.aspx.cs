@@ -101,7 +101,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "配方:" + GridView1.Rows[index].Cells[4].Text, mode, id, Page.Request.UserHostName.ToString() };
            DataBaseOperator opt =new DataBaseOperator();
-            if (opt.createApproval(subvalue))
+            if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '" + mode + "'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '" + mode + "'", "APRV_TABSEG") + " = '0'  where FORMULA_CODE = '" + id + "'") == "Success" ? "提交审批成功," : "提交审批失败，";
                 log_message += "业务数据ID：" + id;

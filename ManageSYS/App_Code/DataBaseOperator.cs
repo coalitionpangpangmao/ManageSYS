@@ -8,6 +8,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 using MSYS.DAL;
 using System.Collections;
+using System.Text;
 public class DataBaseOperator
 {
     private IDbOperator dboperator = null;
@@ -54,15 +55,21 @@ public class DataBaseOperator
     {
         if (seg.Length == value.Length)
         {
-            string query = "update " + table + " set ";
+            StringBuilder query = new StringBuilder();
+            query.Append("update ");
+            query.Append(table);
+            query.Append(" set ");
             for (int i = 0; i < seg.Length; i++)
             {
-                query += seg[i] + " = '" + value[i] + "' ";
+                query.Append(seg[i]);
+                query.Append(" = '");
+                query.Append(value[i]);
+                query.Append("' ") ;
                 if (i < seg.Length - 1)
-                    query += ",";
+                    query.Append(",");
             }
-            query += condition;
-            return query;
+            query.Append(condition);
+            return query.ToString() ;
         }
         else
             return "";
@@ -81,25 +88,114 @@ public class DataBaseOperator
     {
         if (seg.Length == value.Length)
         {
-            string query = "insert into " + table + "(";
+            StringBuilder query = new StringBuilder();
+            query.Append("insert into ");
+            query.Append(table);
+            query.Append("(");
             for (int i = 0; i < seg.Length; i++)
             {
-                query += seg[i];
+                query.Append(seg[i]);
                 if (i < seg.Length - 1)
-                    query += ",";
+                    query.Append(",");
             }
-            query += ")values(";
+            query.Append(")values(");
             for (int i = 0; i < value.Length; i++)
             {
-                query += "'" + value[i] + "'";
+                query.Append("'");
+                query.Append(value[i]);
+                query.Append("'");
                 if (i < seg.Length - 1)
-                    query += ",";
+                    query.Append(",");
             }
-            query += ")";
-            return query;
+            query.Append(")");
+            return query.ToString();
         }
         else
             return "";
+    }
+    public string MergeInto(string[] seg, string[] value, int key, string table)
+    {
+        string query = getMergeStr(seg, value, key, table);
+        if (query != "")
+        {
+            return UpDateOra(query);
+        }
+        else
+            return "Error!!";
+    }
+    public string getMergeStr(string[] seg, string[] value, int key, string table)
+    {
+        if (seg.Length == value.Length)
+        {
+            StringBuilder str = new StringBuilder();
+            StringBuilder updatestr = new StringBuilder();
+            StringBuilder condition  = new StringBuilder();
+            StringBuilder insertstr = new StringBuilder();            
+      
+           
+         
+            str.Append("MERGE INTO ");
+            str.Append(table);
+            str.Append(" T1 ");
+            str.Append("USING(select ");
+            updatestr.Append(" UPDATE SET "); 
+            insertstr.Append(" Insert (");
+            for (int i = 0; i < seg.Length; i++)
+            {
+                if (i != 0)
+                {
+                    str.Append(",");
+                    insertstr.Append(",");
+                    condition.Append(",");
+                }
+                //////////////////////////////////////////////
+                str.Append("'");
+                str.Append(value[i]);
+                str.Append("' AS ");
+                str.Append(seg[i]);
+                /////////////////////////////////////////////////
+                insertstr.Append(seg[i]);
+                condition.Append("'");
+                condition.Append(value[i]);
+                condition.Append("'");
+                ////////////////////////////////////////////////
+                if (i >= key)
+                {
+                    if(i>key)
+                        updatestr.Append(",");
+                    updatestr.Append("T1.");
+                    updatestr.Append(seg[i]);
+                    updatestr.Append("=");
+                    updatestr.Append("T2.");
+                    updatestr.Append(seg[i]);
+                }
+            }
+            str.Append(" from dual) T2 on(");
+            insertstr.Append(")values(");
+            insertstr.Append(condition.ToString());
+            insertstr.Append(")");
+
+            condition.Clear();
+            for (int j = 0; j < key; j++)
+            {
+                if (j != 0)
+                    condition.Append(" and ");
+                condition.Append("T1.");
+                condition.Append(seg[j]);
+                condition.Append("=");
+                condition.Append("T2.");
+                condition.Append(seg[j]);
+            }
+           
+            str.Append(condition.ToString());
+            str.Append(")");
+            str.Append(" WHEN MATCHED THEN ");           
+            str.Append(updatestr.ToString());
+            str.Append(" WHEN NOT MATCHED THEN ");
+            str.Append(insertstr);
+            return str.ToString();
+        }
+        else return "";
     }
     //插入日志记录
     public string InsertTlog(string user, string cmt, string record)
@@ -114,14 +210,17 @@ public class DataBaseOperator
     //绑定下拉表
     public void bindDropDownList(DropDownList list, string query, string textField, string valueField)
     {
-        DataSet data = CreateDataSetOra(query);
-        list.Items.Clear();
-        list.DataSource = data;
-        list.DataTextField = textField;
-        list.DataValueField = valueField;
-        list.DataBind();
-        ListItem item = new ListItem("", "");
-        list.Items.Insert(0, item);
+        
+            DataSet data = CreateDataSetOra(query);
+            list.Items.Clear();
+            list.DataSource = data;
+            list.DataTextField = textField;
+            list.DataValueField = valueField;
+            list.DataBind();
+            ListItem item = new ListItem("", "");
+            list.Items.Insert(0, item);
+       
+
     }
     //通过查询语句获取某一字段值
     public string GetSegValue(string query, string seg)
@@ -183,95 +282,7 @@ public class DataBaseOperator
             return false;
     }
 
-    #region Approval
-    //审批相关操作
-    public bool createApproval(string[] keys)//启动审批/*TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id, 单独登录url,*/
-    {        
-        MSYS.Data.SysUser user = (MSYS.Data.SysUser)HttpContext.Current.Session["user"];
-        string[] seg = { "TB_ZT", "MODULENAME", "BUSIN_ID", "URL", "TBR_ID", "TBR_NAME", "TB_BM_ID",  "TB_DATE" };//TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_DATE申请时间创建日期
-        string[] value = { keys[0], keys[1], keys[2], keys[3], user.Id, user.Name, user.OwningBusinessUnitId,  System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-        if (seg.Length == value.Length)
-        {
-            if ("Success" == InsertData(seg, value, "HT_PUB_APRV_FLOWINFO"))
-            {
-                string id = GetSegValue("select Max(ID) as ID from HT_PUB_APRV_FLOWINFO", "ID");
-                string query = "select * from HT_PUB_APRV_MODEL where PZ_TYPE = '" + value[1] + "' order by INDEX_NO";
-                DataSet data = CreateDataSetOra(query);
-                if (data != null && data.Tables[0].Rows.Count > 0)
-                {
-                    foreach (DataRow row in data.Tables[0].Rows)
-                    {
-
-                        string enable = "0";
-                        if ("1" == row["INDEX_NO"].ToString())
-                        {
-                            enable = "1";
-                            string[] subseg = { "GONGWEN_ID", "ROLENAME", "POS", "WORKITEMID", "ISENABLE", "USERID", "USERNAME", "OPINIONTIME", "COMMENTS", "STATUS" };
-                            string[] subvalue = { id, row["ROLE"].ToString(), row["INDEX_NO"].ToString(), row["FLOW_NAME"].ToString(), enable, user.Id, user.Name, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "提交", "2" };
-                            InsertData(subseg, subvalue, "HT_PUB_APRV_OPINION");
-                        }
-                        else
-                        {
-                            if ("2" == row["INDEX_NO"].ToString())
-                                enable = "1";
-                            string[] subseg = { "GONGWEN_ID", "ROLENAME", "POS", "WORKITEMID", "ISENABLE" };
-                            string[] subvalue = { id, row["ROLE"].ToString(), row["INDEX_NO"].ToString(), row["FLOW_NAME"].ToString(), enable };
-                            InsertData(subseg, subvalue, "HT_PUB_APRV_OPINION");
-                        }
-                    }
-                }
-            }
-            return true;
-
-        }
-        else
-            return false;
-
-    }
-    public bool authorize(string ID, string[] keys)//审批后更新表ID为流程号，value分别为USERID  用户id,USERNAME  用户名,COMMENTS  意见内容,OPINIONTIME  意见填写日期,STATUS  状态
-    {
-        MSYS.Data.SysUser user = (MSYS.Data.SysUser)HttpContext.Current.Session["user"];
-        string[] seg = { "USERID", "USERNAME", "OPINIONTIME", "COMMENTS", "STATUS" };
-        string[] value = {user.Id, user.Name, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), keys[0], keys[1] };
-        if (seg.Length == value.Length)
-        {
-            //string query = "select * from ht_pub_aprv_opinion where gongwen_ID = (select gongwen_ID from ht_pub_aprv_opinion where id = '" + ID + "') and pos < (select pos from ht_pub_aprv_opinion where id = '" + ID + "') and status <'2'";//找到当前明细审批对应的主审批ID，查看比之顺序号小的业务是不是有未办理或己经被驳回的业务，如果有则逻辑出错，返回；如果没有执行下一步操作          
-
-            UpDateData(seg, value, "HT_PUB_APRV_OPINION", " where id = '" + ID + "'");
-            UpDateOra("update HT_PUB_APRV_OPINION set ISENABLE = '1' where id = '" + (Convert.ToInt16(ID) + 1).ToString() + "'");
-            DataSet data = CreateDataSetOra("select s.id,t.aprv_table,t.aprv_tabseg,t.BUZ_ID,s.BUSIN_ID from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo  s on s.id = r.gongwen_id left join ht_pub_aprv_type t on t.pz_type = s.modulename  where r.id = '" + ID + "'");
-            string flowid = data.Tables[0].Rows[0][0].ToString();
-            string table = data.Tables[0].Rows[0][1].ToString();
-            string tableseg = data.Tables[0].Rows[0][2].ToString();
-            string busid = data.Tables[0].Rows[0][3].ToString();
-            string busvalue = data.Tables[0].Rows[0][4].ToString();
-            if (keys[1] == "1")//如果明细审批单步被拒绝，则整个审批单状态被置为己驳回
-            {
-                UpDateOra("Update HT_PUB_APRV_FLOWINFO set STATE = '1' where id = '" + flowid + "'");
-                //将业务主表的审批字段置为己驳回
-                UpDateOra("update " + table + " set " + tableseg + " = '1' where " + busid + " = '" + busvalue + "'");
-            }
-
-            else//如果明细审批单所有流程均通过，则整个审批单状态被置为己通过
-            {
-                data = CreateDataSetOra("select status,GONGWEN_ID from ht_pub_aprv_opinion where pos = (select Max(pos) from ht_pub_aprv_opinion where gongwen_ID = (select gongwen_ID from ht_pub_aprv_opinion where id = '" + ID + "')) and id = '" + ID + "'");
-                if (data != null && data.Tables[0].Rows.Count > 0 && data.Tables[0].Rows[0][0].ToString() == "2")
-                {
-                    ArrayList commandlist = new ArrayList();
-                    commandlist.Add("Update HT_PUB_APRV_FLOWINFO set STATE = '2' where id = '" + flowid + "'");
-                    commandlist.Add("update " + table + " set " + tableseg + " = '2' where " + busid + " = '" + busvalue + "'");
-                    TransactionCommand(commandlist);                  
-                }
-                //将业务主表的审批字段置为己通过
-               
-            }
-            return true;
-
-        }
-        return false;
-    }
-
-    #endregion
+    
 
 
 }

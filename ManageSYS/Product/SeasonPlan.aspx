@@ -136,8 +136,7 @@
                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
-                    <Triggers>                      
-                       
+                    <Triggers>     
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="btnModify" />
                         <asp:AsyncPostBackTrigger ControlID="Gridview1" />

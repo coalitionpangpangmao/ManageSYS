@@ -24,7 +24,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         opt.bindDropDownList(listcoat, "select  Formula_code, FORMULA_NAME  from HT_QA_coat_FORMULA where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");       
         opt.bindDropDownList(listMtrl, "select Formula_code, FORMULA_NAME  from ht_qa_mater_formula where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
         opt.bindDropDownList(listTechStd, "select distinct tech_code,tech_name from ht_tech_stdd_code where is_valid = '1' and is_del = '0'", "tech_name", "tech_code");
-        opt.bindDropDownList(listqlt, "select QLT_CODE,QLT_NAME from ht_qlt_stdd_code where is_del = '0' and is_valid = '1'", "QLT_NAME", "QLT_NAME");
+        opt.bindDropDownList(listqlt, "select QLT_CODE,QLT_NAME from ht_qlt_stdd_code where is_del = '0' and is_valid = '1'", "QLT_NAME", "QLT_CODE");
     }
     protected void bindGrid()
     {
@@ -115,7 +115,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = {"产品:"+ GridView1.Rows[index].Cells[4].Text, "02", id, Page.Request.UserHostName.ToString() };
            DataBaseOperator opt =new DataBaseOperator();
-            if (opt.createApproval(subvalue))
+            if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 string log_message = opt.UpDateOra("update HT_PUB_PROD_DESIGN set B_FLOW_STATUS = '0'  where PROD_CODE = '" + id + "'") == "Success" ? "提交审批成功" : "提交审批失败";
                 log_message += ", 业务数据ID：" + id;
@@ -143,10 +143,10 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     {
 
         DataBaseOperator opt = new DataBaseOperator();
-        opt.UpDateOra("delete from HT_PUB_PROD_DESIGN where PROD_CODE = '" + txtCode.Text + "'");
+       
         string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK" };
         string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text };
-        string log_message = opt.InsertData(seg, value, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
+        string log_message = opt.MergeInto(seg, value,1, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
         log_message += "产品信息：" + string.Join(" ", value);
         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         bindGrid();     

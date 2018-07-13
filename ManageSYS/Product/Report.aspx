@@ -7,10 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>生产报表</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript" src="../js/select-ui.min.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
 	<link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
 	<script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
@@ -24,23 +22,15 @@
 			}
 		});
 });
-function addclick() {
-    // $("#hidecode").val($("#hidecode").val() + 1);
-    var temp = $("#tabtop1").parent();
-    debugger;
-    $("#tabtop1").parent().after("<li ><a href='#tab2' id = 'tabtop2'>报表2</a></li> ");
-    $("#tab1").after("<div id='tab2' class='tabson'><iframe name= 'Frame2' src='../Report/产入产出表.htm' height='400'  style='width: 100%; position: relative; '></iframe></div>");
-    $("#usual1 ul").idTabs();
-    $("#tabtop2").click();
-}
-$("#tabtop2").dblclick(function () {
-    $("#tab2").remove();
-    $("#tabtop2").parent().remove();
-    $("#usual1 ul").idTabs();
-})
-
-
-
+	function hidetab(tab) {	   
+	    $(tab).parent().hide();
+	    $("#tabtop1").click();   
+	}
+	function addclick() {
+	    // $("#hidecode").val($("#hidecode").val() + 1);
+	    $("#tabtop2").parent().show();	  
+	    $("#tabtop2").click();
+	}
     </script>
 </head>
 <body>
@@ -68,6 +58,7 @@ $("#tabtop2").dblclick(function () {
                 <div class="itab">
                     <ul>  
                     <li ><a href="#tab1" id = "tabtop1" class="selected">当前生产详情</a></li>    
+                        <li ><a href='#tab2' id = 'tabtop2'>报表2</a><span  onclick ="hidetab('#tabtop2');"></span></li> 
                     </ul>
                 </div>
                 </div>
@@ -76,21 +67,8 @@ $("#tabtop2").dblclick(function () {
                         style="width: 100%; position: relative; ">
                     </iframe>
             </div>
-        <!--        <div id="tab2" class="tabson">
-                    <iframe name= "Frame2" src="MtrRecipe.aspx" height="400" scrolling="no" style="width: 100%; position: relative">
-                    </iframe>
-                </div>
-                <div id="tab3" class="tabson">
-                    <iframe name= "Frame3" src="MtrRecipe.aspx" height="400" scrolling="no"  style="width: 100%; position: relative; "></iframe>
-                </div>
-                <div id="tab4" class="tabson">
-                    <iframe name= "Frame4" src="MtrRecipe.aspx" height="400" scrolling="no"  style="width: 100%; position: relative; ">
-                    </iframe>
-                </div>
-                     <div id="tab5" class="tabson">
-                    <iframe name= "Frame5" src="MtrRecipe.aspx" height="400" scrolling="no"  style="width: 100%; position: relative; ">
-                    </iframe>
-                </div>-->
+            <div id='tab2' class='tabson'><iframe name= 'Frame2' src='../Report/产入产出表.htm' height='400'  style='width: 100%; position: relative; '></iframe></div>
+     
             </div>        
         </div>
         <!--mainright end-->

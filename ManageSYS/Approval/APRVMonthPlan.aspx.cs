@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-
+using System.Text;
 public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
 {
     protected string AprvtableHtml;
@@ -109,7 +109,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
                 if (((CheckBox)GridView1.Rows[i].FindControl("ckBox")).Checked)
                 {                   
                     string[] value = {"","2"};
-                    if (opt.authorize(GridView1.DataKeys[i].Values[0].ToString(), value))
+                    if (MSYS.Common.AprvFlow.authorize(GridView1.DataKeys[i].Values[0].ToString(), value))
                         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批成功, 参数：" + "2");
                     else
                         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批失败， 参数：" + "2");
@@ -162,30 +162,33 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
         string query = "select s.tb_zt, s.tbr_name,s.tb_date,s.tb_bm_name,s.remark,r.rolename, r.pos,r.username,r.comments,r.opiniontime, r.status,r.workitemid from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on s.id = r.gongwen_id where r.gongwen_id = '" + id + "' order by pos";
        DataBaseOperator opt =new DataBaseOperator();
         DataSet data = opt.CreateDataSetOra(query);
+
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            string aprvstr = "<table class = 'aprvtablelist'><tr><th colspan='4'>";
-            aprvstr += data.Tables[0].Rows[0][0].ToString();
-            aprvstr += "</th></tr>";
-            aprvstr += "<tbody><tr><td> 申请人</td><td>";
-            aprvstr += data.Tables[0].Rows[0][1].ToString();
-            aprvstr += "</td><td>申请时间</td><td>";
-            aprvstr += data.Tables[0].Rows[0][2].ToString();
-            aprvstr += "</td></tr><tr><td>申请部门</td><td colspan='3'>";
-            aprvstr += data.Tables[0].Rows[0][3].ToString();
-            aprvstr += "</td></tr><tr><td>备注</td><td colspan='3'>";
-            aprvstr += data.Tables[0].Rows[0][4].ToString();
-            aprvstr += "</td></tr>";
+            StringBuilder str = new StringBuilder();
+           
+            str.Append("<table class = 'aprvtablelist'><tr><th colspan='4'>");
+            str.Append(data.Tables[0].Rows[0][0].ToString());
+            str.Append("</th></tr>");
+            str.Append("<tbody><tr><td> 申请人</td><td>");
+            str.Append(data.Tables[0].Rows[0][1].ToString());
+            str.Append("</td><td>申请时间</td><td>");
+            str.Append(data.Tables[0].Rows[0][2].ToString());
+            str.Append("</td></tr><tr><td>申请部门</td><td colspan='3'>");
+            str.Append(data.Tables[0].Rows[0][3].ToString());
+            str.Append("</td></tr><tr><td>备注</td><td colspan='3'>");
+            str.Append(data.Tables[0].Rows[0][4].ToString());
+            str.Append("</td></tr>");
             foreach (DataRow row in data.Tables[0].Rows)
             {
-                aprvstr += "<tr><td>";
-                aprvstr += row["rolename"].ToString() + "意见";
-                aprvstr += "</td><td colspan='3'>";
-                aprvstr += row["comments"].ToString() + "(" + row["username"].ToString() + row["opiniontime"].ToString() + ")";
-                aprvstr += "</td></tr>";
+                str.Append("<tr><td>");
+                str.Append(row["rolename"].ToString() + "意见");
+                str.Append("</td><td colspan='3'>");
+                str.Append(row["comments"].ToString() + "(" + row["username"].ToString() + row["opiniontime"].ToString() + ")");
+                str.Append("</td></tr>");
             }
-            aprvstr += "<tr><td>说明</td><td colspan='3'><asp:TextBox ID='AprvDscrpt' runat='server'  CssClass = 'aprvtxt' Height = '70px' ></asp:TextBox></td></tr></tbody></table>";
-            return aprvstr;
+            str.Append("<tr><td>说明</td><td colspan='3'><asp:TextBox ID='AprvDscrpt' runat='server'  CssClass = 'aprvtxt' Height = '70px' ></asp:TextBox></td></tr></tbody></table>");
+            return str.ToString();
         }
         else
         return "";
@@ -202,7 +205,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
          else
              status = "1";
          string[] seg = {txtComments.Text,status};
-         if (opt.authorize(hideAprvid.Value, seg))
+         if (MSYS.Common.AprvFlow.authorize(hideAprvid.Value, seg))
              opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "通过审批, 保存参数:" + string.Join(" ", seg));
          else
              opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批失败, 保存参数:" + string.Join(" ", seg));

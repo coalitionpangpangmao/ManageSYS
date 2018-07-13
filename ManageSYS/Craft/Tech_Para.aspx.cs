@@ -77,16 +77,21 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
             type += "1";
         else
             type += "0";
+        if (ckCalibrate.Checked)
+            type += "1";
+        else
+            type += "0";
         return type;
     }
     protected void setType(string Type)
     {
-        if (Type.Length >= 4)
+        if (Type.Length >= 5)
         {
-            ckCenterCtrl.Checked = Convert.ToBoolean(Convert.ToInt16(Type.Substring(0, 1)));
-            ckRecipePara.Checked = Convert.ToBoolean(Convert.ToInt16(Type.Substring(1, 1)));
-            ckSetPara.Checked = Convert.ToBoolean(Convert.ToInt16(Type.Substring(2, 1)));
-            ckQuality.Checked = Convert.ToBoolean(Convert.ToInt16(Type.Substring(3, 1)));
+            ckCenterCtrl.Checked =("1"==Type.Substring(0, 1));
+            ckRecipePara.Checked = ("1" == Type.Substring(1, 1));
+            ckSetPara.Checked = ("1" == Type.Substring(2, 1));
+            ckQuality.Checked = ("1" == Type.Substring(3, 1));
+            ckCalibrate.Checked = ("1" == Type.Substring(4, 1));
         }
     }
     protected void btnModify_Click(object sender, EventArgs e)

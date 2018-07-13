@@ -73,8 +73,7 @@
                 <asp:CheckBox ID="ckRecipePara" runat="server" Text="工艺参数" />
                 <asp:CheckBox ID="ckSetPara" runat="server" Text="设备参数" />
                  <asp:CheckBox ID="ckQuality" runat="server" Text="质量统计" />
-                  <asp:CheckBox ID="ckQltManual" runat="server" Text="质量检查" />
-                    <asp:CheckBox ID="CheckBox1" runat="server" Text="计量检查" />
+                    <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" />
             </p>
     
         </td>       

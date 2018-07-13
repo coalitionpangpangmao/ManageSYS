@@ -415,7 +415,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "工艺标准:" + txtName.Text, "04", txtCode.Text, Page.Request.UserHostName.ToString() };
             DataBaseOperator opt = new DataBaseOperator();
-            if (opt.createApproval(subvalue))
+            if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABSEG") + " = '0'  where TECH_CODE = '" + txtCode.Text + "'") == "Success" ? "提交审批成功," : "提交审批失败，";
                 if (log_message == "提交审批成功") listAprv.SelectedValue = "0";

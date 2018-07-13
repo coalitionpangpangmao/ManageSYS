@@ -9,20 +9,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript">
-       
-        function GridClick(code) {
-            $('#tabtop2').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -253,7 +240,7 @@
 
          <div class="aprvinfo" id="flowinfo">
             <div class="tiptop">
-                <span>审批流程详情</span><a onclick = "Aprvlisthide()"></a></div>
+                <span>审批流程详情</span><a onclick = " $('#flowinfo').fadeOut(100);"></a></div>
             <div class="flowinfo">  
                      <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>        

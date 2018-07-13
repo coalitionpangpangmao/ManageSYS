@@ -49,7 +49,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
     }
 
     //查
@@ -135,7 +135,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             txtYear.Text = GridView1.Rows[Rowindex].Cells[2].Text.Substring(0, 4);
             listMonth.SelectedValue = GridView1.Rows[Rowindex].Cells[2].Text.Substring(5, 2);
             bindGrid2(id);
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
             //   string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
             //  DataBaseOperator opt =new DataBaseOperator();
             //   opt.UpDateOra(query);
@@ -156,7 +156,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         DataBaseOperator opt = new DataBaseOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#flowinfo').fadeIn(200);", true);
     }
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
     {
@@ -168,7 +168,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { GridView1.Rows[index].Cells[2].Text, "06", id, Page.Request.UserHostName.ToString() };
             DataBaseOperator opt = new DataBaseOperator();
-            if (opt.createApproval(subvalue))
+            if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 opt.UpDateOra("update ht_prod_month_plan set B_FLOW_STATUS = '0'  where ID = '" + id + "'");
             }
