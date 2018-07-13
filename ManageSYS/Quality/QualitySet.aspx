@@ -189,9 +189,9 @@
                                                 <ItemTemplate>
                                                 <asp:DropDownList ID="listtype" runat ="server" DataSource ="<%#typebind() %>" DataValueField ="ID" DataTextField ="NAME" CssClass ="drpdwnlist" Width ="80px"></asp:DropDownList>                                                </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="工艺段" >
+                                            <asp:TemplateField HeaderText="超限扣分" >
                                                 <ItemTemplate>
-                                                        <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
+                                                        <asp:TextBox ID="txtScore" runat="server" DataValueField="超限扣分" DataTextField="超限扣分"
                                                         CssClass="tbinput"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>

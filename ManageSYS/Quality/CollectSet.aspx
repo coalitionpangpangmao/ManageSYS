@@ -19,9 +19,9 @@
                     console.log("%s was toggled.", $(this).find(">span").text());
                 }
             });
+            $('.gapinfo').hide();
         });
-        function treeClick(code) {
-            debugger;
+        function treeClick(code) {           
             $("#hidecode").val(code);
             $("#btnView").click();
 
@@ -113,11 +113,11 @@
                                                 <asp:ListItem>其它</asp:ListItem>
                                             </asp:DropDownList>
                                         </td>
-                                        <td width="100px">
-                                            采集周期
+                                       <td>
+                                            单位
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtPeriodic" runat="server" CssClass="dfinput1"></asp:TextBox>
+                                            <asp:TextBox ID="txtUnit" runat="server" CssClass="dfinput1" Enabled="False"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -130,10 +130,11 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            断流监控标签：
+                                            断流监控点：
                                         </td>
                                         <td colspan="3">
-                                            <asp:TextBox ID="txtCutoffTag" runat="server" CssClass="dfinput"></asp:TextBox>
+                                            <asp:RadioButton ID="rdYes" runat="server" Text="是" GroupName="gapnode" onclick ="$('.gapinfo').show();" />
+                                              <asp:RadioButton ID="rdNo" runat="server" Text="否" GroupName="gapnode" onclick ="$('.gapinfo').hide();" Checked="True"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -155,87 +156,88 @@
                                             数采条件表
                                         </th>
                                     </tr>
-                                    <tr>
+                                    <tr>  
                                         <td>
-                                            批头批尾:
+                                            判定值：
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="TailList" runat="server" CssClass="drpdwnlist">
-                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtRstValue" runat="server" CssClass="tbinput"></asp:TextBox>
+                                        </td>
+                                   
+                                        <td>
+                                            批头延时:
                                         </td>
                                         <td>
-                                            比较符：
+                                            <asp:TextBox ID="txtBatchHDelay" runat="server" CssClass="tbinput">0</asp:TextBox>
+                                            秒
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="TailSignList" runat="server" CssClass="drpdwnlist" Width="50px">
-                                                <asp:ListItem>&lt;=</asp:ListItem>
-                                            </asp:DropDownList>
+                                            批尾延时：
                                         </td>
-                                        <td>
-                                            目标值：
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtTailValue" runat="server" CssClass="tbinput"></asp:TextBox>
+                                        <td >
+                                            <asp:TextBox ID="txtBatchTDelay" runat="server" CssClass="tbinput">0</asp:TextBox>
+                                            秒
                                         </td>
                                     </tr>
                                     <tr>
+                                          <td >
+                                            采集周期
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtPeriodic" runat="server" CssClass="tbinput"></asp:TextBox>
+                                        </td>
                                         <td>
                                             料头延时:
                                         </td>
-                                        <td>
-                                            <asp:TextBox ID="txtHeadDelay" runat="server" CssClass="tbinput"></asp:TextBox>
+                                        <td >
+                                            <asp:TextBox ID="txtHeadDelay" runat="server" CssClass="tbinput">0</asp:TextBox>
                                             秒
                                         </td>
                                         <td>
                                             料尾延时：
                                         </td>
-                                        <td colspan="3">
-                                            <asp:TextBox ID="txtTailDelay" runat="server" CssClass="tbinput"></asp:TextBox>
+                                        <td >
+                                            <asp:TextBox ID="txtTailDelay" runat="server" CssClass="tbinput">0</asp:TextBox>
                                             秒
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            断流:
+                                    <tr >
+                                         <td>
+                                            数据点名称
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="LogicList" runat="server" CssClass="drpdwnlist">
+                                            <asp:DropDownList ID="listGappoint" runat="server" CssClass="drpdwnlist" AutoPostBack="True" Width ="70px">
                                             </asp:DropDownList>
                                         </td>
-                                        <td>
-                                            比较符：
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="SignList" runat="server" CssClass="drpdwnlist" Width="50px">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td>
-                                            目标值：
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtDesValue" runat="server" CssClass="tbinput"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td>
                                             断流前偏移
                                         </td>
-                                        <td>
-                                            <asp:TextBox ID="txtBatchHeadDelay" runat="server" CssClass="tbinput"></asp:TextBox>秒
+                                        <td >
+                                            <asp:TextBox ID="txtGapHeadDelay" runat="server" CssClass="tbinput">0</asp:TextBox>秒
                                         </td>
                                         <td>
                                             断流后偏移
                                         </td>
-                                        <td>
-                                            <asp:TextBox ID="txtBatchTailDelay" runat="server" CssClass="tbinput"></asp:TextBox>秒
+                                        <td >
+                                            <asp:TextBox ID="txtGapTailDelay" runat="server" CssClass="tbinput">0</asp:TextBox>秒
                                         </td>
+                                       
+                                    </tr>
+                                    <tr  class ="gapinfo">                                     
                                         <td>
+                                            断流判定值：
+                                        </td>
+                                        <td colspan="2">
+                                            <asp:TextBox ID="txtGapRst" runat="server" CssClass="tbinput"></asp:TextBox>
+                                        </td>
+                                         <td>
                                             判定时长
                                         </td>
-                                        <td>
-                                            <asp:TextBox ID="txtTimeseg" runat="server" CssClass="tbinput"></asp:TextBox>秒
+                                        <td colspan="2">
+                                            <asp:TextBox ID="txtGapTime" runat="server" CssClass="tbinput"></asp:TextBox>秒
                                         </td>
                                     </tr>
+                                    
                                     <tr>
                                         <td align="center" colspan="6">
                                             &nbsp;
@@ -248,16 +250,7 @@
                                 </table>
                             </td>
                         </tr>
-                        <tr>
-                            <td width="95%">
-                                <div style="overflow: auto; height: 100px">
-                                    <asp:GridView ID="GridView1" runat="server" class="grid">
-                                        <HeaderStyle CssClass="gridheader" />
-                                         <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
-                                    </asp:GridView>
-                                </div>
-                            </td>
-                        </tr>
+                        
                     </table>
                 </ContentTemplate>
                 <Triggers>

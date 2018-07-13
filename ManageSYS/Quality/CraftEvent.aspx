@@ -18,7 +18,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">质量评估</a></li>
-                <li><a href="#">工艺事件</a></li>
+                <li><a href="#">工艺事件确认</a></li>
             </ul>
         </div>
 

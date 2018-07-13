@@ -63,28 +63,16 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             txtDscpt.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
            
         }
-        bindGrid(qltcode,hideprc.Value);
+        
     }
-    protected void bindGrid(string rcpcode,string section)
+    protected void bindGrid(string qlt_code, string section)
     {
-        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g2.section_name as 工艺段,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + rcpcode + "' and g2.section_code = '" + section + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+
+        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + qlt_code + "' and g2.section_code = '" + section + "'";
+        DataBaseOperator opt = new DataBaseOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
-        if (data == null)
-        {            
-            data = new DataTable();
-            data.Columns.Add("参数编码");
-            data.Columns.Add("下限");
-            data.Columns.Add("上限");
-            data.Columns.Add("考核类型");
-            data.Columns.Add("工艺段");
-            data.Columns.Add("备注");
-        }
-        object[] value = { "", 0, 0, "1", section, "" };
-        data.Rows.Add(value);
-
-        bindgrid(data,section);
+        bindgrid(data, hideprc.Value);
     }
     protected void bindgrid(DataTable data,string section)
     {
@@ -97,12 +85,12 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             {
                 DataRowView mydrv = data.DefaultView[i];
                 DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listParaName");
-                opt.bindDropDownList(list, "select * from HT_PUB_TECH_PARA where is_del = '0' and substr(PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
+                opt.bindDropDownList(list, "select * from HT_PUB_TECH_PARA where  para_type like '___1%' and is_del = '0' and substr(PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
                 list.SelectedValue = mydrv["参数编码"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtLower")).Text = mydrv["下限"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtUpper")).Text = mydrv["上限"].ToString();
                 ((DropDownList)GridView1.Rows[i].FindControl("listtype")).SelectedValue = mydrv["考核类型"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtSection")).Text = mydrv["工艺段"].ToString();
+                ((TextBox)GridView1.Rows[i].FindControl("txtScore")).Text = mydrv["超限扣分"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtDscrptM")).Text = mydrv["备注"].ToString();
 
 
@@ -113,11 +101,28 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     protected DataSet typebind()
     {
         DataBaseOperator opt = new DataBaseOperator();
-        return opt.CreateDataSetOra("select * from ht_inner_qlt_type ");
+        return opt.CreateDataSetOra("select * from ht_inner_qlt_type order by ID ");
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        bindGrid(txtCode.Text, hideprc.Value);
+        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
+        DataBaseOperator opt = new DataBaseOperator();
+        DataSet set = opt.CreateDataSetOra(query);
+        DataTable data = set.Tables[0];
+        if (data == null)
+        {
+            data = new DataTable();
+            data.Columns.Add("参数编码");
+            data.Columns.Add("下限");
+            data.Columns.Add("上限");
+            data.Columns.Add("考核类型");
+            data.Columns.Add("超限扣分");
+            data.Columns.Add("备注");
+        }
+        object[] value = { "", 0, 0, "1", 0, "" };
+        data.Rows.Add(value);
+
+        bindgrid(data, hideprc.Value);
     }
 
     protected void btnNew_Click(object sender, EventArgs e)
@@ -143,7 +148,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
          string[] seg = { "QLT_CODE", "QLT_NAME", "STANDARD_VOL", "B_DATE", "E_DATE", "CREATE_ID", "CREATE_DATE", "REMARK" };
             string[] value = { txtCode.Text, txtName.Text,  txtVersion.Text, txtExeDate.Text, txtEndDate.Text,((MSYS.Data.SysUser)Session["User"]).Id, txtCrtDate.Text,  txtDscpt.Text, };
             opt.MergeInto(seg, value, 1, "HT_QLT_STDD_CODE");           
-        bindGrid(txtCode.Text,hideprc.Value);
+       
         opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
         opt.bindDropDownList(listtech, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
         opt.bindDropDownList(listtechC, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
@@ -223,10 +228,10 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             
             if (row.RowIndex >= 0)
             {
-                DataBaseOperator opt = new DataBaseOperator();            
-              
-                string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", };
-                string[] value = { txtCode.Text, ((DropDownList)row.FindControl("listParaName")).SelectedValue, ((DropDownList)row.FindControl("listtype")).SelectedValue, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtDscrptM")).Text };
+                DataBaseOperator opt = new DataBaseOperator();
+
+                string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE" };
+                string[] value = { txtCode.Text, ((DropDownList)row.FindControl("listParaName")).SelectedValue, ((DropDownList)row.FindControl("listtype")).SelectedValue, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtDscrptM")).Text, ((TextBox)row.FindControl("txtScore")).Text };
                 opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL");
                     bindGrid(txtCode.Text, hideprc.Value);
             }
@@ -250,8 +255,8 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
         {
             foreach (DataRow row in data.Tables[0].Rows)
             {
-                string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", };
-                string[] value = { listtechC.SelectedValue, row["PARA_CODE"].ToString(), row["QLT_TYPE"].ToString(), row["LOWER"].ToString(), row["UPPER"].ToString(), row["REMARK"].ToString()};
+                string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE" };
+                string[] value = { listtechC.SelectedValue, row["PARA_CODE"].ToString(), row["QLT_TYPE"].ToString(), row["LOWER"].ToString(), row["UPPER"].ToString(), row["REMARK"].ToString(),row["txtScore"].ToString()};
                 opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL");
 
             }
@@ -262,7 +267,12 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     }
     protected void UpdateGrid_Click(object sender, EventArgs e)
     {
-        bindGrid(txtCode.Text, hideprc.Value);
+       
+        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
+        DataBaseOperator opt = new DataBaseOperator();
+        DataSet set = opt.CreateDataSetOra(query);
+        DataTable data = set.Tables[0];
+        bindgrid(data, hideprc.Value);
     }
     protected void listVersion_SelectedIndexChanged(object sender, EventArgs e)
     {
