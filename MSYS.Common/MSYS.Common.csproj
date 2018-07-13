@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AprvFlow.cs" />
     <Compile Include="ExcelExport.cs" />
     <Compile Include="IHDataOpt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,10 @@
     <ProjectReference Include="..\MSYS.DAL\MSYS.DAL.csproj">
       <Project>{A941B43C-5C79-45DD-917C-30586267DEE7}</Project>
       <Name>MSYS.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.Data\MSYS.Data.csproj">
+      <Project>{459b092f-96c5-4fc2-bf1b-44eb40b96b2a}</Project>
+      <Name>MSYS.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
