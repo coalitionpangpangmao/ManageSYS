@@ -35,8 +35,9 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
         string[] seg = { "PROCESS_CODE", "PROCESS_NAME", "REMARK", "IS_VALID" };
         string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString()};
        DataBaseOperator opt =new DataBaseOperator();
-        opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS");
-        
+        //opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS");
+        string log_message = (opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS") == "Success")? "添加成功":"添加失败";
+        opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(),log_message);
     }
   
     protected void btnModify_Click(object sender, EventArgs e)
@@ -45,16 +46,21 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
         string[] value = {  txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString() };
         string condition = " where PROCESS_CODE = '" + txtCode.Text + "'";
        DataBaseOperator opt =new DataBaseOperator();
-        opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition);
-        
+        //opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition);
+       string log_message = (opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition) == "Success")? "修改成功":"修改失败";
+       opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
        DataBaseOperator opt =new DataBaseOperator();       
        string query = "update ht_pub_inspect_process set IS_DEL = '1' where PROCESS_CODE = '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+        //opt.UpDateOra(query);
+       string log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+       opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         query = "update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,7) =  '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+        //opt.UpDateOra(query);
+        log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+        opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
     }
  
     protected void btnUpdate_Click(object sender, EventArgs e)

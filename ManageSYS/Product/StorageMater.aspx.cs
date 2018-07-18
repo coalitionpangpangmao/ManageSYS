@@ -98,7 +98,10 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
            DataBaseOperator opt =new DataBaseOperator();
             if (opt.createApproval(subvalue))
             {
-                opt.UpDateOra("update HT_STRG_MATERIA set AUDIT_MARK = '0'  where ORDER_SN = '" + id + "'"); 
+                //opt.UpDateOra("update HT_STRG_MATERIA set AUDIT_MARK = '0'  where ORDER_SN = '" + id + "'"); 
+                string log_message = opt.UpDateOra("update HT_STRG_MATERIA set AUDIT_MARK = '0'  where ORDER_SN = '" + id + "'") == "Success" ? "提交审批成功" : "提交审批失败";
+                log_message += ", 订单编号" + id;
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             
         }
@@ -115,7 +118,10 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
             int index =  ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Value.ToString();
            DataBaseOperator opt =new DataBaseOperator();
-           opt.UpDateOra("update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'"); 
+           //opt.UpDateOra("update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'"); 
+           string log_message = opt.UpDateOra("update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'") == "Success" ? "出库成功" : "出库失败";
+           log_message += ", 变更ID：" + id;
+           opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             bindGrid1();
         }
         catch (Exception ee)
@@ -160,7 +166,10 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                     string order_sn = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_STRG_MATERIA set IS_DEL = '1'  where ORDER_SN = '" + order_sn + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    //opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除原料退领表成功" : "删除原料退领表失败";
+                   log_message += ",编号：" + order_sn;
+                   opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid2();
@@ -203,11 +212,16 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
              //生成领用主表记录
              string[] seg = { "OUT_DATE", "ORDER_SN", "EXPIRED_DATE", "MODIFY_TIME", "AUDIT_MARK", "WARE_HOUSE", "WARE_HOUSE_ID", "DEPT_NAME", "DEPT_ID", "CREATOR", "CREATOR_ID", "MONTHPLANNO", "BATCHNUM", "STRG_TYPE" };
              string[] value = { txtPrdctdate.Text, txtCode.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStatus.SelectedValue, listStorage.SelectedItem.Text, listStorage.SelectedValue, listApt.SelectedItem.Text, listApt.SelectedValue, "cookieName", "cookieID", listPrdctPlan.SelectedValue, txtBatchNum.Text, "0" };
-             opt.InsertData(seg, value, "HT_STRG_MATERIA");
+             //opt.InsertData(seg, value, "HT_STRG_MATERIA");
+             string log_message = opt.InsertData(seg, value, "HT_STRG_MATERIA") == "Success" ? "生成原料领用表成功" : "生成原料领用表失败";
+             log_message += ", 参数：" + string.Join(" ", value);
+             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
              //根据生产计划对应的配方明细生成原料领用明细
              string query = "insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g3.mater_name ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE  from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '''" + listPrdctPlan.SelectedValue + "' and g4.data_origin_flag = '" + listStorage.SelectedValue + "'";
-             opt.UpDateOra(query);
-             
+             //opt.UpDateOra(query);
+             string log_message2 = opt.UpDateOra(query) == "Success" ? "生成出库记录成功" : "生成出库记录失败";
+             log_message2 += ",参数：" + string.Join(" ", value);
+             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message2);
          }
          if (rdIn.Checked)
          {
@@ -291,7 +305,10 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_STRG_MATER_SUB set IS_DEL = '1'  where ID = '" + ID + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    //opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "退领明细删除成功" : "退领明细删除失败";
+                   log_message += ",ID：" + ID;
+                   opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid2();
@@ -311,15 +328,20 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                 //生成领用主表记录
                 string[] seg = { "OUT_DATE", "ORDER_SN", "EXPIRED_DATE", "MODIFY_TIME","DEPT_NAME", "DEPT_ID", "CREATOR", "CREATOR_ID",  "STRG_TYPE" };
                 string[] value = { txtPrdctdate.Text, txtCode.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),  listApt.SelectedItem.Text, listApt.SelectedValue, "cookieName", "cookieID", "0" };
-                opt.InsertData(seg, value, "HT_STRG_MATERIA");                
-               
+                //opt.InsertData(seg, value, "HT_STRG_MATERIA");                
+                string log_message = opt.InsertData(seg, value, "HT_STRG_MATERIA") == "Success" ? "退领单生成成功" : "退领单生成失败";
+                log_message += ", 参数：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             if (rdIn.Checked)
             {
                 //生成入库主表记录
                 string[] seg = { "OUT_DATE", "ORDER_SN", "EXPIRED_DATE", "MODIFY_TIME", "DEPT_NAME", "DEPT_ID", "CREATOR", "CREATOR_ID", "STRG_TYPE" };
                 string[] value = { txtPrdctdate.Text, txtCode.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listApt.SelectedItem.Text, listApt.SelectedValue, "cookieName", "cookieID", "1" };
-                opt.InsertData(seg, value, "HT_STRG_MATERIA");             
+                //opt.InsertData(seg, value, "HT_STRG_MATERIA");             
+                string log_messgae = opt.InsertData(seg, value, "HT_STRG_MATERIA") == "Success" ? "退领单生成成功" : "退领单生成失败";
+                log_messgae += ", 参数:" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_messgae);
             }
 
         }
@@ -343,11 +365,17 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
             string[] value = { ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridstrg")).SelectedValue, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridtype")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridUnit")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridcode")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridName")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridAmount")).Text,txtCode.Text };
             if (ID == "0")
             {
-                opt.InsertData(seg, value, "HT_STRG_MATER_SUB");
+                //opt.InsertData(seg, value, "HT_STRG_MATER_SUB");
+                string log_message = opt.InsertData(seg, value, "HT_STRG_MATER_SUB") == "Success" ? "退领明细保存成功" : "退领明细保存失败";
+                log_message += ", 参数：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             else
             {
-                opt.UpDateData(seg, value, "HT_STRG_MATER_SUB", " where ID = '" + ID + "'");
+                //opt.UpDateData(seg, value, "HT_STRG_MATER_SUB", " where ID = '" + ID + "'");
+                string log_message = opt.UpDateData(seg, value, "HT_STRG_MATER_SUB", " where ID = '" + ID + "'") == "Success" ? "退领明细保存成功" : "退领明细保存失败";
+                log_message += ",参数：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
            
             bindGrid2();

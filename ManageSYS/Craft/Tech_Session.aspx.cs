@@ -64,11 +64,17 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
     {
         DataBaseOperator opt =new DataBaseOperator();
         string query = "update HT_PUB_TECH_SECTION set IS_DEL = '1' where SECTION_CODE = '" + txtCode.Text + "'";  
-        opt.UpDateOra(query);
+        //opt.UpDateOra(query);
+        string log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+        opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         query = "update ht_pub_inspect_process set IS_DEL = '1' where substr(PROCESS_CODE,1,5) = '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+        //opt.UpDateOra(query);
+        log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+        opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         query = "update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,5) =  '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+        //opt.UpDateOra(query);
+        log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+        opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         
     }
     protected void btnUpdate_Click(object sender, EventArgs e)

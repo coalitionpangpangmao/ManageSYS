@@ -127,7 +127,10 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_PUB_PATH_NODE set IS_DEL = '1'  where ID = '" + ID + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    //opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除记录成功" : "删除记录失败";
+                    log_message += ", 记录ID：" + ID;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid2();
@@ -149,11 +152,17 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             string[] value = { ((TextBox)GridView2.Rows[Rowindex].FindControl("txtSection")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtNodeName")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtDscrpt")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), ((TextBox)GridView2.Rows[Rowindex].FindControl("txtTag")).Text };
             if (ID == "0")
             {
-                opt.InsertData(seg, value, "ht_pub_path_node");
+                //opt.InsertData(seg, value, "ht_pub_path_node");
+                string log_message = opt.InsertData(seg, value, "ht_pub_path_node") == "Success" ? "保存工艺段成功" : "保存工艺段失败";
+                log_message += ", 保存参数：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
             else
             {
-                opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'");
+                //opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'");
+                string log_message = opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'") == "Success" ? "保存工艺段成功" : "保存工艺段失败";
+                log_message += ", 保存参数：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
 
             bindGrid2();
@@ -311,7 +320,10 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string pathcode = GridView1.DataKeys[i].Values[1].ToString();
                     string query = "update ht_pub_path_section set IS_DEL = '1'  where SECTION_CODE = '" + sectioncode + "' and pathcode = '" + pathcode + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    //opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "工艺段路径删除成功" : "工艺段路径删除失败";
+                    log_message += ",工艺段编码：" + pathcode;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             createGridView();
@@ -438,7 +450,10 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         {          
             string[] value = { GridView4.DataKeys[i].Value.ToString(), ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listProdplan.SelectedValue };           
             opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[i].Value.ToString() + "' and PROD_PLAN = '" + listProdplan.SelectedValue + "'");
-            opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
+            string log_message = opt.InsertData(seg, value, "HT_PUB_PATH_PLAN") == "Success" ? "工艺路径配置保存成功 " : "工艺路径配置保存失败";
+            log_message += ", 保存参数：" + string.Join(" ", value);
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            //opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
         }
         bindGrid4();
     }

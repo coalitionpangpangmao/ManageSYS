@@ -109,7 +109,10 @@ public partial class Craft_Materia : MSYS.Web.BasePage
             string TID = GridView1.DataKeys[e.RowIndex].Value.ToString();
             string delSQL = "delete from HT_PUB_MATERIEL where MATERIAL_CODE= '" + TID + "'";
            DataBaseOperator opt =new DataBaseOperator();
-            opt.UpDateOra(delSQL);
+            //opt.UpDateOra(delSQL);
+            string log_message =  opt.UpDateOra(delSQL) == "Success" ? "删除成功" : "删除失败";
+            log_message += "，分类信息：" + string.Join(" ", value);
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             bindGrid(txtCode.Text);//重新绑定
         }
         catch (Exception ex)
@@ -145,13 +148,19 @@ public partial class Craft_Materia : MSYS.Web.BasePage
                     string[] seg = { "MATER_NAME", "BATCH_SIZE", "FRONT_GROUP", "MATER_SORT" };
                     string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtNameM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtAmountM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtGroupM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtSortM")).Text };
                     string condition = " where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
-                    opt.UpDateData(seg, value, "ht_qa_mater_formula_detail", condition);
+                    //opt.UpDateData(seg, value, "ht_qa_mater_formula_detail", condition);
+                    string log_message = opt.UpDateData(seg, value, "ht_qa_mater_formula_detail", condition) == "Success" ? "更新成功" : "更新失败";
+                    log_message += ", 分类编码：" + txtCode.Text;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
                 else
                 {
                     string[] seg = { "FORMULA_CODE", "MATER_CODE", "MATER_NAME", "BATCH_SIZE", "FRONT_GROUP", "MATER_SORT" };
                     string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtNameM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtAmountM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtGroupM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtSortM")).Text };
-                    opt.InsertData(seg, value, "ht_qa_mater_formula_detail");
+                    //opt.InsertData(seg, value, "ht_qa_mater_formula_detail");
+                    string log_message = opt.InsertData(seg, value, "ht_qa_mater_formula_detail") == "Success" ? "更新成功" : "更新失败";
+                    log_message += ", 分类编码：" + txtCode.Text;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
                 bindGrid(txtCode.Text);
             }

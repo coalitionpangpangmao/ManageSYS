@@ -42,8 +42,9 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "PARA_TAG" };
         string[] value = {txtCode.Text,txtName.Text,txtUnit.Text,getType(), txtDscrp.Text,  Convert.ToInt16(rdValid.Checked).ToString(),"" , System.DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),listEquip.SelectedValue,txtTag.Text};
        DataBaseOperator opt =new DataBaseOperator();
-        opt.InsertData(seg, value, "HT_PUB_TECH_PARA");
-        
+        //opt.InsertData(seg, value, "HT_PUB_TECH_PARA");
+       string log_message = opt.InsertData(seg, value, "HT_PUB_TECH_PARA") == "Success" ? "添加成功" : "添加失败";
+       opt.InsertTlog(Session["userName"].ToString(), Request.UserHostName.ToString(), log_message);
     }
     protected string getType()
     {
@@ -82,14 +83,18 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         string[] value = {  txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), Session["UserID"].ToString(), System.DateTime.Now.ToString("yyyy-MM-hh"),listEquip.SelectedValue,txtTag.Text };
         string condition = " where PARA_CODE = '" + txtCode.Text + "'";
        DataBaseOperator opt =new DataBaseOperator();
-        opt.UpDateData(seg, value, "HT_PUB_TECH_PARA", condition);
+        //opt.UpDateData(seg, value, "HT_PUB_TECH_PARA", condition);
+       string log_message = (opt.UpDateData(seg, value, "HT_PUB_TECH_PARA", condition)== "Success") ? "更新成功" : "更新失败";
+       opt.InsertTlog(Session["userName"].ToString(), Request.UserHostName.ToString(), log_message);
         
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
        DataBaseOperator opt =new DataBaseOperator();      
        string query = "update HT_PUB_TECH_PARA set IS_DEL = '1' where PARA_CODE =  '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+        //opt.UpDateOra(query);
+       string log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+        opt.InsertTlog(Session["userName"].ToString(), Request.UserHostName.ToString(), log_message);
         
     }
     protected void btnUpdate_Click(object sender, EventArgs e)

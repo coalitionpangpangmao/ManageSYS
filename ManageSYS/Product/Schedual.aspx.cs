@@ -59,7 +59,10 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                         endtime = startdate.AddDays(1).ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
                     string[] seg = { "WORK_DATE", "WORK_SHOP_CODE", "SHIFT_CODE", "TEAM_CODE", "WORK_STAUS", "CREATE_TIME", "MODIFY_TIME", "DATE_BEGIN", "DATE_END" };
                     string[] value = { startdate.ToString("yyyy-MM-dd"), listPrdline.SelectedValue, GridView1.DataKeys[i].Value.ToString(), ((DropDownList)GridView1.Rows[i].FindControl("listTeam")).SelectedValue, ((DropDownList)GridView1.Rows[i].FindControl("listStatus")).SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text, endtime };
-                    opt.InsertData(seg, value, "HT_PROD_SCHEDULE");
+                    //opt.InsertData(seg, value, "HT_PROD_SCHEDULE");
+                    string log_message = opt.InsertData(seg, value, "HT_PROD_SCHEDULE") == "Success" ? "排班成功" : "排班失败";
+                    log_message += ",参数:" + string.Join(" ", value);
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
                 startdate = startdate.AddDays(1);
             }
@@ -149,7 +152,10 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                           string id = GridView2.DataKeys[i].Value.ToString();
                           string query = "update ht_prod_schedule set IS_DEL = '1'  where ID = '" + id + "'";
                          DataBaseOperator opt =new DataBaseOperator();
-                          opt.UpDateOra(query);
+                          //opt.UpDateOra(query);
+                         string log_message = opt.UpDateOra(query) == "Success" ? "排班计划删除成功" : "排班计划删除失败";
+                         log_message += ",ID:" + id;
+                         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                       }
                   }
                   bindGrid2();

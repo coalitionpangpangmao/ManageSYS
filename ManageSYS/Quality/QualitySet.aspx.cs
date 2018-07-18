@@ -159,13 +159,15 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
          
             string[] seg = { "QLT_CODE", "QLT_NAME",  "STANDARD_VOL", "B_DATE", "E_DATE","CREATOR", "CREATE_DATE", "CREATE_DEPT", "REMARK" };
             string[] value = { txtCode.Text, txtName.Text,  txtVersion.Text, txtExeDate.Text, txtEndDate.Text,txtCreator.Text, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
-            opt.InsertData(seg, value, "HT_QLT_STDD_CODE");
+           // opt.InsertData(seg, value, "HT_QLT_STDD_CODE");
+            string log_message = (opt.InsertData(seg, value, "HT_QLT_STDD_CODE") == "Success") ? "修改成功" : "修改失败";
+            opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         bindGrid(txtCode.Text,hideprc.Value);
         opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");   
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-        try
+        try 
         {
            DataBaseOperator opt =new DataBaseOperator();
             opt.UpDateOra("delete from HT_QLT_STDD_CODE where QLT_CODE = '" + txtCode.Text + "'");
@@ -185,7 +187,9 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
            DataBaseOperator opt =new DataBaseOperator();
-            opt.UpDateOra(query);
+            //opt.UpDateOra(query);
+           string log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+           opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             bindGrid(txtCode.Text, hideprc.Value);
         }
         catch (Exception ee)
@@ -219,7 +223,9 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
                     string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text;
                     string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
                    DataBaseOperator opt =new DataBaseOperator();
-                    opt.UpDateOra(query);
+                    //opt.UpDateOra(query);
+                   string log_message = (opt.UpDateOra(query) == "Success") ? "删除成功" : "删除失败";
+                   opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }
             }
             bindGrid(txtCode.Text, hideprc.Value);
@@ -242,8 +248,9 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
                 opt.UpDateOra("delete  from  HT_QLT_STDD_CODE_DETAIL  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "' and QLT_TYPE = '" + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtType")).Text + "'");
                 string[] seg = { "PARA_CODE", "PARA_NAME", "VALUE", "EER_DEV", "QLT_TYPE", "REMARK","QLT_CODE" };
                 string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listParaName")).SelectedItem.Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtType")).Text,  ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDscrptM")).Text,txtCode.Text };
-                    opt.InsertData(seg, value, "HT_QLT_STDD_CODE_DETAIL");
-
+                    //opt.InsertData(seg, value, "HT_QLT_STDD_CODE_DETAIL");
+                string log_message = (opt.InsertData(seg, value, "HT_QLT_STDD_CODE_DETAIL") == "Success") ? "保存成功" : "保存失败";
+                opt.InsertTlog(Session["userName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                     bindGrid(txtCode.Text, hideprc.Value);
             }
         }
@@ -282,7 +289,6 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
                 string[] seg = { "PARA_CODE", "PARA_NAME", "VALUE", "EER_DEV", "QLT_TYPE", "REMARK", "QLT_CODE" };
                 string[] value = { row["PARA_CODE"].ToString(), row["PARA_NAME"].ToString(), row["VALUE"].ToString(), row["EER_DEV"].ToString(), row["QLT_TYPE"].ToString(), row["REMARK"].ToString(), listtechC.SelectedValue };
                 opt.InsertData(seg, value, "HT_QLT_STDD_CODE_DETAIL");
-
             }
 
         }

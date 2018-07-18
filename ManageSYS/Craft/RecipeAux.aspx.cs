@@ -225,6 +225,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
                     string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtNameM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtScale")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtPercent")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listGridType")).SelectedValue };
                 string log_message = opt.InsertData(seg, value, "ht_qa_aux_formula_detail")=="Success" ? "物料保存成功":"物料保存失败";
                 log_message += ",物料信息：" + txtCode.Text;
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 bindGrid();
             }
         }
