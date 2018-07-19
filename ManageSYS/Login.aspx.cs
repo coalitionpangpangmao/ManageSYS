@@ -63,15 +63,15 @@ public partial class Login : MSYS.Web.BasePage
                     hc.Values.Add("uPwd", userPwd);
                     this.Response.Cookies.Add(hc);
                 }
-                else
-                {
-                    DelCookies("127.0.0.1");
-                    DelCookies("nlocalhost");
-              //      HttpContext.Current.Request.Cookies["#$LoginUser$#"];
-                    HttpCookie hc = new HttpCookie(userID, "");
-                    hc.Expires = DateTime.MinValue;
-                    this.Response.Cookies.Add(hc);
-                }
+              //  else
+              //  {
+              //      DelCookies("127.0.0.1");
+              //      DelCookies("nlocalhost");
+              ////      HttpContext.Current.Request.Cookies["#$LoginUser$#"];
+              //      HttpCookie hc = new HttpCookie(userID, "");
+              //      hc.Expires = DateTime.MinValue;
+              //      this.Response.Cookies.Add(hc);
+              //  }
 
                 //记住最后一次登录用户
                 //string cName = "#$LastLoginUser$#";
@@ -87,8 +87,6 @@ public partial class Login : MSYS.Web.BasePage
                 Session["UserName"] = userTable.Rows[0]["NAME"].ToString();
                 Session["User"] = new SysUser(userID);
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "登入");
-
-
                 string returnUrl = Request["ReturnUrl"];
                 if (string.IsNullOrEmpty(returnUrl))
                     returnUrl = "main.aspx";
