@@ -36,6 +36,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+          <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     <div class="place">
@@ -68,8 +69,8 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                         </tr>
                     </tbody>
@@ -175,7 +176,7 @@
                                         过期时间：
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtExptime" runat="server" class="dfinput1"></asp:TextBox>
+                                        <asp:TextBox ID="txtExptime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                     </td>
                                     <td width="100">
                                         备注：
@@ -254,8 +255,8 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="期望完成时间">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间"
-                                            CssClass="tbinput"></asp:TextBox>
+                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                            CssClass="tbinput1"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="状态">

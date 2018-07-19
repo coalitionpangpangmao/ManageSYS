@@ -13,7 +13,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listPrt, "select mattree_code，mattree_name,PARENT_CODE  from ht_pub_mattree where is_del = '0' order by PARENT_CODE", "mattree_name", "mattree_code"); 
         }
 
@@ -21,7 +21,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
     protected void bindData(string mtr_code)
     {
         string query = "select * from HT_PUB_MATTREE where  MATTREE_CODE = '" + mtr_code + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -43,7 +43,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
         else
             query += " where Parent_code ='" + listPrt.SelectedValue + "'";
         
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         int codelength = listPrt.SelectedValue.Length;
         string code = opt.GetSegValue(query, "code");
         
@@ -70,7 +70,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         string[] seg = { "mattree_code", "MATTREE_NAME", "PARENT_CODE", "IS_VALID" };
         string[] value = {txtCode.Text, txtName.Text, listPrt.SelectedValue, Convert.ToInt16(ckValid.Checked).ToString() };
@@ -89,7 +89,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
     protected void btnDel_Click(object sender, EventArgs e)
     {
         string query = "update HT_PUB_MATTREE set IS_DEL = '1'  where MATTREE_CODE = '" + txtCode.Text + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.UpDateOra(query) == "Success" ? "分类删除成功" : "分类删除失败";
         log_message += ", 分类编码：" + txtCode.Text;
         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -102,7 +102,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
         string query = "select MATERIAL_CODE as 物料编码,MATERIAL_NAME as 物料名称,UNIT_CODE as 单位编码,MAT_CATEGORY as 类别,MAT_TYPE as 类型,MAT_LEVEL as 等级,LAST_UPDATE_TIME as 更新时间 from HT_PUB_MATERIEL where is_del = '0'  ";
         if (mtr_code != "")
             query += " and  MAT_CATEGORY = '" + mtr_code + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -117,7 +117,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string code = GridView1.DataKeys[rowindex].Value.ToString();
         string delSQL = "delete from HT_PUB_MATERIEL where MATERIAL_CODE= '" + code + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra(delSQL);
         bindGrid(txtCode.Text);//重新绑定
     }

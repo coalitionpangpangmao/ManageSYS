@@ -23,7 +23,7 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
     protected void bindgrid()
     {
         string query = createSql(txtBtime.Text);
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -52,7 +52,7 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
   
     protected void initTable(GridViewRow row)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string prod_code = opt.GetSegValue("select prod_name,prod_code from ht_pub_prod_design where prod_name = '" + row.Cells[1].Text + "'", "prod_code");
         string team_code = opt.GetSegValue("select team_name,team_code from ht_sys_team where team_name = '" + row.Cells[2].Text + "'", "team_code");
         string query = "select s.section_name,r.para_code,r.para_name,h.quarate,h.stddev,h.absdev,h.cpk from  ht_pub_tech_section s left join ht_pub_tech_para r on s.section_code = substr(r.para_code,1,5) left join hv_qlt_online_score h on h.para_code = r.para_code and h.prodmonth = '2018-07' and h.prod_code = '" + prod_code + "' and h.team = '" + team_code + "'  where r.para_type like '___1_' and r.is_del = '0' order by  s.section_code,r.para_code";
@@ -145,7 +145,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
     private string createSql( string month)
     {      
 
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "select section_code,section_name,remark,WEIGHT from ht_pub_tech_section where is_del= '0' and is_valid = '1' order by section_code";
         DataSet data = opt.CreateDataSetOra(query);
 

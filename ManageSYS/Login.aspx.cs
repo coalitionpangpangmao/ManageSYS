@@ -45,7 +45,7 @@ public partial class Login : MSYS.Web.BasePage
         string userID = user.Text;
          
         string userPwd =  MSYS.Security.Encrypt.GetMD5String(pwd.Text);
-        DbOperator opt = new DbOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
          
         bool isError = false;
@@ -110,8 +110,8 @@ public partial class Login : MSYS.Web.BasePage
     {
         string userID = cookie["uID"].ToString();
         string userPwd = cookie["uPwd"].ToString();
-    
-        DbOperator opt = new DbOperator();
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
         if (userTable != null && userTable.Rows.Count > 0)
         {

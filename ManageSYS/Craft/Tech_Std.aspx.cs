@@ -15,7 +15,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listtechC,"select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
@@ -31,7 +31,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     public string InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select prod_code,prod_name from ht_pub_prod_design where is_del = '0' order by prod_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -52,7 +52,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     }
     public string InitTreeTech(string prod_code)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select tech_code,tech_name from ht_tech_stdd_code where prod_code =  '" + prod_code + "'  and is_del ='0' ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -74,7 +74,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     public string InitTreePrcss()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -96,7 +96,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
 
     //public string InitTreeProcess(string section_code)
     //{
-    //   DataBaseOperator opt =new DataBaseOperator();
+    //   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
     //    DataSet data = opt.CreateDataSetOra("select h.process_code,h.process_name from  ht_pub_inspect_process h where substr(h.process_code,1,5) = '" + section_code + "' and h.IS_VALID = '1' and h.IS_DEL = '0' order by h.process_code");
     //    if (data != null && data.Tables[0].Rows.Count > 0)
     //    {
@@ -117,7 +117,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     //从一个标准复制为另一标准
     protected void btnCopy_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select * from HT_TECH_STDD_CODE_DETAIL where TECH_CODE = '" + listtech.SelectedValue + "' and is_del = '0'";
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -141,7 +141,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     //保存标准版本
     protected void btnModify_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select * from HT_TECH_STDD_CODE where TECH_CODE = '" + txtCode.Text + "'";
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -173,7 +173,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     protected void bindData(string rcpcode)
     {
         string query = "select tech_code  as 标准编码,tech_name  as 标准名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid ,FLOW_STATUS from ht_tech_stdd_code where is_del = '0' and tech_code  = '" + rcpcode + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -210,7 +210,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         string query = "select PARA_CODE as 参数编码,VALUE as 标准值,UPPER_LIMIT as 上限,LOWER_LIMIT as 下限,EER_DEV as 允差,UNIT as 单位  from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "'";
             if (prccode.Length == 5)
                 query += " and   substr(PARA_CODE,1,5) = '" + prccode + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = set.Tables[0];
             if (data == null)
@@ -282,7 +282,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 {
                     string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text;
                     string query = "update HT_TECH_STDD_CODE_DETAIL set IS_DEL = '1'  where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "参数删除成功":"参数删除失败";
                     log_message += "，参数编码：" + txtCode.Text;
                     opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -304,7 +304,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             string query = "update HT_TECH_STDD_CODE_DETAIL set IS_DEL = '1'  where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query)== "Success" ? "删除参数成功":"删除参数失败";
             log_message += ",参数编码" + txtCode.Text;
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -325,7 +325,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             if (Rowindex >= 0)
             {
-               DataBaseOperator opt =new DataBaseOperator();
+               MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                 string query = "select * from HT_TECH_STDD_CODE_DETAIL  where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
                 DataSet data = opt.CreateDataSetOra(query);
                 if (data != null && data.Tables[0].Rows.Count > 0)
@@ -375,13 +375,13 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     {
         if (listProd.SelectedValue != "")
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string str = opt.GetSegValue("select Max(tech_CODE) as code  from ht_tech_stdd_code t where PROD_CODE = '" + listProd.SelectedValue + "'", "CODE");
             if (str == "")
                 str = "000000000000";
             txtCode.Text = "TCH" + listProd.SelectedValue +  (Convert.ToInt16(str.Substring(10)) + 1).ToString().PadLeft(2, '0');
             MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
-            listCreator.SelectedValue = user.Id;
+            listCreator.SelectedValue = user.id;
             txtCrtDate.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
             listCrtApt.SelectedValue = user.OwningBusinessUnitId;
 
@@ -402,7 +402,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -414,7 +414,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             /*启动审批TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id,URL 单独登录url*/
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "工艺标准:" + txtName.Text, "04", txtCode.Text, Page.Request.UserHostName.ToString() };
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '04'", "APRV_TABSEG") + " = '0'  where TECH_CODE = '" + txtCode.Text + "'") == "Success" ? "提交审批成功," : "提交审批失败，";

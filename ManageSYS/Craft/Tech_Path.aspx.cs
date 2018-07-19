@@ -15,7 +15,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         if (!IsPostBack)
         {
 
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listSection1, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0' order by section_code", "section_name", "section_code");
             opt.bindDropDownList(listSection2, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0' order by section_code", "section_name", "section_code");
             opt.bindDropDownList(listProdplan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS < '4' and is_DEL = '0' and PLAN_PATH = '0'", "PLAN_NO", "PLAN_NO");
@@ -31,7 +31,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     {
 
         string query = " select section_code as 工艺段,nodeName as 节点名,orders as 顺序号,descript as 描述,create_time as 创建时间,tag as 控制标签,ID from ht_pub_path_node where is_DEL = '0' and section_code = '" + listSection2.SelectedValue + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
@@ -61,7 +61,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         try
         {
             string query = " select section_code as 工艺段,nodeName as 节点名,orders as 顺序号,descript as 描述,create_time as 创建时间,tag as 控制标签,ID from ht_pub_path_node where is_DEL = '0' and section_code = '" + listSection2.SelectedValue + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             if (set != null && set.Tables[0].Rows.Count > 0)
@@ -126,7 +126,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 {
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_PUB_PATH_NODE set IS_DEL = '1'  where ID = '" + ID + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -141,7 +141,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string ID = GridView2.DataKeys[Rowindex].Value.ToString();
@@ -174,7 +174,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             string query = hideQuery.Value;
             if (query != "")
             {
-               DataBaseOperator opt =new DataBaseOperator();
+               MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
 
                 DataSet set = opt.CreateDataSetOra(query);
                 DataTable data = new DataTable();
@@ -219,7 +219,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         if (query != "")
         {
             hideQuery.Value = query;
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
 
             GridView1.Columns.Clear();
@@ -227,15 +227,15 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             ////增加当前选择列
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new GridViewTemplate(DataControlRowType.Header, "选择", "");
-            customField.ItemTemplate = new GridViewTemplate(DataControlRowType.DataRow, "sel", "CheckBox");
+            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "选择", "");
+            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "sel", "CheckBox");
             ViewState["ck_sel"] = true;
             GridView1.Columns.Add(customField);
             /////增加路径名列
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new GridViewTemplate(DataControlRowType.Header, "路径名称", "");
-            customField.ItemTemplate = new GridViewTemplate(DataControlRowType.DataRow, "Pathname", "TextBox");
+            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "路径名称", "");
+            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "Pathname", "TextBox");
             ViewState["txt_Pathname"] = true;
             GridView1.Columns.Add(customField);
             //增加节点列
@@ -243,16 +243,16 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             {
                 customField = new TemplateField();
                 customField.ShowHeader = true;
-                customField.HeaderTemplate = new GridViewTemplate(DataControlRowType.Header, data.Tables[0].Columns[j].ColumnName, "");
-                customField.ItemTemplate = new GridViewTemplate(DataControlRowType.DataRow, j.ToString(), "CheckBox");
+                customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, data.Tables[0].Columns[j].ColumnName, "");
+                customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, j.ToString(), "CheckBox");
                 ViewState["ck_" + j.ToString()] = true;
                 GridView1.Columns.Add(customField);
             }
             //增加保存按钮
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new GridViewTemplate(DataControlRowType.Header, "操作", "");
-            customField.ItemTemplate = new GridViewTemplate(DataControlRowType.DataRow, "Grid1Save", "Button");
+            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "操作", "");
+            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "Grid1Save", "Button");
             ViewState["btn_Grid1Save"] = true;
             
             GridView1.Columns.Add(customField);
@@ -262,7 +262,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     }
     protected string createQuery(string section)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select nodename from ht_pub_path_node where section_code = '" + section + "' and is_del = '0' order by orders");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -310,7 +310,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string sectioncode = GridView1.DataKeys[i].Values[0].ToString();
                     string pathcode = GridView1.DataKeys[i].Values[1].ToString();
                     string query = "update ht_pub_path_section set IS_DEL = '1'  where SECTION_CODE = '" + sectioncode + "' and pathcode = '" + pathcode + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -341,7 +341,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         try
         {
             string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + listProdplan.SelectedValue + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             GridView4.DataSource = data;
             GridView4.DataBind();
@@ -391,7 +391,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         int index = ((GridViewRow)btn.NamingContainer).RowIndex;
         string[] seg = {  "SECTION_CODE","PATHCODE","PATHNAME","CREATE_TIME","PROD_PLAN" };
         string[] value = { GridView4.DataKeys[index].Value.ToString(), ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listProdplan.SelectedValue };
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[index].Value.ToString() + "' and PROD_PLAN = '" + listProdplan.SelectedValue + "'");
         opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
         bindGrid4();
@@ -401,7 +401,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             for (int i = 0; i < GridView4.Rows.Count; i++)
             {
                 DataSet set = opt.CreateDataSetOra("select * from HT_PUB_PATH_NODE where SECTION_CODE ='" + GridView4.DataKeys[i].Value.ToString() + "' and is_del = '0'");
@@ -432,7 +432,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     }
     protected void btnSavePath_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
         for (int i = 0; i < GridView4.Rows.Count; i++)
         {          

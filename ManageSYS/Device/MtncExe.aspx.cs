@@ -15,7 +15,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
         {
             txtStart.Text = System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd");
             txtStop.Text = System.DateTime.Now.AddDays(15).ToString("yyyy-MM-dd");
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'", "EQ_NAME", "IDKEY");
             opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t ", "name", "ID");
             bindGrid();
@@ -28,7 +28,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
         string query = "select t.mech_area as 区域,t1.eq_name as 设备名称,t.reason as 维保原因,t.content as 维保内容,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from ht_eq_mt_plan_detail t left join Ht_Eq_Eqp_Tbl t1 on t1.idkey = t.equipment_id  where  t.is_del = '0' and t.exp_finish_time between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.Status  >= '1'";
         if (ckDone.Checked)
             query += " and t.STATUS <'2' ";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -67,7 +67,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select * from HT_EQ_MT_PLAN_DETAIL where id = '" + ID + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -111,7 +111,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string ftID = "";
         if (ckFault.Checked)
         {

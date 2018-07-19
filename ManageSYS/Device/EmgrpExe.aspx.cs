@@ -13,7 +13,7 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'", "EQ_NAME", "IDKEY");
             opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t ", "name", "ID");
             
@@ -31,7 +31,7 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
         }
         else
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_EMG", "REASON", "CONTENT","STATUS" };
             string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtReasons.Text, txtContent.Text,"-1" };
             opt.InsertData(seg, value, "HT_EQ_RP_PLAN_DETAIL");
@@ -39,7 +39,7 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         if (ckFault.Checked)
         {
             string[] seg1 = { "ERROR_NAME", "EQP_TYPE", "SPECIFIC_LOCATION", "SECTION_CODE", "FAULT_TYPE1", "FAULT_TYPE2", "FAULT_TYPE3", "FAULT_TYPE4", "FAULT_TYPE5", "FAULT_TYPE6", "SCEAN", "ERROR_DESCRIPTION", "FAILURE_CAUSE", "SOLUTION" };

@@ -51,14 +51,16 @@ namespace MSYS.Data
         {
             if ((sysRightRow != null) && (sysRightRow.ItemArray.Length > 0))
             {
-                this.Id = sysRightRow["F_ID"].ToString();
-                this.Name = sysRightRow["F_MENU"].ToString();
+                this.id = sysRightRow["F_ID"].ToString();
+                this.name = sysRightRow["F_MENU"].ToString();
                 this.eType = (RightType)Convert.ToUInt16(sysRightRow["F_TYPE"]);
                 this.mapID = sysRightRow["F_MAPID"].ToString();
             }
         }
 
-
+        protected override void CreateObjfromDB(string id)
+        {
+        }
 
      
     }

@@ -12,7 +12,7 @@ public partial class top : System.Web.UI.Page
         if (Session["User"] != null)
         {
             SysUser user = (SysUser)Session["User"];
-            labUserName.Text = user.Name;
+            labUserName.Text = user.text;
             labRole.Text = user.UserRole;
 
         }

@@ -23,7 +23,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
     protected void bindGrid1()
     {
         string query = "select SHIFT_CODE  as 班时编码,SHIFT_NAME  as 班时,BEGIN_TIME  as 开始时间,END_TIME  as 结束时间,INTER_DAY as 是否跨天 from ht_sys_shift where is_del = '0' and is_valid = '1' order by SHIFT_CODE";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -51,7 +51,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         {
             while (startdate < enddate)
             {
-               DataBaseOperator opt =new DataBaseOperator();
+               MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                 for (int i = 0; i < GridView1.Rows.Count; i++)
                 {
                     string endtime = startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
@@ -69,7 +69,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         protected void bindGrid2()
       {
           string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.work_staus as 状态,g1.Id from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code where g1.work_date between '" + txtStartDate.Text + "' and '" + txtEndDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1'";       
-         DataBaseOperator opt =new DataBaseOperator();
+         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
           DataSet data = opt.CreateDataSetOra(query);
           GridView2.DataSource = data;
           GridView2.DataBind();
@@ -128,7 +128,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                    {
                        string id = GridView2.DataKeys[i].Value.ToString();
                        string query = "update ht_prod_schedule set work_staus = '" + ((DropDownList)GridView2.Rows[i].FindControl("listStatus2")).SelectedValue + "'  where ID = '" + id + "'";
-                      DataBaseOperator opt =new DataBaseOperator();
+                      MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                        opt.UpDateOra(query);
                    }
                }              
@@ -148,7 +148,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                       {
                           string id = GridView2.DataKeys[i].Value.ToString();
                           string query = "update ht_prod_schedule set IS_DEL = '1'  where ID = '" + id + "'";
-                         DataBaseOperator opt =new DataBaseOperator();
+                         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                           opt.UpDateOra(query);
                       }
                   }

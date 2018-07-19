@@ -13,7 +13,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listRole, "select * from ht_svr_sys_role t", "F_ROLE", "F_ID");
             bindData();
@@ -23,9 +23,14 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     protected void bindData()
     {
         string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, r.f_name  as 组织机构名称,s.f_role as 角色, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DEL = '0' order by t.ID";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();
+    }
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+        bindData();
     }
     protected void ck_CheckedChanged(object sender, EventArgs e)
     {
@@ -50,12 +55,12 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
             }
         }
         if (num == 0 || num > 1)
-            ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", "alert('请选择需查看用户!!!');", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('请选择需查看用户!!!');", true);
         else if (num == 1)
         {
             txtID.Text = id;
             string query = "select * from ht_svr_user where ID = '" + txtID.Text + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -75,8 +80,8 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
                 rdDel.Checked = (data.Tables[0].Rows[0]["IS_DEL"].ToString() == "1");
                 txtDscp.Text = data.Tables[0].Rows[0]["DESCRIPTION"].ToString();
                 listRole.SelectedValue = data.Tables[0].Rows[0]["ROLE"].ToString();
-            }              
-              ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
+            }
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
         }
 
     }
@@ -84,10 +89,10 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         SetBlank();
-       DataBaseOperator opt =new DataBaseOperator();
-  	string id =  (Convert.ToInt16(opt.GetSegValue("select nvl(max(substr(id,3,5)),0) as id from ht_svr_user ", "ID")) + 1).ToString().PadLeft(5,'0');
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+       string id = opt.GetSegValue("select nvl(max(substr(id,3,5)),0)+1 as id from ht_svr_user where substr(id,1,2) = '07'", "ID").PadLeft(5,'0');
         txtID.Text = "07" + id;
-        ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
 
     }
     protected string getGender()
@@ -106,7 +111,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
  	opt.UpDateOra("delete from ht_svr_user  where ID = '" + txtID.Text + "'");
         string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE" };
         string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtPswd.Text, txtEmail.Text, listApt.SelectedValue,  Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };
@@ -118,11 +123,11 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
         
 
         bindData();
-        ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
   	for (int i = 0; i < GridView1.Rows.Count; i++)
         {
             if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)

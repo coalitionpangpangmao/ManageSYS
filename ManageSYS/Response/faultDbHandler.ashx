@@ -27,7 +27,7 @@ public class faultDbHandler : IHttpHandler {
             Remark = " ERROR_DESCRIPTION like '%" + key + "%'";
         }
         //DataTable dt = new chat.dal.chatconnect().chat_service_getlistremark(1, Remark);
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select * from HT_EQ_FAULT_DB where " + Remark);
         DataTable dt = data.Tables[0];
         string result = "";

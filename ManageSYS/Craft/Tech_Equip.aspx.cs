@@ -14,7 +14,7 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1'", "section_name", "section_code");
            
         }
@@ -32,7 +32,7 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
     protected void bindData(string eqcode)
     {
         string query = "select * from HT_EQ_EQP_TBL where  IDKEY = '" + eqcode + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {

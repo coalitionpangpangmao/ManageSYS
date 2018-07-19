@@ -33,7 +33,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                 query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
         }
      
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -43,7 +43,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     }
     protected void initView()
     {        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        opt.bindDropDownList(listtype, "select ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
        opt.bindDropDownList(listType2, "select ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
        opt.bindDropDownList(listCreator, "select ID,Name from ht_svr_user where is_DEL = '0'", "Name", "ID");
@@ -59,10 +59,10 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     {
         if (listType2.SelectedValue != "" && listSection2.SelectedValue != "")
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string temp = opt.GetSegValue("select nvl(max(substr(inspect_code,10,3)),0) + 1 as code from Ht_Qlt_Inspect_Proj where inspect_type = '" + listType2.SelectedValue + "' and inspect_group = '" + listSection2.SelectedValue + "'", "code");
             txtCode.Text = "703" + listType2.SelectedValue + listSection2.SelectedValue.PadLeft(5, '0') + temp.PadLeft(3, '0');
-            listCreator.SelectedValue = ((MSYS.Data.SysUser)Session["User"]).Id;
+            listCreator.SelectedValue = ((MSYS.Data.SysUser)Session["User"]).id;
             txtName.Text = "";
         }
         else
@@ -71,7 +71,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        ArrayList commandlist = new ArrayList();
        commandlist.Add("delete from ht_qlt_inspect_proj where INSPECT_CODE = '" + txtCode.Text + "'");
        string[] seg = { "INSPECT_GROUP", "INSPECT_CODE", "INSPECT_NAME", "INSPECT_TYPE", "REMARK", "CREATE_ID", "CREATE_TIME", "UNIT" };
@@ -107,7 +107,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                 {
                     string projcode = GridView1.DataKeys[i].Values.ToString();                   
                     string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where INSPECT_CODE = '" + projcode + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }           
@@ -127,7 +127,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
             int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
             string projcode = GridView1.DataKeys[rowIndex].Value.ToString();
             string query = "select * from ht_qlt_inspect_proj where INSPECT_CODE = '" + projcode + "' and  is_del = '0'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -159,7 +159,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void listtype_SelectedIndexChanged(object sender, EventArgs e)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (listtype.SelectedValue == "0")
         {
             opt.bindDropDownList(listSection, "select Section_code,Section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "Section_name", "Section_code");
@@ -174,7 +174,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     protected void listType2_SelectedIndexChanged(object sender, EventArgs e)
     {
 
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (listType2.SelectedValue == "0")
         {
             opt.bindDropDownList(listSection2, "select Section_code,Section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "Section_name", "Section_code");

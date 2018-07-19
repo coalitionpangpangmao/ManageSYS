@@ -28,7 +28,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             query += " and g.plan_year = '" + txtYears.Text + "'";
         if (listSeason.SelectedValue != "")
             query += " and g.quarter = '" + listSeason.SelectedValue + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -61,7 +61,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
         string query = "select r.prod_code as 产品,r.TOTAL_OUTPUT as 计划数量,r.plan_output_1 as month1,r.plan_output_2 as month2,r.plan_output_3 as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
 
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
@@ -87,7 +87,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     public DataSet ddlbind()
     {
         string sqlstr = "select prod_name as 产品规格,prod_code from ht_pub_prod_design where is_valid = '1' and is_del  = '0' order by Prod_code DESC";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra(sqlstr);
     }
 
@@ -101,7 +101,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         if (aprv == "己通过")
         {
             string query = "update ht_prod_Season_plan set ISSUED_STATUS = '1'  where ID = '" + id + "'";
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.UpDateOra(query);
             bindGrid1();
         }
@@ -120,7 +120,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowindex].Value.ToString();
         string query = "update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         ArrayList commandlist = new ArrayList();
         commandlist.Add("update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'");
         commandlist.Add("update ht_prod_season_plan_detail set is_del = '1' where QUARTER_PLAN_ID =  '" + id + "'");
@@ -153,7 +153,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -168,7 +168,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             string id = GridView1.DataKeys[index].Value.ToString();
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { GridView1.Rows[index].Cells[2].Text, "12", id, Page.Request.UserHostName.ToString() };
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 opt.UpDateOra("update ht_prod_Season_plan set FLOW_STATUS = '0'  where ID = '" + id + "'");
@@ -189,7 +189,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string query = "select r.prod_code as 产品,r.plan_output_1 + r.plan_output_2 + r.plan_output_3 as 计划数量,r.plan_output_1 as month1,r.plan_output_2 as month2,r.plan_output_3 as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             if (set == null)
@@ -229,12 +229,12 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
     protected void btnModify_Click(object sender, EventArgs e)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string planname = txtYear.Text + "-" + listSeason2.SelectedValue + "生产计划";
 
         opt.UpDateOra("delete from  HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'");
         string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID", "CREATE_TIME", "REMARK" };
-        string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
+        string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
         opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN");
         hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");
 
@@ -267,7 +267,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 {
                     string mtr_code = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
-                    DataBaseOperator opt = new DataBaseOperator();
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -287,7 +287,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
             string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.UpDateOra(query);
             bindGrid2(hidePlanID.Value);
         }
@@ -307,7 +307,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string query = "select * from ht_prod_season_plan_Detail where MONTH_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'";
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {

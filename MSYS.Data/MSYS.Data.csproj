@@ -48,6 +48,8 @@
     <Compile Include="SysRight.cs" />
     <Compile Include="SysRightCollection.cs" />
     <Compile Include="SysUser.cs" />
+    <Compile Include="EquipCLS.cs" />
+    <Compile Include="Equipment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSYS.DAL\MSYS.DAL.csproj">

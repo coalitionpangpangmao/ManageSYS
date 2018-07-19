@@ -62,7 +62,7 @@
                                 </asp:TemplateField>
                                 <asp:BoundField HeaderText="产品" DataField="prod_name" />
                                 <asp:BoundField HeaderText="工艺点" DataField="para_name" />
-                                <asp:BoundField HeaderText="类型" DataField="type" />
+                                <asp:BoundField HeaderText="类型" DataField="name" />
                                 <asp:BoundField HeaderText="值" DataField="value" />
                                 <asp:BoundField HeaderText="范围" DataField="range" />
                                 <asp:BoundField HeaderText="开始时间" DataField="b_time" />
@@ -70,7 +70,7 @@
                                 <asp:BoundField HeaderText="班组" DataField="team_name" />
                                 <asp:TemplateField HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="处理中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="操作">
@@ -87,7 +87,7 @@
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                        <asp:AsyncPostBackTrigger ControlID ="btnModify" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" />
                     </Triggers>
                 </asp:UpdatePanel>
 
@@ -113,13 +113,13 @@
                                 <asp:BoundField DataField="unit" HeaderText="单位" />
                                 <asp:TemplateField HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="处理中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField DataField="minus_score" HeaderText="扣分" />
                                 <asp:TemplateField HeaderText="操作">
                                     <ItemTemplate>
-                                        <asp:Button ID="btngrid2Deal" runat="server" Text="处理" CssClass="btn1 auth"  OnClick="btngrid2Deal_Click" />
+                                        <asp:Button ID="btngrid2Deal" runat="server" Text="处理" CssClass="btn1 auth" OnClick="btngrid2Deal_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
@@ -133,7 +133,7 @@
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="GridView2" />
-                        <asp:AsyncPostBackTrigger ControlID ="btnModify" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" />
                     </Triggers>
                 </asp:UpdatePanel>
 
@@ -143,7 +143,7 @@
             <div class="shade">
                 <div class="info">
                     <div class="tiphead">
-                        <span>员工信息</span><a onclick="$('.shade').fadeOut(100);"></a>
+                        <span>工艺事件处理情况</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>
                     <div class="gridinfo">
                         <asp:UpdatePanel ID="updtpanel1" runat="server">
@@ -156,7 +156,8 @@
                                             <asp:TextBox ID="txtEventID" runat="server" CssClass="dfinput1" Width="250px" Enabled="False"></asp:TextBox></td>
                                         <td>类型： </td>
                                         <td>
-                                            <asp:TextBox ID="txtStyle" runat="server" CssClass="dfinput1" Width="250px" Enabled="False"></asp:TextBox></td>
+                                            <asp:DropDownList ID="listStyle" runat="server" CssClass="drpdwnlist" Width="250px" Enabled="false"></asp:DropDownList>
+                                        </td>
                                     </tr>
                                     <tr style="padding-top: 5px">
                                         <td>现场记录

@@ -1,38 +1,9 @@
 --------------------------------------------
 -- Export file for user ZS18              --
--- Created by wicky on 2018/6/30, 9:16:18 --
+-- Created by wicky on 2018/7/15, 8:53:07 --
 --------------------------------------------
 
 spool db.log
-
-prompt
-prompt Creating table G_SECTION_RATE
-prompt =============================
-prompt
-create table ZS18.G_SECTION_RATE
-(
-  F_BATCH          VARCHAR2(20),
-  F_SECTION        VARCHAR2(20),
-  F_SECTION_WEIGHT FLOAT,
-  F_SECTION_SCORE  FLOAT,
-  F_SYNCHRO_TIME   VARCHAR2(19),
-  F_IS_GAP         VARCHAR2(6),
-  F_SHIFT          VARCHAR2(4),
-  F_DONE           VARCHAR2(1) default 0,
-  F_GAP_TIME       FLOAT default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 320K
-    next 8K
-    minextents 1
-  );
-comment on table ZS18.G_SECTION_RATE
-  is '绩效考核工序得分';
 
 prompt
 prompt Creating table HT_EQ_EQP_CLS
@@ -230,6 +201,9 @@ alter table ZS18.HT_EQ_EQP_TBL
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_EQ_EQP_TBL
+  add constraint FK_CLS foreign key (CLS_CODE)
+  references ZS18.HT_EQ_EQP_CLS (ID_KEY) on delete cascade;
 
 prompt
 prompt Creating table HT_EQ_FAULT_DB
@@ -489,62 +463,12 @@ alter table ZS18.HT_EQ_LB_PLAN_DETAIL
     minextents 1
     maxextents unlimited
   );
-
-prompt
-prompt Creating table HT_EQ_MCLBR_CONTENT
-prompt ==================================
-prompt
-create table ZS18.HT_EQ_MCLBR_CONTENT
-(
-  MAIN_ID VARCHAR2(32) not null,
-  BTIME   VARCHAR2(128),
-  ETIME   VARCHAR2(16) default 0,
-  AVG     VARCHAR2(512),
-  STD     VARCHAR2(32),
-  ERR_AVG VARCHAR2(32),
-  IS_DEL  VARCHAR2(1) default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_EQ_MCLBR_CONTENT
-  is '人工校准计划审批从表内容';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.MAIN_ID
-  is '主表id';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.BTIME
-  is '取样开始时间';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.ETIME
-  is '取样结束时间';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.AVG
-  is '均值';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.STD
-  is '标准差';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.ERR_AVG
-  is '误差均值';
-comment on column ZS18.HT_EQ_MCLBR_CONTENT.IS_DEL
-  is '是否删除';
-alter table ZS18.HT_EQ_MCLBR_CONTENT
-  add constraint PK_HT_EQ_CONTENT primary key (MAIN_ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
+alter table ZS18.HT_EQ_LB_PLAN_DETAIL
+  add constraint FK_HT_EQ_LB_EQUIP foreign key (EQUIPMENT_ID)
+  references ZS18.HT_EQ_EQP_TBL (IDKEY) on delete cascade;
+alter table ZS18.HT_EQ_LB_PLAN_DETAIL
+  add constraint FK_HT_EQ_LB_PLAN_DETAIL foreign key (MAIN_ID)
+  references ZS18.HT_EQ_LB_PLAN (PZ_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_EQ_MCLBR_PLAN
@@ -708,6 +632,68 @@ alter table ZS18.HT_EQ_MCLBR_PLAN_DETAIL
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_EQ_MCLBR_PLAN_DETAIL
+  add constraint FK_HT_EQ_MCLBRT_PLAN_DETAIL foreign key (MAIN_ID)
+  references ZS18.HT_EQ_MCLBR_PLAN (PZ_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_EQ_MCLBR_CONTENT
+prompt ==================================
+prompt
+create table ZS18.HT_EQ_MCLBR_CONTENT
+(
+  MAIN_ID INTEGER not null,
+  BTIME   VARCHAR2(128),
+  ETIME   VARCHAR2(16) default 0,
+  AVG     VARCHAR2(512),
+  STD     VARCHAR2(32),
+  ERR_AVG VARCHAR2(32),
+  IS_DEL  VARCHAR2(1) default 0
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_EQ_MCLBR_CONTENT
+  is '人工校准计划审批从表内容';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.MAIN_ID
+  is '主表id';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.BTIME
+  is '取样开始时间';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.ETIME
+  is '取样结束时间';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.AVG
+  is '均值';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.STD
+  is '标准差';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.ERR_AVG
+  is '误差均值';
+comment on column ZS18.HT_EQ_MCLBR_CONTENT.IS_DEL
+  is '是否删除';
+alter table ZS18.HT_EQ_MCLBR_CONTENT
+  add constraint PK_HT_EQ_CONTENT primary key (MAIN_ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_EQ_MCLBR_CONTENT
+  add constraint FK_HT_EQ_CONTENT foreign key (MAIN_ID)
+  references ZS18.HT_EQ_MCLBR_PLAN_DETAIL (ID) on delete cascade;
 
 prompt
 prompt Creating table HT_EQ_MT_PLAN
@@ -889,884 +875,9 @@ alter table ZS18.HT_EQ_MT_PLAN_DETAIL
     minextents 1
     maxextents unlimited
   );
-
-prompt
-prompt Creating table HT_EQ_MT_SHIFT
-prompt =============================
-prompt
-create table ZS18.HT_EQ_MT_SHIFT
-(
-  ID               INTEGER not null,
-  WORKSHOP_CODE    VARCHAR2(32),
-  SHIFT_CODE       VARCHAR2(32),
-  TEAM_CODE        VARCHAR2(32),
-  HANDOVER_DATE    VARCHAR2(10),
-  B_TIME           VARCHAR2(19),
-  E_TIME           VARCHAR2(19),
-  CREATE_ID        VARCHAR2(32),
-  MODIFY_ID        VARCHAR2(32),
-  RECORD_TIME      VARCHAR2(19),
-  REMARK           VARCHAR2(256),
-  IS_VALID         VARCHAR2(1) default 1,
-  IS_DEL           VARCHAR2(1) default 0,
-  SHIFT_STATUS     VARCHAR2(16) default 1,
-  MAINTENANCE_TYPE VARCHAR2(4) not null
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_EQ_MT_SHIFT.ID
-  is '机械维修班交班记录ID';
-comment on column ZS18.HT_EQ_MT_SHIFT.WORKSHOP_CODE
-  is '车间名称';
-comment on column ZS18.HT_EQ_MT_SHIFT.SHIFT_CODE
-  is '班时编码';
-comment on column ZS18.HT_EQ_MT_SHIFT.TEAM_CODE
-  is '班组编码';
-comment on column ZS18.HT_EQ_MT_SHIFT.HANDOVER_DATE
-  is '交班日期';
-comment on column ZS18.HT_EQ_MT_SHIFT.B_TIME
-  is '开始时间';
-comment on column ZS18.HT_EQ_MT_SHIFT.E_TIME
-  is '结束时间';
-comment on column ZS18.HT_EQ_MT_SHIFT.CREATE_ID
-  is '交班人ID';
-comment on column ZS18.HT_EQ_MT_SHIFT.MODIFY_ID
-  is '接班人ID';
-comment on column ZS18.HT_EQ_MT_SHIFT.RECORD_TIME
-  is '记录时间';
-comment on column ZS18.HT_EQ_MT_SHIFT.REMARK
-  is '备注';
-comment on column ZS18.HT_EQ_MT_SHIFT.IS_VALID
-  is '是否有效';
-comment on column ZS18.HT_EQ_MT_SHIFT.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_EQ_MT_SHIFT.SHIFT_STATUS
-  is '交接班状态';
-comment on column ZS18.HT_EQ_MT_SHIFT.MAINTENANCE_TYPE
-  is '维修类型';
-alter table ZS18.HT_EQ_MT_SHIFT
-  add constraint PK_HT_EQ_ELECTRIC_SHIFT primary key (ID, MAINTENANCE_TYPE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_EQ_MT_SHIFT_DETAIL
-prompt ====================================
-prompt
-create table ZS18.HT_EQ_MT_SHIFT_DETAIL
-(
-  ID               INTEGER not null,
-  SHIFT_MAIN_ID    INTEGER,
-  MAINTENANCE_TYPE VARCHAR2(4),
-  MANAGE_STATUS    VARCHAR2(32),
-  IS_DEL           VARCHAR2(1) default 0,
-  BUZ_ID           INTEGER
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255;
-comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.ID
-  is '维修班交班子表ID';
-comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.SHIFT_MAIN_ID
-  is '维修班交班主表ID';
-comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.MAINTENANCE_TYPE
-  is '维修类型　0电气1机械';
-comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.MANAGE_STATUS
-  is '处理状态';
-comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.BUZ_ID
-  is '业务ID';
-alter table ZS18.HT_EQ_MT_SHIFT_DETAIL
-  add constraint PK_T_SCENE_ELECTRIC_SHIFT_DETA primary key (ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255;
-
-prompt
-prompt Creating table HT_EQ_RP_PLAN
-prompt ============================
-prompt
-create table ZS18.HT_EQ_RP_PLAN
-(
-  FLOW_STATUS    VARCHAR2(2) default -1,
-  CREATE_ID      VARCHAR2(32),
-  CREATE_DEPT_ID VARCHAR2(32),
-  CREATE_TIME    VARCHAR2(19),
-  REMARK         VARCHAR2(512),
-  IS_DEL         VARCHAR2(1) default 0,
-  PZ_CODE        VARCHAR2(32) not null,
-  GOWHERE        VARCHAR2(1),
-  EXPIRED_DATE   VARCHAR2(10),
-  TASK_STATUS    CHAR(10) default 0,
-  MT_NAME        VARCHAR2(50)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_EQ_RP_PLAN
-  is '停产维修计划审批主表';
-comment on column ZS18.HT_EQ_RP_PLAN.FLOW_STATUS
-  is '审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
-comment on column ZS18.HT_EQ_RP_PLAN.CREATE_ID
-  is '申请人id';
-comment on column ZS18.HT_EQ_RP_PLAN.CREATE_DEPT_ID
-  is '申请部门id';
-comment on column ZS18.HT_EQ_RP_PLAN.CREATE_TIME
-  is '申请时间';
-comment on column ZS18.HT_EQ_RP_PLAN.REMARK
-  is '备注';
-comment on column ZS18.HT_EQ_RP_PLAN.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_EQ_RP_PLAN.PZ_CODE
-  is '凭证号 RP+ YYYYMMDD + 三位流水号';
-comment on column ZS18.HT_EQ_RP_PLAN.GOWHERE
-  is '流程决策';
-comment on column ZS18.HT_EQ_RP_PLAN.EXPIRED_DATE
-  is '过期时间';
-comment on column ZS18.HT_EQ_RP_PLAN.TASK_STATUS
-  is '执行状态 0 未执行  1 执行中  2 己完成 3 己过期';
-comment on column ZS18.HT_EQ_RP_PLAN.MT_NAME
-  is '维修计划名';
-alter table ZS18.HT_EQ_RP_PLAN
-  add constraint PK_HT_RP_PLAN primary key (PZ_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_EQ_RP_PLAN_DETAIL
-prompt ===================================
-prompt
-create table ZS18.HT_EQ_RP_PLAN_DETAIL
-(
-  ID              INTEGER not null,
-  MAIN_ID         VARCHAR2(32),
-  EQUIPMENT_ID    VARCHAR2(512),
-  NTRODUCER       VARCHAR2(128),
-  STATUS          VARCHAR2(16) default 0,
-  REMARK          VARCHAR2(512),
-  CREATE_ID       VARCHAR2(32),
-  CREATE_TIME     VARCHAR2(32),
-  IS_DEL          VARCHAR2(1) default 0,
-  MECH_AREA       VARCHAR2(32),
-  RESPONER        VARCHAR2(20),
-  EXP_FINISH_TIME VARCHAR2(19),
-  IS_OUT          VARCHAR2(10),
-  PICKUP_DESC     VARCHAR2(512),
-  YEAR_MONTH      VARCHAR2(20),
-  FAULT_ID        INTEGER,
-  EXE_TIME        VARCHAR2(19),
-  REASON          VARCHAR2(512),
-  CONTENT         VARCHAR2(512),
-  IS_EMG          VARCHAR2(1) default 0,
-  EXE_SEGTIME     INTEGER,
-  VERIFIOR        VARCHAR2(20)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_EQ_RP_PLAN_DETAIL
-  is '停产维修计划从表';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.ID
-  is '主键标识';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.MAIN_ID
-  is '主表id';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EQUIPMENT_ID
-  is '维修设备ID';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.NTRODUCER
-  is '提出人';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.STATUS
-  is '状态 -1上报未处理0未派工1己派工 2己完成';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.REMARK
-  is '备注';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.CREATE_ID
-  is '创建人id';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.IS_DEL
-  is '是否删除';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.MECH_AREA
-  is '区域';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.RESPONER
-  is '责任人';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EXP_FINISH_TIME
-  is '期望完成时间';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.IS_OUT
-  is '是否委外';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.PICKUP_DESC
-  is '备件情况';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.YEAR_MONTH
-  is '所属年月';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.FAULT_ID
-  is '故障ID';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EXE_TIME
-  is '操作时间';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.REASON
-  is '维修原因';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.CONTENT
-  is '维修内容';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.IS_EMG
-  is '是否是应急维修';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EXE_SEGTIME
-  is '操作时长';
-comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.VERIFIOR
-  is '验证人';
-alter table ZS18.HT_EQ_RP_PLAN_DETAIL
-  add constraint PK_HT_EQ_RP_PLAN_DETAIL primary key (ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_EQ_STG_PICKUP
-prompt ===============================
-prompt
-create table ZS18.HT_EQ_STG_PICKUP
-(
-  PICKUP_DATE    VARCHAR2(32),
-  FLOW_STATUS    VARCHAR2(10),
-  CREATE_ID      VARCHAR2(32),
-  CREATE_DEPT_ID VARCHAR2(32),
-  CREATE_TIME    VARCHAR2(19),
-  REMARK         VARCHAR2(512),
-  IS_DEL         VARCHAR2(1),
-  PZ_CODE        VARCHAR2(32) not null,
-  GOWHERE        VARCHAR2(1),
-  IS_PICKUP      VARCHAR2(1) default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255;
-comment on table ZS18.HT_EQ_STG_PICKUP
-  is '备件领用审批';
-comment on column ZS18.HT_EQ_STG_PICKUP.PICKUP_DATE
-  is '领用日期';
-comment on column ZS18.HT_EQ_STG_PICKUP.FLOW_STATUS
-  is '审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
-comment on column ZS18.HT_EQ_STG_PICKUP.CREATE_ID
-  is '申请人id';
-comment on column ZS18.HT_EQ_STG_PICKUP.CREATE_DEPT_ID
-  is '申请部门id';
-comment on column ZS18.HT_EQ_STG_PICKUP.CREATE_TIME
-  is '申请时间';
-comment on column ZS18.HT_EQ_STG_PICKUP.REMARK
-  is '备注';
-comment on column ZS18.HT_EQ_STG_PICKUP.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_EQ_STG_PICKUP.PZ_CODE
-  is '凭证号';
-comment on column ZS18.HT_EQ_STG_PICKUP.GOWHERE
-  is '流程决策';
-comment on column ZS18.HT_EQ_STG_PICKUP.IS_PICKUP
-  is '是否领用';
-alter table ZS18.HT_EQ_STG_PICKUP
-  add constraint PK_HT_EQ_STG_PICKUP primary key (PZ_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255;
-
-prompt
-prompt Creating table HT_EQ_STG_PICKUP_DETAIL
-prompt ======================================
-prompt
-create table ZS18.HT_EQ_STG_PICKUP_DETAIL
-(
-  ID          INTEGER not null,
-  MAIN_CODE   VARCHAR2(32),
-  SP_CODE     VARCHAR2(32),
-  SP_NAME     VARCHAR2(256),
-  SP_STANDARD VARCHAR2(64),
-  SP_MODEL    VARCHAR2(64),
-  PICKUP_NUM  VARCHAR2(32),
-  SP_UNIT     VARCHAR2(32),
-  OWN_SECTION VARCHAR2(512),
-  REMARK      VARCHAR2(512),
-  STATUS      VARCHAR2(16),
-  OWN_EQUI    VARCHAR2(128),
-  CREATE_ID   VARCHAR2(32),
-  CREATE_TIME VARCHAR2(32),
-  IS_DEL      VARCHAR2(1),
-  STORAGE     VARCHAR2(32)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255;
-comment on table ZS18.HT_EQ_STG_PICKUP_DETAIL
-  is '备件领用明细表';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.ID
-  is '主键标识';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.MAIN_CODE
-  is '领用审批主表id';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_CODE
-  is '备件编码';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_NAME
-  is '备件名称';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_STANDARD
-  is '规格';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_MODEL
-  is '型号';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.PICKUP_NUM
-  is '采购数量';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_UNIT
-  is '备件单位';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.OWN_SECTION
-  is '使用部位（工艺段）';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.REMARK
-  is '备注';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.STATUS
-  is '状态';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.OWN_EQUI
-  is '所属设备';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.CREATE_ID
-  is '创建人id';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.IS_DEL
-  is '是否删除';
-comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.STORAGE
-  is '仓库ID';
-alter table ZS18.HT_EQ_STG_PICKUP_DETAIL
-  add constraint PK_HT_EQ_STG_PICKUP_DETAIL primary key (ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255;
-
-prompt
-prompt Creating table HT_INNER_APRV_STATUS
-prompt ===================================
-prompt
-create table ZS18.HT_INNER_APRV_STATUS
-(
-  ID   VARCHAR2(2) not null,
-  NAME VARCHAR2(50)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_INNER_APRV_STATUS
-  is '审批状态';
-comment on column ZS18.HT_INNER_APRV_STATUS.ID
-  is 'ID值';
-comment on column ZS18.HT_INNER_APRV_STATUS.NAME
-  is '描述';
-alter table ZS18.HT_INNER_APRV_STATUS
-  add constraint PK_APRV_STATUS_ID primary key (ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_INNER_BOOL_DISPLAY
-prompt ====================================
-prompt
-create table ZS18.HT_INNER_BOOL_DISPLAY
-(
-  ID           VARCHAR2(2) not null,
-  CTRL_NAME    VARCHAR2(50),
-  STRG_NAME    VARCHAR2(50),
-  ISSUE_NAME   VARCHAR2(50),
-  INSPECT_TYPE VARCHAR2(50)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_INNER_BOOL_DISPLAY
-  is '受控状态';
-comment on column ZS18.HT_INNER_BOOL_DISPLAY.ID
-  is 'ID值';
-comment on column ZS18.HT_INNER_BOOL_DISPLAY.CTRL_NAME
-  is '受控状态';
-comment on column ZS18.HT_INNER_BOOL_DISPLAY.STRG_NAME
-  is '出入库状态';
-comment on column ZS18.HT_INNER_BOOL_DISPLAY.ISSUE_NAME
-  is '下发状态';
-comment on column ZS18.HT_INNER_BOOL_DISPLAY.INSPECT_TYPE
-  is '工艺检查类型';
-
-prompt
-prompt Creating table HT_INNER_INSPECT_GROUP
-prompt =====================================
-prompt
-create table ZS18.HT_INNER_INSPECT_GROUP
-(
-  ID   VARCHAR2(2) not null,
-  NAME VARCHAR2(50)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_INNER_INSPECT_GROUP
-  is '工艺检查成品检查分组';
-comment on column ZS18.HT_INNER_INSPECT_GROUP.ID
-  is 'ID值';
-comment on column ZS18.HT_INNER_INSPECT_GROUP.NAME
-  is '描述';
-alter table ZS18.HT_INNER_INSPECT_GROUP
-  add constraint PK_INSPECT_GROUP primary key (ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_INNER_MAP
-prompt ===========================
-prompt
-create table ZS18.HT_INNER_MAP
-(
-  URL    VARCHAR2(255) not null,
-  REMARK VARCHAR2(255),
-  MAPID  VARCHAR2(5) not null,
-  IS_DEL VARCHAR2(1) default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_INNER_MAP
-  is '页面映射表';
-comment on column ZS18.HT_INNER_MAP.URL
-  is 'URL';
-comment on column ZS18.HT_INNER_MAP.REMARK
-  is '描述';
-alter table ZS18.HT_INNER_MAP
-  add constraint PK_MAPID primary key (MAPID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_INNER_MAT_DEPOT
-prompt =================================
-prompt
-create table ZS18.HT_INNER_MAT_DEPOT
-(
-  ID   VARCHAR2(2) not null,
-  NAME VARCHAR2(50)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_INNER_MAT_DEPOT
-  is '原料仓库';
-comment on column ZS18.HT_INNER_MAT_DEPOT.ID
-  is 'ID值';
-comment on column ZS18.HT_INNER_MAT_DEPOT.NAME
-  is '描述';
-alter table ZS18.HT_INNER_MAT_DEPOT
-  add constraint PK_DEPOT_ID primary key (ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_PROD_MANUAL_RECODE
-prompt ====================================
-prompt
-create table ZS18.HT_PROD_MANUAL_RECODE
-(
-  ID          INTEGER not null,
-  PARA_NAME   VARCHAR2(30),
-  VALUE       FLOAT,
-  B_TIME      VARCHAR2(19),
-  E_TIME      VARCHAR2(10),
-  SHIFT       VARCHAR2(20),
-  CREATOR     VARCHAR2(50),
-  CREATE_TIME VARCHAR2(50),
-  IS_DEL      VARCHAR2(19),
-  PARA_CODE   VARCHAR2(30)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-  );
-comment on column ZS18.HT_PROD_MANUAL_RECODE.ID
-  is '记录ID';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.PARA_NAME
-  is '参数名';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.VALUE
-  is '参数值';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.B_TIME
-  is '开始时间';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.E_TIME
-  is '结束时间';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.SHIFT
-  is '班组';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.CREATOR
-  is '记录人员';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.CREATE_TIME
-  is '记录时间';
-comment on column ZS18.HT_PROD_MANUAL_RECODE.PARA_CODE
-  is '参数编码';
-
-prompt
-prompt Creating table HT_PROD_MONTH_PLAN
-prompt =================================
-prompt
-create table ZS18.HT_PROD_MONTH_PLAN
-(
-  ID            INTEGER not null,
-  PLAN_NAME     VARCHAR2(128) not null,
-  B_FLOW_STATUS VARCHAR2(2) default -1,
-  E_FLOW_STATUS VARCHAR2(10),
-  ISSUED_STATUS VARCHAR2(1) default 0,
-  CREATE_ID     VARCHAR2(32),
-  CREATE_TIME   VARCHAR2(19),
-  MODIFY_ID     VARCHAR2(32),
-  MODIFY_TIME   VARCHAR2(19),
-  IS_DEL        VARCHAR2(1) default 0,
-  ADJUST_STATUS VARCHAR2(1),
-  PLAN_TIME     VARCHAR2(8),
-  IS_VALID      VARCHAR2(1) default 0,
-  REMARK        VARCHAR2(512)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_PROD_MONTH_PLAN
-  is '依据季度到月生产计划拆分成月度生产任务';
-comment on column ZS18.HT_PROD_MONTH_PLAN.ID
-  is '月度生产任务唯一标识';
-comment on column ZS18.HT_PROD_MONTH_PLAN.PLAN_NAME
-  is '计划名称';
-comment on column ZS18.HT_PROD_MONTH_PLAN.B_FLOW_STATUS
-  is '计划生产审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
-comment on column ZS18.HT_PROD_MONTH_PLAN.E_FLOW_STATUS
-  is '计划结束审批状态';
-comment on column ZS18.HT_PROD_MONTH_PLAN.ISSUED_STATUS
-  is '下发状态 0 未下发 1 己下发';
-comment on column ZS18.HT_PROD_MONTH_PLAN.CREATE_ID
-  is '创建人编码';
-comment on column ZS18.HT_PROD_MONTH_PLAN.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_PROD_MONTH_PLAN.MODIFY_ID
-  is '修改人编码';
-comment on column ZS18.HT_PROD_MONTH_PLAN.MODIFY_TIME
-  is '修改时间';
-comment on column ZS18.HT_PROD_MONTH_PLAN.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_PROD_MONTH_PLAN.ADJUST_STATUS
-  is '计划明细是否有调整 0 未调整 1 已调整';
-comment on column ZS18.HT_PROD_MONTH_PLAN.PLAN_TIME
-  is '后加字段-计划时间';
-comment on column ZS18.HT_PROD_MONTH_PLAN.IS_VALID
-  is '是否审批';
-alter table ZS18.HT_PROD_MONTH_PLAN
-  add constraint PK_HT_PROD_MONTH_PLAN primary key (ID, PLAN_NAME)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_PROD_MONTH_PLAN_DETAIL
-prompt ========================================
-prompt
-create table ZS18.HT_PROD_MONTH_PLAN_DETAIL
-(
-  ID            INTEGER,
-  MONTH_PLAN_ID INTEGER not null,
-  PLAN_NO       VARCHAR2(32) not null,
-  PROD_CODE     VARCHAR2(32),
-  PLAN_YEAR     VARCHAR2(10),
-  PROD_MONTH    VARCHAR2(10),
-  PLAN_TYPE     VARCHAR2(10),
-  PLAN_OUTPUT   NUMBER(19,2),
-  ADJUST_OUTPUT NUMBER(19,2),
-  FINISH_OUTPUT NUMBER(19,3),
-  TECH_VERSION  VARCHAR2(64),
-  CREATE_ID     VARCHAR2(32),
-  CREATOR       VARCHAR2(64),
-  CREATE_TIME   DATE,
-  MODIFY_ID     VARCHAR2(32),
-  MODIFY_NAME   VARCHAR2(32),
-  MODIFY_TIME   DATE,
-  EXE_STATUS    VARCHAR2(10) default 0,
-  IS_DEL        VARCHAR2(1) default 0,
-  PLAN_SORT     VARCHAR2(16) default 0,
-  PLAN_PATH     VARCHAR2(60) default 0,
-  IS_VALID      VARCHAR2(1) default 1,
-  PATH_DONE     VARCHAR2(1) default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_PROD_MONTH_PLAN_DETAIL
-  is '月度生产任务计划明细表';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.ID
-  is '月度生产任务唯一标识';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MONTH_PLAN_ID
-  is '月度生产计划标识';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_NO
-  is '计划号';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PROD_CODE
-  is '生产牌号';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_YEAR
-  is '计划年份';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PROD_MONTH
-  is '生产月份';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_TYPE
-  is '生产计划类型(0:日常生产,1:临时增加,2:工艺测试)';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_OUTPUT
-  is '本月计划生产量';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.ADJUST_OUTPUT
-  is '调整后产量';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.FINISH_OUTPUT
-  is '完成产量';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.TECH_VERSION
-  is '工艺版本号';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.CREATE_ID
-  is '创建人编码';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.CREATOR
-  is '创建人';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MODIFY_ID
-  is '修改人编码';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MODIFY_NAME
-  is '修改人名称';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MODIFY_TIME
-  is '修改时间';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.EXE_STATUS
-  is '执行状态 0未下发 1 己下发 2 生产中 3 暂停4完成5撤消';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_SORT
-  is '排序';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.IS_VALID
-  is '是否被审批后有效';
-comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PATH_DONE
-  is '是否指定了生产路径';
-alter table ZS18.HT_PROD_MONTH_PLAN_DETAIL
-  add constraint PK_HT_PROD_MONTH_PLAN_DETAIL primary key (PLAN_NO, MONTH_PLAN_ID)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_PROD_REPORT
-prompt =============================
-prompt
-create table ZS18.HT_PROD_REPORT
-(
-  SECTION_CODE VARCHAR2(50),
-  PLANNO       VARCHAR2(50),
-  STARTTIME    VARCHAR2(19),
-  ENDTIME      VARCHAR2(19) default '2200-01-01 00:00:00',
-  PROD_CODE    VARCHAR2(20),
-  TECH_PARA1   FLOAT,
-  TECH_PARA2   FLOAT,
-  TECH_PARA3   FLOAT,
-  TECH_PARA4   FLOAT,
-  TECH_PARA5   FLOAT,
-  TECH_PARA6   FLOAT,
-  TECH_PARA7   FLOAT,
-  TECH_PARA8   FLOAT,
-  TECH_PARA9   FLOAT,
-  TECH_PARA10  FLOAT,
-  TECH_PARA11  FLOAT
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_PROD_REPORT.SECTION_CODE
-  is '工艺段/工序段编码';
-comment on column ZS18.HT_PROD_REPORT.PLANNO
-  is '计划号';
-comment on column ZS18.HT_PROD_REPORT.STARTTIME
-  is '开始时间';
-comment on column ZS18.HT_PROD_REPORT.ENDTIME
-  is '结束时间';
-comment on column ZS18.HT_PROD_REPORT.PROD_CODE
-  is '产品编码';
-comment on column ZS18.HT_PROD_REPORT.TECH_PARA1
-  is '参数1';
-comment on column ZS18.HT_PROD_REPORT.TECH_PARA2
-  is '参数2';
+alter table ZS18.HT_EQ_MT_PLAN_DETAIL
+  add constraint FK_HT_EQ_MT_PLAN_DETAIL foreign key (MAIN_ID)
+  references ZS18.HT_EQ_MT_PLAN (PZ_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_SYS_SHIFT
@@ -1991,10 +1102,1132 @@ alter table ZS18.HT_PROD_SCHEDULE
   );
 alter table ZS18.HT_PROD_SCHEDULE
   add constraint FK_T_AM_WOR_班时_排班_T_AM_SHI foreign key (SHIFT_CODE)
-  references ZS18.HT_SYS_SHIFT (SHIFT_CODE);
+  references ZS18.HT_SYS_SHIFT (SHIFT_CODE) on delete cascade;
 alter table ZS18.HT_PROD_SCHEDULE
   add constraint FK_T_AM_WOR_班组_排班_T_AM_TEA foreign key (TEAM_CODE)
-  references ZS18.HT_SYS_TEAM (TEAM_CODE);
+  references ZS18.HT_SYS_TEAM (TEAM_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_EQ_MT_SHIFT
+prompt =============================
+prompt
+create table ZS18.HT_EQ_MT_SHIFT
+(
+  ID               INTEGER not null,
+  WORKSHOP_CODE    VARCHAR2(32),
+  SHIFT_CODE       VARCHAR2(32),
+  TEAM_CODE        VARCHAR2(32),
+  HANDOVER_DATE    VARCHAR2(10),
+  B_TIME           VARCHAR2(19),
+  E_TIME           VARCHAR2(19),
+  CREATE_ID        VARCHAR2(32),
+  MODIFY_ID        VARCHAR2(32),
+  RECORD_TIME      VARCHAR2(19),
+  REMARK           VARCHAR2(256),
+  IS_VALID         VARCHAR2(1) default 1,
+  IS_DEL           VARCHAR2(1) default 0,
+  SHIFT_STATUS     VARCHAR2(16) default 1,
+  MAINTENANCE_TYPE VARCHAR2(4) not null
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on column ZS18.HT_EQ_MT_SHIFT.ID
+  is '机械维修班交班记录ID';
+comment on column ZS18.HT_EQ_MT_SHIFT.WORKSHOP_CODE
+  is '车间名称';
+comment on column ZS18.HT_EQ_MT_SHIFT.SHIFT_CODE
+  is '班时编码';
+comment on column ZS18.HT_EQ_MT_SHIFT.TEAM_CODE
+  is '班组编码';
+comment on column ZS18.HT_EQ_MT_SHIFT.HANDOVER_DATE
+  is '交班日期';
+comment on column ZS18.HT_EQ_MT_SHIFT.B_TIME
+  is '开始时间';
+comment on column ZS18.HT_EQ_MT_SHIFT.E_TIME
+  is '结束时间';
+comment on column ZS18.HT_EQ_MT_SHIFT.CREATE_ID
+  is '交班人ID';
+comment on column ZS18.HT_EQ_MT_SHIFT.MODIFY_ID
+  is '接班人ID';
+comment on column ZS18.HT_EQ_MT_SHIFT.RECORD_TIME
+  is '记录时间';
+comment on column ZS18.HT_EQ_MT_SHIFT.REMARK
+  is '备注';
+comment on column ZS18.HT_EQ_MT_SHIFT.IS_VALID
+  is '是否有效';
+comment on column ZS18.HT_EQ_MT_SHIFT.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_EQ_MT_SHIFT.SHIFT_STATUS
+  is '交接班状态';
+comment on column ZS18.HT_EQ_MT_SHIFT.MAINTENANCE_TYPE
+  is '维修类型';
+alter table ZS18.HT_EQ_MT_SHIFT
+  add constraint PK_HT_EQ_ELECTRIC_SHIFT primary key (ID, MAINTENANCE_TYPE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_EQ_MT_SHIFT
+  add constraint FK_HT_EQ_ELECTRIC_SHIFT foreign key (ID)
+  references ZS18.HT_PROD_SCHEDULE (ID) on delete cascade;
+
+prompt
+prompt Creating table HT_EQ_MT_SHIFT_DETAIL
+prompt ====================================
+prompt
+create table ZS18.HT_EQ_MT_SHIFT_DETAIL
+(
+  ID               INTEGER not null,
+  SHIFT_MAIN_ID    INTEGER,
+  MAINTENANCE_TYPE VARCHAR2(4),
+  MANAGE_STATUS    VARCHAR2(32),
+  IS_DEL           VARCHAR2(1) default 0,
+  BUZ_ID           INTEGER
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.ID
+  is '维修班交班子表ID';
+comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.SHIFT_MAIN_ID
+  is '维修班交班主表ID';
+comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.MAINTENANCE_TYPE
+  is '维修类型　0电气1机械';
+comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.MANAGE_STATUS
+  is '处理状态';
+comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_EQ_MT_SHIFT_DETAIL.BUZ_ID
+  is '业务ID';
+alter table ZS18.HT_EQ_MT_SHIFT_DETAIL
+  add constraint PK_T_SCENE_ELECTRIC_SHIFT_DETA primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ZS18.HT_EQ_MT_SHIFT_DETAIL
+  add constraint FK_T_SCENE_ELECTRIC_SHIFT_DETA foreign key (SHIFT_MAIN_ID, MAINTENANCE_TYPE)
+  references ZS18.HT_EQ_MT_SHIFT (ID, MAINTENANCE_TYPE) on delete cascade;
+
+prompt
+prompt Creating table HT_EQ_RP_PLAN
+prompt ============================
+prompt
+create table ZS18.HT_EQ_RP_PLAN
+(
+  FLOW_STATUS    VARCHAR2(2) default -1,
+  CREATE_ID      VARCHAR2(32),
+  CREATE_DEPT_ID VARCHAR2(32),
+  CREATE_TIME    VARCHAR2(19),
+  REMARK         VARCHAR2(512),
+  IS_DEL         VARCHAR2(1) default 0,
+  PZ_CODE        VARCHAR2(32) not null,
+  GOWHERE        VARCHAR2(1),
+  EXPIRED_DATE   VARCHAR2(10),
+  TASK_STATUS    CHAR(10) default 0,
+  MT_NAME        VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_EQ_RP_PLAN
+  is '停产维修计划审批主表';
+comment on column ZS18.HT_EQ_RP_PLAN.FLOW_STATUS
+  is '审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
+comment on column ZS18.HT_EQ_RP_PLAN.CREATE_ID
+  is '申请人id';
+comment on column ZS18.HT_EQ_RP_PLAN.CREATE_DEPT_ID
+  is '申请部门id';
+comment on column ZS18.HT_EQ_RP_PLAN.CREATE_TIME
+  is '申请时间';
+comment on column ZS18.HT_EQ_RP_PLAN.REMARK
+  is '备注';
+comment on column ZS18.HT_EQ_RP_PLAN.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_EQ_RP_PLAN.PZ_CODE
+  is '凭证号 RP+ YYYYMMDD + 三位流水号';
+comment on column ZS18.HT_EQ_RP_PLAN.GOWHERE
+  is '流程决策';
+comment on column ZS18.HT_EQ_RP_PLAN.EXPIRED_DATE
+  is '过期时间';
+comment on column ZS18.HT_EQ_RP_PLAN.TASK_STATUS
+  is '执行状态 0 未执行  1 执行中  2 己完成 3 己过期';
+comment on column ZS18.HT_EQ_RP_PLAN.MT_NAME
+  is '维修计划名';
+alter table ZS18.HT_EQ_RP_PLAN
+  add constraint PK_HT_RP_PLAN primary key (PZ_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_EQ_RP_PLAN_DETAIL
+prompt ===================================
+prompt
+create table ZS18.HT_EQ_RP_PLAN_DETAIL
+(
+  ID              INTEGER not null,
+  MAIN_ID         VARCHAR2(32),
+  EQUIPMENT_ID    VARCHAR2(512),
+  NTRODUCER       VARCHAR2(128),
+  STATUS          VARCHAR2(16) default 0,
+  REMARK          VARCHAR2(512),
+  CREATE_ID       VARCHAR2(32),
+  CREATE_TIME     VARCHAR2(32),
+  IS_DEL          VARCHAR2(1) default 0,
+  MECH_AREA       VARCHAR2(32),
+  RESPONER        VARCHAR2(20),
+  EXP_FINISH_TIME VARCHAR2(19),
+  IS_OUT          VARCHAR2(10),
+  PICKUP_DESC     VARCHAR2(512),
+  YEAR_MONTH      VARCHAR2(20),
+  FAULT_ID        INTEGER,
+  EXE_TIME        VARCHAR2(19),
+  REASON          VARCHAR2(512),
+  CONTENT         VARCHAR2(512),
+  IS_EMG          VARCHAR2(1) default 0,
+  EXE_SEGTIME     INTEGER,
+  VERIFIOR        VARCHAR2(20)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_EQ_RP_PLAN_DETAIL
+  is '停产维修计划从表';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.ID
+  is '主键标识';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.MAIN_ID
+  is '主表id';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EQUIPMENT_ID
+  is '维修设备ID';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.NTRODUCER
+  is '提出人';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.STATUS
+  is '状态 -1上报未处理0未派工1己派工 2己完成';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.REMARK
+  is '备注';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.CREATE_ID
+  is '创建人id';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.CREATE_TIME
+  is '创建时间';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.IS_DEL
+  is '是否删除';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.MECH_AREA
+  is '区域';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.RESPONER
+  is '责任人';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EXP_FINISH_TIME
+  is '期望完成时间';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.IS_OUT
+  is '是否委外';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.PICKUP_DESC
+  is '备件情况';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.YEAR_MONTH
+  is '所属年月';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.FAULT_ID
+  is '故障ID';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EXE_TIME
+  is '操作时间';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.REASON
+  is '维修原因';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.CONTENT
+  is '维修内容';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.IS_EMG
+  is '是否是应急维修';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.EXE_SEGTIME
+  is '操作时长';
+comment on column ZS18.HT_EQ_RP_PLAN_DETAIL.VERIFIOR
+  is '验证人';
+alter table ZS18.HT_EQ_RP_PLAN_DETAIL
+  add constraint PK_HT_EQ_RP_PLAN_DETAIL primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_EQ_RP_PLAN_DETAIL
+  add constraint FK_HT_EQ_RP_PLAN_DETAIL foreign key (MAIN_ID)
+  references ZS18.HT_EQ_RP_PLAN (PZ_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_EQ_STG_PICKUP
+prompt ===============================
+prompt
+create table ZS18.HT_EQ_STG_PICKUP
+(
+  PICKUP_DATE    VARCHAR2(32),
+  FLOW_STATUS    VARCHAR2(10),
+  CREATE_ID      VARCHAR2(32),
+  CREATE_DEPT_ID VARCHAR2(32),
+  CREATE_TIME    VARCHAR2(19),
+  REMARK         VARCHAR2(512),
+  IS_DEL         VARCHAR2(1),
+  PZ_CODE        VARCHAR2(32) not null,
+  GOWHERE        VARCHAR2(1),
+  IS_PICKUP      VARCHAR2(1) default 0
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+comment on table ZS18.HT_EQ_STG_PICKUP
+  is '备件领用审批';
+comment on column ZS18.HT_EQ_STG_PICKUP.PICKUP_DATE
+  is '领用日期';
+comment on column ZS18.HT_EQ_STG_PICKUP.FLOW_STATUS
+  is '审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
+comment on column ZS18.HT_EQ_STG_PICKUP.CREATE_ID
+  is '申请人id';
+comment on column ZS18.HT_EQ_STG_PICKUP.CREATE_DEPT_ID
+  is '申请部门id';
+comment on column ZS18.HT_EQ_STG_PICKUP.CREATE_TIME
+  is '申请时间';
+comment on column ZS18.HT_EQ_STG_PICKUP.REMARK
+  is '备注';
+comment on column ZS18.HT_EQ_STG_PICKUP.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_EQ_STG_PICKUP.PZ_CODE
+  is '凭证号';
+comment on column ZS18.HT_EQ_STG_PICKUP.GOWHERE
+  is '流程决策';
+comment on column ZS18.HT_EQ_STG_PICKUP.IS_PICKUP
+  is '是否领用';
+alter table ZS18.HT_EQ_STG_PICKUP
+  add constraint PK_HT_EQ_STG_PICKUP primary key (PZ_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+prompt
+prompt Creating table HT_EQ_STG_PICKUP_DETAIL
+prompt ======================================
+prompt
+create table ZS18.HT_EQ_STG_PICKUP_DETAIL
+(
+  ID          INTEGER not null,
+  MAIN_CODE   VARCHAR2(32),
+  SP_CODE     VARCHAR2(32),
+  SP_NAME     VARCHAR2(256),
+  SP_STANDARD VARCHAR2(64),
+  SP_MODEL    VARCHAR2(64),
+  PICKUP_NUM  VARCHAR2(32),
+  SP_UNIT     VARCHAR2(32),
+  OWN_SECTION VARCHAR2(512),
+  REMARK      VARCHAR2(512),
+  STATUS      VARCHAR2(16),
+  OWN_EQUI    VARCHAR2(128),
+  CREATE_ID   VARCHAR2(32),
+  CREATE_TIME VARCHAR2(32),
+  IS_DEL      VARCHAR2(1),
+  STORAGE     VARCHAR2(32)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+comment on table ZS18.HT_EQ_STG_PICKUP_DETAIL
+  is '备件领用明细表';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.ID
+  is '主键标识';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.MAIN_CODE
+  is '领用审批主表id';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_CODE
+  is '备件编码';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_NAME
+  is '备件名称';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_STANDARD
+  is '规格';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_MODEL
+  is '型号';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.PICKUP_NUM
+  is '采购数量';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.SP_UNIT
+  is '备件单位';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.OWN_SECTION
+  is '使用部位（工艺段）';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.REMARK
+  is '备注';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.STATUS
+  is '状态';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.OWN_EQUI
+  is '所属设备';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.CREATE_ID
+  is '创建人id';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.CREATE_TIME
+  is '创建时间';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.IS_DEL
+  is '是否删除';
+comment on column ZS18.HT_EQ_STG_PICKUP_DETAIL.STORAGE
+  is '仓库ID';
+alter table ZS18.HT_EQ_STG_PICKUP_DETAIL
+  add constraint PK_HT_EQ_STG_PICKUP_DETAIL primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ZS18.HT_EQ_STG_PICKUP_DETAIL
+  add constraint FK_HT_EQ_STG_PICKUP_DETAIL foreign key (MAIN_CODE)
+  references ZS18.HT_EQ_STG_PICKUP (PZ_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_INNER_APRV_STATUS
+prompt ===================================
+prompt
+create table ZS18.HT_INNER_APRV_STATUS
+(
+  ID   VARCHAR2(2) not null,
+  NAME VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_APRV_STATUS
+  is '审批状态';
+comment on column ZS18.HT_INNER_APRV_STATUS.ID
+  is 'ID值';
+comment on column ZS18.HT_INNER_APRV_STATUS.NAME
+  is '描述';
+alter table ZS18.HT_INNER_APRV_STATUS
+  add constraint PK_APRV_STATUS_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_INNER_BOOL_DISPLAY
+prompt ====================================
+prompt
+create table ZS18.HT_INNER_BOOL_DISPLAY
+(
+  ID           VARCHAR2(2) not null,
+  CTRL_NAME    VARCHAR2(50),
+  STRG_NAME    VARCHAR2(50),
+  ISSUE_NAME   VARCHAR2(50),
+  INSPECT_TYPE VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_BOOL_DISPLAY
+  is '受控状态';
+comment on column ZS18.HT_INNER_BOOL_DISPLAY.ID
+  is 'ID值';
+comment on column ZS18.HT_INNER_BOOL_DISPLAY.CTRL_NAME
+  is '受控状态';
+comment on column ZS18.HT_INNER_BOOL_DISPLAY.STRG_NAME
+  is '出入库状态';
+comment on column ZS18.HT_INNER_BOOL_DISPLAY.ISSUE_NAME
+  is '下发状态';
+comment on column ZS18.HT_INNER_BOOL_DISPLAY.INSPECT_TYPE
+  is '工艺检查类型';
+
+prompt
+prompt Creating table HT_INNER_INSPECT_GROUP
+prompt =====================================
+prompt
+create table ZS18.HT_INNER_INSPECT_GROUP
+(
+  ID   VARCHAR2(2) not null,
+  NAME VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_INSPECT_GROUP
+  is '工艺检查成品检查分组';
+comment on column ZS18.HT_INNER_INSPECT_GROUP.ID
+  is 'ID值';
+comment on column ZS18.HT_INNER_INSPECT_GROUP.NAME
+  is '描述';
+alter table ZS18.HT_INNER_INSPECT_GROUP
+  add constraint PK_INSPECT_GROUP primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_INNER_INSPECT_STATUS
+prompt ======================================
+prompt
+create table ZS18.HT_INNER_INSPECT_STATUS
+(
+  ID   VARCHAR2(2) not null,
+  NAME VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_INSPECT_STATUS
+  is '工艺事件状态';
+comment on column ZS18.HT_INNER_INSPECT_STATUS.ID
+  is 'ID值';
+comment on column ZS18.HT_INNER_INSPECT_STATUS.NAME
+  is '描述';
+alter table ZS18.HT_INNER_INSPECT_STATUS
+  add constraint PK_INSPECT_STATUS_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_INNER_MAP
+prompt ===========================
+prompt
+create table ZS18.HT_INNER_MAP
+(
+  URL    VARCHAR2(255) not null,
+  REMARK VARCHAR2(255),
+  MAPID  VARCHAR2(5) not null,
+  IS_DEL VARCHAR2(1) default 0
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_MAP
+  is '页面映射表';
+comment on column ZS18.HT_INNER_MAP.URL
+  is 'URL';
+comment on column ZS18.HT_INNER_MAP.REMARK
+  is '描述';
+alter table ZS18.HT_INNER_MAP
+  add constraint PK_MAPID primary key (MAPID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_INNER_MAT_DEPOT
+prompt =================================
+prompt
+create table ZS18.HT_INNER_MAT_DEPOT
+(
+  ID   VARCHAR2(2) not null,
+  NAME VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_MAT_DEPOT
+  is '原料仓库';
+comment on column ZS18.HT_INNER_MAT_DEPOT.ID
+  is 'ID值';
+comment on column ZS18.HT_INNER_MAT_DEPOT.NAME
+  is '描述';
+alter table ZS18.HT_INNER_MAT_DEPOT
+  add constraint PK_DEPOT_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_INNER_QLT_TYPE
+prompt ================================
+prompt
+create table ZS18.HT_INNER_QLT_TYPE
+(
+  ID   VARCHAR2(2) not null,
+  NAME VARCHAR2(50)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_INNER_QLT_TYPE
+  is '过程质量考核类型';
+comment on column ZS18.HT_INNER_QLT_TYPE.ID
+  is 'ID值';
+comment on column ZS18.HT_INNER_QLT_TYPE.NAME
+  is '描述';
+alter table ZS18.HT_INNER_QLT_TYPE
+  add constraint PK_QLT_TYPE_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_PUB_TECH_PARA
+prompt ===============================
+prompt
+create table ZS18.HT_PUB_TECH_PARA
+(
+  PARA_CODE   VARCHAR2(32) not null,
+  PARA_NAME   VARCHAR2(256),
+  PARA_UNIT   VARCHAR2(32),
+  IS_VALID    VARCHAR2(1) default 1,
+  IS_DEL      VARCHAR2(1) default 0,
+  REMARK      VARCHAR2(256),
+  CREATE_ID   VARCHAR2(32),
+  CREATE_TIME VARCHAR2(19),
+  MODIFY_ID   VARCHAR2(32),
+  MODIFY_TIME VARCHAR2(19),
+  PARA_TYPE   VARCHAR2(10) default 00000,
+  EQUIP_CODE  VARCHAR2(32),
+  SET_TAG     VARCHAR2(100),
+  VALUE_TAG   VARCHAR2(100),
+  IS_KEY      VARCHAR2(1) default 0
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on column ZS18.HT_PUB_TECH_PARA.PARA_CODE
+  is '工艺参数编码a)	编码规则：组织机构1位+生产线2位+工艺段2位+工序2位+3位流水号';
+comment on column ZS18.HT_PUB_TECH_PARA.PARA_NAME
+  is '工艺参数名称';
+comment on column ZS18.HT_PUB_TECH_PARA.PARA_UNIT
+  is '单位';
+comment on column ZS18.HT_PUB_TECH_PARA.REMARK
+  is '备注';
+comment on column ZS18.HT_PUB_TECH_PARA.CREATE_ID
+  is '创建人标识';
+comment on column ZS18.HT_PUB_TECH_PARA.CREATE_TIME
+  is '创建时间';
+comment on column ZS18.HT_PUB_TECH_PARA.MODIFY_ID
+  is '修改人标识';
+comment on column ZS18.HT_PUB_TECH_PARA.MODIFY_TIME
+  is '修改时间';
+comment on column ZS18.HT_PUB_TECH_PARA.PARA_TYPE
+  is '类型 /集控显示/工艺参数/设备参数/质量统计/计量检查';
+comment on column ZS18.HT_PUB_TECH_PARA.EQUIP_CODE
+  is '所属设备';
+comment on column ZS18.HT_PUB_TECH_PARA.SET_TAG
+  is '设定标签';
+comment on column ZS18.HT_PUB_TECH_PARA.VALUE_TAG
+  is '反馈标签';
+comment on column ZS18.HT_PUB_TECH_PARA.IS_KEY
+  is '在设备参数中标识是否为主要参数';
+alter table ZS18.HT_PUB_TECH_PARA
+  add constraint PARA_CODE primary key (PARA_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_PUB_TECH_PARA
+  add constraint FK_EQUIPT_ID foreign key (EQUIP_CODE)
+  references ZS18.HT_EQ_EQP_TBL (IDKEY) on delete set null;
+
+prompt
+prompt Creating table HT_PROD_MANUAL_RECODE
+prompt ====================================
+prompt
+create table ZS18.HT_PROD_MANUAL_RECODE
+(
+  ID          INTEGER not null,
+  VALUE       FLOAT,
+  B_TIME      VARCHAR2(19),
+  E_TIME      VARCHAR2(10),
+  SHIFT       VARCHAR2(20),
+  CREATOR     VARCHAR2(50),
+  CREATE_TIME VARCHAR2(50),
+  IS_DEL      VARCHAR2(19),
+  PARA_CODE   VARCHAR2(30)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+  );
+comment on column ZS18.HT_PROD_MANUAL_RECODE.ID
+  is '记录ID';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.VALUE
+  is '参数值';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.B_TIME
+  is '开始时间';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.E_TIME
+  is '结束时间';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.SHIFT
+  is '班组';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.CREATOR
+  is '记录人员';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.CREATE_TIME
+  is '记录时间';
+comment on column ZS18.HT_PROD_MANUAL_RECODE.PARA_CODE
+  is '参数编码';
+alter table ZS18.HT_PROD_MANUAL_RECODE
+  add constraint PK_PROD_MANUAL_RECORD_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ZS18.HT_PROD_MANUAL_RECODE
+  add constraint PK_PROD_MANUAL_RECORD_PARA_ID foreign key (PARA_CODE)
+  references ZS18.HT_PUB_TECH_PARA (PARA_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_PROD_MANUAL_RECORD
+prompt ====================================
+prompt
+create table ZS18.HT_PROD_MANUAL_RECORD
+(
+  ID          INTEGER not null,
+  PARA_NAME   VARCHAR2(30),
+  VALUE       FLOAT,
+  B_TIME      VARCHAR2(19),
+  E_TIME      VARCHAR2(10),
+  SHIFT       VARCHAR2(20),
+  CREATOR     VARCHAR2(50),
+  CREATE_TIME VARCHAR2(50),
+  IS_DEL      VARCHAR2(19),
+  PARA_CODE   VARCHAR2(30)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+  );
+comment on column ZS18.HT_PROD_MANUAL_RECORD.ID
+  is '记录ID';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.PARA_NAME
+  is '参数名';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.VALUE
+  is '参数值';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.B_TIME
+  is '开始时间';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.E_TIME
+  is '结束时间';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.SHIFT
+  is '班组';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.CREATOR
+  is '记录人员';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.CREATE_TIME
+  is '记录时间';
+comment on column ZS18.HT_PROD_MANUAL_RECORD.PARA_CODE
+  is '参数编码';
+
+prompt
+prompt Creating table HT_PROD_MONTH_PLAN
+prompt =================================
+prompt
+create table ZS18.HT_PROD_MONTH_PLAN
+(
+  ID            INTEGER not null,
+  PLAN_NAME     VARCHAR2(128),
+  B_FLOW_STATUS VARCHAR2(2) default -1,
+  E_FLOW_STATUS VARCHAR2(10),
+  ISSUED_STATUS VARCHAR2(1) default 0,
+  CREATE_ID     VARCHAR2(32),
+  CREATE_TIME   VARCHAR2(19),
+  MODIFY_ID     VARCHAR2(32),
+  MODIFY_TIME   VARCHAR2(19),
+  IS_DEL        VARCHAR2(1) default 0,
+  ADJUST_STATUS VARCHAR2(1),
+  PLAN_TIME     VARCHAR2(8),
+  IS_VALID      VARCHAR2(1) default 0,
+  REMARK        VARCHAR2(512)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_PROD_MONTH_PLAN
+  is '依据季度到月生产计划拆分成月度生产任务';
+comment on column ZS18.HT_PROD_MONTH_PLAN.ID
+  is '月度生产任务唯一标识';
+comment on column ZS18.HT_PROD_MONTH_PLAN.PLAN_NAME
+  is '计划名称';
+comment on column ZS18.HT_PROD_MONTH_PLAN.B_FLOW_STATUS
+  is '计划生产审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
+comment on column ZS18.HT_PROD_MONTH_PLAN.E_FLOW_STATUS
+  is '计划结束审批状态';
+comment on column ZS18.HT_PROD_MONTH_PLAN.ISSUED_STATUS
+  is '下发状态 0 未下发 1 己下发';
+comment on column ZS18.HT_PROD_MONTH_PLAN.CREATE_ID
+  is '创建人编码';
+comment on column ZS18.HT_PROD_MONTH_PLAN.CREATE_TIME
+  is '创建时间';
+comment on column ZS18.HT_PROD_MONTH_PLAN.MODIFY_ID
+  is '修改人编码';
+comment on column ZS18.HT_PROD_MONTH_PLAN.MODIFY_TIME
+  is '修改时间';
+comment on column ZS18.HT_PROD_MONTH_PLAN.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_PROD_MONTH_PLAN.ADJUST_STATUS
+  is '计划明细是否有调整 0 未调整 1 已调整';
+comment on column ZS18.HT_PROD_MONTH_PLAN.PLAN_TIME
+  is '后加字段-计划时间';
+comment on column ZS18.HT_PROD_MONTH_PLAN.IS_VALID
+  is '是否审批';
+alter table ZS18.HT_PROD_MONTH_PLAN
+  add constraint PK_HT_PROD_MONTH_PLAN primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_PROD_MONTH_PLAN_DETAIL
+prompt ========================================
+prompt
+create table ZS18.HT_PROD_MONTH_PLAN_DETAIL
+(
+  ID            INTEGER,
+  MONTH_PLAN_ID INTEGER not null,
+  PLAN_NO       VARCHAR2(32) not null,
+  PROD_CODE     VARCHAR2(32),
+  PLAN_YEAR     VARCHAR2(10),
+  PROD_MONTH    VARCHAR2(10),
+  PLAN_TYPE     VARCHAR2(10),
+  PLAN_OUTPUT   NUMBER(19,2),
+  ADJUST_OUTPUT NUMBER(19,2),
+  FINISH_OUTPUT NUMBER(19,3),
+  TECH_VERSION  VARCHAR2(64),
+  CREATE_ID     VARCHAR2(32),
+  CREATOR       VARCHAR2(64),
+  CREATE_TIME   DATE,
+  MODIFY_ID     VARCHAR2(32),
+  MODIFY_NAME   VARCHAR2(32),
+  MODIFY_TIME   DATE,
+  EXE_STATUS    VARCHAR2(10) default 0,
+  IS_DEL        VARCHAR2(1) default 0,
+  PLAN_SORT     VARCHAR2(16) default 0,
+  PLAN_PATH     VARCHAR2(60) default 0,
+  IS_VALID      VARCHAR2(1) default 1,
+  PATH_DONE     VARCHAR2(1) default 0
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_PROD_MONTH_PLAN_DETAIL
+  is '月度生产任务计划明细表';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.ID
+  is '月度生产任务唯一标识';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MONTH_PLAN_ID
+  is '月度生产计划标识';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_NO
+  is '计划号';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PROD_CODE
+  is '生产牌号';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_YEAR
+  is '计划年份';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PROD_MONTH
+  is '生产月份';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_TYPE
+  is '生产计划类型(0:日常生产,1:临时增加,2:工艺测试)';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_OUTPUT
+  is '本月计划生产量';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.ADJUST_OUTPUT
+  is '调整后产量';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.FINISH_OUTPUT
+  is '完成产量';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.TECH_VERSION
+  is '工艺版本号';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.CREATE_ID
+  is '创建人编码';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.CREATOR
+  is '创建人';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.CREATE_TIME
+  is '创建时间';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MODIFY_ID
+  is '修改人编码';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MODIFY_NAME
+  is '修改人名称';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.MODIFY_TIME
+  is '修改时间';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.EXE_STATUS
+  is '执行状态 0未下发 1 己下发 2 生产中 3 暂停4完成5撤消';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PLAN_SORT
+  is '排序';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.IS_VALID
+  is '是否被审批后有效';
+comment on column ZS18.HT_PROD_MONTH_PLAN_DETAIL.PATH_DONE
+  is '是否指定了生产路径';
+alter table ZS18.HT_PROD_MONTH_PLAN_DETAIL
+  add constraint PK_HT_PROD_MONTH_PLAN_DETAIL primary key (PLAN_NO)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_PROD_MONTH_PLAN_DETAIL
+  add constraint FK_HT_PROD_MONTH_PLAN_MAINID foreign key (MONTH_PLAN_ID)
+  references ZS18.HT_PROD_MONTH_PLAN (ID) on delete cascade;
+
+prompt
+prompt Creating table HT_PROD_REPORT
+prompt =============================
+prompt
+create table ZS18.HT_PROD_REPORT
+(
+  SECTION_CODE VARCHAR2(50) not null,
+  PLANNO       VARCHAR2(50) not null,
+  STARTTIME    VARCHAR2(19),
+  ENDTIME      VARCHAR2(19) default '2200-01-01 00:00:00',
+  PROD_CODE    VARCHAR2(20),
+  TECH_PARA1   FLOAT,
+  TECH_PARA2   FLOAT,
+  TECH_PARA3   FLOAT,
+  TECH_PARA4   FLOAT,
+  TECH_PARA5   FLOAT,
+  TECH_PARA6   FLOAT,
+  TECH_PARA7   FLOAT,
+  TECH_PARA8   FLOAT,
+  TECH_PARA9   FLOAT,
+  TECH_PARA10  FLOAT,
+  TECH_PARA11  FLOAT
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on column ZS18.HT_PROD_REPORT.SECTION_CODE
+  is '工艺段/工序段编码';
+comment on column ZS18.HT_PROD_REPORT.PLANNO
+  is '计划号';
+comment on column ZS18.HT_PROD_REPORT.STARTTIME
+  is '开始时间';
+comment on column ZS18.HT_PROD_REPORT.ENDTIME
+  is '结束时间';
+comment on column ZS18.HT_PROD_REPORT.PROD_CODE
+  is '产品编码';
+comment on column ZS18.HT_PROD_REPORT.TECH_PARA1
+  is '参数1';
+comment on column ZS18.HT_PROD_REPORT.TECH_PARA2
+  is '参数2';
+alter table ZS18.HT_PROD_REPORT
+  add constraint PK_PROD_REPORT_ID primary key (SECTION_CODE, PLANNO)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_PROD_REPORT
+  add constraint FK_PROD_REPORT foreign key (PLANNO)
+  references ZS18.HT_PROD_MONTH_PLAN_DETAIL (PLAN_NO) on delete cascade;
 
 prompt
 prompt Creating table HT_PROD_SEASON_PLAN
@@ -2149,6 +2382,9 @@ alter table ZS18.HT_PROD_SEASON_PLAN_DETAIL
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_PROD_SEASON_PLAN_DETAIL
+  add constraint FK_SEASON_MAIN_ID foreign key (QUARTER_PLAN_ID)
+  references ZS18.HT_PROD_SEASON_PLAN (ID) on delete cascade;
 
 prompt
 prompt Creating table HT_PROD_SHIFTCHG
@@ -2156,7 +2392,7 @@ prompt ===============================
 prompt
 create table ZS18.HT_PROD_SHIFTCHG
 (
-  SHIFT_MAIN_ID INTEGER,
+  SHIFT_MAIN_ID INTEGER not null,
   INSPECT_DATE  VARCHAR2(10),
   WORKSHOP_CODE VARCHAR2(32),
   SHIFT_CODE    VARCHAR2(32),
@@ -2226,6 +2462,23 @@ comment on column ZS18.HT_PROD_SHIFTCHG.SCEAN_STATUS
   is '现场情况';
 comment on column ZS18.HT_PROD_SHIFTCHG.OUTPLUS
   is '产量零头';
+alter table ZS18.HT_PROD_SHIFTCHG
+  add constraint PK_PROD_SHIFTCHG_ID primary key (SHIFT_MAIN_ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_PROD_SHIFTCHG
+  add constraint FK_PROD_SHIFTCHG_ID foreign key (SHIFT_MAIN_ID)
+  references ZS18.HT_PROD_SCHEDULE (ID) on delete cascade;
 
 prompt
 prompt Creating table HT_PROD_SHIFTCHG_DETAIL
@@ -2233,7 +2486,7 @@ prompt ======================================
 prompt
 create table ZS18.HT_PROD_SHIFTCHG_DETAIL
 (
-  OUTPUT_ID     INTEGER,
+  OUTPUT_ID     INTEGER not null,
   SHIFT_MAIN_ID INTEGER,
   MATER_CODE    VARCHAR2(32),
   MATER_VL      NUMBER(10,2),
@@ -2256,6 +2509,69 @@ comment on column ZS18.HT_PROD_SHIFTCHG_DETAIL.BZ_UNIT
   is '单位';
 comment on column ZS18.HT_PROD_SHIFTCHG_DETAIL.REMARK
   is '备注';
+alter table ZS18.HT_PROD_SHIFTCHG_DETAIL
+  add constraint PK_PROD_SHIFTCHG_DETAIL_ID primary key (OUTPUT_ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ZS18.HT_PROD_SHIFTCHG_DETAIL
+  add constraint FK_PROD_SHIFTMAIN_ID foreign key (SHIFT_MAIN_ID)
+  references ZS18.HT_PROD_SHIFTCHG (SHIFT_MAIN_ID) on delete cascade;
+
+prompt
+prompt Creating table HT_PUB_APRV_TYPE
+prompt ===============================
+prompt
+create table ZS18.HT_PUB_APRV_TYPE
+(
+  PZ_TYPE      VARCHAR2(2) not null,
+  PZ_TYPE_NAME VARCHAR2(50),
+  APRV_TABLE   VARCHAR2(60),
+  APRV_TABSEG  VARCHAR2(60),
+  BUZ_ID       VARCHAR2(60),
+  PLSQL        CLOB
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_PUB_APRV_TYPE
+  is '单据编号顺序表';
+comment on column ZS18.HT_PUB_APRV_TYPE.PZ_TYPE
+  is '审批类型编码';
+comment on column ZS18.HT_PUB_APRV_TYPE.PZ_TYPE_NAME
+  is '审批类型名称';
+comment on column ZS18.HT_PUB_APRV_TYPE.APRV_TABLE
+  is '业务对应数据表名';
+comment on column ZS18.HT_PUB_APRV_TYPE.APRV_TABSEG
+  is '业务对应数据表审批字段名';
+comment on column ZS18.HT_PUB_APRV_TYPE.BUZ_ID
+  is '业务主ID字段名';
+comment on column ZS18.HT_PUB_APRV_TYPE.PLSQL
+  is '业务明细查询SQL语言';
+alter table ZS18.HT_PUB_APRV_TYPE
+  add constraint PK_APRV_TYPE primary key (PZ_TYPE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table HT_PUB_APRV_FLOWINFO
@@ -2269,7 +2585,7 @@ create table ZS18.HT_PUB_APRV_FLOWINFO
   TB_BM_ID   VARCHAR2(32),
   TB_BM_NAME VARCHAR2(100),
   TB_DATE    VARCHAR2(20),
-  MODULENAME VARCHAR2(32),
+  MODULENAME VARCHAR2(32) not null,
   URL        VARCHAR2(500),
   BUSIN_ID   VARCHAR2(64),
   STATE      VARCHAR2(10) default 0,
@@ -2328,6 +2644,9 @@ alter table ZS18.HT_PUB_APRV_FLOWINFO
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_PUB_APRV_FLOWINFO
+  add constraint FK_APRV_INFO_TYPE foreign key (MODULENAME)
+  references ZS18.HT_PUB_APRV_TYPE (PZ_TYPE) on delete cascade;
 
 prompt
 prompt Creating table HT_PUB_APRV_MODEL
@@ -2373,6 +2692,9 @@ alter table ZS18.HT_PUB_APRV_MODEL
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_PUB_APRV_MODEL
+  add constraint FK_APRV_TYPE foreign key (PZ_TYPE)
+  references ZS18.HT_PUB_APRV_TYPE (PZ_TYPE) on delete cascade;
 
 prompt
 prompt Creating table HT_PUB_APRV_OPINION
@@ -2381,7 +2703,7 @@ prompt
 create table ZS18.HT_PUB_APRV_OPINION
 (
   ID          INTEGER not null,
-  GONGWEN_ID  VARCHAR2(64),
+  GONGWEN_ID  INTEGER not null,
   USERID      VARCHAR2(32),
   USERNAME    VARCHAR2(20),
   COMMENTS    VARCHAR2(500),
@@ -2428,7 +2750,7 @@ comment on column ZS18.HT_PUB_APRV_OPINION.WORKITEMID
 comment on column ZS18.HT_PUB_APRV_OPINION.ISENABLE
   is '当前环节能否被处理，被角色看到，在上一环节完成后置为1';
 alter table ZS18.HT_PUB_APRV_OPINION
-  add constraint PK_HT_PUB_APRV_OPINION primary key (ID)
+  add constraint PK_APRV_OPN_ID primary key (ID)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -2442,7 +2764,7 @@ alter table ZS18.HT_PUB_APRV_OPINION
     maxextents unlimited
   );
 alter table ZS18.HT_PUB_APRV_OPINION
-  add constraint PK_APRV_UNIQ unique (GONGWEN_ID, POS)
+  add constraint UK_APRV_UNIQ unique (GONGWEN_ID, POS)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -2455,19 +2777,25 @@ alter table ZS18.HT_PUB_APRV_OPINION
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_PUB_APRV_OPINION
+  add constraint FK_APRV_OPINION_MAIN foreign key (GONGWEN_ID)
+  references ZS18.HT_PUB_APRV_FLOWINFO (ID) on delete cascade;
 
 prompt
-prompt Creating table HT_PUB_APRV_TYPE
-prompt ===============================
+prompt Creating table HT_PUB_MATTREE
+prompt =============================
 prompt
-create table ZS18.HT_PUB_APRV_TYPE
+create table ZS18.HT_PUB_MATTREE
 (
-  PZ_TYPE      VARCHAR2(2),
-  PZ_TYPE_NAME VARCHAR2(50),
-  APRV_TABLE   VARCHAR2(60),
-  APRV_TABSEG  VARCHAR2(60),
-  BUZ_ID       VARCHAR2(60),
-  PLSQL        CLOB
+  ID               INTEGER,
+  MATTREE_CODE     VARCHAR2(9) not null,
+  MATTREE_NAME     VARCHAR2(256) not null,
+  IS_VALID         VARCHAR2(1) default 1,
+  IS_DEL           VARCHAR2(1) default 0,
+  PK_CLASS         VARCHAR2(256),
+  PK_PARENT_CLASS  VARCHAR2(256),
+  DATA_ORIGIN_FLAG VARCHAR2(4) default 1,
+  PARENT_CODE      VARCHAR2(9)
 )
 tablespace ZS_DATA
   pctfree 10
@@ -2480,67 +2808,26 @@ tablespace ZS_DATA
     minextents 1
     maxextents unlimited
   );
-comment on table ZS18.HT_PUB_APRV_TYPE
-  is '单据编号顺序表';
-comment on column ZS18.HT_PUB_APRV_TYPE.PZ_TYPE
-  is '审批类型编码';
-comment on column ZS18.HT_PUB_APRV_TYPE.PZ_TYPE_NAME
-  is '审批类型名称';
-comment on column ZS18.HT_PUB_APRV_TYPE.APRV_TABLE
-  is '业务对应数据表名';
-comment on column ZS18.HT_PUB_APRV_TYPE.APRV_TABSEG
-  is '业务对应数据表审批字段名';
-comment on column ZS18.HT_PUB_APRV_TYPE.BUZ_ID
-  is '业务主ID字段名';
-comment on column ZS18.HT_PUB_APRV_TYPE.PLSQL
-  is '业务明细查询SQL语言';
-
-prompt
-prompt Creating table HT_PUB_INSPECT_PROCESS
-prompt =====================================
-prompt
-create table ZS18.HT_PUB_INSPECT_PROCESS
-(
-  ID           INTEGER,
-  PROCESS_CODE VARCHAR2(32) not null,
-  PROCESS_NAME VARCHAR2(256),
-  IS_VALID     VARCHAR2(1) default 0,
-  IS_DEL       VARCHAR2(1) default 0,
-  REMARK       VARCHAR2(256),
-  CREATE_ID    VARCHAR2(32),
-  CREATE_TIME  DATE,
-  MODIFY_ID    VARCHAR2(32),
-  MODIFY_TIME  DATE
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.ID
-  is '唯一标识';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.PROCESS_CODE
-  is '工序编码组织机构1位+生产线2位+工艺段2位+2位流水号';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.PROCESS_NAME
-  is '名称';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.REMARK
-  is '备注';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.CREATE_ID
-  is '创建人标识';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.MODIFY_ID
-  is '修改人标识';
-comment on column ZS18.HT_PUB_INSPECT_PROCESS.MODIFY_TIME
-  is '修改时间';
-alter table ZS18.HT_PUB_INSPECT_PROCESS
-  add constraint PROCESS_CODE primary key (PROCESS_CODE)
+comment on table ZS18.HT_PUB_MATTREE
+  is '物料分类信息表';
+comment on column ZS18.HT_PUB_MATTREE.ID
+  is '物料分类id';
+comment on column ZS18.HT_PUB_MATTREE.MATTREE_CODE
+  is '物料分类编码';
+comment on column ZS18.HT_PUB_MATTREE.MATTREE_NAME
+  is '物料分类名称';
+comment on column ZS18.HT_PUB_MATTREE.IS_VALID
+  is '是否有效';
+comment on column ZS18.HT_PUB_MATTREE.IS_DEL
+  is '是否删除';
+comment on column ZS18.HT_PUB_MATTREE.PK_CLASS
+  is '分类标识';
+comment on column ZS18.HT_PUB_MATTREE.PK_PARENT_CLASS
+  is '父级分类标识';
+comment on column ZS18.HT_PUB_MATTREE.PARENT_CODE
+  is '父级分类编码';
+alter table ZS18.HT_PUB_MATTREE
+  add constraint MATTREE_CODE primary key (MATTREE_CODE)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -2571,7 +2858,7 @@ create table ZS18.HT_PUB_MATERIEL
   TYPE_FLAG        VARCHAR2(32),
   UNIT_CODE        VARCHAR2(30),
   DATA_ORIGIN_FLAG VARCHAR2(4) default 0,
-  PK_MATERIAL      VARCHAR2(20),
+  PK_MATERIAL      VARCHAR2(20) not null,
   FACTORY          VARCHAR2(32),
   MAT_YEAR         VARCHAR2(32),
   MAT_CATEGORY     VARCHAR2(512),
@@ -2663,7 +2950,7 @@ comment on column ZS18.HT_PUB_MATERIEL.PK_MATTAXES
 comment on column ZS18.HT_PUB_MATERIEL.NORIGTAXPRICE
   is '原值';
 alter table ZS18.HT_PUB_MATERIEL
-  add constraint MATERIAL_CODE primary key (MATERIAL_CODE)
+  add constraint PK_MATERIAL_CODE primary key (MATERIAL_CODE)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -2676,22 +2963,27 @@ alter table ZS18.HT_PUB_MATERIEL
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_PUB_MATERIEL
+  add constraint FK_MATTREE_CODE foreign key (TYPE_CODE)
+  references ZS18.HT_PUB_MATTREE (MATTREE_CODE) on delete cascade;
 
 prompt
-prompt Creating table HT_PUB_MATTREE
-prompt =============================
+prompt Creating table HT_PUB_TECH_SECTION
+prompt ==================================
 prompt
-create table ZS18.HT_PUB_MATTREE
+create table ZS18.HT_PUB_TECH_SECTION
 (
-  ID               INTEGER,
-  MATTREE_CODE     VARCHAR2(9) not null,
-  MATTREE_NAME     VARCHAR2(256) not null,
-  IS_VALID         VARCHAR2(1) default 1,
-  IS_DEL           VARCHAR2(1) default 0,
-  PK_CLASS         VARCHAR2(256),
-  PK_PARENT_CLASS  VARCHAR2(256),
-  DATA_ORIGIN_FLAG VARCHAR2(4) default 1,
-  PARENT_CODE      VARCHAR2(9)
+  ID           INTEGER,
+  SECTION_CODE VARCHAR2(10) not null,
+  SECTION_NAME VARCHAR2(128),
+  IS_VALID     VARCHAR2(1) default 0,
+  IS_DEL       VARCHAR2(1) default 0,
+  REMARK       VARCHAR2(256),
+  CREATE_ID    VARCHAR2(12),
+  CREATE_TIME  DATE,
+  MODIFY_ID    VARCHAR2(12),
+  MODIFY_TIME  DATE,
+  WEIGHT       FLOAT
 )
 tablespace ZS_DATA
   pctfree 10
@@ -2704,26 +2996,30 @@ tablespace ZS_DATA
     minextents 1
     maxextents unlimited
   );
-comment on table ZS18.HT_PUB_MATTREE
-  is '物料分类信息表';
-comment on column ZS18.HT_PUB_MATTREE.ID
-  is '物料分类id';
-comment on column ZS18.HT_PUB_MATTREE.MATTREE_CODE
-  is '物料分类编码';
-comment on column ZS18.HT_PUB_MATTREE.MATTREE_NAME
-  is '物料分类名称';
-comment on column ZS18.HT_PUB_MATTREE.IS_VALID
+comment on column ZS18.HT_PUB_TECH_SECTION.ID
+  is '唯一标识';
+comment on column ZS18.HT_PUB_TECH_SECTION.SECTION_CODE
+  is '工艺段编码';
+comment on column ZS18.HT_PUB_TECH_SECTION.SECTION_NAME
+  is '名称';
+comment on column ZS18.HT_PUB_TECH_SECTION.IS_VALID
   is '是否有效';
-comment on column ZS18.HT_PUB_MATTREE.IS_DEL
-  is '是否删除';
-comment on column ZS18.HT_PUB_MATTREE.PK_CLASS
-  is '分类标识';
-comment on column ZS18.HT_PUB_MATTREE.PK_PARENT_CLASS
-  is '父级分类标识';
-comment on column ZS18.HT_PUB_MATTREE.PARENT_CODE
-  is '父级分类编码';
-alter table ZS18.HT_PUB_MATTREE
-  add constraint MATTREE_CODE primary key (MATTREE_CODE)
+comment on column ZS18.HT_PUB_TECH_SECTION.IS_DEL
+  is '删除';
+comment on column ZS18.HT_PUB_TECH_SECTION.REMARK
+  is '备注';
+comment on column ZS18.HT_PUB_TECH_SECTION.CREATE_ID
+  is '创建人标识';
+comment on column ZS18.HT_PUB_TECH_SECTION.CREATE_TIME
+  is '创建时间';
+comment on column ZS18.HT_PUB_TECH_SECTION.MODIFY_ID
+  is '修改人标识';
+comment on column ZS18.HT_PUB_TECH_SECTION.MODIFY_TIME
+  is '修改时间';
+comment on column ZS18.HT_PUB_TECH_SECTION.WEIGHT
+  is '权重';
+alter table ZS18.HT_PUB_TECH_SECTION
+  add constraint SECTION_CODE primary key (SECTION_CODE)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -2777,6 +3073,75 @@ comment on column ZS18.HT_PUB_PATH_NODE.CREATE_TIME
   is '创建时间';
 comment on column ZS18.HT_PUB_PATH_NODE.TAG
   is '节点对应控制标签';
+alter table ZS18.HT_PUB_PATH_NODE
+  add constraint PK_PATH_NODE_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_PUB_PATH_NODE
+  add constraint FK_PATH_NODE_SECTION foreign key (SECTION_CODE)
+  references ZS18.HT_PUB_TECH_SECTION (SECTION_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_PUB_PATH_SECTION
+prompt ==================================
+prompt
+create table ZS18.HT_PUB_PATH_SECTION
+(
+  SECTION_CODE VARCHAR2(10) not null,
+  PATHCODE     VARCHAR2(30) not null,
+  PATHNAME     VARCHAR2(60),
+  DESCRIPT     VARCHAR2(255),
+  IS_DEL       VARCHAR2(1) default 0,
+  CREATE_TIME  VARCHAR2(19)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on column ZS18.HT_PUB_PATH_SECTION.SECTION_CODE
+  is '工艺段';
+comment on column ZS18.HT_PUB_PATH_SECTION.PATHCODE
+  is '工艺段路径码';
+comment on column ZS18.HT_PUB_PATH_SECTION.PATHNAME
+  is '路径名';
+comment on column ZS18.HT_PUB_PATH_SECTION.DESCRIPT
+  is '描述';
+comment on column ZS18.HT_PUB_PATH_SECTION.CREATE_TIME
+  is '创建时间';
+alter table ZS18.HT_PUB_PATH_SECTION
+  add constraint PK_PATHCODE primary key (PATHCODE, SECTION_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_PUB_PATH_SECTION
+  add constraint FK_PATH_SECTION foreign key (SECTION_CODE)
+  references ZS18.HT_PUB_TECH_SECTION (SECTION_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_PUB_PATH_PLAN
@@ -2829,55 +3194,12 @@ alter table ZS18.HT_PUB_PATH_PLAN
     minextents 1
     maxextents unlimited
   );
-
-prompt
-prompt Creating table HT_PUB_PATH_SECTION
-prompt ==================================
-prompt
-create table ZS18.HT_PUB_PATH_SECTION
-(
-  SECTION_CODE VARCHAR2(10) not null,
-  PATHCODE     VARCHAR2(30) not null,
-  PATHNAME     VARCHAR2(60),
-  DESCRIPT     VARCHAR2(255),
-  IS_DEL       VARCHAR2(1) default 0,
-  CREATE_TIME  VARCHAR2(19)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_PUB_PATH_SECTION.SECTION_CODE
-  is '工艺段';
-comment on column ZS18.HT_PUB_PATH_SECTION.PATHCODE
-  is '工艺段路径码';
-comment on column ZS18.HT_PUB_PATH_SECTION.PATHNAME
-  is '路径名';
-comment on column ZS18.HT_PUB_PATH_SECTION.DESCRIPT
-  is '描述';
-comment on column ZS18.HT_PUB_PATH_SECTION.CREATE_TIME
-  is '创建时间';
-alter table ZS18.HT_PUB_PATH_SECTION
-  add constraint PK_PATHCODE primary key (PATHCODE, SECTION_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
+alter table ZS18.HT_PUB_PATH_PLAN
+  add constraint FK_PATH_ID foreign key (PATHCODE, SECTION_CODE)
+  references ZS18.HT_PUB_PATH_SECTION (PATHCODE, SECTION_CODE) on delete cascade;
+alter table ZS18.HT_PUB_PATH_PLAN
+  add constraint FK_PATH_PLAN foreign key (PROD_PLAN)
+  references ZS18.HT_PROD_MONTH_PLAN_DETAIL (PLAN_NO) on delete cascade;
 
 prompt
 prompt Creating table HT_PUB_PROD_DESIGN
@@ -2950,7 +3272,7 @@ comment on column ZS18.HT_PUB_PROD_DESIGN.QLT_CODE
 comment on column ZS18.HT_PUB_PROD_DESIGN.B_FLOW_STATUS
   is '审批状态 -1 未提交审批 0办理中 ２己通过 １未通过';
 alter table ZS18.HT_PUB_PROD_DESIGN
-  add constraint PROD_CODE primary key (PROD_CODE)
+  add constraint PK_PROD_CODE primary key (PROD_CODE)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -2963,144 +3285,21 @@ alter table ZS18.HT_PUB_PROD_DESIGN
     minextents 1
     maxextents unlimited
   );
-
-prompt
-prompt Creating table HT_PUB_TECH_PARA
-prompt ===============================
-prompt
-create table ZS18.HT_PUB_TECH_PARA
-(
-  INSPECT_ITEM_CODE VARCHAR2(32),
-  PARA_CODE         VARCHAR2(32) not null,
-  PARA_NAME         VARCHAR2(256),
-  PARA_UNIT         VARCHAR2(32),
-  IS_VALID          VARCHAR2(1) default 1,
-  IS_DEL            VARCHAR2(1) default 0,
-  REMARK            VARCHAR2(256),
-  CREATE_ID         VARCHAR2(32),
-  CREATE_TIME       VARCHAR2(19),
-  MODIFY_ID         VARCHAR2(32),
-  MODIFY_TIME       VARCHAR2(19),
-  PARA_TYPE         VARCHAR2(10),
-  EQUIP_CODE        VARCHAR2(32),
-  SET_TAG           VARCHAR2(100),
-  VALUE_TAG         VARCHAR2(100),
-  IS_KEY            VARCHAR2(1) default 0
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_PUB_TECH_PARA.PARA_CODE
-  is '工艺参数编码a)	编码规则：组织机构1位+生产线2位+工艺段2位+工序2位+3位流水号';
-comment on column ZS18.HT_PUB_TECH_PARA.PARA_NAME
-  is '工艺参数名称';
-comment on column ZS18.HT_PUB_TECH_PARA.PARA_UNIT
-  is '单位';
-comment on column ZS18.HT_PUB_TECH_PARA.REMARK
-  is '备注';
-comment on column ZS18.HT_PUB_TECH_PARA.CREATE_ID
-  is '创建人标识';
-comment on column ZS18.HT_PUB_TECH_PARA.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_PUB_TECH_PARA.MODIFY_ID
-  is '修改人标识';
-comment on column ZS18.HT_PUB_TECH_PARA.MODIFY_TIME
-  is '修改时间';
-comment on column ZS18.HT_PUB_TECH_PARA.PARA_TYPE
-  is '类型';
-comment on column ZS18.HT_PUB_TECH_PARA.EQUIP_CODE
-  is '所属设备';
-comment on column ZS18.HT_PUB_TECH_PARA.SET_TAG
-  is '设定标签';
-comment on column ZS18.HT_PUB_TECH_PARA.VALUE_TAG
-  is '反馈标签';
-comment on column ZS18.HT_PUB_TECH_PARA.IS_KEY
-  is '在设备参数中标识是否为主要参数';
-alter table ZS18.HT_PUB_TECH_PARA
-  add constraint PARA_CODE primary key (PARA_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table HT_PUB_TECH_SECTION
-prompt ==================================
-prompt
-create table ZS18.HT_PUB_TECH_SECTION
-(
-  ID           INTEGER,
-  SECTION_CODE VARCHAR2(10) not null,
-  SECTION_NAME VARCHAR2(128),
-  IS_VALID     VARCHAR2(1) default 0,
-  IS_DEL       VARCHAR2(1) default 0,
-  REMARK       VARCHAR2(256),
-  CREATE_ID    VARCHAR2(12),
-  CREATE_TIME  DATE,
-  MODIFY_ID    VARCHAR2(12),
-  MODIFY_TIME  DATE
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_PUB_TECH_SECTION.ID
-  is '唯一标识';
-comment on column ZS18.HT_PUB_TECH_SECTION.SECTION_CODE
-  is '工艺段编码';
-comment on column ZS18.HT_PUB_TECH_SECTION.SECTION_NAME
-  is '名称';
-comment on column ZS18.HT_PUB_TECH_SECTION.IS_VALID
-  is '是否有效';
-comment on column ZS18.HT_PUB_TECH_SECTION.IS_DEL
-  is '删除';
-comment on column ZS18.HT_PUB_TECH_SECTION.REMARK
-  is '备注';
-comment on column ZS18.HT_PUB_TECH_SECTION.CREATE_ID
-  is '创建人标识';
-comment on column ZS18.HT_PUB_TECH_SECTION.CREATE_TIME
-  is '创建时间';
-comment on column ZS18.HT_PUB_TECH_SECTION.MODIFY_ID
-  is '修改人标识';
-comment on column ZS18.HT_PUB_TECH_SECTION.MODIFY_TIME
-  is '修改时间';
-alter table ZS18.HT_PUB_TECH_SECTION
-  add constraint SECTION_CODE primary key (SECTION_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
+alter table ZS18.HT_PUB_PROD_DESIGN
+  add constraint FK_AUX_FORMULA_CODE foreign key (AUX_FORMULA_CODE)
+  references ZS18.HT_QA_AUX_FORMULA (FORMULA_CODE) on delete set null;
+alter table ZS18.HT_PUB_PROD_DESIGN
+  add constraint FK_COAT_FORMULA_CODE foreign key (COAT_FORMULA_CODE)
+  references ZS18.HT_QA_COAT_FORMULA (FORMULA_CODE) on delete set null;
+alter table ZS18.HT_PUB_PROD_DESIGN
+  add constraint FK_MATER_FORMULA_CODE foreign key (MATER_FORMULA_CODE)
+  references ZS18.HT_QA_MATER_FORMULA (FORMULA_CODE) on delete set null;
+alter table ZS18.HT_PUB_PROD_DESIGN
+  add constraint FK_QLT_CODE foreign key (QLT_CODE)
+  references ZS18.HT_QLT_STDD_CODE (QLT_CODE) on delete set null;
+alter table ZS18.HT_PUB_PROD_DESIGN
+  add constraint FK_TECH_STDD_CODE foreign key (TECH_STDD_CODE)
+  references ZS18.HT_TECH_STDD_CODE (TECH_CODE) on delete set null;
 
 prompt
 prompt Creating table HT_QA_AUX_FORMULA
@@ -3110,7 +3309,7 @@ create table ZS18.HT_QA_AUX_FORMULA
 (
   ID             INTEGER,
   FORMULA_NAME   VARCHAR2(256),
-  FORMULA_CODE   VARCHAR2(32),
+  FORMULA_CODE   VARCHAR2(32) not null,
   PROD_CODE      VARCHAR2(32),
   STANDARD_VOL   VARCHAR2(32),
   B_DATE         VARCHAR2(10),
@@ -3173,45 +3372,23 @@ comment on column ZS18.HT_QA_AUX_FORMULA.REMARK
   is '备注';
 comment on column ZS18.HT_QA_AUX_FORMULA.FLOW_STATUS
   is '流程状态';
-
-prompt
-prompt Creating table HT_QA_AUX_FORMULA_DETAIL
-prompt =======================================
-prompt
-create table ZS18.HT_QA_AUX_FORMULA_DETAIL
-(
-  ID           INTEGER,
-  FORMULA_CODE VARCHAR2(32),
-  MATER_CODE   VARCHAR2(32),
-  MATER_TYPE   VARCHAR2(32),
-  AUX_SORT     NUMBER(10,2),
-  IS_DEL       VARCHAR2(1) default 0,
-  AUX_SCALE    NUMBER(10,2),
-  REMARK       VARCHAR2(1024),
-  AUX_PERCENT  NUMBER(10,2)
-)
-tablespace ZS_DATA
+alter table ZS18.HT_QA_AUX_FORMULA
+  add constraint PK_AUX_FORMULA_CODE primary key (FORMULA_CODE)
+  using index 
+  tablespace ZS_DATA
   pctfree 10
-  initrans 1
-  maxtrans 255;
-comment on table ZS18.HT_QA_AUX_FORMULA_DETAIL
-  is '辅料配方信息子表';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.ID
-  is '辅料配方信息子表id';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.FORMULA_CODE
-  is '辅料配方主表id';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.MATER_CODE
-  is '物料编号';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.MATER_TYPE
-  is '物料类型编码';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.AUX_SORT
-  is '序号';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.IS_DEL
-  is '是否删除';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.AUX_SCALE
-  is '比例';
-comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.REMARK
-  is '备注';
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_QA_AUX_FORMULA
+  add constraint FK_AUX_PROD_CODE foreign key (PROD_CODE)
+  references ZS18.HT_PUB_PROD_DESIGN (PROD_CODE) on delete set null;
 
 prompt
 prompt Creating table HT_QA_COAT_FORMULA
@@ -3307,53 +3484,9 @@ alter table ZS18.HT_QA_COAT_FORMULA
     minextents 1
     maxextents unlimited
   );
-
-prompt
-prompt Creating table HT_QA_COAT_FORMULA_DETAIL
-prompt ========================================
-prompt
-create table ZS18.HT_QA_COAT_FORMULA_DETAIL
-(
-  ID           INTEGER,
-  FORMULA_CODE VARCHAR2(10),
-  CLASS_NAME   VARCHAR2(256),
-  COAT_SCALE   VARCHAR2(16),
-  NEED_SIZE    NUMBER(10,2),
-  COAT_SORT    NUMBER(10,2),
-  IS_VALID     VARCHAR2(1) default 1,
-  IS_DEL       VARCHAR2(1) default 0,
-  REMARK       VARCHAR2(1024),
-  COAT_FLAG    VARCHAR2(16),
-  MATER_CODE   VARCHAR2(32)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255;
-comment on table ZS18.HT_QA_COAT_FORMULA_DETAIL
-  is '涂布液配方信息子表';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.ID
-  is '涂布液配方信息子表id';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.FORMULA_CODE
-  is '涂布液配方主表id';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.CLASS_NAME
-  is '分组名称（种类）';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.COAT_SCALE
-  is '比例';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.NEED_SIZE
-  is '调配所需量';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.COAT_SORT
-  is '序号';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.IS_VALID
-  is '是否有效';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.IS_DEL
-  is '是否删除';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.REMARK
-  is '备注';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.COAT_FLAG
-  is '配方分类(XJ--香精香料； TPY--涂布液配方)';
-comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.MATER_CODE
-  is '物料编号';
+alter table ZS18.HT_QA_COAT_FORMULA
+  add constraint FK_COAT_PROD_CODE foreign key (PROD_CODE)
+  references ZS18.HT_PUB_PROD_DESIGN (PROD_CODE) on delete set null;
 
 prompt
 prompt Creating table HT_QA_MATER_FORMULA
@@ -3464,6 +3597,266 @@ alter table ZS18.HT_QA_MATER_FORMULA
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_QA_MATER_FORMULA
+  add constraint FK_MATER_PROD_CODE foreign key (PROD_CODE)
+  references ZS18.HT_PUB_PROD_DESIGN (PROD_CODE) on delete set null;
+
+prompt
+prompt Creating table HT_QLT_STDD_CODE
+prompt ===============================
+prompt
+create table ZS18.HT_QLT_STDD_CODE
+(
+  QLT_CODE     VARCHAR2(32) not null,
+  STANDARD_VOL VARCHAR2(32),
+  B_DATE       VARCHAR2(10),
+  E_DATE       VARCHAR2(10),
+  CREATE_ID    VARCHAR2(32),
+  CREATE_DATE  VARCHAR2(19),
+  MODIFY_ID    VARCHAR2(32),
+  MODIFY_TIME  VARCHAR2(19),
+  IS_VALID     VARCHAR2(1) default 1,
+  IS_DEL       VARCHAR2(1) default 0,
+  REMARK       VARCHAR2(512),
+  QLT_NAME     VARCHAR2(128)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_QLT_STDD_CODE
+  is '质量考标准主表';
+comment on column ZS18.HT_QLT_STDD_CODE.QLT_CODE
+  is '质量标准编码  QLT + 三位流水号';
+comment on column ZS18.HT_QLT_STDD_CODE.STANDARD_VOL
+  is '标准版本号';
+comment on column ZS18.HT_QLT_STDD_CODE.B_DATE
+  is '执行日期';
+comment on column ZS18.HT_QLT_STDD_CODE.E_DATE
+  is '结束日期';
+comment on column ZS18.HT_QLT_STDD_CODE.CREATE_ID
+  is '创建人标识';
+comment on column ZS18.HT_QLT_STDD_CODE.CREATE_DATE
+  is '编制日期';
+comment on column ZS18.HT_QLT_STDD_CODE.MODIFY_ID
+  is '修改人标识';
+comment on column ZS18.HT_QLT_STDD_CODE.MODIFY_TIME
+  is '修改时间';
+comment on column ZS18.HT_QLT_STDD_CODE.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_QLT_STDD_CODE.REMARK
+  is '备注';
+comment on column ZS18.HT_QLT_STDD_CODE.QLT_NAME
+  is '质量标准名';
+alter table ZS18.HT_QLT_STDD_CODE
+  add constraint PK_QLT_CODE primary key (QLT_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_TECH_STDD_CODE
+prompt ================================
+prompt
+create table ZS18.HT_TECH_STDD_CODE
+(
+  ID             INTEGER,
+  TECH_CODE      VARCHAR2(12) not null,
+  PROD_CODE      VARCHAR2(10) not null,
+  STANDARD_VOL   VARCHAR2(32),
+  B_DATE         VARCHAR2(10),
+  E_DATE         VARCHAR2(10),
+  CONTROL_STATUS VARCHAR2(16),
+  CREATE_ID      VARCHAR2(32),
+  CREATE_DATE    VARCHAR2(10),
+  CREATE_DEPT_ID VARCHAR2(32),
+  MODIFY_ID      VARCHAR2(32),
+  MODIFY_TIME    VARCHAR2(19),
+  IS_VALID       VARCHAR2(1) default 1,
+  IS_DEL         VARCHAR2(1) default 0,
+  REMARK         VARCHAR2(2048),
+  TECH_NAME      VARCHAR2(128),
+  FLOW_STATUS    VARCHAR2(2) default -1
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on column ZS18.HT_TECH_STDD_CODE.ID
+  is '唯一标识';
+comment on column ZS18.HT_TECH_STDD_CODE.TECH_CODE
+  is '工艺标准编码';
+comment on column ZS18.HT_TECH_STDD_CODE.PROD_CODE
+  is '产品编码';
+comment on column ZS18.HT_TECH_STDD_CODE.STANDARD_VOL
+  is '标准版本号';
+comment on column ZS18.HT_TECH_STDD_CODE.B_DATE
+  is '执行日期';
+comment on column ZS18.HT_TECH_STDD_CODE.E_DATE
+  is '结束日期';
+comment on column ZS18.HT_TECH_STDD_CODE.CONTROL_STATUS
+  is '受控状态';
+comment on column ZS18.HT_TECH_STDD_CODE.CREATE_ID
+  is '创建人标识';
+comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DATE
+  is '编制日期';
+comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DEPT_ID
+  is '编制部门ID';
+comment on column ZS18.HT_TECH_STDD_CODE.MODIFY_ID
+  is '修改人标识';
+comment on column ZS18.HT_TECH_STDD_CODE.MODIFY_TIME
+  is '修改时间';
+comment on column ZS18.HT_TECH_STDD_CODE.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_TECH_STDD_CODE.REMARK
+  is '备注';
+comment on column ZS18.HT_TECH_STDD_CODE.TECH_NAME
+  is '工艺标准名';
+comment on column ZS18.HT_TECH_STDD_CODE.FLOW_STATUS
+  is '审批状态';
+alter table ZS18.HT_TECH_STDD_CODE
+  add constraint TECH_CODE primary key (TECH_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_QA_AUX_FORMULA_DETAIL
+prompt =======================================
+prompt
+create table ZS18.HT_QA_AUX_FORMULA_DETAIL
+(
+  ID           INTEGER,
+  FORMULA_CODE VARCHAR2(32) not null,
+  MATER_CODE   VARCHAR2(32) not null,
+  MATER_TYPE   VARCHAR2(32),
+  AUX_SORT     NUMBER(10,2),
+  IS_DEL       VARCHAR2(1) default 0,
+  AUX_SCALE    NUMBER(10,2),
+  REMARK       VARCHAR2(1024),
+  AUX_PERCENT  NUMBER(10,2)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+comment on table ZS18.HT_QA_AUX_FORMULA_DETAIL
+  is '辅料配方信息子表';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.ID
+  is '辅料配方信息子表id';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.FORMULA_CODE
+  is '辅料配方主表id';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.MATER_CODE
+  is '物料编号';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.MATER_TYPE
+  is '物料类型编码';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.AUX_SORT
+  is '序号';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.IS_DEL
+  is '是否删除';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.AUX_SCALE
+  is '比例';
+comment on column ZS18.HT_QA_AUX_FORMULA_DETAIL.REMARK
+  is '备注';
+alter table ZS18.HT_QA_AUX_FORMULA_DETAIL
+  add constraint PK_AUX_DETAIL_ID primary key (FORMULA_CODE, MATER_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ZS18.HT_QA_AUX_FORMULA_DETAIL
+  add constraint FK_AUX_ID foreign key (FORMULA_CODE)
+  references ZS18.HT_QA_AUX_FORMULA (FORMULA_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_QA_COAT_FORMULA_DETAIL
+prompt ========================================
+prompt
+create table ZS18.HT_QA_COAT_FORMULA_DETAIL
+(
+  ID           INTEGER,
+  FORMULA_CODE VARCHAR2(10) not null,
+  CLASS_NAME   VARCHAR2(256),
+  COAT_SCALE   VARCHAR2(16),
+  NEED_SIZE    NUMBER(10,2),
+  COAT_SORT    NUMBER(10,2),
+  IS_VALID     VARCHAR2(1) default 1,
+  IS_DEL       VARCHAR2(1) default 0,
+  REMARK       VARCHAR2(1024),
+  COAT_FLAG    VARCHAR2(16),
+  MATER_CODE   VARCHAR2(32) not null
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+comment on table ZS18.HT_QA_COAT_FORMULA_DETAIL
+  is '涂布液配方信息子表';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.ID
+  is '涂布液配方信息子表id';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.FORMULA_CODE
+  is '涂布液配方主表id';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.CLASS_NAME
+  is '分组名称（种类）';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.COAT_SCALE
+  is '比例';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.NEED_SIZE
+  is '调配所需量';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.COAT_SORT
+  is '序号';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.IS_VALID
+  is '是否有效';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.IS_DEL
+  is '是否删除';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.REMARK
+  is '备注';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.COAT_FLAG
+  is '配方分类(XJ--香精香料； TPY--涂布液配方)';
+comment on column ZS18.HT_QA_COAT_FORMULA_DETAIL.MATER_CODE
+  is '物料编号';
+alter table ZS18.HT_QA_COAT_FORMULA_DETAIL
+  add constraint PK_COAT_DETAIL primary key (FORMULA_CODE, MATER_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ZS18.HT_QA_COAT_FORMULA_DETAIL
+  add constraint FK_COAT_ID foreign key (FORMULA_CODE)
+  references ZS18.HT_QA_COAT_FORMULA (FORMULA_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_QA_MATER_FORMULA_DETAIL
@@ -3472,7 +3865,7 @@ prompt
 create table ZS18.HT_QA_MATER_FORMULA_DETAIL
 (
   ID           INTEGER,
-  FORMULA_CODE INTEGER not null,
+  FORMULA_CODE VARCHAR2(32) not null,
   MATER_CODE   VARCHAR2(32) not null,
   BATCH_SIZE   NUMBER(10,2),
   FRONT_GROUP  VARCHAR2(16),
@@ -3526,6 +3919,12 @@ alter table ZS18.HT_QA_MATER_FORMULA_DETAIL
     minextents 1
     maxextents unlimited
   );
+alter table ZS18.HT_QA_MATER_FORMULA_DETAIL
+  add constraint FK_MATER_ID foreign key (FORMULA_CODE)
+  references ZS18.HT_QA_MATER_FORMULA (FORMULA_CODE) on delete cascade;
+alter table ZS18.HT_QA_MATER_FORMULA_DETAIL
+  add constraint FK_MATER_MTCODE foreign key (MATER_CODE)
+  references ZS18.HT_PUB_MATERIEL (MATERIAL_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_QLT_AUTO_EVENT
@@ -3533,20 +3932,17 @@ prompt ================================
 prompt
 create table ZS18.HT_QLT_AUTO_EVENT
 (
-  PROD_CODE   VARCHAR2(20),
-  PARA_CODE   VARCHAR2(100),
-  SORT        VARCHAR2(12),
-  DEAL        VARCHAR2(255),
-  SCENE       VARCHAR2(255),
-  TEAM        VARCHAR2(4),
-  OTHERS      VARCHAR2(255),
-  DONE        VARCHAR2(1) default 0,
+  RECORD_ID   INTEGER,
+  SORT        VARCHAR2(1),
   SCORE       FLOAT default 0,
+  STATUS      VARCHAR2(1) default 0,
+  REASON      VARCHAR2(255),
+  SCENE       VARCHAR2(255),
+  DEAL        VARCHAR2(255),
+  REMARK      VARCHAR2(255),
   EVENT_TIME  VARCHAR2(19),
-  ALTERS      VARCHAR2(255),
-  CREATOR     VARCHAR2(19),
-  CREATE_TIME VARCHAR2(19),
-  VALUE       FLOAT
+  CREAT_ID    VARCHAR2(19),
+  CREATE_TIME VARCHAR2(19)
 )
 tablespace ZS_DATA
   pctfree 10
@@ -3558,32 +3954,28 @@ tablespace ZS_DATA
     next 8K
     minextents 1
   );
-comment on column ZS18.HT_QLT_AUTO_EVENT.PROD_CODE
-  is '产品';
-comment on column ZS18.HT_QLT_AUTO_EVENT.PARA_CODE
-  is '工艺点编码';
+comment on column ZS18.HT_QLT_AUTO_EVENT.RECORD_ID
+  is '数据记录ID';
 comment on column ZS18.HT_QLT_AUTO_EVENT.SORT
-  is '类型（均值、合格率。。。）';
-comment on column ZS18.HT_QLT_AUTO_EVENT.DEAL
-  is '处理方式';
-comment on column ZS18.HT_QLT_AUTO_EVENT.SCENE
-  is '原因';
-comment on column ZS18.HT_QLT_AUTO_EVENT.TEAM
-  is '班组';
-comment on column ZS18.HT_QLT_AUTO_EVENT.OTHERS
-  is '其它补充说明';
-comment on column ZS18.HT_QLT_AUTO_EVENT.DONE
-  is '是否己处理完成';
+  is '类型（均值、合格率。。断流）';
 comment on column ZS18.HT_QLT_AUTO_EVENT.SCORE
   is '扣分';
+comment on column ZS18.HT_QLT_AUTO_EVENT.STATUS
+  is '状态';
+comment on column ZS18.HT_QLT_AUTO_EVENT.REASON
+  is '原因分析';
+comment on column ZS18.HT_QLT_AUTO_EVENT.SCENE
+  is '现场记录';
+comment on column ZS18.HT_QLT_AUTO_EVENT.DEAL
+  is '处理方式';
+comment on column ZS18.HT_QLT_AUTO_EVENT.REMARK
+  is '其它补充说明';
 comment on column ZS18.HT_QLT_AUTO_EVENT.EVENT_TIME
   is '事件时间';
-comment on column ZS18.HT_QLT_AUTO_EVENT.CREATOR
+comment on column ZS18.HT_QLT_AUTO_EVENT.CREAT_ID
   is '记录人员';
 comment on column ZS18.HT_QLT_AUTO_EVENT.CREATE_TIME
   is '记录时间';
-comment on column ZS18.HT_QLT_AUTO_EVENT.VALUE
-  is '值';
 
 prompt
 prompt Creating table HT_QLT_COLLECTION
@@ -3591,28 +3983,25 @@ prompt ================================
 prompt
 create table ZS18.HT_QLT_COLLECTION
 (
-  PARA_CODE           VARCHAR2(11) not null,
-  IS_VALID            VARCHAR2(1),
-  SYNCHRO_TIME        CHAR(19),
-  UNIT                VARCHAR2(70),
-  PERIODIC            VARCHAR2(3),
-  DESCRIPT            VARCHAR2(100),
-  VARMONITOR_TAG      VARCHAR2(100),
-  HEAD_DELAY          FLOAT default 0,
-  TAIL_DELAY          FLOAT default 0,
-  BATCH_HEAD_DELAY    FLOAT default 0,
-  BATCH_TAIL_DELAY    FLOAT default 0,
-  WEIGHT              FLOAT,
-  GAP_DELAY           FLOAT,
-  IS_DEL              VARCHAR2(1),
-  CUTOFF_POINT_TAG    VARCHAR2(100),
-  CUTOFF_RST          VARCHAR2(10),
-  CUTOFF_RST_VALUE    FLOAT default 0,
-  TAILLOGIC_TAG       VARCHAR2(100),
-  TAILLOGIC_RST       VARCHAR2(10),
-  TAILLOGIC_RST_VALUE FLOAT default 0,
-  CUTOFF_TIMEGAP      INTEGER,
-  PARA_TYPE           VARCHAR2(10)
+  PARA_CODE        VARCHAR2(11) not null,
+  PARA_TYPE        VARCHAR2(10),
+  WEIGHT           FLOAT,
+  UNIT             VARCHAR2(16),
+  PERIODIC         VARCHAR2(3),
+  RST_VALUE        FLOAT,
+  VARMONITOR_TAG   VARCHAR2(128),
+  HEAD_DELAY       FLOAT default 0,
+  TAIL_DELAY       FLOAT default 0,
+  BATCH_HEAD_DELAY FLOAT default 0,
+  BATCH_TAIL_DELAY FLOAT default 0,
+  IS_DEL           VARCHAR2(1) default 0,
+  IS_VALID         VARCHAR2(1) default 1,
+  DESCRIPT         VARCHAR2(128),
+  IS_GAP_JUDGE     VARCHAR2(1),
+  SYNCHRO_TIME     CHAR(19),
+  GAP_HDELAY       INTEGER,
+  GAP_TDELAY       INTEGER,
+  GAP_POINT        VARCHAR2(11)
 )
 tablespace ZS_DATA
   pctfree 10
@@ -3627,10 +4016,14 @@ tablespace ZS_DATA
   );
 comment on column ZS18.HT_QLT_COLLECTION.PARA_CODE
   is '参数编码';
+comment on column ZS18.HT_QLT_COLLECTION.PARA_TYPE
+  is '数点采集点类型，用以对比分析';
+comment on column ZS18.HT_QLT_COLLECTION.WEIGHT
+  is '权重';
 comment on column ZS18.HT_QLT_COLLECTION.PERIODIC
   is '采集周期';
-comment on column ZS18.HT_QLT_COLLECTION.DESCRIPT
-  is '描述';
+comment on column ZS18.HT_QLT_COLLECTION.RST_VALUE
+  is '判定值';
 comment on column ZS18.HT_QLT_COLLECTION.VARMONITOR_TAG
   is '监控变量标签';
 comment on column ZS18.HT_QLT_COLLECTION.HEAD_DELAY
@@ -3641,81 +4034,19 @@ comment on column ZS18.HT_QLT_COLLECTION.BATCH_HEAD_DELAY
   is '批头延时';
 comment on column ZS18.HT_QLT_COLLECTION.BATCH_TAIL_DELAY
   is '批尾延时';
-comment on column ZS18.HT_QLT_COLLECTION.WEIGHT
-  is '权重';
-comment on column ZS18.HT_QLT_COLLECTION.GAP_DELAY
-  is '断流偏移';
-comment on column ZS18.HT_QLT_COLLECTION.CUTOFF_POINT_TAG
-  is '断流点标签';
-comment on column ZS18.HT_QLT_COLLECTION.CUTOFF_RST
-  is '断流判定浮号';
-comment on column ZS18.HT_QLT_COLLECTION.CUTOFF_RST_VALUE
-  is '断流判定值';
-comment on column ZS18.HT_QLT_COLLECTION.TAILLOGIC_TAG
-  is '批头批尾判定标签';
-comment on column ZS18.HT_QLT_COLLECTION.TAILLOGIC_RST
-  is '批头批尾判定浮号';
-comment on column ZS18.HT_QLT_COLLECTION.TAILLOGIC_RST_VALUE
-  is '判定值';
-comment on column ZS18.HT_QLT_COLLECTION.CUTOFF_TIMEGAP
-  is '断流判定时长';
-comment on column ZS18.HT_QLT_COLLECTION.PARA_TYPE
-  is '数点采集点类型，用以对比分析';
-
-prompt
-prompt Creating table HT_QLT_CUTOFF_RECORD
-prompt ===================================
-prompt
-create table ZS18.HT_QLT_CUTOFF_RECORD
-(
-  PROD_CODE    VARCHAR2(20),
-  SECTION_CODE VARCHAR2(100),
-  DEAL         VARCHAR2(255),
-  SCENE        VARCHAR2(255),
-  TEAM         VARCHAR2(4),
-  OTHERS       VARCHAR2(255),
-  DONE         VARCHAR2(1) default 0,
-  SCORE        FLOAT default 0,
-  EVENT_TIME   VARCHAR2(19),
-  ALTERS       VARCHAR2(255),
-  CREATOR      VARCHAR2(19),
-  CREATE_TIME  VARCHAR2(19),
-  CUTOFF_TIME  INTEGER
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 128K
-    next 8K
-    minextents 1
-  );
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.PROD_CODE
-  is '产品';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.SECTION_CODE
-  is '工艺段编码';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.DEAL
-  is '处理方式';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.SCENE
-  is '原因';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.TEAM
-  is '班组';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.OTHERS
-  is '其它补充说明';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.DONE
-  is '是否己处理完成';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.SCORE
-  is '扣分';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.EVENT_TIME
-  is '事件时间';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.CREATOR
-  is '记录人员';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.CREATE_TIME
-  is '记录时间';
-comment on column ZS18.HT_QLT_CUTOFF_RECORD.CUTOFF_TIME
-  is '断流时间';
+comment on column ZS18.HT_QLT_COLLECTION.DESCRIPT
+  is '描述';
+comment on column ZS18.HT_QLT_COLLECTION.IS_GAP_JUDGE
+  is '是否是断流判定点';
+comment on column ZS18.HT_QLT_COLLECTION.GAP_HDELAY
+  is '断流前偏移';
+comment on column ZS18.HT_QLT_COLLECTION.GAP_TDELAY
+  is '断流后偏移';
+comment on column ZS18.HT_QLT_COLLECTION.GAP_POINT
+  is '断流判定点';
+alter table ZS18.HT_QLT_COLLECTION
+  add constraint FK_QLT_COL_ID foreign key (PARA_CODE)
+  references ZS18.HT_PUB_TECH_PARA (PARA_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_QLT_DATA_RECORD
@@ -3724,7 +4055,7 @@ prompt
 create table ZS18.HT_QLT_DATA_RECORD
 (
   PLAN_ID   VARCHAR2(20),
-  PARA_CODE VARCHAR2(5),
+  PARA_CODE VARCHAR2(15),
   AVG       FLOAT default 0,
   COUNT     FLOAT default 0,
   MIN       FLOAT default 0,
@@ -3745,9 +4076,11 @@ create table ZS18.HT_QLT_DATA_RECORD
   CP        FLOAT default 0,
   RANGE     FLOAT default 0,
   B_TIME    VARCHAR2(19),
-  SHIFT     VARCHAR2(4),
+  TEAM      VARCHAR2(4),
   GAP_TIME  FLOAT default 0,
-  E_TIME    VARCHAR2(19)
+  E_TIME    VARCHAR2(19),
+  ID        INTEGER not null,
+  PROD_CODE VARCHAR2(19)
 )
 tablespace ZS_DATA
   pctfree 10
@@ -3758,6 +4091,7 @@ tablespace ZS_DATA
     initial 2M
     next 8K
     minextents 1
+    maxextents unlimited
   );
 comment on column ZS18.HT_QLT_DATA_RECORD.PLAN_ID
   is '生产任务ID';
@@ -3793,12 +4127,64 @@ comment on column ZS18.HT_QLT_DATA_RECORD.CPK
   is 'CPK';
 comment on column ZS18.HT_QLT_DATA_RECORD.B_TIME
   is '开始时间';
-comment on column ZS18.HT_QLT_DATA_RECORD.SHIFT
+comment on column ZS18.HT_QLT_DATA_RECORD.TEAM
   is '班组';
 comment on column ZS18.HT_QLT_DATA_RECORD.GAP_TIME
   is '断料时间';
 comment on column ZS18.HT_QLT_DATA_RECORD.E_TIME
   is '结束时间';
+comment on column ZS18.HT_QLT_DATA_RECORD.ID
+  is '唯一标识';
+comment on column ZS18.HT_QLT_DATA_RECORD.PROD_CODE
+  is '产品编码';
+alter table ZS18.HT_QLT_DATA_RECORD
+  add constraint PK_AUTO_QLT_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table HT_QLT_GAP_COLLECTION
+prompt ====================================
+prompt
+create table ZS18.HT_QLT_GAP_COLLECTION
+(
+  PARA_CODE VARCHAR2(11) not null,
+  IS_DEL    VARCHAR2(1) default 0,
+  RST_VALUE FLOAT default 0,
+  TIMEGAP   INTEGER
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_QLT_GAP_COLLECTION
+  is '断流判定条件';
+comment on column ZS18.HT_QLT_GAP_COLLECTION.PARA_CODE
+  is '参数编码';
+comment on column ZS18.HT_QLT_GAP_COLLECTION.RST_VALUE
+  is '断流判定值';
+comment on column ZS18.HT_QLT_GAP_COLLECTION.TIMEGAP
+  is '断流判定时长';
+alter table ZS18.HT_QLT_GAP_COLLECTION
+  add constraint FK_QLT_GAP_ID foreign key (PARA_CODE)
+  references ZS18.HT_PUB_TECH_PARA (PARA_CODE) on delete cascade;
 
 prompt
 prompt Creating table HT_QLT_INSPECT_EVENT
@@ -3808,17 +4194,14 @@ create table ZS18.HT_QLT_INSPECT_EVENT
 (
   RECORD_ID    INTEGER not null,
   INSPECT_CODE VARCHAR2(100),
-  PROD_CODE    VARCHAR2(20),
-  TEAM         VARCHAR2(4),
-  STATUS       VARCHAR2(5),
+  SCORE        FLOAT,
+  STATUS       VARCHAR2(1) default 0,
   REASON       VARCHAR2(255),
   SCENE        VARCHAR2(255),
   DEAL         VARCHAR2(255),
   REMARK       VARCHAR2(255),
-  ISDONE       VARCHAR2(1) default 0,
-  SCORE        FLOAT default 0,
   EVENT_TIME   VARCHAR2(19),
-  CREATOR      VARCHAR2(19),
+  CREAT_ID     VARCHAR2(19),
   CREATE_TIME  VARCHAR2(19),
   IS_DEL       VARCHAR2(1) default 0
 )
@@ -3831,15 +4214,14 @@ tablespace ZS_DATA
     initial 128K
     next 8K
     minextents 1
+    maxextents unlimited
   );
 comment on column ZS18.HT_QLT_INSPECT_EVENT.RECORD_ID
   is '工艺检查记录ID';
 comment on column ZS18.HT_QLT_INSPECT_EVENT.INSPECT_CODE
   is '工艺检查项目编码';
-comment on column ZS18.HT_QLT_INSPECT_EVENT.PROD_CODE
-  is '产品号';
-comment on column ZS18.HT_QLT_INSPECT_EVENT.TEAM
-  is '班组';
+comment on column ZS18.HT_QLT_INSPECT_EVENT.SCORE
+  is '扣分';
 comment on column ZS18.HT_QLT_INSPECT_EVENT.STATUS
   is '状态';
 comment on column ZS18.HT_QLT_INSPECT_EVENT.REASON
@@ -3850,13 +4232,9 @@ comment on column ZS18.HT_QLT_INSPECT_EVENT.DEAL
   is '处理方式';
 comment on column ZS18.HT_QLT_INSPECT_EVENT.REMARK
   is '其它补充说明';
-comment on column ZS18.HT_QLT_INSPECT_EVENT.ISDONE
-  is '是否己处理完成';
-comment on column ZS18.HT_QLT_INSPECT_EVENT.SCORE
-  is '扣分';
 comment on column ZS18.HT_QLT_INSPECT_EVENT.EVENT_TIME
   is '事件时间';
-comment on column ZS18.HT_QLT_INSPECT_EVENT.CREATOR
+comment on column ZS18.HT_QLT_INSPECT_EVENT.CREAT_ID
   is '记录人员';
 comment on column ZS18.HT_QLT_INSPECT_EVENT.CREATE_TIME
   is '记录时间';
@@ -3866,7 +4244,14 @@ alter table ZS18.HT_QLT_INSPECT_EVENT
   tablespace ZS_DATA
   pctfree 10
   initrans 2
-  maxtrans 255;
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table HT_QLT_INSPECT_PROJ
@@ -3945,21 +4330,31 @@ prompt ====================================
 prompt
 create table ZS18.HT_QLT_INSPECT_RECORD
 (
-  INSPECT_CODE  VARCHAR2(100),
-  PROD_CODE     VARCHAR2(19),
+  INSPECT_CODE  VARCHAR2(100) not null,
+  PROD_CODE     VARCHAR2(19) not null,
   SHIFT_ID      VARCHAR2(255),
-  TEAM_ID       VARCHAR2(4),
+  TEAM_ID       VARCHAR2(4) not null,
   INSPECT_VALUE FLOAT,
-  RECORD_TIME   VARCHAR2(255),
+  RECORD_TIME   VARCHAR2(10),
   CREAT_ID      VARCHAR2(19),
   CREATE_TIME   VARCHAR2(19),
   REMARK        VARCHAR2(255),
-  IS_DEL        VARCHAR2(1) default 0
+  IS_DEL        VARCHAR2(1) default 0,
+  ID            INTEGER not null,
+  PRODUCT_TIME  VARCHAR2(10),
+  MINUS_SCORE   FLOAT
 )
 tablespace ZS_DATA
   pctfree 10
   initrans 1
-  maxtrans 255;
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 comment on column ZS18.HT_QLT_INSPECT_RECORD.INSPECT_CODE
   is '工艺检查编码';
 comment on column ZS18.HT_QLT_INSPECT_RECORD.PROD_CODE
@@ -3978,6 +4373,40 @@ comment on column ZS18.HT_QLT_INSPECT_RECORD.CREATE_TIME
   is '记录时间';
 comment on column ZS18.HT_QLT_INSPECT_RECORD.REMARK
   is '说明';
+comment on column ZS18.HT_QLT_INSPECT_RECORD.ID
+  is '标识';
+comment on column ZS18.HT_QLT_INSPECT_RECORD.PRODUCT_TIME
+  is '生产时间';
+comment on column ZS18.HT_QLT_INSPECT_RECORD.MINUS_SCORE
+  is '扣分';
+alter table ZS18.HT_QLT_INSPECT_RECORD
+  add constraint PK_INSPECT_RECORD_ID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_QLT_INSPECT_RECORD
+  add constraint UK_INSPECT_RECORD unique (PROD_CODE, RECORD_TIME, TEAM_ID, INSPECT_CODE)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table HT_QLT_INSPECT_STDD
@@ -4042,98 +4471,21 @@ alter table ZS18.HT_QLT_INSPECT_STDD
   );
 
 prompt
-prompt Creating table HT_QLT_STDD_CODE
-prompt ===============================
-prompt
-create table ZS18.HT_QLT_STDD_CODE
-(
-  ID           INTEGER,
-  QLT_CODE     VARCHAR2(32) not null,
-  STANDARD_VOL VARCHAR2(32),
-  B_DATE       DATE,
-  E_DATE       DATE,
-  CREATE_ID    VARCHAR2(32),
-  CREATOR      VARCHAR2(32),
-  CREATE_DATE  DATE,
-  CREATE_DEPT  VARCHAR2(32),
-  MODIFY_ID    VARCHAR2(32),
-  MODIFY_TIME  DATE,
-  IS_VALID     VARCHAR2(1) default 1,
-  IS_DEL       VARCHAR2(1) default 0,
-  REMARK       VARCHAR2(2048),
-  QLT_NAME     VARCHAR2(256)
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on table ZS18.HT_QLT_STDD_CODE
-  is '质量考标准主表';
-comment on column ZS18.HT_QLT_STDD_CODE.ID
-  is '唯一标识';
-comment on column ZS18.HT_QLT_STDD_CODE.QLT_CODE
-  is '质量标准编码';
-comment on column ZS18.HT_QLT_STDD_CODE.STANDARD_VOL
-  is '标准版本号';
-comment on column ZS18.HT_QLT_STDD_CODE.B_DATE
-  is '执行日期';
-comment on column ZS18.HT_QLT_STDD_CODE.E_DATE
-  is '结束日期';
-comment on column ZS18.HT_QLT_STDD_CODE.CREATE_ID
-  is '创建人标识';
-comment on column ZS18.HT_QLT_STDD_CODE.CREATOR
-  is '编制人';
-comment on column ZS18.HT_QLT_STDD_CODE.CREATE_DATE
-  is '编制日期';
-comment on column ZS18.HT_QLT_STDD_CODE.CREATE_DEPT
-  is '编制部门';
-comment on column ZS18.HT_QLT_STDD_CODE.MODIFY_ID
-  is '修改人标识';
-comment on column ZS18.HT_QLT_STDD_CODE.MODIFY_TIME
-  is '修改时间';
-comment on column ZS18.HT_QLT_STDD_CODE.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_QLT_STDD_CODE.REMARK
-  is '备注';
-comment on column ZS18.HT_QLT_STDD_CODE.QLT_NAME
-  is '质量标准名';
-alter table ZS18.HT_QLT_STDD_CODE
-  add constraint PK_QLT_CODE primary key (QLT_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
 prompt Creating table HT_QLT_STDD_CODE_DETAIL
 prompt ======================================
 prompt
 create table ZS18.HT_QLT_STDD_CODE_DETAIL
 (
-  ID        INTEGER,
-  QLT_CODE  VARCHAR2(32) not null,
-  PARA_CODE VARCHAR2(32) not null,
-  QLT_TYPE  VARCHAR2(32) not null,
-  IS_DEL    VARCHAR2(1) default 0,
-  REMARK    VARCHAR2(1024),
-  PARA_NAME VARCHAR2(50),
-  VALUE     FLOAT,
-  EER_DEV   VARCHAR2(50)
+  ID          INTEGER not null,
+  QLT_CODE    VARCHAR2(32) not null,
+  PARA_CODE   VARCHAR2(32) not null,
+  QLT_TYPE    VARCHAR2(1) default 1,
+  IS_DEL      VARCHAR2(1) default 0,
+  REMARK      VARCHAR2(1024),
+  VALUE       FLOAT,
+  UPPER       FLOAT,
+  LOWER       FLOAT,
+  MINUS_SCORE FLOAT
 )
 tablespace ZS_DATA
   pctfree 10
@@ -4160,14 +4512,76 @@ comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.IS_DEL
   is '删除标识';
 comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.REMARK
   is '备注';
-comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.PARA_NAME
-  is '参数名';
 comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.VALUE
   is '标准值';
-comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.EER_DEV
-  is '判断条件';
+comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.UPPER
+  is '上限';
+comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.LOWER
+  is '下限';
+comment on column ZS18.HT_QLT_STDD_CODE_DETAIL.MINUS_SCORE
+  is '不达标扣分情况';
 alter table ZS18.HT_QLT_STDD_CODE_DETAIL
-  add constraint PARA_QLT primary key (PARA_CODE, QLT_CODE, QLT_TYPE)
+  add constraint PK_QLT_STDD_SUBID primary key (ID)
+  using index 
+  tablespace ZS_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ZS18.HT_QLT_STDD_CODE_DETAIL
+  add constraint FK_QLT_STDD_CODE foreign key (QLT_CODE)
+  references ZS18.HT_QLT_STDD_CODE (QLT_CODE) on delete cascade;
+
+prompt
+prompt Creating table HT_QLT_WEIGHT
+prompt ============================
+prompt
+create table ZS18.HT_QLT_WEIGHT
+(
+  ID          INTEGER not null,
+  NAME        VARCHAR2(32),
+  WEIGHT      FLOAT,
+  CREATE_ID   VARCHAR2(32),
+  CREATE_DATE VARCHAR2(19),
+  IS_VALID    VARCHAR2(1) default 1,
+  IS_DEL      VARCHAR2(1) default 0,
+  REMARK      VARCHAR2(512)
+)
+tablespace ZS_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+comment on table ZS18.HT_QLT_WEIGHT
+  is '质量权重分配';
+comment on column ZS18.HT_QLT_WEIGHT.ID
+  is '唯一标识';
+comment on column ZS18.HT_QLT_WEIGHT.NAME
+  is '分项名';
+comment on column ZS18.HT_QLT_WEIGHT.WEIGHT
+  is '权重';
+comment on column ZS18.HT_QLT_WEIGHT.CREATE_ID
+  is '创建人标识';
+comment on column ZS18.HT_QLT_WEIGHT.CREATE_DATE
+  is '编制日期';
+comment on column ZS18.HT_QLT_WEIGHT.IS_DEL
+  is '删除标识';
+comment on column ZS18.HT_QLT_WEIGHT.REMARK
+  is '备注';
+alter table ZS18.HT_QLT_WEIGHT
+  add constraint PK_WEIGHT_ID primary key (ID)
   using index 
   tablespace ZS_DATA
   pctfree 10
@@ -4917,88 +5331,6 @@ alter table ZS18.HT_SYS_EXCEL_SEG
   );
 
 prompt
-prompt Creating table HT_TECH_STDD_CODE
-prompt ================================
-prompt
-create table ZS18.HT_TECH_STDD_CODE
-(
-  ID             INTEGER,
-  TECH_CODE      VARCHAR2(12) not null,
-  PROD_CODE      VARCHAR2(10) not null,
-  STANDARD_VOL   VARCHAR2(32),
-  B_DATE         VARCHAR2(10),
-  E_DATE         VARCHAR2(10),
-  CONTROL_STATUS VARCHAR2(16),
-  CREATE_ID      VARCHAR2(32),
-  CREATE_DATE    VARCHAR2(10),
-  CREATE_DEPT_ID VARCHAR2(32),
-  MODIFY_ID      VARCHAR2(32),
-  MODIFY_TIME    VARCHAR2(19),
-  IS_VALID       VARCHAR2(1) default 1,
-  IS_DEL         VARCHAR2(1) default 0,
-  REMARK         VARCHAR2(2048),
-  TECH_NAME      VARCHAR2(128),
-  FLOW_STATUS    VARCHAR2(2) default -1
-)
-tablespace ZS_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-comment on column ZS18.HT_TECH_STDD_CODE.ID
-  is '唯一标识';
-comment on column ZS18.HT_TECH_STDD_CODE.TECH_CODE
-  is '工艺标准编码';
-comment on column ZS18.HT_TECH_STDD_CODE.PROD_CODE
-  is '产品编码';
-comment on column ZS18.HT_TECH_STDD_CODE.STANDARD_VOL
-  is '标准版本号';
-comment on column ZS18.HT_TECH_STDD_CODE.B_DATE
-  is '执行日期';
-comment on column ZS18.HT_TECH_STDD_CODE.E_DATE
-  is '结束日期';
-comment on column ZS18.HT_TECH_STDD_CODE.CONTROL_STATUS
-  is '受控状态';
-comment on column ZS18.HT_TECH_STDD_CODE.CREATE_ID
-  is '创建人标识';
-comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DATE
-  is '编制日期';
-comment on column ZS18.HT_TECH_STDD_CODE.CREATE_DEPT_ID
-  is '编制部门ID';
-comment on column ZS18.HT_TECH_STDD_CODE.MODIFY_ID
-  is '修改人标识';
-comment on column ZS18.HT_TECH_STDD_CODE.MODIFY_TIME
-  is '修改时间';
-comment on column ZS18.HT_TECH_STDD_CODE.IS_DEL
-  is '删除标识';
-comment on column ZS18.HT_TECH_STDD_CODE.REMARK
-  is '备注';
-comment on column ZS18.HT_TECH_STDD_CODE.TECH_NAME
-  is '工艺标准名';
-comment on column ZS18.HT_TECH_STDD_CODE.FLOW_STATUS
-  is '审批状态';
-alter table ZS18.HT_TECH_STDD_CODE
-  add constraint TECH_CODE primary key (TECH_CODE)
-  using index 
-  tablespace ZS_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
 prompt Creating table HT_TECH_STDD_CODE_DETAIL
 prompt =======================================
 prompt
@@ -5072,7 +5404,7 @@ prompt
 create sequence ZS18.APRVFLOW_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 45
+start with 53
 increment by 1
 nocache;
 
@@ -5083,7 +5415,18 @@ prompt
 create sequence ZS18.APRVOPINION_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 75
+start with 2
+increment by 1
+nocache;
+
+prompt
+prompt Creating sequence APRVOPN_ID_SEQ
+prompt ================================
+prompt
+create sequence ZS18.APRVOPN_ID_SEQ
+minvalue 1
+maxvalue 9999999999999999999999999999
+start with 4
 increment by 1
 nocache;
 
@@ -5121,6 +5464,17 @@ increment by 1
 nocache;
 
 prompt
+prompt Creating sequence INSPCT_RECORD_ID_SEQ
+prompt ======================================
+prompt
+create sequence ZS18.INSPCT_RECORD_ID_SEQ
+minvalue 1
+maxvalue 9999999999999999999999999999
+start with 76
+increment by 1
+nocache;
+
+prompt
 prompt Creating sequence LBDETAIL_ID_SEQ
 prompt =================================
 prompt
@@ -5138,7 +5492,7 @@ prompt
 create sequence ZS18.MONTHPLAN_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 12
+start with 14
 increment by 1
 nocache;
 
@@ -5176,6 +5530,28 @@ increment by 1
 nocache;
 
 prompt
+prompt Creating sequence QLTSTDD_ID_SEQ
+prompt ================================
+prompt
+create sequence ZS18.QLTSTDD_ID_SEQ
+minvalue 1
+maxvalue 9999999999999999999999999999
+start with 10
+increment by 1
+nocache;
+
+prompt
+prompt Creating sequence QLT_DATA_ID_SEQ
+prompt =================================
+prompt
+create sequence ZS18.QLT_DATA_ID_SEQ
+minvalue 1
+maxvalue 9999999999999999999999999999
+start with 5
+increment by 1
+nocache;
+
+prompt
 prompt Creating sequence ROLE_ID_SEQ
 prompt =============================
 prompt
@@ -5204,7 +5580,7 @@ prompt
 create sequence ZS18.SCHEDULE_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 179
+start with 359
 increment by 1
 nocache;
 
@@ -5215,7 +5591,7 @@ prompt
 create sequence ZS18.SEASONDT_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 11
+start with 14
 increment by 1
 nocache;
 
@@ -5226,7 +5602,7 @@ prompt
 create sequence ZS18.SEASONPLAN_ID_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 4
+start with 5
 increment by 1
 nocache;
 
@@ -5264,6 +5640,76 @@ increment by 1
 nocache;
 
 prompt
+prompt Creating view HV_PHYCHEM_DAILY_REPORT
+prompt =====================================
+prompt
+create or replace view zs18.hv_phychem_daily_report as
+select p.prod_name as 产品,t.team_name as 班组,q.shift_name as 班时,g1.record_time as 检测时间,g1.霉变异味,g2.连片粘连率,g3.白片率,g4.水分,g5.厚度,g6.填充值,g7.水溶性糖,g8.总植物碱,g9.总氮,100-nvl(g1.score,0)-nvl(g2.score,0)-nvl(g3.score,0)-nvl(g4.score,0)-nvl(g5.score,0)-nvl(g6.score,0)-nvl(g7.score,0)-nvl(g8.score,0)-nvl(g9.score,0) as 得分 from (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 霉变异味  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100001001')g1 left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 连片粘连率  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100001002')g2 on g1.prod_code = g2.prod_code  and g1.team_id = g2.team_id  and g1.shift_id = g2.shift_id  and g1.record_time = g2.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 白片率  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100001003')g3 on g1.prod_code = g3.prod_code  and g1.team_id = g3.team_id  and g1.shift_id = g3.shift_id  and g1.record_time = g3.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 水分  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100002001')g4 on g1.prod_code = g4.prod_code  and g1.team_id = g4.team_id  and g1.shift_id = g4.shift_id  and g1.record_time = g4.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 厚度  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100002002')g5 on g1.prod_code = g5.prod_code  and g1.team_id = g5.team_id  and g1.shift_id = g5.shift_id  and g1.record_time = g5.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 填充值  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100002003')g6 on g1.prod_code = g6.prod_code  and g1.team_id = g6.team_id  and g1.shift_id = g6.shift_id  and g1.record_time = g6.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 水溶性糖  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100003001')g7 on g1.prod_code = g7.prod_code  and g1.team_id = g7.team_id  and g1.shift_id = g7.shift_id  and g1.record_time = g7.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 总植物碱  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100003002')g8 on g1.prod_code = g8.prod_code  and g1.team_id = g8.team_id  and g1.shift_id = g8.shift_id  and g1.record_time = g8.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 总氮  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100003003')g9 on g1.prod_code = g9.prod_code  and g1.team_id = g9.team_id  and g1.shift_id = g9.shift_id  and g1.record_time = g9.record_time  left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team_id left join ht_sys_shift q on q.shift_code = g1.shift_id order by t.team_name;
+
+prompt
+prompt Creating view HV_PROCESS_DAILY_REPORT
+prompt =====================================
+prompt
+create or replace view zs18.hv_process_daily_report as
+select p.prod_name as 产品,t.team_name as 班组,q.shift_name as 班时,g1.record_time as 检测时间,g1.料液浓度,g2.inspect2,100-nvl(g1.score,0)-nvl(g2.score,0) as 得分 from (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 料液浓度  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703070301001')g1 left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as inspect2  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703070302001')g2 on g1.prod_code = g2.prod_code  and g1.team_id = g2.team_id  and g1.shift_id = g2.shift_id  and g1.record_time = g2.record_time  left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team_id left join ht_sys_shift q on q.shift_code = g1.shift_id order by t.team_name;
+
+prompt
+prompt Creating view HV_QLT_DATA_EVENT
+prompt ===============================
+prompt
+create or replace view zs18.hv_qlt_data_event as
+select t.avg as value,r.lower||'~'||r.upper as range,'0' as type, t.prod_code,t.plan_id, t.para_code,t.b_time,t.e_time,t.team,r.minus_score,t.id from ht_qlt_data_record t
+left join ht_qlt_stdd_code_detail r on r.qlt_type = '0' and r.para_code = t.para_code where NOT(t.avg >r.lower and t.avg <= r.upper)
+union select t.rate as value,r.lower||'~'||r.upper as range,'1' as type, t.prod_code, t.plan_id, t.para_code,t.b_time,t.e_time,t.team,r.minus_score,t.id from ht_qlt_data_record t
+left join ht_qlt_stdd_code_detail r on r.qlt_type = '1' and r.para_code = t.para_code where NOT(t.avg >r.lower and t.avg <= r.upper)
+union select t.stddev as value,r.lower||'~'||r.upper as range,'2' as type, t.prod_code, t.plan_id, t.para_code,t.b_time,t.e_time,t.team,r.minus_score,t.id from ht_qlt_data_record t
+left join ht_qlt_stdd_code_detail r on r.qlt_type = '2' and r.para_code = t.para_code where NOT(t.avg >r.lower and t.avg <= r.upper)
+union select t.absdev as value,r.lower||'~'||r.upper as range,'3' as type, t.prod_code, t.plan_id, t.para_code,t.b_time,t.e_time,t.team,r.minus_score,t.id from ht_qlt_data_record t
+left join ht_qlt_stdd_code_detail r on r.qlt_type = '3' and r.para_code = t.para_code where NOT(t.avg >r.lower and t.avg <= r.upper)
+union select t.cpk as value,r.lower||'~'||r.upper as range,'4' as type,  t.prod_code,t.plan_id, t.para_code,t.b_time,t.e_time,t.team,r.minus_score,t.id from ht_qlt_data_record t
+left join ht_qlt_stdd_code_detail r on r.qlt_type = '4' and r.para_code = t.para_code where NOT(t.avg >r.lower and t.avg <= r.upper)
+union select distinct t.gap_time as value,'' as range,'5' as type,  t.prod_code,t.plan_id, substr(t.para_code,1,5) as para_code,t.b_time,t.e_time,t.team,2 as minus_score,t.id from ht_qlt_data_record t
+ where t.is_gap = '1';
+
+prompt
+prompt Creating view HV_QLT_ONLINE_SCORE
+prompt =================================
+prompt
+create or replace view zs18.hv_qlt_online_score as
+select g.prodmonth, g.prod_code ,g.team,substr(g.para_code,1,5) as section,g.para_code, m.weight,g.avg ,g.quarate ,g.stddev ,g.absdev ,g.range,g.cpk as cpk,g.b_time ,g.e_time  from
+(select substr(t.b_time,1,7) as prodmonth, t.prod_code,t.para_code,t.team,round(sum(t.avg*t.count)/sum(t.count),2) as avg,sum(t.count) as count,min(t.min) as min,max(t.max) as max,round(sum(t.quanum)/sum(t.count),2) as quarate,round(sum(t.upcount)/sum(t.count),2) as uprate,round(sum(t.downcount)/sum(t.count),2) as downrate,round(sqrt(sum(t.stddev*t.stddev*(t.count-1))/(sum(t.count)-1)),2) as stddev,round(sum(t.absdev *(t.count-1))/(sum(t.count)-1),2) as absdev,round((max(t.max) - min(t.min)),2) as range ,null as cpk,min(b_time) as b_time,max(e_time) as e_time  from ht_qlt_data_record t  group by (t.plan_id,t.para_code,t.prod_code,t.team ,substr(t.b_time,1,7))）g
+
+ left join ht_qlt_collection m on m.para_code = g.para_code  order by g.count;
+
+prompt
+prompt Creating view HV_SENSOR_DAILY_REPORT
+prompt ====================================
+prompt
+create or replace view zs18.hv_sensor_daily_report as
+select p.prod_name as 产品,t.team_name as 班组,q.shift_name as 班时,g1.record_time as 检测时间,g1.香气,g2.烟味,g3.杂气,g4.灼烧感,g5.干燥感,g6.残留,100-nvl(g1.score,0)-nvl(g2.score,0)-nvl(g3.score,0)-nvl(g4.score,0)-nvl(g5.score,0)-nvl(g6.score,0) as 得分 from (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 香气  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100004001')g1 left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 烟味  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100004002')g2 on g1.prod_code = g2.prod_code  and g1.team_id = g2.team_id  and g1.shift_id = g2.shift_id  and g1.record_time = g2.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 杂气  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100004003')g3 on g1.prod_code = g3.prod_code  and g1.team_id = g3.team_id  and g1.shift_id = g3.shift_id  and g1.record_time = g3.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 灼烧感  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100004004')g4 on g1.prod_code = g4.prod_code  and g1.team_id = g4.team_id  and g1.shift_id = g4.shift_id  and g1.record_time = g4.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 干燥感  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100004005')g5 on g1.prod_code = g5.prod_code  and g1.team_id = g5.team_id  and g1.shift_id = g5.shift_id  and g1.record_time = g5.record_time   left join (select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as 残留  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '703100004006')g6 on g1.prod_code = g6.prod_code  and g1.team_id = g6.team_id  and g1.shift_id = g6.shift_id  and g1.record_time = g6.record_time  left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team_id left join ht_sys_shift q on q.shift_code = g1.shift_id order by t.team_name;
+
+prompt
+prompt Creating procedure ENABLE_TRIGGER
+prompt =================================
+prompt
+CREATE OR REPLACE PROCEDURE ZS18.ENABLE_TRIGGER as
+  v_sql varchar2(100);
+  v_ref sys_refcursor;
+begin
+  for v_ref in (select object_name
+                  from user_objects
+                 where object_type = 'TRIGGER') loop
+    v_sql := 'alter trigger ' || v_ref.object_name || 'enable';
+    execute immediate v_sql;
+    dbms_output.put_line(v_sql);
+  end loop;
+exception
+  when others then
+    dbms_output.put_line(SQLCODE || '---' || SQLERRM);
+end ENABLE_TRIGGER;
+/
+
+prompt
 prompt Creating trigger APRVFLOW_INS_TRG
 prompt =================================
 prompt
@@ -5275,13 +5721,13 @@ END;
 /
 
 prompt
-prompt Creating trigger APRVOPINION_INS_TRG
-prompt ====================================
+prompt Creating trigger APRVOPN_INS_TRG
+prompt ================================
 prompt
-CREATE OR REPLACE TRIGGER ZS18.APRVOPINION_INS_TRG BEFORE INSERT ON HT_PUB_APRV_OPINION FOR EACH ROW
+CREATE OR REPLACE TRIGGER ZS18.APRVOPN_INS_TRG BEFORE INSERT ON HT_PUB_APRV_OPINION FOR EACH ROW
 when (NEW.ID IS NULL)
 BEGIN
-SELECT APRVOPINION_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+SELECT APRVOPN_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
 /
 
@@ -5315,6 +5761,17 @@ CREATE OR REPLACE TRIGGER ZS18.fault_INS_TRG BEFORE INSERT ON HT_EQ_FAULT_DB FOR
 when (NEW.ID IS NULL)
 BEGIN
 SELECT fault_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+/
+
+prompt
+prompt Creating trigger INSPCT_RECORD_INS_TRG
+prompt ======================================
+prompt
+CREATE OR REPLACE TRIGGER ZS18.INSPCT_RECORD_INS_TRG BEFORE INSERT ON HT_QLT_INSPECT_RECORD FOR EACH ROW
+when (NEW.ID IS NULL)
+BEGIN
+SELECT INSPCT_RECORD_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
 /
 
@@ -5370,6 +5827,28 @@ CREATE OR REPLACE TRIGGER ZS18.PathNode_INS_TRG BEFORE INSERT ON HT_PUB_PATH_NOD
 when (NEW.ID IS NULL)
 BEGIN
 SELECT PathNode_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+/
+
+prompt
+prompt Creating trigger QLTSTDD_INS_TRG
+prompt ================================
+prompt
+CREATE OR REPLACE TRIGGER ZS18.qltstdd_INS_TRG BEFORE INSERT ON HT_QLT_STDD_CODE_DETAIL FOR EACH ROW
+when (NEW.ID IS NULL)
+BEGIN
+SELECT qltstdd_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+/
+
+prompt
+prompt Creating trigger QLT_DATA_INS_TRG
+prompt =================================
+prompt
+CREATE OR REPLACE TRIGGER ZS18.Qlt_data_INS_TRG BEFORE INSERT ON Ht_Qlt_Data_Record FOR EACH ROW
+when (NEW.ID IS NULL)
+BEGIN
+SELECT Qlt_data_ID_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
 /
 

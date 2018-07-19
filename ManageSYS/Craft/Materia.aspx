@@ -21,6 +21,13 @@
     <div class="framelist">
         <div class="listtitle">
             类型查询与维护<span style="position: relative; float: right">
+                    <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
+                        Text="新增" />
+                    &nbsp; &nbsp;
+                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
+                        Text="保存" />
+                    &nbsp; &nbsp;
+                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />      &nbsp; &nbsp;         
                 <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                 <asp:Button ID="btnUpdate" runat="server" OnClick="btnUpdate_Click" CssClass="btnhide" />
                 <asp:HiddenField ID="hdcode" runat="server" />
@@ -69,15 +76,7 @@
                 </Triggers>
             </asp:UpdatePanel>
         </div>
-      <div class="gridtools  auth">               
-                    <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
-                        Text="新增" />
-                    &nbsp; &nbsp;
-                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
-                        Text="保存" />
-                    &nbsp; &nbsp;
-                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />               
-            </div>
+      
         <div class="listtitle" style="margin-top: 10px">
             物料列表</div>
         <div>

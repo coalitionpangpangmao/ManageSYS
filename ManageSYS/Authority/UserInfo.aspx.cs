@@ -13,14 +13,14 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listRole, "select * from ht_svr_sys_role t", "F_ROLE", "F_ID");
             if (Session["User"] != null)
             {
                 SysUser user = (SysUser)Session["User"];
-                txtID.Text = user.Id;
-                txtName.Text = user.Name;
+                txtID.Text = user.id;
+                txtName.Text = user.text;
                  listApt.SelectedValue = user.OwningBusinessUnitId;
                  listRole.SelectedValue = user.UserRoleID; 
                 DataSet dt = opt.CreateDataSetOra("select * from ht_svr_user where ID = '" + txtID.Text + "'");
@@ -56,7 +56,7 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string[] seg = { "ID", "NAME", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "EMAIL", "LEVELGROUPID", "DESCRIPTION", "ROLE" };
         string[] value = { txtID.Text, txtName.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtEmail.Text, listApt.SelectedValue, txtDscp.Text, listRole.SelectedValue };
         if (opt.UpDateData(seg, value, "ht_svr_user", " where ID = '" + txtID.Text + "'") != "Success")

@@ -11,14 +11,14 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
     {
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(list2Section, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
         }
     }
     protected void bindData(string processcode)
     {
         string query = "select * from HT_PUB_INSPECT_PROCESS where  PROCESS_CODE = '" + processcode + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -33,7 +33,7 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
 
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string str = opt.GetSegValue("select max(Process_code) as code  from ht_pub_inspect_process where substr(process_code,0,5) = '" + list2Section.SelectedValue + "'", "CODE");
         if (str == "")
             str = "0000000";
@@ -43,25 +43,25 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
   
     protected void btnModify_Click(object sender, EventArgs e)
     {
-         DataBaseOperator opt = new DataBaseOperator();
+         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
           DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_INSPECT_PROCESS where PROCESS_CODE = '" + txtCode.Text + "'");
           if (data != null && data.Tables[0].Rows.Count > 0)
           {
               string[] seg = { "PROCESS_NAME", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME" };
-              string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+              string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
               string condition = " where PROCESS_CODE = '" + txtCode.Text + "'";
               opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition);
           }
           else
           {
               string[] seg = { "PROCESS_CODE", "PROCESS_NAME", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME" };
-              string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+              string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
               opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS");
           }
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();       
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();       
        string query = "update ht_pub_inspect_process set IS_DEL = '1' where PROCESS_CODE = '" + txtCode.Text + "'";
         opt.UpDateOra(query);
         query = "update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,7) =  '" + txtCode.Text + "'";

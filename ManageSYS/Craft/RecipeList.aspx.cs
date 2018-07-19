@@ -42,7 +42,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
     protected void bindGrid()
     {
         string query = "select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效,(case FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_qa_mater_formula where prod_code ='" + hdcode.Value + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效,(case FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_qa_aux_formula where prod_code = '" + hdcode.Value + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效,(case FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_qa_coat_formula  where prod_code = '" + hdcode.Value + "'  and is_del ='0'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data =  opt.CreateDataSetOra(query);
         GridView1.DataSource =data;
         GridView1.DataBind();        
@@ -78,7 +78,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -100,7 +100,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
             /*启动审批TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id,URL 单独登录url*/
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "配方:" + GridView1.Rows[index].Cells[4].Text, mode, id, Page.Request.UserHostName.ToString() };
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '" + mode + "'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '" + mode + "'", "APRV_TABSEG") + " = '0'  where FORMULA_CODE = '" + id + "'") == "Success" ? "提交审批成功," : "提交审批失败，";

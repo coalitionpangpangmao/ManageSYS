@@ -26,7 +26,7 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
         {
             string query = "select t.mt_name as 润滑计划,t1.f_name as 部门,(case t.flow_status when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态,(case t.TASK_STATUS when '0' then '未执行' when '1' then '执行中' when '2' then '己完成' else '己过期' end) as 执行状态,t.remark as 备注,t.pz_code from ht_eq_lb_plan t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'";
 
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             GridView1.DataSource = opt.CreateDataSetOra(query); ;
             GridView1.DataBind();
         }
@@ -55,7 +55,7 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
         {
             string query = "select section as  工段,equipment_id as  设备名称,position as  润滑部位,pointnum as   润滑点数,luboil as   润滑油脂,periodic as   润滑周期 , style as 润滑方式 ,amount as  润滑量 ,EXP_FINISH_TIME as 过期时间, STATUS as 状态,ID from ht_eq_lb_plan_detail  where main_id = '" + code + "' and is_del = '0' and Status  >= '1'";
 
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             GridView2.DataSource = data;
             GridView2.DataBind();
@@ -88,12 +88,12 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
     }//绑定GridView2数据源
     protected DataSet eqbind()
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'");
     }
     protected DataSet sectionbind()
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1'");
     }
    
@@ -109,7 +109,7 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
             int rowIndex = row.RowIndex;
             string id = GridView2.DataKeys[rowIndex].Value.ToString();
 
-           DataBaseOperator opt =new DataBaseOperator();            
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();            
            
             string[] seg = { "section", "equipment_id", "position","pointnum","luboil","periodic","style","amount", "CREATE_TIME", "MAIN_ID","STATUS" };
             string[] value = { ((DropDownList)row.FindControl("listGridsct")).SelectedValue, ((DropDownList)row.FindControl("listGridEq")).SelectedValue, ((TextBox)row.FindControl("txtGridpos")).Text,((TextBox)row.FindControl("txtGridnum")).Text, ((TextBox)row.FindControl("txtGridoil")).Text, ((TextBox)row.FindControl("txtGriPric")).Text, ((TextBox)row.FindControl("txtGridStyle")).Text, ((TextBox)row.FindControl("txtGridamount")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hdcode.Value,"2" };

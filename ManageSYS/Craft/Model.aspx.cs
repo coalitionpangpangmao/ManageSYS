@@ -22,7 +22,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
     public string  InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -46,7 +46,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
 
     public string InitTreeEquip(string section_code)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select IDKEY,EQ_NAME from ht_eq_eqp_tbl where section_code  = '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' order by IDKEY");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -68,7 +68,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
     }
     public string InitTreePara(string IDkey)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select Para_code,para_name from ht_pub_tech_para where equip_code = '" + IDkey + "' and IS_VALID = '1' and IS_DEL = '0'  order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -94,7 +94,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
     }
     //public string InitTreePara( string process_code)
     //{
-    //   DataBaseOperator opt =new DataBaseOperator();
+    //   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
     //    DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,7) =  '" + process_code + "' and IS_VALID = '1' and IS_DEL = '0'  order by para_code");
     //    if (data != null && data.Tables[0].Rows.Count > 0)
     //    {
@@ -116,7 +116,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
 
     //public string InitTreeProcess(string section_code)
     //{
-    //    DataBaseOperator opt = new DataBaseOperator();
+    //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
     //    DataSet data = opt.CreateDataSetOra("select h.process_code,h.process_name from  ht_pub_inspect_process h where substr(h.process_code,1,5) = '" + section_code + "' and h.IS_VALID = '1' and h.IS_DEL = '0' order by h.process_code");
     //    if (data != null && data.Tables[0].Rows.Count > 0)
     //    {

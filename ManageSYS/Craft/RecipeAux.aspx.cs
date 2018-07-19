@@ -13,7 +13,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listPro, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
             opt.bindDropDownList(listStatus, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
@@ -23,7 +23,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     protected void bindData()
     {
         string query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_aux_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -45,7 +45,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     protected void bindGrid()
     {
         string query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code  where r.is_del = '0'  and FORMULA_CODE = '" + hdcode.Value + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -67,7 +67,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
 
     protected DataSet gridTypebind()
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where is_valid = '1'  and is_del = '0' and TYPE_FLAG = 'FL'");
     }
     protected void listGirdName_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,7 +80,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         string query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code  where r.is_del = '0'  and FORMULA_CODE = '" + hdcode.Value + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
         if (data == null)
@@ -135,7 +135,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     {
         try
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string query = "select * from ht_qa_aux_formula where FORMULA_CODE = '" + txtCode.Text + "'";
             DataSet data = opt.CreateDataSetOra(query);
             hdcode.Value = txtCode.Text;
@@ -173,7 +173,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             string query = "update ht_qa_aux_formula_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
             log_message += ",物料编号：" + txtCode.Text;
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -208,7 +208,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
                 {
                     string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text;
                     string query = "update ht_qa_aux_formula_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
-                    DataBaseOperator opt = new DataBaseOperator();
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? " 物料删除成功" : "物料删除失败";
                     log_message += ",物料编号:" + txtCode.Text;
                     opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -230,7 +230,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             if (Rowindex >= 0)
             {
-                DataBaseOperator opt = new DataBaseOperator();
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 opt.UpDateOra("delete from ht_qa_aux_formula_detail  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'");
                 string[] seg = { "FORMULA_CODE", "MATER_CODE", "aux_scale", "aux_percent", "mater_type" };
                 string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtNameM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtScale")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtPercent")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listGridType")).SelectedValue };
@@ -252,13 +252,13 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     {
         try
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string str = opt.GetSegValue("select Max(Formula_code) as code from ht_qa_aux_formula ", "CODE");
             if (str == "")
                 str = "00000000";
             txtCode.Text = "70307" + (Convert.ToInt16(str.Substring(5)) + 1).ToString().PadLeft(3, '0');
             MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
-            listCreator.SelectedValue = user.Id;
+            listCreator.SelectedValue = user.id;
             txtCrtDate.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
             listCrtApt.SelectedValue = user.OwningBusinessUnitId;
 

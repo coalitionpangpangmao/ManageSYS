@@ -52,7 +52,7 @@
             <div>
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
+                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="12">
 
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />

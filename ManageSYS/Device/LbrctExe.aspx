@@ -43,6 +43,7 @@
     </script>
 </head>
 <body>
+      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <form id="form1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
@@ -69,8 +70,8 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:CheckBox ID="ckDone" runat="server" Text="未执行" />
                             </td>
@@ -179,8 +180,7 @@
                                 </asp:TemplateField>  
                                 <asp:TemplateField HeaderText="过期时间">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="过期时间" DataTextField="过期时间"
-                                            CssClass="tbinput"></asp:TextBox>
+                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="过期时间" DataTextField="过期时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"   CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>                            
                                     <asp:TemplateField HeaderText="状态">

@@ -35,7 +35,7 @@ namespace MSYS.Web
 
              try
              {
-                 DbOperator opt = new DbOperator();
+                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                  foreach (XmlNode xxNode in xxList)
                  {
                      XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合

@@ -25,7 +25,7 @@ public partial class Quality_Statistic : MSYS.Web.BasePage
 
     public string InitTree()
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ";       
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -49,7 +49,7 @@ public partial class Quality_Statistic : MSYS.Web.BasePage
 
     public string InitTreePara(string section_code)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -70,7 +70,7 @@ public partial class Quality_Statistic : MSYS.Web.BasePage
 
     protected void btnPara_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select s.para_name as 统计项,r.b_time as 开始时间,r.e_time as 结束时间,r.shift as 班组,r.plan_id as 计划号,r.avg as 均值,r.min as 最小值,r.max as 最大值,r.range as 跨距,r.count as 总点数,r.quarate as 合格率,r.uprate as 超上限率,r.downrate as 超下限率,r.stddev as 标准差,r.absdev as 绝对差,r.var as 方差,r.cpk as CPK,r.is_gap as 断流,r.gap_time as  断流时间  from HT_QLT_DATA_RECORD r left join ht_pub_tech_para s on s.para_code = r.para_code where r.b_time > '" + txtBtime.Text + "' and r.e_time < '" + txtEtime.Text + "'";
         if (hdPrcd.Value.Length == 10)
             query += " and r.para_code = '" + hdPrcd.Value + "'";

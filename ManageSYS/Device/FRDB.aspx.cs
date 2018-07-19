@@ -32,7 +32,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
             query += " and FAULT_TYPE5 = '" + listType5.SelectedValue + "'";
         if (listType6.SelectedValue != "")
             query += " and FAULT_TYPE6 = '" + listType6.SelectedValue + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -81,7 +81,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
                 {
                     string id = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_FAULT_DB set IS_DEL = '1'  where ID = '" + id + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -116,7 +116,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string id = GridView1.DataKeys[Rowindex].Value.ToString();
             string query = "update HT_EQ_FAULT_DB set IS_DEL = '1'  where ID = '" + id + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.UpDateOra(query);
             bindGrid();
         }
@@ -132,7 +132,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
         int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
         hdcode.Value = GridView1.DataKeys[Rowindex].Value.ToString();
         string query = "select * from HT_EQ_FAULT_DB where id = '" + hdcode.Value.ToString() + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -159,7 +159,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
     protected void btnSave_Click(object sender, EventArgs e)
     {
         try{
-               DataBaseOperator opt =new DataBaseOperator();
+               MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if(hdcode.Value != "")
                 opt.UpDateOra("delete from HT_EQ_FAULT_DB  where id = '" + hdcode.Value.ToString() + "'");
              

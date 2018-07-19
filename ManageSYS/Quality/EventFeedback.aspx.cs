@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Quality_EventDeal : MSYS.Web.BasePage
+public partial class Quality_EventFeedback : MSYS.Web.BasePage
 {
 
     protected void Page_Load(object sender, EventArgs e)
@@ -30,22 +30,22 @@ public partial class Quality_EventDeal : MSYS.Web.BasePage
     protected void bindgrid1()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.para_name,s.prod_name,k.name,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,r.id ,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type k on k.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "' and j.status = '2'";
+        string query = "select distinct t.para_name,s.prod_name,k.name,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,r.id ,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type k on k.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "' and j.status = '4'";
 
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
-
+      
     }
 
     protected void bindgrid2()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.ID,'成品检测'  as inspect_type ,r.inspect_code, h.name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status  ,s.minus_score  from ht_qlt_inspect_record t left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join  ht_qlt_inspect_proj r  on t.inspect_code = r.inspect_code left join ht_inner_inspect_group h on h.id = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '1' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'  union select t.ID, '过程检验'  as inspect_type,r.inspect_code,h.section_name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status ,s.minus_score  from ht_qlt_inspect_record t  left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join ht_qlt_inspect_proj r  on r.inspect_code = t.inspect_code left join ht_pub_tech_section h on h.section_code = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '0' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' and j.status = '2'  order by inspect_type,insgroup ";
+        string query = "select t.ID,'成品检测'  as inspect_type ,r.inspect_code, h.name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status  ,s.minus_score  from ht_qlt_inspect_record t left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join  ht_qlt_inspect_proj r  on t.inspect_code = r.inspect_code left join ht_inner_inspect_group h on h.id = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '1' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'  union select t.ID, '过程检验'  as inspect_type,r.inspect_code,h.section_name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status ,s.minus_score  from ht_qlt_inspect_record t  left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join ht_qlt_inspect_proj r  on r.inspect_code = t.inspect_code left join ht_pub_tech_section h on h.section_code = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '0' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' and j.status = '4'  order by inspect_type,insgroup ";
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
-
+        
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
@@ -59,7 +59,7 @@ public partial class Quality_EventDeal : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         hdType.Value = "2";
         txtEventID.Text = GridView2.DataKeys[row.RowIndex].Values[0].ToString();
-        listStyle.SelectedValue = GridView2.DataKeys[row.RowIndex].Values[1].ToString();
+       listStyle.SelectedValue= GridView2.DataKeys[row.RowIndex].Values[1].ToString();
         if (((Button)row.FindControl("btngrid2Deal")).Text == "查看")
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -67,17 +67,15 @@ public partial class Quality_EventDeal : MSYS.Web.BasePage
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 DataRow drow = data.Tables[0].Rows[0];
-                txtScean.Text = drow["SCENE"].ToString();
-                txtReason.Text = drow["REASON"].ToString();
-                txtDeal.Text = drow["DEAL"].ToString();
-                txtPlus.Text = drow["REMARK"].ToString();
+                txtScean.Text = drow["FEEDBACK"].ToString();
+
+                txtPlus.Text = drow["REMARKPLUS"].ToString();
             }
         }
         else
         {
             txtScean.Text = "";
-            txtReason.Text = "";
-            txtDeal.Text = "";
+           
             txtPlus.Text = "";
         }
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
@@ -98,17 +96,15 @@ public partial class Quality_EventDeal : MSYS.Web.BasePage
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 DataRow drow = data.Tables[0].Rows[0];
-                txtScean.Text = drow["SCENE"].ToString();
-                txtReason.Text = drow["REASON"].ToString();
-                txtDeal.Text = drow["DEAL"].ToString();
-                txtPlus.Text = drow["REMARK"].ToString();
+                txtScean.Text = drow["FEEDBACK"].ToString();
+
+                txtPlus.Text = drow["REMARKPLUS"].ToString();
             }
         }
         else
         {
             txtScean.Text = "";
-            txtReason.Text = "";
-            txtDeal.Text = "";
+         
             txtPlus.Text = "";
         }
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
@@ -120,20 +116,20 @@ public partial class Quality_EventDeal : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (hdType.Value == "1")
         {
-            string[] seg = { "RECORD_ID", "SORT", "STATUS", "REASON", "SCENE", "DEAL", "REMARK" };
-            string[] value = { txtEventID.Text, listStyle.SelectedValue, "3", txtReason.Text, txtScean.Text, txtDeal.Text, txtPlus.Text };
+            string[] seg = { "RECORD_ID", "SORT", "STATUS", "FEEDBACK", "REMARKPLUS" };
+            string[] value = { txtEventID.Text, listStyle.SelectedValue, "5", txtScean.Text,  txtPlus.Text };
             opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
             bindgrid1();
         }
         else
         {
-            string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "REASON", "SCENE", "DEAL", "REMARK" };
-            string[] value = { txtEventID.Text, listStyle.SelectedValue, "3", txtReason.Text, txtScean.Text, txtDeal.Text, txtPlus.Text };
+            string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "FEEDBACK", "REMARKPLUS" };
+            string[] value = { txtEventID.Text, listStyle.SelectedValue, "5",txtScean.Text,  txtPlus.Text };
             opt.MergeInto(seg, value, 2, "HT_QLT_INSPECT_EVENT");
             bindgrid2();
         }
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
     }
-
+ 
 
 }

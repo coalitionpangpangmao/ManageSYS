@@ -8,13 +8,7 @@
     <title>人员管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript">
-    $().ready(function () {  $("#gridPanel").scrollTop = $("#hdScrollY").val(); });
-     function saveScroll() {       
-         var y = $("#gridPanel").scrollTop();
-         $("#hdScrollY").val(y);
-     }
-     </script>
+    
 </head>
 <body>
     <form id="Form1" runat="server">
@@ -38,10 +32,10 @@
                      
         </ul>
      </div>
-        <div id = "gridPanel"  onscroll = "saveScroll()" style="height: 350px; overflow: scroll" >
-            <asp:UpdatePanel ID="updtpanel2" runat="server">
+        <div id = "gridPanel" >
+            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
-                    <asp:GridView ID="GridView1" runat="server" CssClass="grid" DataKeyNames = "人员ID" >
+                    <asp:GridView ID="GridView1" runat="server" CssClass="grid" DataKeyNames = "人员ID" AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="12">
                     <Columns>
                     <asp:TemplateField>
                     <HeaderTemplate>
@@ -72,7 +66,7 @@
                     <span>员工信息</span><a  onclick = "$('.shade').fadeOut(100);"></a>
                     </div>
                 <div class="gridinfo">
-                    <asp:UpdatePanel ID="updtpanel1" runat="server">
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
                             <table class="tablelist">
                                 <tbody>
@@ -196,8 +190,7 @@
                                 
                                 </tbody>
                             </table>
-                            <div class = "shadebtn" align="center">
-                               <asp:HiddenField ID="hdScrollY" runat="server" />
+                            <div class = "shadebtn" align="center">                              
                                <asp:Button ID="btnModify" class="sure" runat="server" Text="保存" OnClick="btnModify_Click" />
                 <input name="" type="button" class="cancel" value="关闭" onclick = "$('.shade').fadeOut(100);"/></div>
                         </ContentTemplate>

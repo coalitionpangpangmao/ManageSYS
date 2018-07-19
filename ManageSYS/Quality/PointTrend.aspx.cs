@@ -17,7 +17,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
             tvHtml = InitTree("");
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             txtBtime.Text = System.DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss");
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listPlanno, "select * from ht_prod_report t where  STARTTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or ENDTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (STRATTIME < '" + txtBtime.Text + "' and  ENDTIME > '" + txtEtime.Text + "'" , "PLANNO", "PLANNO");
         }
     }
@@ -26,7 +26,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
 
     public string InitTree(string planno)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query ="select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ";
         if (planno != "")
             query = "select  g.section_code,g.section_name from ht_prod_report g1 left join  ht_pub_tech_section g on g1.section_code = g.section_code and  g.IS_VALID = '1' and g.IS_DEL = '0' where g1.planno ='" + planno + "' order by g.section_code ";
@@ -52,7 +52,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
 
     public string InitTreePara(string section_code)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -80,7 +80,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
         GridView1.DataBind();
         
         /////////////////////////////////////////////////////////////////
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra("select g1.para_code,g1.value,g1.upper_limit,g1.lower_limit from ht_prod_month_plan_detail g left join ht_pub_prod_design g2 on g2.prod_code = g.prod_code left join ht_tech_stdd_code_detail g1 on g1.tech_code = g2.tech_stdd_code where g1.para_code = '" + hdPrcd.Value + "' and g.plan_no = '" + listPlanno.SelectedValue + "'");
         if (set != null && set.Tables[0].Rows.Count > 0)
         {
@@ -127,12 +127,12 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
 
     protected void txtBtime_TextChanged(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listPlanno, "select * from ht_prod_report t where  STARTTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or ENDTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (STRATTIME < '" + txtBtime.Text + "' and  ENDTIME > '" + txtEtime.Text + "'", "PLANNO", "PLANNO");
     }
     protected void txtEtime_TextChanged(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listPlanno, "select * from ht_prod_report t where  STARTTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or ENDTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (STRATTIME < '" + txtBtime.Text + "' and  ENDTIME > '" + txtEtime.Text + "'", "PLANNO", "PLANNO");
     }
     protected void listPlanno_SelectedIndexChanged(object sender, EventArgs e)

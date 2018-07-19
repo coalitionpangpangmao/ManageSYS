@@ -20,19 +20,19 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
     protected void initView()
     {
        MSYS.Data.SysUser user =  (MSYS.Data.SysUser)Session["User"];
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listProd, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
         opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team where is_del = '0' order by team_code", "team_name", "team_code");
         opt.bindDropDownList(listShift, "select shift_code,shift_name from ht_sys_shift where is_del = '0'", "shift_name", "shift_code");
         listTeam.SelectedValue = opt.GetSegValue(" select team_code from ht_prod_schedule where date_begin < '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and date_end > '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "team_code");
         listShift.SelectedValue = opt.GetSegValue(" select Shift_code from ht_prod_schedule where date_begin < '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and date_end > '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "Shift_code");
         listEditor.Items.Clear();
-        ListItem item = new ListItem(user.Name, user.Id);
+        ListItem item = new ListItem(user.text, user.id);
         listEditor.Items.Add(item);
-        listEditor.SelectedValue = user.Id;
+        listEditor.SelectedValue = user.id;
         txtProdTime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
 
-        string query = "select r.inspect_code,s.section_name ,r.inspect_name,0 as value,t.lower_value,t.upper_value,r.unit,'' as status,t.minus_score from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code where r.inspect_type = '0' ";
+        string query = "select r.inspect_code,s.section_name ,r.inspect_name,0 as value,t.lower_value,t.upper_value,r.unit,'' as status,t.minus_score from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code where r.inspect_type = '0' order by s.section_name";
        
         DataSet data = opt.CreateDataSetOra(query);
         bindGrid1(data);
@@ -70,7 +70,7 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
     {
         string query = "select r.inspect_code,h.section_name,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value,s.upper_value,case when t.inspect_value is null then '' when t.inspect_value > s.lower_value and t.inspect_value <s.upper_value then '合格' else '超限' end as status,r.unit,s.minus_score  from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_qlt_inspect_record t on t.inspect_code = r.inspect_code left join ht_pub_tech_section h on h.section_code = r.inspect_group where r.inspect_type = '0' and t.prod_code = '" + listProd.SelectedValue + "' and t.team_id = '" + listTeam.SelectedValue + "' and t.record_time = '" + txtProdTime.Text + "'  union select r.inspect_code,s.section_name ,r.inspect_name,0 as value,t.lower_value,t.upper_value,r.unit,'' as status,t.minus_score from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code where r.inspect_type = '0' and r.inspect_code in (select inspect_code from ht_qlt_inspect_proj where inspect_type = '0' minus select inspect_code from ht_qlt_inspect_record where Prod_code = '" + listProd.SelectedValue + "' and team_id = '" + listTeam.SelectedValue + "' and record_time = '" + txtProdTime.Text + "')";
        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if(data != null && data.Tables[0].Rows.Count >0)
         bindGrid1(data);      
@@ -84,7 +84,7 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
             string[] seg = { "INSPECT_CODE", "PROD_CODE", "TEAM_ID", "RECORD_TIME", "SHIFT_ID", "INSPECT_VALUE", "CREAT_ID", "CREATE_TIME" };
             string[] value = { GridView1.DataKeys[row.RowIndex].Value.ToString(), listProd.SelectedValue, listTeam.SelectedValue, txtProdTime.Text, listShift.SelectedValue, ((TextBox)row.FindControl("txtPara")).Text, listEditor.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
 
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.MergeInto(seg, value, 4, "HT_QLT_INSPECT_RECORD");
 
         }

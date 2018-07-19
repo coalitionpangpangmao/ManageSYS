@@ -31,7 +31,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
         string query = "select g1.tb_zt as 业务名,g1.tbr_name as 申请人,g1.tb_bm_name as 申请部门 ,g1.state as 主业务审批状态,g2.STATUS as 当前流程状态,g2.gongwen_id,g2.id ,g1.BUSIN_ID from HT_PUB_APRV_FLOWINFO g1 left join ht_pub_aprv_opinion g2 on g1.id = g2.gongwen_id    where g1.TB_DATE between '" + txtStarttime.Text + "' and '" + txtEndtime.Text + "' and ISENABLE = '1'";
         if (ckDone.Checked)
             query += " and g1.state = '0'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        // query += " and  g2.rolename = '" + opt.GetSegValue("select * from HT_SVR_USER where LOGINNAME = '" + "cookieName" + "'", "ROLE") + "'";
         //该处思路是找到当前登陆用户的角色，在列表中显示当前角色应审批的流程部分，还有按流程顺序，前面未完的部分不应出现在列表中
         DataSet data = opt.CreateDataSetOra(query);  
@@ -103,7 +103,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
     {
         if (GridView1.Rows.Count > 0)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             for (int i = 0; i < GridView1.Rows.Count; i++)
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("ckBox")).Checked)
@@ -126,7 +126,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
         string ID = GridView1.DataKeys[rowIndex].Values[2].ToString();//审批业务ID
         string gong_ID = GridView1.DataKeys[rowIndex].Values[1].ToString();//主审批流程ID
         hideAprvid.Value = GridView1.DataKeys[rowIndex].Values[0].ToString();//子审批流程ID        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string strsql = opt.GetSegValue("select s.plsql from ht_pub_aprv_flowinfo r left join ht_pub_aprv_type s on s.pz_type = r.modulename where r.id = '" + gong_ID + "'", "PLSQL");
         strsql = strsql.Replace("@BUZ_ID", ID);
         GridView2.DataSource = opt.CreateDataSetOra(strsql);
@@ -141,7 +141,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Values[1].ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion where gongwen_ID = '" + ID + "' order by pos";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -160,7 +160,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
     protected string initAprvtalbe(string id)
     {
         string query = "select s.tb_zt, s.tbr_name,s.tb_date,s.tb_bm_name,s.remark,r.rolename, r.pos,r.username,r.comments,r.opiniontime, r.status,r.workitemid from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on s.id = r.gongwen_id where r.gongwen_id = '" + id + "' order by pos";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
 
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -198,7 +198,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
      protected void btnSure_Click(object sender, EventArgs e)
     {    
         
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          string status;
          if(rdAprv1.Checked)
              status = "2";

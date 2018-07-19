@@ -17,7 +17,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
         {
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             txtBtime.Text = System.DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss");
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listpara, "select para_code,para_name from ht_pub_tech_para where para_Type like '__0_%'", "para_name", "Para_CODE");
             tvHtml = InitTree();
         }
@@ -26,7 +26,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
     public string InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -48,7 +48,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
 
     public string InitTreePara(string section_code)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -69,7 +69,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         listpara.SelectedValue = hidecode.Value;
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string paraname = opt.GetSegValue("select * from ht_pub_tech_para where para_code = '" + hidecode.Value + "'","para_name");
         ListItem item = new ListItem(paraname+ "_" + txtBtime.Text + "~" + txtEtime.Text , hidecode.Value); 
         cklistPara.Items.Add(item);
@@ -78,7 +78,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
     protected void btnDel_Click(object sender, EventArgs e)
     {
         listpara.SelectedValue = hidecode.Value;
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string paraname = opt.GetSegValue("select * from ht_pub_tech_para where para_code = '" + hidecode.Value + "'", "para_name");
         ListItem item = new ListItem(paraname + "_" + txtBtime.Text + "~" + txtEtime.Text, hidecode.Value);
         cklistPara.Items.Remove(item);

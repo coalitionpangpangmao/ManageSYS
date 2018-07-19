@@ -13,8 +13,8 @@ namespace MSYS.Data
         //     初始化用户对象
         public SysUser()
         {
-            this.Id = string.Empty;
-            this.Name = string.Empty;
+            this.id = string.Empty;
+            this.name = string.Empty;
             this.IsAdmin = false;
             this.IsDisabled = true;
             this.LoginName = string.Empty;
@@ -32,7 +32,7 @@ namespace MSYS.Data
         //     用户信息数据行
         public SysUser(DataRow sysUserRow)
         {
-             CreateUserFromRow( sysUserRow);
+            CreateUserFromRow(sysUserRow);
         }
         //
         // 摘要:
@@ -45,13 +45,13 @@ namespace MSYS.Data
         {
             DbOperator opt = new DbOperator();
             DataSet data = opt.CreateDataSetOra("select *   from HT_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id  where r.id = '" + sysUserId + "'");
-            if(data != null && data.Tables[0].Rows.Count >0)
+            if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 CreateUserFromRow(data.Tables[0].Rows[0]);
             }
         }
 
-   
+      
         //
         // 摘要:
         //     获取或设置是否管理员
@@ -87,21 +87,12 @@ namespace MSYS.Data
         //
         // 返回结果:
         //     用户信息
-        public static SysUser GetSysUser(string loginName)
-        {
-            DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select *   from HT_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id where r.LOGINNAME = '" + loginName + "'");
-            if ((data != null) && (data.Tables[0].Rows.Count > 0))
-            {
-                return new SysUser(data.Tables[0].Rows[0]);
-            }
-            return null;
-        }
+
 
         private void CreateUserFromRow(DataRow sysUserRow)
-        {           
-            this.Id = sysUserRow["ID"].ToString();
-            this.Name = sysUserRow["NAME"].ToString();
+        {
+            this.id = sysUserRow["ID"].ToString();
+            this.name = sysUserRow["NAME"].ToString();
             this.IsAdmin = false;
             this.IsDisabled = ("1" == sysUserRow["C_STATE"].ToString());
             this.LoginName = sysUserRow["LOGINNAME"].ToString();
@@ -109,7 +100,7 @@ namespace MSYS.Data
             this.UserRoleID = sysUserRow["ROLE"].ToString();
             this.UserRole = sysUserRow["F_ROLE"].ToString();
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select r.id as userid,s.f_menu,s.f_type,s.F_MAPID,s.f_id   from HT_SVR_USER r left join HT_SVR_SYS_ROLE t on r.role = t.f_id left join HT_SVR_SYS_MENU s on substr (t.f_right,s.f_id,1) = '1'  where r.id = '" + this.Id + "' and s.f_menu is not null");
+            DataSet data = opt.CreateDataSetOra("select r.id as userid,s.f_menu,s.f_type,s.F_MAPID,s.f_id   from HT_SVR_USER r left join HT_SVR_SYS_ROLE t on r.role = t.f_id left join HT_SVR_SYS_MENU s on substr (t.f_right,s.f_id,1) = '1'  where r.id = '" + this.id + "' and s.f_menu is not null");
             UserRights = new SysRightCollection();
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -118,6 +109,15 @@ namespace MSYS.Data
                     SysRight right = new SysRight(row);
                     UserRights.Add(right);
                 }
+            }
+        }
+        protected override void CreateObjfromDB(string id)
+        {
+            DbOperator opt = new DbOperator();
+            DataSet data = opt.CreateDataSetOra("select *   from HT_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id  where r.id = '" + id + "'");
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                CreateUserFromRow(data.Tables[0].Rows[0]);
             }
         }
     }

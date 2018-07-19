@@ -23,7 +23,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     public string  InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select prod_code,prod_name from ht_pub_prod_design where is_del = '0' order by prod_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -46,7 +46,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
     public string InitTreeRecipe(string prod_code)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_aux_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {

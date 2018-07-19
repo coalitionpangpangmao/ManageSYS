@@ -25,6 +25,7 @@
     </script>
 </head>
 <body>
+      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <form id="form1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
@@ -59,8 +60,8 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStartDate" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStopDate" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStartDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStopDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td> 
                                 <asp:RadioButton ID="rdElec" runat="server" Text="电气维修" GroupName="mtType" />
@@ -167,13 +168,13 @@
                                             开始时间
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBtime" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:TextBox ID="txtBtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                                         </td>
                                           <td width="100">
                                             结束时间
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtEtime" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:TextBox ID="txtEtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                                         </td>
                                          <td width="100">
                                             维修种类

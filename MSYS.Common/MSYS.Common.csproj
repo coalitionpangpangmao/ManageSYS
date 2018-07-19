@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AprvFlow.cs" />
     <Compile Include="ExcelExport.cs" />
+    <Compile Include="GridViewTemplate.cs" />
     <Compile Include="IHDataOpt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPCFunctions.cs" />

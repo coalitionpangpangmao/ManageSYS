@@ -21,7 +21,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
     public string InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select pz_type,pz_type_name from ht_pub_aprv_type order by pz_type");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -43,7 +43,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
     //版本
     protected void btnModify_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select * from ht_pub_aprv_type where pz_type = '" + txtCode.Text + "'";
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -68,7 +68,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
     protected void bindData(string rcpcode)
     {
         string query = "select g1.pz_type,g1.pz_type_name as 审批类型,g2.index_no as 顺序号,g2.role as 角色,g2.flow_name as 发送环节名 from ht_pub_aprv_type g1  left join ht_pub_aprv_model g2 on g2.pz_type = g1.pz_type where g1.pz_type = '" + rcpcode + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         if (set != null && set.Tables[0].Rows.Count > 0)
         {
@@ -139,7 +139,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {
                     string query = "delete from ht_pub_aprv_model   where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[i].FindControl("txtOrder")).Text + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     if (opt.UpDateOra(query) == "Success")
                         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批流程表删除成功，删除参数：" + ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[i].FindControl("txtOrder")).Text);
                     else
@@ -161,7 +161,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string query = "delete from ht_pub_aprv_model   where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (opt.UpDateOra(query) == "Success")
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批流程表删除成功，删除参数：" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text);
             else
@@ -182,7 +182,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             if (Rowindex >= 0)
             {
-               DataBaseOperator opt =new DataBaseOperator();
+               MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                 string query = "select * from ht_pub_aprv_model   where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text + "'";
                 DataSet data = opt.CreateDataSetOra(query);
                 if (data != null && data.Tables[0].Rows.Count > 0)

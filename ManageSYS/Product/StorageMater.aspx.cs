@@ -22,7 +22,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     {
         txtStart.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
         txtStop.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group", "F_NAME", "F_CODE");
         opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0'", "PROD_NAME", "PROD_CODE");
         opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS < '4' and is_DEL = '0'", "PLAN_NO", "PLAN_NO");
@@ -41,7 +41,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                 query += " and g.strg_type = '0'";
             else
                 query += " and g.strg_type = '1'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            DataSet data = opt.CreateDataSetOra(query);
            GridView1.DataSource = data;
             GridView1.DataBind();
@@ -79,7 +79,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
 
         string query = " select STORAGE as  仓库,mater_flag as   类型 ,unit_code as  计量单位,mater_code as   原料编码,mater_name as  原料名称,original_demand as   领料量,ID  from ht_strg_mater_sub where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
@@ -107,7 +107,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -121,7 +121,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
             string id = GridView1.DataKeys[index].Value.ToString();
                     /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { "仓储" + ((Label)GridView1.Rows[index].FindControl("labStrg")).Text + id , "08", id, Page.Request.UserHostName.ToString() };
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 opt.UpDateOra("update HT_STRG_MATERIA set AUDIT_MARK = '0'  where ORDER_SN = '" + id + "'"); 
@@ -139,7 +139,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
              Button btn = (Button)sender;
             int index =  ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Value.ToString();
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            opt.UpDateOra("update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'"); 
             bindGrid1();
       
@@ -150,7 +150,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         txtCode.Text = GridView1.DataKeys[rowIndex].Value.ToString();      
         
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          DataSet data = opt.CreateDataSetOra("select * from HT_STRG_MATERIA  where ORDER_SN =  '" +  txtCode.Text + "'");
          if(data != null && data.Tables[0].Rows.Count > 0)
          {
@@ -180,7 +180,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                 {
                     string order_sn = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_STRG_MATERIA set IS_DEL = '1'  where ORDER_SN = '" + order_sn + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -191,10 +191,10 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     {
 
         setBlank();
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
          MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
-        listCreator.SelectedValue = user.Id;
+         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "GridClick();", true);
        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
@@ -216,7 +216,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
 
      protected void btnModify_Click(object sender, EventArgs e)
      {
-        DataBaseOperator opt =new DataBaseOperator();
+        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          if (rdOut.Checked)
          {
              //生成领用主表记录
@@ -244,7 +244,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         try
         {
             string query = " select STORAGE as  仓库,mater_flag as   类型 ,unit_code as  计量单位,mater_code as   原料编码,mater_name as  原料名称,original_demand as   领料量,ID  from ht_strg_mater_sub where main_code = '" + txtCode.Text + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             if (set != null && set.Tables[0].Rows.Count >0)
@@ -309,7 +309,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                 {
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_STRG_MATER_SUB set IS_DEL = '1'  where ID = '" + ID + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -324,7 +324,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (rdOut.Checked)
             {
                 //生成领用主表记录
@@ -351,7 +351,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (txtCode.Text == "")
                 txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
             Button btn = (Button)sender;
@@ -379,7 +379,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
 
     protected void listPrdctPlan_SelectedIndexChanged(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         listPrdct.SelectedValue = opt.GetSegValue("select Prod_code from ht_prod_month_plan_detail where plan_no = '" + listPrdctPlan.SelectedValue + "'", "PROD_CODE");
     }
 }

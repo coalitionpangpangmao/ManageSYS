@@ -69,7 +69,7 @@ public class faultDbHandler : IHttpHandler
     protected ResponseData getData(string prodcode, string point,string starttime,string endtime)
     {
         ResponseData datainfo = new ResponseData();
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet pointinfo = opt.CreateDataSetOra("select t.para_name,s.upper_limit,s.lower_limit,s.value,s.eer_dev,t.value_tag from  ht_tech_stdd_code r left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code  left join ht_pub_tech_para t on s.para_code = t.para_code where r.prod_code = '" + prodcode + "' and t.para_code = '" + point + "'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
         {
@@ -104,7 +104,7 @@ public class faultDbHandler : IHttpHandler
     }
     protected ResponseData handleParaData(RequestDataJSON PostedData)
     {       
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //query prod_code
         string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
         return getData(prodcode, PostedData.point,PostedData.startTime,PostedData.stopTime);
@@ -114,7 +114,7 @@ public class faultDbHandler : IHttpHandler
     protected List<ResponseData> handleEquipData(RequestDataJSON PostedData)
     {
         List<ResponseData> datainfo = new List<ResponseData>();
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //query prod_code
         string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
         //query poininfo

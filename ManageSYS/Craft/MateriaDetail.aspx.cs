@@ -10,7 +10,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
    protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            opt.bindDropDownList(listType, "select  MATTREE_CODE ,  MATTREE_NAME ,  PARENT_CODE    from HT_PUB_MATTREE where  is_del = '0' order by PARENT_CODE", "MATTREE_NAME", "MATTREE_CODE");
            
       
@@ -18,7 +18,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
     protected void bindData(string mtr_code)
     {
         string query = "select * from HT_PUB_MATERIEL where  MATERIAL_CODE = '" + mtr_code + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -39,7 +39,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
     {
        string[] seg = {"MATERIAL_CODE","MATERIAL_NAME","MAT_TYPE","MAT_CATEGORY","UNIT_CODE","PK_MATERIAL"," MAT_LEVEL"," MAT_VARIETY","PIECE_WEIGHT"," LAST_UPDATE_TIME","REMARK"};
        string[] value = { txtCode.Text, txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string log_message = opt.InsertData(seg, value, "HT_PUB_MATERIEL")=="Success" ? "物料添加成功":"物料添加失败";
         log_message += ",物料信息:" + string.Join(" ", value);
         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -51,7 +51,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
         string[] seg = {  "MATERIAL_NAME", "MAT_TYPE", "MAT_CATEGORY", "UNIT_CODE", "PK_MATERIAL", " MAT_LEVEL", " MAT_VARIETY", "PIECE_WEIGHT", " LAST_UPDATE_TIME", "REMARK" };
         string[] value = { txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
         string condition = " where MATERIAL_CODE = '" + txtCode.Text + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string log_message = opt.UpDateData(seg, value, "HT_PUB_MATERIEL", condition) =="Success" ? "物料修改成功":"物料修改失败";
         log_message += ", 物料信息:" + string.Join(" ", value);
         opt.InsertTlog(Session["UserNmae"].ToString(), Page.Request.UserHostName.ToString(), log_message);
@@ -60,7 +60,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
     protected void btnDel_Click(object sender, EventArgs e)
     {
         string query = "update  HT_PUB_MATERIEL set IS_DEL = '1' where  MATERIAL_CODE = '" + txtCode.Text + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string log_message = opt.UpDateOra(query)== "Success" ? "物料删除成功":"物料删除失败";
         log_message += ",物料编码：" + txtCode.Text;
         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);

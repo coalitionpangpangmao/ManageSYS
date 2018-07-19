@@ -39,9 +39,9 @@
         </div>
          <asp:UpdatePanel ID="updtpanel"  runat="server">
             <ContentTemplate>
-        <div style="overflow: auto; height: 350px;">
+        <div >
         <asp:GridView ID="GridView1" runat="server" Width="900px" CssClass="datable" border="0"
-            CellPadding="2" CellSpacing="1">
+            CellPadding="2" CellSpacing="1" AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="14">
             <RowStyle CssClass="lupbai" />           
             <HeaderStyle CssClass="lup" />
             <AlternatingRowStyle CssClass="trnei" />
@@ -51,6 +51,7 @@
             <Triggers>
                 <asp:AsyncPostBackTrigger    ControlID="btnSearch" />
                 <asp:AsyncPostBackTrigger    ControlID="btnDelete" />
+                <asp:AsyncPostBackTrigger ControlID ="GridView1" />
             </Triggers>
         </asp:UpdatePanel>
     </div>

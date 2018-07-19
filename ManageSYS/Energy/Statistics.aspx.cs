@@ -22,7 +22,7 @@ public partial class Energy_Statistics : MSYS.Web.BasePage
     public string InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {

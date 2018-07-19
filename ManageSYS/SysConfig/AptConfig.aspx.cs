@@ -13,7 +13,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listRole, "select * from ht_svr_sys_role t", "F_ROLE", "F_ID");
             opt.bindDropDownList(listParent, "select f_code,F_name from ht_svr_org_group where substr(F_CODE,7,2) = '00'", "F_NAME", "F_CODE");
             bindData();
@@ -52,7 +52,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
         {            
             txtCode.Text = id;
             string query = "select * from HT_SVR_ORG_GROUP where F_CODE = '" + txtCode.Text + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -73,7 +73,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         SetBlank();
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string id = (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(F_CODE,4,3)),0) as F_CODE from HT_SVR_ORG_GROUP ", "F_CODE")) + 1).ToString().PadLeft(3, '0');
         txtCode.Text = "007" + id + "00";
         listParent.SelectedValue = "00700000";
@@ -84,7 +84,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
 
     protected void btnModify_Click(object sender, EventArgs e)
     {       
-       DataBaseOperator opt =new DataBaseOperator();        
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();        
         opt.UpDateOra("delete from HT_SVR_ORG_GROUP  where F_CODE = '" + txtCode.Text + "'");
         string[] seg = { "F_CODE", "F_NAME", "F_PARENTID", "F_PRITYPE","F_WEIGHT", "F_KEY", "F_ROLE" };
         string[] value = { txtCode.Text, txtName.Text, listParent.SelectedValue, txtType.Text,txtWeight.Text, txtSapID.Text,  listRole.SelectedValue };      
@@ -94,7 +94,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         for (int i = 0; i < GridView1.Rows.Count; i++)
         {
             if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
@@ -120,7 +120,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
     protected void bindData()
     {
         string query = "select  F_CODE   as 组织机构代码,F_NAME  as 组织机构名称,F_PRITYPE  as 类型,F_WEIGHT  as 权重,F_PARENTID  as 父级标识,F_KEY  as 主数据标识,F_ROLE as 默认角色 from HT_SVR_ORG_GROUP order by F_CODE";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();
     }

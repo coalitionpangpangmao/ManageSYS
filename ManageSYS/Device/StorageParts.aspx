@@ -41,6 +41,7 @@
     </script>
 </head>
 <body>
+      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <form id="form1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
@@ -75,8 +76,8 @@
                                 时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1"></asp:TextBox>至
-                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td>
                                 领用部门
@@ -174,7 +175,7 @@
                                 领用时间
                             </td>
                             <td>
-                                <asp:TextBox ID="txtTime" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                     </tr>
                         <tr>

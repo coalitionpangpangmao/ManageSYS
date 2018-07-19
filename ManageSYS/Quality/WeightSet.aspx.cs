@@ -22,7 +22,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
     {
         string query = "select section_code ,Weight,remark from ht_pub_tech_section  where is_del = '0' and is_valid = '1' order by section_code";
        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
             GridView1.DataSource = data;
             GridView1.DataBind();
@@ -42,7 +42,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
     protected void bindGrid2()
     {
         string query = "select ID,NAME,WEIGHT,REMARK from ht_qlt_weight where is_del = '0' and is_valid = '1' order by ID";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
@@ -59,7 +59,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
     }
     protected DataSet bindSection()
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         return opt.CreateDataSetOra("select section_name, section_code  from ht_pub_tech_section  where is_del = '0' and is_valid = '1' order by section_code");
     }
@@ -70,7 +70,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string[] seg = {  "Weight", "remark" };
         string[] value = { ((TextBox)GridView1.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView1.Rows[rowindex].FindControl("txtRemark")).Text };
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue + "'");
     }
 
@@ -79,8 +79,8 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string[] seg = { "Weight", "remark" ,"CREATE_ID","CREATE_DATE"};
-        string[] value = { ((TextBox)GridView2.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView2.Rows[rowindex].FindControl("txtRemark")).Text,((MSYS.Data.SysUser)Session["User"]).Id,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-        DataBaseOperator opt = new DataBaseOperator();
+        string[] value = { ((TextBox)GridView2.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView2.Rows[rowindex].FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[rowindex].Value.ToString() + "'");
     }
   

@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CraftEvent.aspx.cs" Inherits="Quality_CraftEvent" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="EventFeedback.aspx.cs" Inherits="Quality_EventFeedback" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>工艺事件管理</title>
+    <title>工艺事件反馈</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
@@ -18,7 +18,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">质量评估</a></li>
-                <li><a href="#">工艺事件确认</a></li>
+                <li><a href="#">工艺事件反馈</a></li>
             </ul>
         </div>
 
@@ -52,16 +52,7 @@
             <div id="tab1" class="tabson" style="margin-top: 0px; padding-top: 0px;">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <div class="listtitle">
-                            <span style="position: relative; float: right">
-                                <asp:Button ID="btnSelAll1" runat="server" Text="全选" CssClass="btnview auth" OnClick="btnSelAll1_Click" />
-                                <asp:Button ID="btnIgnore1" runat="server" Text="忽略" CssClass="btndel auth" OnClick="btnIgnore1_Click" />
-                                <asp:Button ID="btnConfirm1" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm1_Click" />
-                            </span>
-                        </div>
-
-
-                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="10" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                             DataKeyNames="id,type">
                             <Columns>
                                 <asp:TemplateField>
@@ -79,16 +70,12 @@
                                 <asp:BoundField HeaderText="班组" DataField="team_name" />
                                 <asp:TemplateField HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="跟踪中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:BoundField DataField="minus_score" HeaderText="扣分" />
                                 <asp:TemplateField HeaderText="操作">
                                     <ItemTemplate>
-                                        <asp:Button ID="btngrid1Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid1Ignore_Click"/>
-                                        <asp:Button ID="btngrid1Sure" runat="server" Text="确认" CssClass="btn1"  OnClick="btngrid1Sure_Click"/>
-                                          <asp:Button ID="btngrid1fdback" runat="server" Text="反馈" CssClass="btn1"  OnClick="btngrid1fdback_Click"/>
-                                          <asp:Button ID="btngrid1done" runat="server" Text="完成" CssClass="btn1"  OnClick="btngrid1done_Click"/>
+                                        <asp:Button ID="btngrid1Deal" runat="server" Text="反馈情况" CssClass="btn1" OnClick="btngrid1Deal_Click"  Width ="100px"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -98,11 +85,9 @@
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnConfirm1" />
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
-                        <asp:AsyncPostBackTrigger ControlID="btnIgnore1" />
-                        <asp:AsyncPostBackTrigger ControlID="btnSelAll1" />
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" />
                     </Triggers>
                 </asp:UpdatePanel>
 
@@ -110,16 +95,7 @@
             <div id="tab2" class="tabson" style="margin-top: 0px; padding-top: 0px;">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <div class="listtitle">
-                            <span style="position: relative; float: right">
-                                <asp:Button ID="btnSelAll" runat="server" Text="全选" CssClass="btnview auth" OnClick="btnSelAll_Click" />
-                                <asp:Button ID="btnIgnore" runat="server" Text="忽略" CssClass="btndel auth" OnClick="btnIgnore_Click" />
-                                <asp:Button ID="btnConfirm" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm_Click" />
-                            </span>
-                        </div>
-
-
-                        <asp:GridView ID="GridView2" runat="server" class="grid"  AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="10" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                             DataKeyNames="ID,inspect_code">
                             <Columns>
                                 <asp:TemplateField>
@@ -131,23 +107,21 @@
                                 <asp:BoundField HeaderText="分组" DataField="insgroup" />
                                 <asp:BoundField HeaderText="检验项目" DataField="inspect_name" />
                                 <asp:BoundField HeaderText="检测值" DataField="value" />
+
                                 <asp:BoundField HeaderText="标准范围" DataField="range" />
+
                                 <asp:BoundField DataField="unit" HeaderText="单位" />
                                 <asp:TemplateField HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="跟踪中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField DataField="minus_score" HeaderText="扣分" />
                                 <asp:TemplateField HeaderText="操作">
                                     <ItemTemplate>
-                                        <asp:Button ID="btngrid2Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid2Ignore_Click" />
-                                        <asp:Button ID="btngrid2Sure" runat="server" Text="确认" CssClass="btn1" OnClick="btngrid2Sure_Click" />
-                                          <asp:Button ID="btngrid2fdback" runat="server" Text="反馈" CssClass="btn1"  OnClick="btngrid2fdback_Click"/>
-                                          <asp:Button ID="btngrid2done" runat="server" Text="完成" CssClass="btn1"  OnClick="btngrid2done_Click"/>
+                                        <asp:Button ID="btngrid2Deal" runat="server" Text="反馈情况" CssClass="btn1 auth" OnClick="btngrid2Deal_Click"  Width ="100px"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-
 
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
@@ -156,16 +130,68 @@
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnConfirm" />
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
-                        <asp:AsyncPostBackTrigger ControlID="btnIgnore" />
-                        <asp:AsyncPostBackTrigger ControlID="btnSelAll" />
                         <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" />
                     </Triggers>
                 </asp:UpdatePanel>
 
             </div>
 
+
+            <div class="shade">
+                <div class="info">
+                    <div class="tiphead">
+                        <span>反馈情况</span><a onclick="$('.shade').fadeOut(100);"></a>
+                    </div>
+                    <div class="gridinfo">
+                        <asp:UpdatePanel ID="updtpanel1" runat="server">
+                            <ContentTemplate>
+                                <asp:HiddenField ID="hdType" runat="server" />
+                                <table class="tablelist">
+                                    <tr>
+                                        <td>事件记录ID： </td>
+                                        <td>
+                                            <asp:TextBox ID="txtEventID" runat="server" CssClass="dfinput1" Width="450px" Enabled="False"></asp:TextBox></td>
+                                        </tr>
+                                    <tr style="padding-top: 5px">
+                                        <td>类型： </td>
+                                        <td>
+                                            <asp:DropDownList ID="listStyle" runat="server" CssClass="drpdwnlist" Width="450px" Enabled="false"></asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr style="padding-top: 5px">
+                                        <td>反馈情况
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtScean" runat="server" CssClass="dfinput1" Height="70px"
+                                                Width="450px" TextMode="MultiLine"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr style="padding-top: 5px">
+                                        <td>补充说明
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtPlus" runat="server" CssClass="dfinput1" Height="70px"
+                                                Width="450px" TextMode="MultiLine"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="shadebtn" align="center">
+                                    <asp:Button ID="btnModify" class="sure" runat="server" Text="保存" OnClick="btnModify_Click" />
+                                    <input name="" type="button" class="cancel" value="关闭" onclick="$('.shade').fadeOut(100);" />
+                                </div>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                                <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <script type="text/javascript">

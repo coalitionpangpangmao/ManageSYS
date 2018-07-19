@@ -26,7 +26,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
         
             if(listSection.SelectedValue != "")
                 query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -61,12 +61,12 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
 
     protected DataSet bindInspect()
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select ID,INSPECT_TYPE from HT_INNER_BOOL_DISPLAY");
     }
     protected void initView()
     {        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        opt.bindDropDownList(listtype, "select ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
    
         
@@ -85,7 +85,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
 
     //    if (listSection.SelectedValue != "")
     //        query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
-    //    DataBaseOperator opt = new DataBaseOperator();
+    //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
     //    DataSet set = opt.CreateDataSetOra(query);
     //    DataTable data = set.Tables[0];
     //    if (data == null)
@@ -143,8 +143,8 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
        commandlist.Add("delete from HT_QLT_INSPECT_STDD where INSPECT_CODE = '" + code + "'");
        string[] seg = { "INSPECT_CODE", "UPPER_VALUE", "LOWER_VALUE", "MINUS_SCORE", "REMARK", "CREATE_ID", "CREATE_TIME" };
        GridViewRow row = GridView1.Rows[rowindex];
-       string[] value = { ((DropDownList)row.FindControl("listInspect")).SelectedValue, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtScore")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).Id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-       DataBaseOperator opt = new DataBaseOperator();
+       string[] value = { ((DropDownList)row.FindControl("listInspect")).SelectedValue, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtScore")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+       MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
        commandlist.Add(opt.InsertDatastr(seg, value, "HT_QLT_INSPECT_STDD"));
             opt.TransactionCommand(commandlist);
             bindGrid();
@@ -176,7 +176,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
                 {
                     string projcode = GridView1.DataKeys[i].Values.ToString();
                     string query = "delete from  HT_QLT_INSPECT_STDD   where INSPECT_CODE = '" + projcode + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }           
@@ -192,7 +192,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
 
     protected void listtype_SelectedIndexChanged(object sender, EventArgs e)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (listtype.SelectedValue == "0")
         {
             opt.bindDropDownList(listSection, "select Section_code,Section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "Section_name", "Section_code");

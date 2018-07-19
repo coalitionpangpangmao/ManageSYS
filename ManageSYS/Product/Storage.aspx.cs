@@ -23,7 +23,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         string query = "select id, plan_name as 计划名,adjust_status 是否有调整,e_flow_status as 审批状态,ISSUED_STATUS as 下发状态 ,creator as 编制人  from ht_prd_month_plan where is_del = '0'";
         if (txtStart.Text != "" && txtStart.Text != "")
             query += " and PLAN_TIME between '" + txtStart.Text + "' and  '" + txtStop.Text;
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query); ;
         GridView1.DataBind();
 
@@ -39,7 +39,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
         string query = " select plan_order as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量 from HT_PROD_MONTH_PLAN_DETAIL where is_del = '0' and  MONTH_PLAN_ID = " + planID;
        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);       
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -61,7 +61,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
     public DataSet ddlbind()
     {
         string sqlstr = "select prod_name as 产品规格,prod_code from ht_pub_prod_design where is_valid = '1' and is_del  = '0'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra(sqlstr);
     }
     protected void btnIssued_Click(object sender, EventArgs e)//下发计划
@@ -74,7 +74,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
                 {
                     string id = GridView1.DataKeys[i].Value.ToString();
                     string query = "update ht_prd_month_plan set ISSUED_STATUS = '己下发'  where ID = '" + id + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -95,7 +95,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
                 {
                     string id = GridView1.DataKeys[i].Value.ToString();
                     string query = "update ht_prd_month_plan set IS_DEL = '1'  where ID = '" + id + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -118,7 +118,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
             bindGrid2(id);
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
          //   string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
-         //  DataBaseOperator opt =new DataBaseOperator();
+         //  MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          //   opt.UpDateOra(query);
          //   bindGrid(txtCode.Text);
         }
@@ -137,7 +137,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
                 {
                     string id = GridView1.DataKeys[i].Value.ToString();
                //     string query = "update ht_prd_month_plan set IS_DEL = '1'  where ID = '" + id + "'";
-               //    DataBaseOperator opt =new DataBaseOperator();
+               //    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                //     opt.UpDateOra(query);
                 }
             }
@@ -157,7 +157,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string query = "select plan_order as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量 from HT_PROD_MONTH_PLAN_DETAIL where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value;
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             if (set == null)
@@ -206,7 +206,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string planname = txtYear.Text + "-" + listMonth.SelectedValue;
         string query = "select * from ht_prd_month_plan where plan_name = '" + planname + "生产月计划' and  is_del = '0'";
         DataSet data = opt.CreateDataSetOra(query);
@@ -249,7 +249,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
                 {
                     string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtPlanNo")).Text;
                     string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code +  "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -268,7 +268,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtPlanNo")).Text;
             string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.UpDateOra(query);
             bindGrid2(hidePlanID.Value);
         }
@@ -288,7 +288,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string query = "select * from HT_PROD_MONTH_PLAN_DETAIL where MONTH_PLAN_ID = " + hidePlanID.Value + " and plan_no = '" + mtr_code + "' and is_del = '0'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             if(data!= null && data.Tables[0].Rows.Count > 0)
             {

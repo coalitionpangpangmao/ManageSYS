@@ -23,7 +23,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     public string  InitTree()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select F_ID,F_NAME  from HT_SYS_EXCEL_BOOK  order by F_ID ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -45,7 +45,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
 
     public string InitTreeM(string F_ID)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select distinct F_SHEETINDEX,F_SHEET  from HT_SYS_EXCEL_SEG where is_del = '0' and F_BOOK_ID = '" + F_ID + "' order by F_SHEETINDEX ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -67,7 +67,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
 
     public string InitTreeS(string sheetIndex,string bookID)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select F_ID,F_DES  from HT_SYS_EXCEL_SEG where is_del = '0' and F_BOOK_ID = '" + bookID + "' and F_SHEETINDEX = '" + sheetIndex + "'  order by F_ID ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -166,7 +166,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + ReportName.Text + "'");
             if (data != null && data.Tables[0].Select().GetLength(0) > 0)
             {
@@ -201,7 +201,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
         try
         {
             string query;
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            
                 query = "delete from G_EXCEL_WORKBOOK where F_NAME = '" + ReportName.Text.Trim() + "'";
                 opt.UpDateOra(query);
@@ -222,7 +222,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     {
           try
           {
-             DataBaseOperator opt =new DataBaseOperator();
+             MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
              DataSet temp = opt.CreateDataSetOra("select * from HT_SYS_EXCEL_SEG where F_SHEETINDEX = '" + Index.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'");
               
               if (temp != null && temp.Tables[0].Select().GetLength(0) > 0)
@@ -259,7 +259,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     //点击树更新显示数据
     protected void btnUpdTab1_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet temp = opt.CreateDataSetOra("select *  from HT_SYS_EXCEL_BOOK where F_ID = '" + hideTreeSel.Value + "'");
         if(temp != null && temp.Tables[0].Rows.Count > 0)
         {
@@ -271,7 +271,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     
     protected void btnUpdTab2_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          DataSet data = opt.CreateDataSetOra("select * from HT_SYS_EXCEL_SEG where F_ID = '" + hideTreeSel2.Value + "'");
          if (data.Tables[0].Select().GetLength(0) > 0)
          {
@@ -289,7 +289,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     }
     protected void btnSegDel_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        string query = "delete from HT_SYS_EXCEL_SEG where  F_SHEETINDEX='"
                      + Index.Text + "' and F_BOOK_ID = '" + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + txtReport.Text.Trim() + "'", "F_ID") + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'";
         if (opt.UpDateOra(query) == "Success")

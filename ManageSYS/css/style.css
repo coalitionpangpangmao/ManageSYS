@@ -32,6 +32,7 @@ h2{font-weight:normal;}
 .tablelist{border:solid 1px #cbcbcb; width:100%; clear:both;}
 .tablelist th{background:url(../images/th.gif) repeat-x; height:28px; line-height:28px; border-bottom:solid 1px #b6cad2; text-indent:11px; text-align:left;}
 .tablelist td{line-height:28px; text-indent:11px; border-right: dotted 1px #c7c7c7;}
+.tablelist td .caption{line-height:28px; text-indent:11px; border-right: dotted 1px #c7c7c7; width:100px}
 .tablelink{color:#056dae;}
 .tablelist tbody tr.odd{background:#f5f8fa;}
 .tablelist tbody tr:hover{background:#e5ebee;}

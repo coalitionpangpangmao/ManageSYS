@@ -16,7 +16,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         {
             bindData();
             BindList(RightTree.Nodes, "");
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listPrt, "select * from ht_svr_prt_menu where IS_DEL = '0' order by ID", "NAME", "ID");
 
         }
@@ -26,7 +26,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     protected void bindData()
     {
         string query = "select t.mapid as MapID,r.f_pid as 父菜单,r.f_menu as 菜单名称,t.url as URL,t.remark  as 描述 from ht_inner_map t left join ht_svr_sys_menu r on r.f_mapid = t.mapid and r.f_type = '0' where t.is_del = '0'  order by t.mapid ";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -49,7 +49,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         try
         {
             string query = "select t.mapid as MapID,r.f_pid as 父菜单,r.f_menu as 菜单名称,t.url as URL,t.remark  as 描述 from ht_inner_map t left join ht_svr_sys_menu r on r.f_mapid = t.mapid and r.f_type = '0' where t.is_del = '0'  order by t.mapid ";
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             string newMapID = (Convert.ToInt16(opt.GetSegValue("select max(MapID) as ID from ht_inner_map", "ID")) + 1).ToString().PadLeft(5, '0');
@@ -89,7 +89,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     protected void BindList(TreeNodeCollection ncTree, string pID)
     {
         ncTree.Clear();
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "select ID,Name,MenuLEVEL,PID from ht_svr_prt_menu ";
         if (pID == "")
             query += " where pid is null ";
@@ -124,7 +124,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                 ScriptManager.RegisterStartupScript(UpdatePanel2, this.GetType(), "", "alert('请输入菜单名');", true);
             else
             {
-                DataBaseOperator opt = new DataBaseOperator();
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 string prtID;
                 if ("NoRecord" == (prtID = opt.GetSegValue("select * from HT_SVR_PRT_MENU where NAME = '" + txtMenu.Text + "'", "ID")))
                 {
@@ -146,7 +146,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     {
         try
         {
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string query = "delete from HT_SVR_PRT_MENU where NAME = '" + txtMenu.Text + "'";
             opt.UpDateOra(query);
             BindList(RightTree.Nodes, "");
@@ -166,7 +166,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
 
         GridViewRow row = GridView1.Rows[rowIndex];
         string mapID, RightID;
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         ///在映射表中插入URL映射
         if ("NoRecord" == (mapID = opt.GetSegValue("select * from ht_inner_map where URL = '" + ((TextBox)row.FindControl("txtURL")).Text + "'", "MAPID")))
         {
@@ -199,7 +199,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "update  ht_inner_map  set is_del = '1' where MAPID = '" + id + "'";
         opt.UpDateOra(query);
         query = "update ht_svr_sys_menu set IS_DEL = '1' where F_MENU = '" + ((TextBox)GridView1.Rows[rowIndex].FindControl("txtMenu")).Text + "'";
@@ -210,7 +210,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
 
     protected DataSet bindprt()
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select NAME,ID from ht_svr_prt_menu where IS_DEL = '0' union select '' as Name,'' as ID from dual  order by ID");
     }
 

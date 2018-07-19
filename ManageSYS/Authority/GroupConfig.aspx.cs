@@ -23,7 +23,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
 
     protected DataSet bindprt()
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select NAME,ID from ht_svr_prt_menu where IS_DEL = '0' union select '' as Name,'' as ID from dual  order by ID");
     }
 
@@ -34,7 +34,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         try
         {
             string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_pid as 父节点名,t.f_menu as 权限名称,t.f_mapid as Mapping ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t   where t.is_del = '0'  order by t.F_ID";
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             string newID = (Convert.ToInt16(opt.GetSegValue("select max(F_ID) as ID from ht_svr_sys_menu", "ID")) + 1).ToString().PadLeft(5, '0');
@@ -90,7 +90,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     protected void bindData()
     {
         string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_pid as 父节点名,t.f_menu as 权限名称,t.f_mapid as Mapping ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t   where t.is_del = '0'  order by t.F_ID";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -131,7 +131,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
      
             GridViewRow row = GridView1.Rows[rowIndex];          
-            DataBaseOperator opt = new DataBaseOperator();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             ///判断URL是否在数据库中有MAP映射，每个URL页面有唯一的URL           
            
             opt.UpDateOra("delete from   ht_svr_sys_menu  where f_ID = '" + id + "'");
@@ -146,7 +146,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "update  ht_svr_sys_menu  set is_del = '1' where f_ID = '" + id + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         opt.UpDateOra(query);
         bindData();
     }
@@ -156,7 +156,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     {
         DropDownList list = (DropDownList)sender;
         int rowIndex = ((GridViewRow)list.NamingContainer).RowIndex;
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList((DropDownList)GridView1.Rows[rowIndex].FindControl("listMap"), "select F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + list.SelectedValue + "'", "URL", "F_MAPID");
     }
 
@@ -168,13 +168,12 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     }
     protected void btnSave2_Click(object sender, EventArgs e)
     {
-        try
-        {
+      
             if (Role.Text == "")
                 ScriptManager.RegisterStartupScript(UpdatePanel2, this.GetType(), "", "alert('请输入角色名');", true);
             else
             {
-               DataBaseOperator opt =new DataBaseOperator();
+               MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                 string query = "select * from HT_SVR_SYS_Role where F_ROLE = '" + Role.Text.Trim() + "'";
                 DataSet data = opt.CreateDataSetOra(query);
                 if (data != null && data.Tables[0].Select().GetLength(0) > 0)
@@ -196,31 +195,23 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                     BindList();
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            
-        }
+      
+       
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-        try
-        {
-           DataBaseOperator opt =new DataBaseOperator();
+        
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string query = "delete from HT_SVR_SYS_Role where F_ROLE = '" + Role.Text + "'";
             opt.UpDateOra(query);
             BindList();
             SetBlank();
-        }
-        catch (Exception ex)
-        {
-            
-        }
+       
     }
     protected void BindList()
     {
         RightTree.Nodes.Clear();
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select F_role,f_right from HT_SVR_SYS_Role";
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -239,7 +230,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     {
         Acesslist.Nodes.Clear();
         Denylist.Nodes.Clear();
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        DataSet temp = opt.CreateDataSetOra("select * from ht_svr_sys_menu where is_del = '0' order by F_ID ");
         DataRow[] Rows = temp.Tables[0].Select();
         int strlength =  Convert.ToInt16(temp.Tables[0].Compute("Max(F_ID)", null));

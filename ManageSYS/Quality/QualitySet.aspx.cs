@@ -14,7 +14,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");        
          
             opt.bindDropDownList(listtech, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
@@ -27,7 +27,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     public string InitTreePrcss()
     {
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -49,7 +49,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     protected void bindData(string qltcode)
     {
         string query = "select * from ht_qlt_STDD_CODE where is_del = '0' and is_valid = '1' and QLT_CODE  = '" + qltcode + "'";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -69,14 +69,14 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     {
 
         string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + qlt_code + "' and g2.section_code = '" + section + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
         bindgrid(data, hideprc.Value);
     }
     protected void bindgrid(DataTable data,string section)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView1.DataSource = data;
         GridView1.DataBind();
         if (data != null && data.Rows.Count > 0)
@@ -100,13 +100,13 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     }
     protected DataSet typebind()
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select * from ht_inner_qlt_type order by ID ");
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
         if (data == null)
@@ -127,11 +127,11 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
 
     protected void btnNew_Click(object sender, EventArgs e)
     {
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string code = opt.GetSegValue("select nvl(max(substr(QLT_CODE,4,3)),0)+1 as code from ht_qlt_stdd_code t", "code");
         txtCode.Text = "QLT" + code.PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
-        txtCreator.Text = user.Name;
+        txtCreator.Text = user.text;
         txtCrtDate.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         txtDscpt.Text = "";
         txtEndDate.Text = "";
@@ -142,11 +142,11 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         
 
          string[] seg = { "QLT_CODE", "QLT_NAME", "STANDARD_VOL", "B_DATE", "E_DATE", "CREATE_ID", "CREATE_DATE", "REMARK" };
-            string[] value = { txtCode.Text, txtName.Text,  txtVersion.Text, txtExeDate.Text, txtEndDate.Text,((MSYS.Data.SysUser)Session["User"]).Id, txtCrtDate.Text,  txtDscpt.Text, };
+         string[] value = { txtCode.Text, txtName.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, ((MSYS.Data.SysUser)Session["User"]).id, txtCrtDate.Text, txtDscpt.Text, };
             opt.MergeInto(seg, value, 1, "HT_QLT_STDD_CODE");           
        
         opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
@@ -157,7 +157,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.UpDateOra("delete from HT_QLT_STDD_CODE where QLT_CODE = '" + txtCode.Text + "'");           
             opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");   
         }
@@ -174,7 +174,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.UpDateOra(query);
             bindGrid(txtCode.Text, hideprc.Value);
         }
@@ -208,7 +208,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
                 {
                     string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text;
                     string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -228,7 +228,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             
             if (row.RowIndex >= 0)
             {
-                DataBaseOperator opt = new DataBaseOperator();
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
                 string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE" };
                 string[] value = { txtCode.Text, ((DropDownList)row.FindControl("listParaName")).SelectedValue, ((DropDownList)row.FindControl("listtype")).SelectedValue, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtDscrptM")).Text, ((TextBox)row.FindControl("txtScore")).Text };
@@ -248,7 +248,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
 
     protected void btnCopy_Click(object sender, EventArgs e)
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "select * from HT_QLT_STDD_CODE_DETAIL where QLT_CODE = '" + listtech.SelectedValue + "' and is_del = '0'";
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -269,7 +269,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     {
        
         string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
-        DataBaseOperator opt = new DataBaseOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
         bindgrid(data, hideprc.Value);

@@ -15,7 +15,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
         {
             txtStart.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             txtStop.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listApts, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group", "F_NAME", "F_CODE");
             opt.bindDropDownList(listEditor, "select ID,Name  from ht_svr_user where IS_DEL = '0'", "NAME", "ID");
@@ -39,7 +39,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
                 query += " and g.pickup_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'";
             if (listApts.SelectedValue != "")
                 query += " and g.create_dept_id = '" + listApts.SelectedValue + "'";               
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             GridView1.DataSource = opt.CreateDataSetOra(query); ;
             GridView1.DataBind();
         }
@@ -64,7 +64,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
                 {
                     string id = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_STG_PICKUP set IS_DEL = '1'  where PZ_CODE = '" + id + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -82,7 +82,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -97,7 +97,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
             string id = GridView1.DataKeys[index].Value.ToString();
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { GridView1.Rows[index].Cells[4].Text+ "备件领用", "13", id, Page.Request.UserHostName.ToString() };
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 opt.UpDateOra("update HT_EQ_STG_PICKUP set FLOW_STATUS = '0'  where PZ_CODE = '" + id + "'");
@@ -114,7 +114,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
     {
 
         setBlank();
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         txtPzcode.Text = "PK" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select nvl(max(substr(PZ_CODE,3,11)),0) as ordernum from HT_EQ_STG_PICKUP where substr(PZ_CODE,1,10) ='PK" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
 
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);
@@ -128,7 +128,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Value.ToString();
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.UpDateOra("update HT_EQ_STG_PICKUP set IS_PICKUP = '1'  where PZ_CODE = '" + id + "'");
             bindGrid1();
         }
@@ -144,7 +144,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         txtPzcode.Text = GridView1.DataKeys[rowIndex].Value.ToString();
 
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select * from HT_EQ_STG_PICKUP  where PZ_CODE =  '" + txtCode.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -167,7 +167,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
 
         string query = "select t.storage as 仓库,t.Sp_Code as 编码,t.sp_name as 名称,t.sp_standard as 规格,t.sp_model as 型号,t.sp_unit as 单位,t.pickup_num as 数量,t.own_section as 工艺段,t.remark as 备注,t.ID from ht_eq_stg_pickup_detail t  where MAIN_CODE = '" + txtPzcode.Text + "' and IS_DEL = '0'";
        
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
@@ -195,12 +195,12 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
 
     protected DataSet gridTypebind()
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where is_valid = '1'  and is_del = '0' and TYPE_FLAG = 'BJ'");
     }
     protected DataSet sectionbind()
     {
-       DataBaseOperator opt =new DataBaseOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select section_code,section_name from ht_pub_tech_section where is_del= '0'");
     }
      protected void btnReset_Click(object sender, EventArgs e)
@@ -218,7 +218,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
 
      protected void btnModify_Click(object sender, EventArgs e)
      {
-        DataBaseOperator opt =new DataBaseOperator();
+        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          opt.UpDateOra("delete from HT_EQ_STG_PICKUP where PZ_CODE = '" + txtPzcode.Text + "'");        
              //生成领用主表记录
          string[] seg = { "PZ_CODE", "CREATE_DEPT_ID", "CREATE_ID", "PICKUP_DATE", "REMARK"};
@@ -234,7 +234,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
         {
             string query = "select t.storage as 仓库,t.Sp_Code as 编码,t.sp_name as 名称,t.sp_standard as 规格,t.sp_model as 型号,t.sp_unit as 单位,t.pickup_num as 数量,t.own_section as 工艺段,t.remark as 备注,t.ID from ht_eq_stg_pickup_detail t  where MAIN_CODE = '" + txtPzcode.Text + "' and IS_DEL = '0'";
           
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             if (set != null && set.Tables[0].Rows.Count >0)
@@ -305,7 +305,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
                 {
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_STG_PICKUP_DETAIL set IS_DEL = '1'  where ID = '" + ID + "'";
-                   DataBaseOperator opt =new DataBaseOperator();
+                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
                 }
             }
@@ -321,7 +321,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
     {
         try
         {
-           DataBaseOperator opt =new DataBaseOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             if (txtPzcode.Text == "")
                 txtPzcode.Text = "PK" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select nvl(max(substr(PZ_CODE,3,11)),0) as ordernum from HT_EQ_STG_PICKUP where substr(PZ_CODE,1,10) ='PK" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
             Button btn = (Button)sender;

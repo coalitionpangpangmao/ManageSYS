@@ -18,8 +18,8 @@ public partial class Authority_ChgPsd : MSYS.Web.BasePage
     {
         if (Session["User"] != null)
         {
-            string userID = ((SysUser)Session["User"]).Id;
-            DbOperator opt = new DbOperator();
+            string userID = ((SysUser)Session["User"]).id;
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
 
             if (userTable != null && userTable.Rows.Count > 0)
