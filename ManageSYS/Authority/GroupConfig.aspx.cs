@@ -261,26 +261,33 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         InitAuthorityList("");
     }
 
-    protected void Denylist_SelectedNodeChanged(object sender, EventArgs e)
-    {
-        SelValue.Text = Denylist.SelectedValue;
-    }
-
-    protected void Acesslist_SelectedNodeChanged(object sender, EventArgs e)
-    {
-        SelValue.Text = Acesslist.SelectedValue;
-    }
+  
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        int index = Convert.ToInt16(SelValue.Text);
-        Right.Text = Right.Text.Substring(0, index - 1) + "1" + Right.Text.Substring(index, Right.Text.Length - index);
+        foreach (TreeNode node in Denylist.Nodes)
+        {
+            if (node.Checked)
+            {
+                int index = Convert.ToInt16(node.Value);
+                Right.Text = Right.Text.Substring(0, index - 1) + "1" + Right.Text.Substring(index, Right.Text.Length - index);
+               
+            }
+        }
         InitAuthorityList(Right.Text);
+       
     }
 
     protected void btnMinus_Click(object sender, EventArgs e)
     {
-        int index = Convert.ToInt16(SelValue.Text);
-        Right.Text = Right.Text.Substring(0, index - 1) + "0" + Right.Text.Substring(index, Right.Text.Length - index);
+        foreach (TreeNode node in Acesslist.Nodes)
+        {
+            if (node.Checked)
+            {
+                int index = Convert.ToInt16(node.Value);
+                Right.Text = Right.Text.Substring(0, index - 1) + "0" + Right.Text.Substring(index, Right.Text.Length - index);
+            }
+        }
+      
         InitAuthorityList(Right.Text);
     }
 
