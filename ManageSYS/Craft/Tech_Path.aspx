@@ -40,68 +40,14 @@
         <div id="usual1" class="usual">
             <div class="itab">
                 <ul>
-                    <li><a href="#tab1" class="selected" id="tabtop1">工艺路径配置</a></li>
-                    <li><a href="#tab2" id="tabtop2">工艺段路径管理</a></li>
-                    <li><a href="#tab3" id="tabtop3">路径节点配置</a></li>
+                    <li><a href="#tab1" class="selected" id="tabtop1">工艺段路径管理</a></li>
+                    <li><a href="#tab2" id="tabtop2">路径节点配置</a></li>
+                  
                 </ul>
             </div>
         </div>
+        
         <div id="tab1" class="tabson">
-            <div class="framelist">
-                <div class="listtitle">
-                    工艺路径配置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    计划号：<asp:DropDownList ID="listProdplan" runat="server" CssClass="drpdwnlist" AutoPostBack="True"
-                        OnSelectedIndexChanged="listProdplan_SelectedIndexChanged">
-                    </asp:DropDownList>
-                    <span style="position: relative; float: right" class="click2">
-                        <asp:Button ID="btnSavePath" runat="server" CssClass="btnset auth" Text="保存设置" OnClick="btnSavePath_Click"
-                            Width="120px" />
-                    </span>
-                </div>
-                <div>
-                    <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                        <ContentTemplate>
-                            <asp:GridView ID="GridView4" runat="server" class="grid" DataKeyNames="section_code"
-                                AutoGenerateColumns="False">
-                                <Columns>
-                                    <asp:TemplateField HeaderText="工艺段">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
-                                                CssClass="tbinput" Enabled="False" Width="150px"></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="路径选择">
-                                        <ItemTemplate>
-                                            <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="200px"
-                                                OnSelectedIndexChanged="listpath_SelectedIndexChanged" AutoPostBack="True">
-                                            </asp:DropDownList>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="路径详情">
-                                        <ItemTemplate>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作">
-                                        <ItemTemplate>
-                                            <asp:Button ID="btnGrid4Save" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnGrid4Save_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                </Columns>
-                                <HeaderStyle CssClass="gridheader" />
-                                <RowStyle CssClass="gridrow" />
-                                 <AlternatingRowStyle CssClass="gridalterrow" />
-                            </asp:GridView>
-                        </ContentTemplate>
-                        <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="listProdplan" />
-                            <asp:AsyncPostBackTrigger ControlID="GridView4" />
-                            <asp:AsyncPostBackTrigger ControlID="btnSavePath" />
-                        </Triggers>
-                    </asp:UpdatePanel>
-                </div>
-            </div>
-        </div>
-        <div id="tab2" class="tabson">
             <div class="framelist">
                 <div class="listtitle">
                     工艺段路径管理<asp:DropDownList ID="listSection1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection1_SelectedIndexChanged"
@@ -135,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div id="tab3" class="tabson">
+        <div id="tab2" class="tabson">
             <div class="framelist">
                 <div class="listtitle">
                     路径节点配置<asp:DropDownList ID="listSection2" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection2_SelectedIndexChanged"

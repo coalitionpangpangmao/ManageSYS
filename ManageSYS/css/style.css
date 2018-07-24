@@ -245,7 +245,8 @@ h2{font-weight:normal;}
     border-bottom-style: solid;
     border-bottom-color: #cbcbcb;
 }
-
+.pathinfo{width:90%; height:350px; position:absolute;top:10%; left:3%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); }
+.gridbutton{position:absolute; display:inline-block;  margin-left: 45%;}
 
 /*提示框字体*/
 .hintfont{ color:Gray;}

@@ -340,7 +340,134 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
 
 
+    //////////////////////////////////////////////////////////////////////////////////
+     protected void btnPath_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string ID = GridView1.DataKeys[rowIndex].Value.ToString();
+        hidePlanID.Value = ID;
+        bindGrid4();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#pathinfo').fadeIn(200);", true);
+    }
+    protected string createQuery(string section)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select nodename from ht_pub_path_node where section_code = '" + section + "' and is_del = '0' order by orders");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string query = "select PATHNAME as 路径名称";
+            int i = 1;
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                query += ",substr(pathcode," + i.ToString() + ",1) as " + row[0].ToString();
+                i++;
+            }
+            query += ",SECTION_CODE,pathcode  from ht_pub_path_section where section_code = '" + section + "'";
+            return query;
+        }
+        else
+            return "";
+    }
+    protected void bindGrid4()
+    {
+       
+            //string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + hidePlanID.Value + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
+            string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code  and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            DataSet data = opt.CreateDataSetOra(query);
+            GridView4.DataSource = data;
+            GridView4.DataBind();
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < GridView4.Rows.Count; i++)
+                {
+                    DataRowView mydrv = data.Tables[0].DefaultView[i];
+                    ((TextBox)GridView4.Rows[i].FindControl("txtSection")).Text = mydrv["工艺段"].ToString();
+                    DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+                    opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "'", "pathname", "pathcode");
+                    list.SelectedValue = mydrv["路径详情"].ToString();
+                    query = createQuery(mydrv["section_code"].ToString());
+                    if (query != "")
+                    {
+                        query += " and pathcode = '" + list.SelectedValue + "'";
+                        DataSet set = opt.CreateDataSetOra(query);
+                        for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
+                        {
+                            CheckBox ck = new CheckBox();
+                            // ck.Enabled = false;
+                            if (0 == set.Tables[0].Rows.Count)
+                                ck.Checked = false;
+                            else
+                                ck.Checked = (set.Tables[0].Rows[0][j].ToString() == "1");
+
+                            ck.Text = set.Tables[0].Columns[j].Caption;
+                            GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                        }
+                    }
+                }
+            }
 
 
+    }//绑定GridView4数据源
+
+  
+    protected void btnGrid4Save_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        int index = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
+        string[] value = { GridView4.DataKeys[index].Value.ToString(), ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePlanID.Value };
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[index].Value.ToString() + "' and PROD_PLAN = '" + hidePlanID.Value + "'");
+        opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
+        bindGrid4();
+
+    }
+    protected void listpath_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            for (int i = 0; i < GridView4.Rows.Count; i++)
+            {
+                DataSet set = opt.CreateDataSetOra("select * from HT_PUB_PATH_NODE where SECTION_CODE ='" + GridView4.DataKeys[i].Value.ToString() + "' and is_del = '0'");
+                DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+                string pathcode = list.SelectedValue;
+                if (set != null && set.Tables[0].Rows.Count > 0)
+                {
+                    if (pathcode.Length < set.Tables[0].Rows.Count)
+                        pathcode = pathcode.PadRight(set.Tables[0].Rows.Count, '0');
+                    for (int j = 0; j < set.Tables[0].Rows.Count; j++)
+                    {
+                        CheckBox ck = new CheckBox();
+                        // ck.Enabled = false;               
+                        ck.Text = set.Tables[0].Rows[j]["NODENAME"].ToString();
+                        GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                        if (pathcode.Length > 0)
+                            ck.Checked = (pathcode.Substring(j, 1) == "1");
+                        else
+                            ck.Checked = false;
+                    }
+                }
+            }
+        }
+        catch (Exception ee)
+        {
+        }
+
+    }
+    protected void btnSavePath_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
+        for (int i = 0; i < GridView4.Rows.Count; i++)
+        {
+            string[] value = { GridView4.DataKeys[i].Value.ToString(), ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePlanID.Value };
+            opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[i].Value.ToString() + "' and PROD_PLAN = '" + hidePlanID.Value + "'");
+            opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
+        }
+        bindGrid4();
+    }
 
 }

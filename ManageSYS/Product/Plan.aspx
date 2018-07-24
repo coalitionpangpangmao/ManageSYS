@@ -94,6 +94,11 @@
                                             OnClick="btnFLow_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                 <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnPath" runat="server" Text="路径设置" class="btn1 auth" OnClick="btnPath_Click" Width ="75px"   />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
@@ -255,6 +260,59 @@
             </asp:UpdatePanel>
             </div>           
         </div>
+
+        <div class="shade" id="pathinfo">
+                <div class="pathinfo">
+                    <div class="tiphead">
+                        <span>工艺路径配置</span><a onclick="$('.shade').fadeOut(100);"></a>
+                      
+                    </div>
+                    <div class="gridinfo">                       
+                    <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:GridView ID="GridView4" runat="server" class="grid" DataKeyNames="section_code"
+                                AutoGenerateColumns="False">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="工艺段">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
+                                                CssClass="tbinput" Enabled="False" Width="150px"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="路径选择">
+                                        <ItemTemplate>
+                                            <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="200px"
+                                                OnSelectedIndexChanged="listpath_SelectedIndexChanged" AutoPostBack="True">
+                                            </asp:DropDownList>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="路径详情">
+                                        <ItemTemplate>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="操作">
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGrid4Save" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnGrid4Save_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <HeaderStyle CssClass="gridheader" />
+                                <RowStyle CssClass="gridrow" />
+                                 <AlternatingRowStyle CssClass="gridalterrow" />
+                            </asp:GridView>                         
+                        </ContentTemplate>
+                        <Triggers>
+                           
+                            <asp:AsyncPostBackTrigger ControlID="GridView4" />
+                            <asp:AsyncPostBackTrigger ControlID="btnSavePath" />
+                            <asp:AsyncPostBackTrigger ControlID ="GridView1" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
+    <div class ="gridtools">   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>
+             </div>
+                   
+            </div>
         <script type="text/javascript">
             $("#usual1 ul").idTabs(); 
         </script>
