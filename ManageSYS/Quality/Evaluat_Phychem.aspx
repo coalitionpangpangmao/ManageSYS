@@ -19,8 +19,25 @@
             $('#tabtop3').parent().hide();
             $('#btnPrint').hide();
         });   
-     
+        function html2Excel(Area) {
+            try {
+                var oRangeRef = document.body.createTextRange();
+                oRangeRef.moveToElementText(document.getElementById(Area));
+                //oRangeRef.select();
+                oRangeRef.execCommand("Copy");
 
+                var oXL = new ActiveXObject("Excel.Application");
+                var oWB = oXL.Workbooks.Add;
+                var oSheet = oWB.ActiveSheet;
+                oSheet.Paste();
+                oXL.Visible = true;
+                oSheet = null;
+                oWB = null;
+                oXL = null;
+            } catch (e) {
+                alert(e.description)
+            }
+        }
     </script>
 </head>
 <body>
@@ -45,7 +62,8 @@
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input id="btnPrint" type="button" value="打印" class ="btnpatch"  onclick ="$('#report').printArea();"/>
-                           
+                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input id="btnExport" type="button" value="导出" class ="btnset"  onclick ="javascript: html2Excel('report');"/>
                         </td>
 
                     </tr>

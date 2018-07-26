@@ -399,13 +399,13 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     protected void btnFLow_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
-        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string ID = GridView1.DataKeys[rowIndex].Value.ToString();
+
+        string ID = txtCode.Text;
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "", "$('#flowinfo').fadeIn(200);", true);
     }
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
     {

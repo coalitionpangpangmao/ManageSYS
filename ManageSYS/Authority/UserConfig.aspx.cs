@@ -29,7 +29,39 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        GridView1.PageIndex = e.NewPageIndex;
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
         bindData();
     }
     protected void ck_CheckedChanged(object sender, EventArgs e)
@@ -113,8 +145,9 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
  	opt.UpDateOra("delete from ht_svr_user  where ID = '" + txtID.Text + "'");
+    string userPwd = txtPswd.Text ==""?opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'","password"):  MSYS.Security.Encrypt.GetMD5String(txtPswd.Text);
         string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE" };
-        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtPswd.Text, txtEmail.Text, listApt.SelectedValue,  Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };
+        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };
         if(opt.InsertData(seg, value, "ht_svr_user")!="Success")
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户失败， 数据值：" + string.Join(" ", value));
         else

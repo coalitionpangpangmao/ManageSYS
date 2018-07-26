@@ -75,7 +75,7 @@
                                 <ContentTemplate>
                 <table class="dflist">
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="listtitle">
                                 工艺标准信息<span style="position: relative; float: right">
                                 审批状态：<asp:DropDownList ID="listAprv" runat="server" CssClass="drpdwnlist" Width = "80px" Enabled="False"> </asp:DropDownList>
@@ -91,7 +91,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">                           
+                        <td>                           
                                     <table class="tablelist">
                                         <tbody>
                                             <tr>
@@ -186,7 +186,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="listtitle">
                                 从标准
                                 <asp:DropDownList ID="listtech" runat="server" CssClass="drpdwnlist">
@@ -309,7 +309,7 @@
     <!--mainright end-->
     <div class="aprvinfo" id="flowinfo">
         <div class="tiptop">
-            <span>审批流程详情</span><a onclick="Aprvlisthide()"></a></div>
+            <span>审批流程详情</span><a onclick="$('#flowinfo').fadeOut(100);"></a></div>
         <div class="flowinfo">
             <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -320,7 +320,7 @@
                     </asp:GridView>
                 </ContentTemplate>
                 <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                    <asp:AsyncPostBackTrigger ControlID="btnFlow" />
                 </Triggers>
             </asp:UpdatePanel>
         </div>

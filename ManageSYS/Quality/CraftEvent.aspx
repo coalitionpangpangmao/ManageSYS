@@ -61,7 +61,7 @@
                         </div>
 
 
-                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="10" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="10" AutoGenerateColumns="False"
                             DataKeyNames="id,type">
                             <Columns>
                                 <asp:TemplateField>
@@ -82,19 +82,32 @@
                                         <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:BoundField DataField="minus_score" HeaderText="扣分" />
+                                <asp:BoundField DataField="minus_score" HeaderText="扣分" />
                                 <asp:TemplateField HeaderText="操作">
                                     <ItemTemplate>
-                                        <asp:Button ID="btngrid1Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid1Ignore_Click"/>
-                                        <asp:Button ID="btngrid1Sure" runat="server" Text="确认" CssClass="btn1"  OnClick="btngrid1Sure_Click"/>
-                                          <asp:Button ID="btngrid1fdback" runat="server" Text="反馈" CssClass="btn1"  OnClick="btngrid1fdback_Click"/>
-                                          <asp:Button ID="btngrid1done" runat="server" Text="完成" CssClass="btn1"  OnClick="btngrid1done_Click"/>
+                                        <asp:Button ID="btngrid1Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid1Ignore_Click" />
+                                        <asp:Button ID="btngrid1Sure" runat="server" Text="确认" CssClass="btn1" OnClick="btngrid1Sure_Click" />
+                                        <asp:Button ID="btngrid1fdback" runat="server" Text="反馈" CssClass="btn1" OnClick="btngrid1fdback_Click" />
+                                        <asp:Button ID="btngrid1done" runat="server" Text="完成" CssClass="btn1" OnClick="btngrid1done_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
+                            <PagerStyle CssClass="gridpager" />
+                            <PagerTemplate>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+                            </PagerTemplate>
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
@@ -119,7 +132,7 @@
                         </div>
 
 
-                        <asp:GridView ID="GridView2" runat="server" class="grid"  AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="10" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="10" AutoGenerateColumns="False"
                             DataKeyNames="ID,inspect_code">
                             <Columns>
                                 <asp:TemplateField>
@@ -143,8 +156,8 @@
                                     <ItemTemplate>
                                         <asp:Button ID="btngrid2Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid2Ignore_Click" />
                                         <asp:Button ID="btngrid2Sure" runat="server" Text="确认" CssClass="btn1" OnClick="btngrid2Sure_Click" />
-                                          <asp:Button ID="btngrid2fdback" runat="server" Text="反馈" CssClass="btn1"  OnClick="btngrid2fdback_Click"/>
-                                          <asp:Button ID="btngrid2done" runat="server" Text="完成" CssClass="btn1"  OnClick="btngrid2done_Click"/>
+                                        <asp:Button ID="btngrid2fdback" runat="server" Text="反馈" CssClass="btn1" OnClick="btngrid2fdback_Click" />
+                                        <asp:Button ID="btngrid2done" runat="server" Text="完成" CssClass="btn1" OnClick="btngrid2done_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
@@ -153,6 +166,19 @@
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
+                              <PagerStyle CssClass="gridpager" />
+                            <PagerTemplate>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+                            </PagerTemplate>
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>

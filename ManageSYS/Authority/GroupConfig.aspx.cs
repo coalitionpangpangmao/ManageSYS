@@ -31,8 +31,8 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
 
     protected void btnAdds_Click(object sender, EventArgs e)
     {
-        try
-        {
+        GridView1.PageIndex = GridView1.PageCount;
+      
             string query = "select t.F_ID as 权限ID,t.F_TYPE as 权限类型, t.f_pid as 父节点名,t.f_menu as 权限名称,t.f_mapid as Mapping ,t.F_DESCRIPT as 描述 from ht_svr_sys_menu t   where t.is_del = '0'  order by t.F_ID";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -56,36 +56,71 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
             GridView1.DataBind();
             if (data != null && data.Rows.Count > 0)
             {
-                for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+                for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Rows.Count; i++)
                 {
+                    int j = i - GridView1.PageSize * GridView1.PageIndex;
                     DataRowView mydrv = data.DefaultView[i];
+                    GridViewRow row = GridView1.Rows[j];
+                    ((DropDownList)row.FindControl("listType")).SelectedValue = mydrv["权限类型"].ToString();
 
-                    ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue = mydrv["权限类型"].ToString();
-
-                    ((TextBox)GridView1.Rows[i].FindControl("txtID")).Text = mydrv["权限ID"].ToString();
-                    ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
-                    opt.bindDropDownList((DropDownList)GridView1.Rows[i].FindControl("listMap"), "select distinct F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
-                    ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
-                    ((DropDownList)GridView1.Rows[i].FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
-                    ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
+                    ((TextBox)row.FindControl("txtID")).Text = mydrv["权限ID"].ToString();
+                    ((DropDownList)row.FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
+                    opt.bindDropDownList((DropDownList)row.FindControl("listMap"), "select distinct F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
+                    ((TextBox)row.FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
+                    ((DropDownList)row.FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
+                    ((TextBox)row.FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
                     if (mydrv["权限类型"].ToString() == "0")
                     {
-                        ((Button)GridView1.Rows[i].FindControl("btnSave")).Visible = false;
-                        ((DropDownList)GridView1.Rows[i].FindControl("listType")).Enabled = false;
-                        ((TextBox)GridView1.Rows[i].FindControl("txtID")).Enabled = false;
-                        ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).Enabled = false;
-                        ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Enabled = false;
-                        ((DropDownList)GridView1.Rows[i].FindControl("listMap")).Enabled = false;
-                        ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Enabled = false;
+                        ((Button)row.FindControl("btnSave")).Visible = false;
+                        ((DropDownList)row.FindControl("listType")).Enabled = false;
+                        ((TextBox)row.FindControl("txtID")).Enabled = false;
+                        ((DropDownList)row.FindControl("listPrt")).Enabled = false;
+                        ((TextBox)row.FindControl("txtMenu")).Enabled = false;
+                        ((DropDownList)row.FindControl("listMap")).Enabled = false;
+                        ((TextBox)row.FindControl("txtDscrp")).Enabled = false;
                     }
 
                 }
             }
-        }
-        catch (Exception ee)
+      
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
         {
-            Response.Write(ee.Message);
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
         }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindData();
     }
     protected void bindData()
     {
@@ -96,31 +131,33 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                DataRowView mydrv = data.Tables[0].DefaultView[i];
-
-                ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue = mydrv["权限类型"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtID")).Text = mydrv["权限ID"].ToString();
-                ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
-
-                opt.bindDropDownList((DropDownList)GridView1.Rows[i].FindControl("listMap"), "select F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
-                ((DropDownList)GridView1.Rows[i].FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
-                if (mydrv["权限类型"].ToString() == "0")
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize *( GridView1.PageIndex+1)&&i<data.Tables[0].Rows.Count; i++)
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnSave")).Visible = false;
-                    ((DropDownList)GridView1.Rows[i].FindControl("listType")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtID")).Enabled = false;
-                    ((DropDownList)GridView1.Rows[i].FindControl("listPrt")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtMenu")).Enabled = false;
-                    ((DropDownList)GridView1.Rows[i].FindControl("listMap")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtDscrp")).Enabled = false;
+                    int j = i - GridView1.PageSize * GridView1.PageIndex;
+                    DataRowView mydrv = data.Tables[0].DefaultView[i];
+                    GridViewRow row = GridView1.Rows[j];
+                    ((DropDownList)row.FindControl("listType")).SelectedValue = mydrv["权限类型"].ToString();
+
+                    ((TextBox)row.FindControl("txtID")).Text = mydrv["权限ID"].ToString();
+                    ((DropDownList)row.FindControl("listPrt")).SelectedValue = mydrv["父节点名"].ToString();
+                    opt.bindDropDownList((DropDownList)row.FindControl("listMap"), "select distinct F_MAPID,URL  from ht_svr_sys_menu r left join ht_inner_map  t on r.f_mapid = t.mapid where r.is_del = '0' and  r.f_pid = '" + mydrv["父节点名"].ToString() + "'", "URL", "F_MAPID");
+                    ((TextBox)row.FindControl("txtMenu")).Text = mydrv["权限名称"].ToString();
+                    ((DropDownList)row.FindControl("listMap")).SelectedValue = mydrv["Mapping"].ToString();
+                    ((TextBox)row.FindControl("txtDscrp")).Text = mydrv["描述"].ToString();
+                    if (mydrv["权限类型"].ToString() == "0")
+                    {
+                        ((Button)row.FindControl("btnSave")).Visible = false;
+                        ((DropDownList)row.FindControl("listType")).Enabled = false;
+                        ((TextBox)row.FindControl("txtID")).Enabled = false;
+                        ((DropDownList)row.FindControl("listPrt")).Enabled = false;
+                        ((TextBox)row.FindControl("txtMenu")).Enabled = false;
+                        ((DropDownList)row.FindControl("listMap")).Enabled = false;
+                        ((TextBox)row.FindControl("txtDscrp")).Enabled = false;
+                    }
+
                 }
             }
-        }
-
+       
     }
 
 

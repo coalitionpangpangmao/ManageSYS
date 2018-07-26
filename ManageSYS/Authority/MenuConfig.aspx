@@ -104,7 +104,7 @@
                     <asp:Button ID="btnAdds" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdds_Click" />
                 </span>
             </div>
-            <div id="gridPanel" onscroll="saveScroll()" style="height: 300px; overflow: scroll">
+            <div id="gridPanel" onscroll="saveScroll()" style="height: 350px; overflow: scroll">
                 <asp:UpdatePanel ID="updtpanel1" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
