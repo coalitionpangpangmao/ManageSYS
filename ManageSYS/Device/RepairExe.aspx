@@ -50,7 +50,7 @@
             <div class="framelist">
                 <div class="listtitle">
                     查询条件<span style="position: relative; float: right">
-                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" />
+                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                     </span>
                 </div>
                 <table class="tablelist">
@@ -185,7 +185,7 @@
                                         </td>
                                            <td>操作时长</td>
                                         <td>
-                                         <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1"  Width = "220px"></asp:TextBox>
+                                         <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1" ></asp:TextBox>
                                         </td>
                                     </tr>                                  
                                     

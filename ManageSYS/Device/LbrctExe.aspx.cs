@@ -14,7 +14,7 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
         if (!IsPostBack)
         {
             txtStart.Text = System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd");
-            txtStop.Text = System.DateTime.Now.AddDays(15).ToString("yyyy-MM-dd");         
+            txtStop.Text = System.DateTime.Now.AddDays(45).ToString("yyyy-MM-dd");         
             bindGrid1();
 
         }

@@ -16,7 +16,9 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'", "EQ_NAME", "IDKEY");
             opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t ", "name", "ID");
-            
+            MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+            txtOpttime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
+            listOptor.SelectedValue = user.id;          
           
         }
  

@@ -309,7 +309,7 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-    <div class ="gridtools">   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>
+    <div >   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>
              </div>
                    
             </div>

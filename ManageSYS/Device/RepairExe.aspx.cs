@@ -14,7 +14,7 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
         if (!IsPostBack)
         {
             txtStart.Text = System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd");
-            txtStop.Text = System.DateTime.Now.AddDays(15).ToString("yyyy-MM-dd");
+            txtStop.Text = System.DateTime.Now.AddDays(45).ToString("yyyy-MM-dd");
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'", "EQ_NAME", "IDKEY");
             opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t ", "name", "ID");
