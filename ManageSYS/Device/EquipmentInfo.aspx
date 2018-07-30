@@ -17,10 +17,11 @@
                 type: "post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: "EquipmentInfo.aspx/initTree",
-                success: function (data) {                  
+                url: "../Response/EQ_InfoHandler.ashx",
+                success: function (data) {
+                    debugger;
                     $("#treenav").tree({
-                        data: JSON.parse(data.d),
+                        data: data,
                         lines: true,
                         onClick: function (node) {                          
                             $('#tabs').tabs('select', '设备列表');
@@ -29,13 +30,13 @@
                         }
                     });
                     $('#txtCLS').combotree({
-                        data: JSON.parse(data.d),                         
+                        data: data,
                         valueField:'id',   
                         textField:'text'  
                     });
                    
                     $('#txtPrtnode').combotree({
-                        data: JSON.parse(data.d),
+                        data: data,
                         valueField: 'id',
                         textField: 'text'
                     });
@@ -53,10 +54,10 @@
                 type: "post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: "EquipmentInfo.aspx/initTree",
+                url: "../Response/EQ_InfoHandler.ashx",
                 success: function (data) { 
                     $('#txtCLS').combotree({
-                        data: JSON.parse(data.d),
+                        data: data,
                         valueField: 'id',
                         textField: 'text'
                     });

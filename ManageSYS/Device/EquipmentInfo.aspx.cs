@@ -5,10 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-using System.Web.Services;
 using System.IO;
 using System.Text;
-using System.Web.Script.Serialization;
+
 public partial class Device_EquipmentInfo :MSYS.Web.BasePage
 {   
     protected void Page_Load(object sender, EventArgs e)
@@ -267,15 +266,6 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
         ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "", "togtreeview();", true);
     }
 
-    [WebMethod]
-    public static string initTree()
-    {       
-        List<MSYS.Data.EquipCLS> equipcls = new MSYS.Data.EquipCLS("0").children;
-        
-        var javaScriptSerializer = new JavaScriptSerializer();
-        var responseData = javaScriptSerializer.Serialize(equipcls);
-        return responseData;
-       
-    }
+
   
 }
