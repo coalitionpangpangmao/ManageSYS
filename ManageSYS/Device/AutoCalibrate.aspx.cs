@@ -50,6 +50,11 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
     /// <summary>
     /// /tab2
     /// </summary>
+     protected DataSet statusbind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select ID, Name from ht_inner_eqexe_status order by ID ");
+    }
     protected DataSet sectionbind()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();

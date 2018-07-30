@@ -170,6 +170,8 @@ h2{font-weight:normal;}
 .btnset{border:solid 1px #a7b5bc;width:80px;height:35px; background:url(../images/t05.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 .btnhide{ display: none;}
 .btnpatch{border:solid 1px #a7b5bc;width:80px;height:35px; background:url(../images/leftico03.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
+.btndone{border:solid 1px #a7b5bc;width:80px;height:35px; background:url(../images/leftico01.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
+
 /* 状态框 */
 .labstatu{height: 20px; background: #993333;  font-size: 12px; font-weight: bold;color: #fff;
     border-radius: 10px;    line-height: 20px;}

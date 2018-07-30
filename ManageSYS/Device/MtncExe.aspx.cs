@@ -59,7 +59,11 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
     {
         bindGrid();
     }
-
+    protected DataSet statusbind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select ID, Name from ht_inner_eqexe_status order by ID ");
+    }
 
     protected void btnGrid1View_Click(object sender, EventArgs e)
     {
@@ -121,8 +125,9 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
 
         }
 
-        string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_FAULT", "RECORD", "RESULTS", "CONDITION", "FAULT_ID", "EXE_SEGTIME" };
-        string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtRecord.Text, txtResults.Text, txtCondition.Text, ftID, txtSegcount.Text };
+        string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_FAULT", "RECORD", "RESULTS", "CONDITION", "FAULT_ID", "EXE_SEGTIME","STATUS" };
+        string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtRecord.Text, txtResults.Text, txtCondition.Text, ftID, txtSegcount.Text,"2" };
         opt.UpDateData(seg, value, "HT_EQ_MT_PLAN_DETAIL", "where id = '" + txtCode.Text + "'");
+        bindGrid();
     }
 }

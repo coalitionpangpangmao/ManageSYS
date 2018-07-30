@@ -29,7 +29,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
     protected void bindGrid1()
     {
 
-        string query = "select t.mt_name as 校准计划,(case t.flow_status when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态,(case t.TASK_STATUS when '0' then '未执行' when '1' then '执行中' when '2' then '己完成' else '己过期' end) as 执行状态,t.remark as 备注,t.pz_code from HT_EQ_MCLBR_PLAN t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'";
+        string query = "select t.mt_name as 校准计划, t2.name as 审批状态,t3.name as 执行状态,t.remark as 备注,t.pz_code from HT_EQ_MCLBR_PLAN t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id  left join ht_inner_aprv_status t2 on t2.id = t.flow_status left join ht_inner_eqexe_status t3 on t3.id = t.task_status where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -191,7 +191,11 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         txtdscrpt.Text = "";
         ckModel.Checked = false;
     }
-
+    protected DataSet statusbind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select ID, Name from ht_inner_eqexe_status order by ID ");
+    }
     protected DataSet sectionbind()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -319,32 +323,92 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         data.Rows.Add(value);
         bindGrid2Ctrl(data);
     }
+
+    protected void btnDone_Click(object sender, EventArgs e)//
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        //if (opt.GetSegValue("select flow_status from ht_eq_mclbr_plan where pz_code = '" + txtCode.Text + "'", "flow_status") != "2")
+        //    return;
+        for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+        {
+            if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+            {
+                string ID = GridView2.DataKeys[i].Value.ToString();
+                string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '5'  where ID = '" + ID + "' and status = '4'";
+
+                opt.UpDateOra(query);
+            }
+        }
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '5' where t.main_id = '" + txtCode.Text + "')", "status");
+        if (alter == "1")
+        {
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '5' where PZ_CODE = '" + txtCode.Text + "'");
+            bindGrid1();
+        }
+        bindGrid2(txtCode.Text);
+    }
+
+
+    protected void btnTrack_Click(object sender, EventArgs e)//
+    {
+           MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+           //if (opt.GetSegValue("select flow_status from ht_eq_mclbr_plan where pz_code = '" + txtCode.Text + "'", "flow_status") != "2")
+           //{
+           // ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#dspcthor').hide();", true);
+           //    return;
+           //}
+        for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+        {
+            if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+            {
+                string ID = GridView2.DataKeys[i].Value.ToString();
+                string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '3'  where ID = '" + ID + "' and status = '2'";
+             
+                opt.UpDateOra(query);
+            }
+        }
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '3' where t.main_id = '" + txtCode.Text + "')", "status");
+        if (alter == "1")
+        {
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '3' where PZ_CODE = '" + txtCode.Text + "'");
+            bindGrid1();
+        }
+        bindGrid2(txtCode.Text);
+    }
+
     protected void btnDspcth_Click(object sender, EventArgs e)//
     {
-        try
+
+        bool ck = false;
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        //if (opt.GetSegValue("select flow_status from ht_eq_mclbr_plan where pz_code = '" + txtCode.Text + "'", "flow_status") != "2")
+        //{
+            // ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#dspcthor').hide();", true);
+            //    return;
+        //}
+        for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
         {
-            bool ck = false;
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+            if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
             {
-                if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
-                {
-                    ck = true;
-                    string ID = GridView2.DataKeys[i].Value.ToString();
-                    string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '1' ,RESPONER = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "'";
-                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
-                }
+                ck = true;
+                string ID = GridView2.DataKeys[i].Value.ToString();
+                string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '1' ,RESPONER = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "' and status = '0'";
+
+                opt.UpDateOra(query);
             }
-            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#dspcthor').hide();", true);
-            if (ck == true)
-                bindGrid2(txtCode.Text);
-            else
-                ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "alert('请选择派工任务');", true);
         }
-        catch (Exception ee)
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '1' where t.main_id = '" + txtCode.Text + "'  and t1.is_del = '0')", "status");
+        if (alter == "1")
         {
-            Response.Write(ee.Message);
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '1' where PZ_CODE = '" + txtCode.Text + "'");
+            bindGrid1();
         }
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#dspcthor').hide();", true);
+        if (ck == true)
+            bindGrid2(txtCode.Text);
+        else
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "alert('请选择派工任务');", true);
+
     }
     protected string getType()
     {
@@ -389,14 +453,14 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             ArrayList commandlist = new ArrayList();
             commandlist.Add("delete from HT_EQ_MCLBR_PLAN_detail where ID = '" + id + "'");
-            
+
             string[] seg = { "section", "equipment_id", "point", "exp_finish_time", "remark", "CREATE_TIME", "MAIN_ID" };
 
             string[] value = { ((DropDownList)row.FindControl("listGridsct")).SelectedValue, ((DropDownList)row.FindControl("listGridEq")).SelectedValue, ((DropDownList)row.FindControl("listGridPoint")).SelectedValue, ((TextBox)row.FindControl("txtGridExptime")).Text, ((TextBox)row.FindControl("txtGridremark")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtCode.Text };
             commandlist.Add(opt.InsertDatastr(seg, value, "HT_EQ_MCLBR_PLAN_detail"));
             opt.TransactionCommand(commandlist);
 
-
+         
         }
         catch (Exception ee)
         {

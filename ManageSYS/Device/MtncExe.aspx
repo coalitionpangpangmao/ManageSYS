@@ -109,13 +109,7 @@
                                         <asp:BoundField DataField="期望完成时间" HeaderText="期望完成时间" />
                                         <asp:TemplateField HeaderText="状态">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px"
-                                                    Enabled="False">
-                                                    <asp:ListItem></asp:ListItem>
-                                                    <asp:ListItem Value='0'>未派工</asp:ListItem>
-                                                    <asp:ListItem Value='1'> 己派工</asp:ListItem>
-                                                    <asp:ListItem Value='2'>己完成</asp:ListItem>
-                                                </asp:DropDownList>
+                                                <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">

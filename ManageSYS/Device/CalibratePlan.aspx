@@ -146,6 +146,9 @@
                             <asp:AsyncPostBackTrigger ControlID="btnGridNew" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID="btnSave" />
+                             <asp:AsyncPostBackTrigger ControlID = "btnDspcth" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnTrack" />
+                             <asp:AsyncPostBackTrigger ControlID ="btnDone" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -227,23 +230,21 @@
                             </tbody>
                         </table>
                         <div class="listtitle" style="margin-top: 10px">
-                            校准计划明细<span style="position: relative; float: right">
+                            校准计划明细
+                             <span style="display:inline-block">
+                                    <asp:DropDownList ID="listModel" runat="server" CssClass="drpdwnlist">
+                                    </asp:DropDownList>                                   
+                                    <asp:Button ID="btnCreate" runat="server" CssClass="btn" Text="从模版生成明细" OnClick="btnCreate_Click" /></span>
+                            <span style="position: relative; float: right">
                                 <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                 <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                 <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
                                 <input id="btnDispatch" type="button" value="派工"  class = "btnpatch" onclick = "patchClick()"; />
+                                  <asp:Button ID="btnTrack" runat="server" CssClass="btnview auth" Text="跟踪" OnClick="btnTrack_Click" />
+                                   <asp:Button ID="btnDone" runat="server" CssClass="btndone auth" Text="完成" OnClick="btnDone_Click" />
                             </span>
                         </div>
-                        <table>
-                            <tr>
-                                <td height="30px" align="center">
-                                    <asp:DropDownList ID="listModel" runat="server" CssClass="drpdwnlist">
-                                    </asp:DropDownList>
-                                    &nbsp;&nbsp;
-                                    <asp:Button ID="btnCreate" runat="server" CssClass="btn" Text="从模版生成明细" OnClick="btnCreate_Click" />
-                                </td>
-                            </tr>
-                        </table>
+                        
                         <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                             DataKeyNames="ID">
                             <Columns>
@@ -277,12 +278,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False">
-                                            <asp:ListItem></asp:ListItem>
-                                            <asp:ListItem Value='0'>未派工</asp:ListItem>
-                                            <asp:ListItem Value='1'> 己派工</asp:ListItem>
-                                            <asp:ListItem Value='2'>己完成</asp:ListItem>
-                                        </asp:DropDownList>
+                                         <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="备注">
@@ -309,9 +305,11 @@
                     <asp:AsyncPostBackTrigger ControlID = "GridView2" />
                      <asp:AsyncPostBackTrigger ControlID = "btnAdd" />
                     <asp:AsyncPostBackTrigger ControlID = "btnCkAll" />
-                    <asp:AsyncPostBackTrigger ControlID = "btnDelSel" />
-                    <asp:AsyncPostBackTrigger ControlID = "btnDspcth" />
+                    <asp:AsyncPostBackTrigger ControlID = "btnDelSel" />                    
                     <asp:AsyncPostBackTrigger ControlID = "btnGridNew" />
+                        <asp:AsyncPostBackTrigger ControlID = "btnDspcth" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnTrack" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnDone" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

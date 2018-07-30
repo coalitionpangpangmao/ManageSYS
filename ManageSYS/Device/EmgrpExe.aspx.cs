@@ -39,6 +39,11 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
             opt.InsertData(seg, value, "HT_EQ_RP_PLAN_DETAIL");
         }
     }
+    protected DataSet statusbind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select ID, Name from ht_inner_eqexe_status order by ID ");
+    }
     protected void btnSave_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
