@@ -119,7 +119,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
   
     protected void bindData()
     {
-        string query = "select  F_CODE   as 组织机构代码,F_NAME  as 组织机构名称,F_PRITYPE  as 类型,F_WEIGHT  as 权重,F_PARENTID  as 父级标识,F_KEY  as 主数据标识,F_ROLE as 默认角色 from HT_SVR_ORG_GROUP order by F_CODE";
+        string query = "select  r.F_CODE   as 组织机构代码,r.F_NAME  as 组织机构名称,s.f_name  as 父级,t.f_role as 默认角色,r.F_PRITYPE  as 类型,r.F_WEIGHT  as 权重 from HT_SVR_ORG_GROUP r left join ht_svr_org_group s  on r.f_parentid = s.f_code left join ht_svr_sys_role t on t.f_id = r.f_role order by r.F_CODE";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();

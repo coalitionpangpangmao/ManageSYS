@@ -224,9 +224,11 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                 }
                 else
                 {
-                    query = "insert into HT_SVR_SYS_Role(F_ROLE,F_RIGHT,F_TIME)values('"
+                    string code = opt.GetSegValue("select role_id_seq.nextval as code from dual", "CODE").PadLeft(3, '0');
+                    query = "insert into HT_SVR_SYS_Role(F_ROLE,F_RIGHT,F_ID,F_TIME)values('"
                         + Role.Text + "','"
                         + Right.Text + "','"
+                        + code + "','"
                         + DateTime.Now.ToString("yyyy-MM-dd") + "')";
                     opt.UpDateOra(query);
                     BindList();

@@ -14,15 +14,15 @@ public partial class left : System.Web.UI.Page
         {
             if (Session["User"] != null)
             {
-                string userID = ((MSYS.Data.SysUser)Session["User"]).id;
-                SysHtml = initLevel1Menu(userID);
+                string userRoleID = ((MSYS.Data.SysUser)Session["User"]).UserRoleID;
+                SysHtml = initLevel1Menu(userRoleID);
             }
         }
     }
-    protected string initLevel1Menu(string userID)
+    protected string initLevel1Menu(string RoleID)
     {
         string resultHtml = " \t<ul id='navigation'>\r\n";
-        string query = "select distinct q.name as prtName ,q.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid and q.menulevel = '1' where   r.ID = '" + userID + "' and q.id is not null union select distinct q1.name as prtName,q1.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid and q.menulevel = '2' left join ht_svr_prt_menu q1 on q1.id = q.pid   where   r.ID = '" + userID + "' and q1.id is not null order by prtID";
+        string query = "select distinct q.name as prtName ,q.ID as prtID from  ht_svr_sys_role t  left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid and q.menulevel = '1' where    t.f_id = '" + RoleID + "' and q.id is not null union select distinct q1.name as prtName,q1.ID as prtID from  ht_svr_sys_role t  left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid and q.menulevel = '2' left join ht_svr_prt_menu q1 on q1.id = q.pid   where  t.f_id = '" + RoleID + "'  and q1.id is not null order by prtID";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            DataSet data = opt.CreateDataSetOra(query);
            if (data != null && data.Tables[0].Rows.Count > 0)
@@ -30,7 +30,7 @@ public partial class left : System.Web.UI.Page
                foreach (DataRow row in data.Tables[0].Rows)
                {                  
                    resultHtml += " \t\t<li> <a class='head'>" + row["prtName"].ToString() + "</a>\r\n";
-                   resultHtml += initLevel2Menu(row["prtID"].ToString(), userID);                   
+                   resultHtml += initLevel2Menu(row["prtID"].ToString(), RoleID);                   
                    resultHtml += "\t\t</li>\r\n";
                }
            }
@@ -39,21 +39,21 @@ public partial class left : System.Web.UI.Page
 
     }
 
-    protected string initLevel2Menu(string prtID, string userID)
+    protected string initLevel2Menu(string prtID, string roleID)
     {
         string resultHtml = "";
-        string query = "select distinct r.ID as userID,t.f_role ,t.f_right,q.name as prtName,q.menulevel ,q.ID as prtID from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid  and q.pid = '" + prtID + "'  where  q.menulevel = '2' and r.ID = '" + userID + "' order by q.ID";
+        string query = "select distinct t.f_role ,t.f_right,q.name as prtName,q.menulevel ,q.ID as prtID from  ht_svr_sys_role t left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_svr_prt_menu q on q.id = s.f_pid  and q.pid = '" + prtID + "'  where  q.menulevel = '2' and t.f_id = '" + roleID + "' order by q.ID";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         resultHtml += "<ul style='height: 300px;'>\r\n";
-        resultHtml += addChildMenu(prtID, userID);
+        resultHtml += addChildMenu(prtID, roleID);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             foreach (DataRow row in data.Tables[0].Rows)
             {              
                 resultHtml += " <li><cite></cite><a class='subhead'>" + row["prtName"].ToString() + "</a>\r\n";
                 resultHtml += "<ul>\r\n";
-                resultHtml += addChildMenu(row["prtID"].ToString(), userID);
+                resultHtml += addChildMenu(row["prtID"].ToString(), roleID);
                 resultHtml += "</ul>\r\n";
                 resultHtml += "</li>\r\n";
             }          
@@ -63,10 +63,10 @@ public partial class left : System.Web.UI.Page
         return resultHtml;
 
     }
-    protected string addChildMenu(string prtID,string userID)
+    protected string addChildMenu(string prtID,string roleID)
     {
           string menu = "";
-          string query = "select distinct r.ID,r.name,t.f_role ,t.f_right,s.f_pid ,s.f_menu,q.url ,s.f_id from ht_SVR_USER r left join ht_svr_sys_role t on r.role = t.f_id left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_inner_map q on q.mapid = s.f_mapid where   r.ID = '" + userID + "' and s.f_pid = '" + prtID + "' order by s.f_id";
+          string query = "select distinct t.f_role ,t.f_right,s.f_pid ,s.f_menu,q.url ,s.f_id from  ht_svr_sys_role t left join ht_svr_sys_menu s on substr(t.f_right,to_number(s.f_ID),1) ='1' and s.f_type = '0' and s.is_del = '0'  left join ht_inner_map q on q.mapid = s.f_mapid where   t.f_id = '" + roleID + "'  and s.f_pid = '" + prtID + "' order by s.f_id";
           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            DataSet data = opt.CreateDataSetOra(query);
            if (data != null && data.Tables[0].Rows.Count > 0)
