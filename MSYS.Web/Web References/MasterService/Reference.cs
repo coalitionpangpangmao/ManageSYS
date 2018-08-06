@@ -29,13 +29,17 @@ namespace MSYS.Web.MasterService {
     [System.Web.Services.WebServiceBindingAttribute(Name="MisMasterDataServiceInterfaceServiceSoapBinding", Namespace="http://webservice.dhcc.com/")]
     public partial class MisMasterDataServiceInterfaceService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
-        private System.Threading.SendOrPostCallback getMaterialInfoOperationCompleted;
-        
         private System.Threading.SendOrPostCallback getEquiInfoOperationCompleted;
         
         private System.Threading.SendOrPostCallback getMarbasclassInfoOperationCompleted;
         
+        private System.Threading.SendOrPostCallback getFormulaInfoOperationCompleted;
+        
         private System.Threading.SendOrPostCallback getDeptInfoOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getMaterialInfoOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getProdInfoOperationCompleted;
         
         private System.Threading.SendOrPostCallback getUserInfoOperationCompleted;
         
@@ -78,49 +82,25 @@ namespace MSYS.Web.MasterService {
         }
         
         /// <remarks/>
-        public event getMaterialInfoCompletedEventHandler getMaterialInfoCompleted;
-        
-        /// <remarks/>
         public event getEquiInfoCompletedEventHandler getEquiInfoCompleted;
         
         /// <remarks/>
         public event getMarbasclassInfoCompletedEventHandler getMarbasclassInfoCompleted;
         
         /// <remarks/>
+        public event getFormulaInfoCompletedEventHandler getFormulaInfoCompleted;
+        
+        /// <remarks/>
         public event getDeptInfoCompletedEventHandler getDeptInfoCompleted;
         
         /// <remarks/>
+        public event getMaterialInfoCompletedEventHandler getMaterialInfoCompleted;
+        
+        /// <remarks/>
+        public event getProdInfoCompletedEventHandler getProdInfoCompleted;
+        
+        /// <remarks/>
         public event getUserInfoCompletedEventHandler getUserInfoCompleted;
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string getMaterialInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
-            object[] results = this.Invoke("getMaterialInfo", new object[] {
-                        contentXml});
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getMaterialInfoAsync(string contentXml) {
-            this.getMaterialInfoAsync(contentXml, null);
-        }
-        
-        /// <remarks/>
-        public void getMaterialInfoAsync(string contentXml, object userState) {
-            if ((this.getMaterialInfoOperationCompleted == null)) {
-                this.getMaterialInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetMaterialInfoOperationCompleted);
-            }
-            this.InvokeAsync("getMaterialInfo", new object[] {
-                        contentXml}, this.getMaterialInfoOperationCompleted, userState);
-        }
-        
-        private void OngetMaterialInfoOperationCompleted(object arg) {
-            if ((this.getMaterialInfoCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getMaterialInfoCompleted(this, new getMaterialInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -185,6 +165,36 @@ namespace MSYS.Web.MasterService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string getFormulaInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
+            object[] results = this.Invoke("getFormulaInfo", new object[] {
+                        contentXml});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getFormulaInfoAsync(string contentXml) {
+            this.getFormulaInfoAsync(contentXml, null);
+        }
+        
+        /// <remarks/>
+        public void getFormulaInfoAsync(string contentXml, object userState) {
+            if ((this.getFormulaInfoOperationCompleted == null)) {
+                this.getFormulaInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetFormulaInfoOperationCompleted);
+            }
+            this.InvokeAsync("getFormulaInfo", new object[] {
+                        contentXml}, this.getFormulaInfoOperationCompleted, userState);
+        }
+        
+        private void OngetFormulaInfoOperationCompleted(object arg) {
+            if ((this.getFormulaInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getFormulaInfoCompleted(this, new getFormulaInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string getDeptInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
             object[] results = this.Invoke("getDeptInfo", new object[] {
                         contentXml});
@@ -209,6 +219,66 @@ namespace MSYS.Web.MasterService {
             if ((this.getDeptInfoCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getDeptInfoCompleted(this, new getDeptInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string getMaterialInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
+            object[] results = this.Invoke("getMaterialInfo", new object[] {
+                        contentXml});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getMaterialInfoAsync(string contentXml) {
+            this.getMaterialInfoAsync(contentXml, null);
+        }
+        
+        /// <remarks/>
+        public void getMaterialInfoAsync(string contentXml, object userState) {
+            if ((this.getMaterialInfoOperationCompleted == null)) {
+                this.getMaterialInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetMaterialInfoOperationCompleted);
+            }
+            this.InvokeAsync("getMaterialInfo", new object[] {
+                        contentXml}, this.getMaterialInfoOperationCompleted, userState);
+        }
+        
+        private void OngetMaterialInfoOperationCompleted(object arg) {
+            if ((this.getMaterialInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getMaterialInfoCompleted(this, new getMaterialInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string getProdInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
+            object[] results = this.Invoke("getProdInfo", new object[] {
+                        contentXml});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getProdInfoAsync(string contentXml) {
+            this.getProdInfoAsync(contentXml, null);
+        }
+        
+        /// <remarks/>
+        public void getProdInfoAsync(string contentXml, object userState) {
+            if ((this.getProdInfoOperationCompleted == null)) {
+                this.getProdInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetProdInfoOperationCompleted);
+            }
+            this.InvokeAsync("getProdInfo", new object[] {
+                        contentXml}, this.getProdInfoOperationCompleted, userState);
+        }
+        
+        private void OngetProdInfoOperationCompleted(object arg) {
+            if ((this.getProdInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getProdInfoCompleted(this, new getProdInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -258,32 +328,6 @@ namespace MSYS.Web.MasterService {
                 return true;
             }
             return false;
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
-    public delegate void getMaterialInfoCompletedEventHandler(object sender, getMaterialInfoCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getMaterialInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getMaterialInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public string Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
-            }
         }
     }
     
@@ -341,6 +385,32 @@ namespace MSYS.Web.MasterService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    public delegate void getFormulaInfoCompletedEventHandler(object sender, getFormulaInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getFormulaInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getFormulaInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void getDeptInfoCompletedEventHandler(object sender, getDeptInfoCompletedEventArgs e);
     
     /// <remarks/>
@@ -352,6 +422,58 @@ namespace MSYS.Web.MasterService {
         private object[] results;
         
         internal getDeptInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    public delegate void getMaterialInfoCompletedEventHandler(object sender, getMaterialInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getMaterialInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getMaterialInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    public delegate void getProdInfoCompletedEventHandler(object sender, getProdInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getProdInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getProdInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
