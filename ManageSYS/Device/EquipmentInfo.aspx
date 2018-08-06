@@ -144,6 +144,11 @@
                                     <ContentTemplate>
                                         <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="设备编号" AllowPaging="True" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
                                             <Columns>
+                                                  <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chk" runat="server" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnGridview" runat="server" Text="设备详情" CssClass="btn1 auth" OnClick="btnGridview_Click"
@@ -188,7 +193,7 @@
                                                 <td class="caption">设备编码
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtIDKey" runat="server" class="dfinput1"></asp:TextBox>
+                                                    <asp:TextBox ID="txtIDKey" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
                                                 </td>
                                                 <td class="caption">分类路径
                                                 </td>
@@ -380,8 +385,12 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="6" align="center">
+                                                    <asp:Button ID="btnAdd1" runat="server"
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
+                                                       <asp:Button ID="btnModify" runat="server" Text="保存" CssClass="btnview  auth" OnClick ="btnModify_Click" />
                                                     <asp:Button ID="btnReset" runat="server" Text="重置" CssClass="btnset"  OnClick ="btnReset_Click"/>
-                                                    <asp:Button ID="btnModify" runat="server" Text="保存" CssClass="btnview  auth" OnClick ="btnModify_Click" />
+                                                 
+
                                                 </td>
                                             </tr>
                                         </tbody>

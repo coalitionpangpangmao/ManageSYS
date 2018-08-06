@@ -273,7 +273,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 query += ",substr(pathcode," + i.ToString() + ",1) as " + row[0].ToString();
                 i++;
             }
-            query += ",SECTION_CODE,pathcode  from ht_pub_path_section where section_code = '" + section + "'";
+            query += ",SECTION_CODE,pathcode  from ht_pub_path_section where section_code = '" + section + "' and is_del = '0'";
             return query;
         }
         else

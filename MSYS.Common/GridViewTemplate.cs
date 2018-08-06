@@ -136,7 +136,7 @@ namespace MSYS.Common
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 opt.UpDateOra("delete from HT_PUB_PATH_SECTION where SECTION_CODE = '" + sectioncode + "' and PATHCODE = '" + opathcode + "'");
                 opt.InsertData(seg, value, "HT_PUB_PATH_SECTION");
-                opt.InsertTlog("", "", "");
+               
 
 
             }
