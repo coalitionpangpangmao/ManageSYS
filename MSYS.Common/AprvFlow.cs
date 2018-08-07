@@ -11,7 +11,7 @@ namespace MSYS.Common
     /// 将审批业务转化为事务操作
     /// </summary>
     public class AprvFlow
-    {  
+    {
         /// <summary>
         /// 传入一个需审批的业务，对业务安审批流程进行分解
         /// </summary>
@@ -27,7 +27,7 @@ namespace MSYS.Common
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             MSYS.Data.SysUser user = (MSYS.Data.SysUser)HttpContext.Current.Session["User"];
-            ArrayList commandlist = new ArrayList();
+            List<String> commandlist = new List<String>();
 
             //插入审批主业务
             string ID = opt.GetSegValue(" select zs18.aprvflow_id_seq.nextval from dual", "nextval");
@@ -78,7 +78,7 @@ namespace MSYS.Common
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             MSYS.Data.SysUser user = (MSYS.Data.SysUser)HttpContext.Current.Session["user"];
-            ArrayList commandlist = new ArrayList();
+            List<String> commandlist = new List<String>();
 
             //1.改变当前审批业务状态
             string[] seg = { "USERID", "USERNAME", "OPINIONTIME", "COMMENTS", "STATUS" };
@@ -86,11 +86,11 @@ namespace MSYS.Common
             commandlist.Add(opt.UpdateStr(seg, value, "HT_PUB_APRV_OPINION", " where id = '" + ID + "'"));
 
             //2.将当前审批业务的下一环节业务置为Enable，提交给相对应的角色
-            string nextID = opt.GetSegValue("select id from ht_pub_aprv_opinion where (gongwen_id,pos) in ( select gongwen_id,to_char(to_number(pos)+1) from ht_pub_aprv_opinion where id= '" + ID + "'", "ID");
-            if(nextID != "")
-            commandlist.Add("update HT_PUB_APRV_OPINION set ISENABLE = '1' where id = '" + nextID + "'");
+            string nextID = opt.GetSegValue("select id from ht_pub_aprv_opinion where (gongwen_id,pos) in ( select gongwen_id,to_char(to_number(pos)+1) from ht_pub_aprv_opinion where id= '" + ID + "')", "ID");
+            if (nextID != "NoRecord")
+                commandlist.Add("update HT_PUB_APRV_OPINION set ISENABLE = '1' where id = '" + nextID + "'");
 
-           //3.从审批主表中匹配审批业务详情，将审批结果在被审批业务中进行反馈
+            //3.从审批主表中匹配审批业务详情，将审批结果在被审批业务中进行反馈
             DataSet data = opt.CreateDataSetOra("select s.id,t.aprv_table,t.aprv_tabseg,t.BUZ_ID,s.BUSIN_ID from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo  s on s.id = r.gongwen_id left join ht_pub_aprv_type t on t.pz_type = s.modulename  where r.id = '" + ID + "'");
             string flowid = data.Tables[0].Rows[0][0].ToString();
             string table = data.Tables[0].Rows[0][1].ToString();
@@ -100,28 +100,28 @@ namespace MSYS.Common
             //如果明细审批单步被拒绝，则整个审批单状态被置为己驳回，被审批业务不通过
             if (keys[1] == "1")
             {
-                commandlist.Add("Update HT_PUB_APRV_FLOWINFO set STATE = '1' where id = '" + flowid + "'");             
+                commandlist.Add("Update HT_PUB_APRV_FLOWINFO set STATE = '1' where id = '" + flowid + "'");
                 //将业务主表的审批字段置为己驳回
-                commandlist.Add("update " + table + " set " + tableseg + " = '1' where " + busid + " = '" + busvalue + "'");               
+                commandlist.Add("update " + table + " set " + tableseg + " = '1' where " + busid + " = '" + busvalue + "'");
             }
             //如果明细审批单所有流程均通过，则整个审批单状态被置为己通过
-            else
+            if ("Success" == opt.TransactionCommand(commandlist))
             {
+
                 data = opt.CreateDataSetOra("select status,GONGWEN_ID from ht_pub_aprv_opinion where pos = (select Max(pos) from ht_pub_aprv_opinion where gongwen_ID = (select gongwen_ID from ht_pub_aprv_opinion where id = '" + ID + "')) and id = '" + ID + "'");
                 if (data != null && data.Tables[0].Rows.Count > 0 && data.Tables[0].Rows[0][0].ToString() == "2")
                 {
-                   
+                    commandlist.Clear();
                     commandlist.Add("Update HT_PUB_APRV_FLOWINFO set STATE = '2' where id = '" + flowid + "'");
                     //将业务主表的审批字段置为己通过
-                    commandlist.Add("update " + table + " set " + tableseg + " = '2' where " + busid + " = '" + busvalue + "'");                   
-                }   
-            }
-            if ("Success" == opt.TransactionCommand(commandlist))
+                    commandlist.Add("update " + table + " set " + tableseg + " = '2' where " + busid + " = '" + busvalue + "'");
+                    opt.TransactionCommand(commandlist);
+                }
                 return true;
-
+            }
             else
                 return false;
-           
+
         }
 
         //public static bool authorize(string ID, string[] keys)//审批后更新表ID为流程号，value分别为USERID  用户id,USERNAME  用户名,COMMENTS  意见内容,OPINIONTIME  意见填写日期,STATUS  状态
@@ -154,7 +154,7 @@ namespace MSYS.Common
         //            data = opt.CreateDataSetOra("select status,GONGWEN_ID from ht_pub_aprv_opinion where pos = (select Max(pos) from ht_pub_aprv_opinion where gongwen_ID = (select gongwen_ID from ht_pub_aprv_opinion where id = '" + ID + "')) and id = '" + ID + "'");
         //            if (data != null && data.Tables[0].Rows.Count > 0 && data.Tables[0].Rows[0][0].ToString() == "2")
         //            {
-        //                ArrayList commandlist = new ArrayList();
+        //                List<String> commandlist = new List<String>();
         //                commandlist.Add("Update HT_PUB_APRV_FLOWINFO set STATE = '2' where id = '" + flowid + "'");
         //                commandlist.Add("update " + table + " set " + tableseg + " = '2' where " + busid + " = '" + busvalue + "'");
         //                opt.TransactionCommand(commandlist);

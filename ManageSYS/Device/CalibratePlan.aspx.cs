@@ -451,7 +451,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             int rowIndex = row.RowIndex;
             string id = GridView2.DataKeys[rowIndex].Value.ToString();
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            ArrayList commandlist = new ArrayList();
+            List<String> commandlist = new List<String>();
             commandlist.Add("delete from HT_EQ_MCLBR_PLAN_detail where ID = '" + id + "'");
 
             string[] seg = { "section", "equipment_id", "point", "exp_finish_time", "remark", "CREATE_TIME", "MAIN_ID" };

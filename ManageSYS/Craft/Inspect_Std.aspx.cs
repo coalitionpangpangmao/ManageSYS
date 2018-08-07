@@ -176,7 +176,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string code = GridView1.DataKeys[rowindex].Value.ToString();
       
-       ArrayList commandlist = new ArrayList();
+       List<String> commandlist = new List<String>();
        commandlist.Add("delete from HT_QLT_INSPECT_STDD where INSPECT_CODE = '" + code + "'");
        string[] seg = { "INSPECT_CODE", "UPPER_VALUE", "LOWER_VALUE", "MINUS_SCORE", "REMARK", "CREATE_ID", "CREATE_TIME" };
        GridViewRow row = GridView1.Rows[rowindex];

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Collections;
 namespace MSYS.Common
 {
     /// <summary>
@@ -134,10 +135,11 @@ namespace MSYS.Common
                 }
                 string[] value = { sectioncode, pathcode, ((TextBox)gvr.FindControl("txt_Pathname")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                opt.UpDateOra("delete from HT_PUB_PATH_SECTION where SECTION_CODE = '" + sectioncode + "' and PATHCODE = '" + opathcode + "'");
-                opt.InsertData(seg, value, "HT_PUB_PATH_SECTION");
-               
 
+                List<String> commandlist = new List<String>();
+                commandlist.Add("delete from HT_PUB_PATH_SECTION where SECTION_CODE = '" + sectioncode + "' and PATHCODE = '" + pathcode + "'");
+                commandlist.Add(opt.InsertDatastr(seg, value, "HT_PUB_PATH_SECTION"));
+                opt.TransactionCommand(commandlist);
 
             }
             catch (Exception ee)

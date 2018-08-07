@@ -73,15 +73,13 @@ namespace MSYS.DAL
                 pool.ReturnDBConnection(myConn);
             }
         }
-
-
-        public string TransactionCommand(ArrayList commandStringList)
+        public string TransactionCommand(List<String> commandStringList)
         {
-           
+
             IFactoryDbPool pool = OracleConnectionSingletion.CreateInstance();
             ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OracleConnectionString"];
             OracleConnectionSingletion.ConnectionString = settings.ConnectionString;
-          
+
             //Borrow the SqlConnection object from the pool
             DbConnection myConn = pool.BorrowDBConnection();
             OracleTransaction m_OraTrans = ((OracleConnection)myConn).BeginTransaction();//创建事务对象
@@ -93,17 +91,17 @@ namespace MSYS.DAL
             try
             {
                 foreach (string commandString in commandStringList)
-                {                   
+                {
                     sqlcom.CommandText = commandString;
                     influenceRowCount += sqlcom.ExecuteNonQuery();
                 }
-               
+
                 m_OraTrans.Commit();
-                return "Success";               
-             
+                return "Success";
+
             }
             catch (Exception ee)
-            {                
+            {
                 m_OraTrans.Rollback();
                 return ee.Message;
             }
@@ -114,5 +112,7 @@ namespace MSYS.DAL
             }
 
         }
+
+      
     }
 }

@@ -70,35 +70,40 @@ public class faultDbHandler : IHttpHandler
     {
         ResponseData datainfo = new ResponseData();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet pointinfo = opt.CreateDataSetOra("select t.para_name,s.upper_limit,s.lower_limit,s.value,s.eer_dev,t.value_tag from  ht_tech_stdd_code r left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code  left join ht_pub_tech_para t on s.para_code = t.para_code where r.prod_code = '" + prodcode + "' and t.para_code = '" + point + "'");
+        DataSet pointinfo;
+        if (prodcode != "NoRecord")
+            pointinfo = opt.CreateDataSetOra("select t.para_name,s.upper_limit,s.lower_limit,s.value,s.eer_dev,t.value_tag from  ht_tech_stdd_code r left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code  left join ht_pub_tech_para t on s.para_code = t.para_code where r.prod_code = '" + prodcode + "' and t.para_code = '" + point + "'");
+        else
+            pointinfo = opt.CreateDataSetOra("select t.para_name,t.value_tag from    ht_pub_tech_para t where t.para_code = '" + point + "'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
         {
             DataRow row = pointinfo.Tables[0].Rows[0];
             string tag = row["value_tag"].ToString();
-            if (tag != "")
-            {
-                datainfo.pointname = row["para_name"].ToString();
+            datainfo.pointname = row["para_name"].ToString();
+            if (pointinfo.Tables[0].Columns.Count >2 )
+            {                
                 datainfo.upper = Convert.ToDouble(row["upper_limit"].ToString());
                 datainfo.lower = Convert.ToDouble(row["lower_limit"].ToString());
                 datainfo.value = Convert.ToDouble(row["value"].ToString());
                 datainfo.errdev = Convert.ToDouble(row["eer_dev"].ToString());
+            }
+            if(tag != "")
+            {
+                 //get rawdata from IHistorian 
+                 MSYS.Common.IHDataOpt ihopt = new MSYS.Common.IHDataOpt();
+                 DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
 
-                // get rawdata from IHistorian 
-                //  IHDataOpt ihopt = new IHDataOpt();
-                //  datainfo.datalist = ihopt.GetData(starttime, endtime, point);
-                //test 
-                DataTable set = opt.CreateDataSetOra("select F_TIME,F_VALUE from ht_svr_login_record t").Tables[0];
-                datainfo.xAxis = new List<string>();
-                datainfo.yAxis = new List<double>();
-                foreach (DataRow srow in set.Rows)
-                {
-                    datainfo.xAxis.Add(srow[0].ToString().Substring(11));
-                    datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
-                }
+                 datainfo.xAxis = new List<string>();
+                 datainfo.yAxis = new List<double>();
+                 foreach (DataRow srow in Rows)
+                 {
+                     datainfo.xAxis.Add(srow[0].ToString().Substring(11));
+                     datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
+                 }
 
                 datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
-
             }
+
         }
         return datainfo;
     }

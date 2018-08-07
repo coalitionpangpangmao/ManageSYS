@@ -252,10 +252,10 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;        
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.UpDateOra("delete from HT_PROD_SHIFTCHG_DETAIL where SHIFT_MAIN_ID = '" + hdID.Value + "' and mater_code = '" + ((DropDownList)GridView2.Rows[rowIndex].FindControl("listMater")).SelectedValue + "'");
+    
         string[] seg = { "SHIFT_MAIN_ID", "mater_code", "mater_vl", "bz_unit", "remark" };
         string[] value = { hdID.Value, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listMater")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtAmount")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtUnit")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtDescpt")).Text };
-        opt.InsertData(seg, value, "HT_PROD_SHIFTCHG_DETAIL");
+        opt.MergeInto(seg, value, 2,"HT_PROD_SHIFTCHG_DETAIL");
     }
        
  

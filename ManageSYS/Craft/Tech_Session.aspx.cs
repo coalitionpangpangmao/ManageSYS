@@ -39,26 +39,20 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
         string str = opt.GetSegValue("select Max(Section_code) as Code from ht_pub_tech_section t", "CODE");
         if (str == "")
             str = "00000";
-        txtCode.Text = "703" + (Convert.ToInt16(str.Substring(3)) + 1).ToString().PadLeft(2, '0');   
+        txtCode.Text = "703" + (Convert.ToInt16(str.Substring(3)) + 1).ToString().PadLeft(2, '0');
+     
     }
 
     protected void btnModify_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_TECH_SECTION where SECTION_CODE = '" + txtCode.Text + "'");
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "SECTION_NAME", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME" };
-            string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-            string condition = " where SECTION_CODE = '" + txtCode.Text + "'";
-            opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", condition);
-        }
-        else
+    
         {
             string[] seg = { "SECTION_CODE", "SECTION_NAME", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME" };
             string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
 
-            opt.InsertData(seg, value, "HT_PUB_TECH_SECTION");
+            opt.MergeInto(seg, value,1, "HT_PUB_TECH_SECTION");
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
         }
     }
     protected void btnDel_Click(object sender, EventArgs e)

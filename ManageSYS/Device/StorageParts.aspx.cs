@@ -219,11 +219,11 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
      protected void btnModify_Click(object sender, EventArgs e)
      {
         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-         opt.UpDateOra("delete from HT_EQ_STG_PICKUP where PZ_CODE = '" + txtPzcode.Text + "'");        
+               
              //生成领用主表记录
          string[] seg = { "PZ_CODE", "CREATE_DEPT_ID", "CREATE_ID", "PICKUP_DATE", "REMARK"};
          string[] value = { txtPzcode.Text, listApt.SelectedValue, listEditor.SelectedValue, txtTime.Text, txtRemark.Text};
-         opt.InsertData(seg, value, "HT_EQ_STG_PICKUP");
+         opt.MergeInto(seg, value,1, "HT_EQ_STG_PICKUP");
          bindGrid1();
          bindGrid2();
 

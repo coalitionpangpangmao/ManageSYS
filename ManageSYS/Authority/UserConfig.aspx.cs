@@ -144,11 +144,11 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
- 	opt.UpDateOra("delete from ht_svr_user  where ID = '" + txtID.Text + "'");
+ 	
     string userPwd = txtPswd.Text ==""?opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'","password"):  MSYS.Security.Encrypt.GetMD5String(txtPswd.Text);
         string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE" };
         string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };
-        if(opt.InsertData(seg, value, "ht_svr_user")!="Success")
+        if(opt.MergeInto(seg, value, 1,"ht_svr_user")!="Success")
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户失败， 数据值：" + string.Join(" ", value));
         else
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户成功， 数据值：" + string.Join(" ", value));

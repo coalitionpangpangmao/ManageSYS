@@ -40,7 +40,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
        string[] seg = {"MATERIAL_CODE","MATERIAL_NAME","MAT_TYPE","MAT_CATEGORY","UNIT_CODE","PK_MATERIAL"," MAT_LEVEL"," MAT_VARIETY","PIECE_WEIGHT"," LAST_UPDATE_TIME","REMARK"};
        string[] value = { txtCode.Text, txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string log_message = opt.InsertData(seg, value, "HT_PUB_MATERIEL")=="Success" ? "物料添加成功":"物料添加失败";
+        string log_message = opt.MergeInto(seg, value,1, "HT_PUB_MATERIEL")=="Success" ? "物料添加成功":"物料添加失败";
         log_message += ",物料信息:" + string.Join(" ", value);
         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         
@@ -48,14 +48,12 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
 
     protected void btnModify_Click(object sender, EventArgs e)
     {
-        string[] seg = {  "MATERIAL_NAME", "MAT_TYPE", "MAT_CATEGORY", "UNIT_CODE", "PK_MATERIAL", " MAT_LEVEL", " MAT_VARIETY", "PIECE_WEIGHT", " LAST_UPDATE_TIME", "REMARK" };
-        string[] value = { txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
-        string condition = " where MATERIAL_CODE = '" + txtCode.Text + "'";
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string log_message = opt.UpDateData(seg, value, "HT_PUB_MATERIEL", condition) =="Success" ? "物料修改成功":"物料修改失败";
-        log_message += ", 物料信息:" + string.Join(" ", value);
-        opt.InsertTlog(Session["UserNmae"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-        
+        string[] seg = { "MATERIAL_CODE", "MATERIAL_NAME", "MAT_TYPE", "MAT_CATEGORY", "UNIT_CODE", "PK_MATERIAL", " MAT_LEVEL", " MAT_VARIETY", "PIECE_WEIGHT", " LAST_UPDATE_TIME", "REMARK" };
+        string[] value = { txtCode.Text, txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_MATERIEL") == "Success" ? "物料添加成功" : "物料添加失败";
+        log_message += ",物料信息:" + string.Join(" ", value);
+        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {

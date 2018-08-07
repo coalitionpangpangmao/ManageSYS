@@ -130,10 +130,10 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                 {
                     prtID = (Convert.ToInt16(opt.GetSegValue("select Max(ID) as ID from HT_SVR_PRT_MENU ", "ID")) + 1).ToString().PadLeft(2, '0');
                 }
-                opt.UpDateOra("delete from HT_SVR_PRT_MENU where ID = '" + prtID + "'");
+               
                 string[] seg = { "ID", "NAME", "PID", "MENULEVEL" };
                 string[] value = { prtID, txtMenu.Text, listPrt.SelectedValue, listLevel.SelectedValue };
-                opt.InsertData(seg, value, "HT_SVR_PRT_MENU");
+                opt.MergeInto(seg, value, 1,"HT_SVR_PRT_MENU");
                 BindList(RightTree.Nodes, "");
             }
         }
@@ -171,20 +171,20 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         if ("NoRecord" == (mapID = opt.GetSegValue("select * from ht_inner_map where URL = '" + ((TextBox)row.FindControl("txtURL")).Text + "'", "MAPID")))
         {
             mapID = id;
-            opt.UpDateOra("delete from   HT_INNER_MAP  where MAPID = '" + mapID + "'");
-            opt.InsertData(new string[] { "MAPID", "URL" }, new string[] { mapID, ((TextBox)row.FindControl("txtURL")).Text }, "HT_INNER_MAP");
+            
+            opt.MergeInto(new string[] { "MAPID", "URL" }, new string[] { mapID, ((TextBox)row.FindControl("txtURL")).Text }, 1,"HT_INNER_MAP");
         }
         //在权限表中插入菜单权限 
         if ("NoRecord" == (RightID = opt.GetSegValue("select * from ht_svr_sys_menu where F_MENU = '" + ((TextBox)row.FindControl("txtMenu")).Text + "'", "F_ID")))
         {
             RightID = (Convert.ToInt16(opt.GetSegValue("select Max(F_ID) as ID from ht_svr_sys_menu ", "ID")) + 1).ToString().PadLeft(5, '0');
         }
-        opt.UpDateOra("delete from   ht_svr_sys_menu  where f_ID = '" + RightID + "'");
+        
         string[] seg = { "F_ID", "F_MENU", "F_MAPID", "F_PID", "F_DESCRIPT", "F_TYPE" };
         string[] value = { RightID, ((TextBox)row.FindControl("txtMenu")).Text, mapID, ((DropDownList)row.FindControl("listPrt")).SelectedValue, ((TextBox)row.FindControl("txtDscrp")).Text, "0" };
        
         //插入操作权限
-        if("Success" == opt.InsertData(seg, value, "ht_svr_sys_menu"))
+        if("Success" == opt.MergeInto(seg, value,1, "ht_svr_sys_menu"))
         value[0] = (Convert.ToInt16(RightID) + 1).ToString().PadLeft(5, '0');        
         value[5] = "1";
          if(value[1] == "")

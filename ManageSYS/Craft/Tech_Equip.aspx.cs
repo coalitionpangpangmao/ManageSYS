@@ -15,7 +15,7 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
         if (!IsPostBack)
         {
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1'", "section_name", "section_code");
+            opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
            
         }
     }
@@ -39,9 +39,41 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
             DataRow row = data.Tables[0].Rows[0];                 
             txtDscpt.Text = row["REMARK"].ToString();
             listSection.SelectedValue = row["SECTION_CODE"].ToString();
-            opt.bindDropDownList(listEquip, "select t.idkey,t.eq_name  from ht_eq_eqp_tbl t where t.section_code = '" + listSection.SelectedValue + "'", "eq_name", "IDKEY");
-            listEquip.SelectedValue = eqcode;
+            txtCode.Text = eqcode;
+            txtName.Text = row["EQ_NAME"].ToString();
         }
+    }
+
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        if (listSection.SelectedValue == "")
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "message", "alert('请选择设备所属工段及分类')", true);
+        else
+        {
+            txtCode.Text = listSection.SelectedValue + opt.GetSegValue("select nvl(max(substr(idkey,6,3)),0)+1 as code from ht_eq_eqp_tbl where SECTION_CODE = '" + listSection.SelectedValue + "'", "CODE").PadLeft(3, '0');           
+           
+        }
+    }
+
+    protected void btnModify_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        {
+            string[] seg = { "IDKEY", "CLS_CODE", "EQ_NAME", "SECTION_CODE", "REMARK", "CREATOR", "CREATE_TIME" };
+            string[] value = { txtCode.Text,listSort.SelectedValue, txtName.Text,listSection.SelectedValue, txtDscpt.Text, ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+            opt.MergeInto(seg, value, 1, "HT_EQ_EQP_TBL");
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
+        }
+    }
+    protected void btnDel_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        List<String> commandlist = new List<String>();
+        commandlist.Add( "update HT_EQ_EQP_TBL set IS_DEL = '1' where IDKEY = '" + txtCode.Text + "'");
+        commandlist.Add("update HT_PUB_TECH_PARA set IS_DEL = '1' where EQUIP_CODE =  '" + txtCode.Text + "'");
+        opt.TransactionCommand(commandlist);
     }
 
   

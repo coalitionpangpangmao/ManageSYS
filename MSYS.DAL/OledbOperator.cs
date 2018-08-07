@@ -54,7 +54,7 @@ namespace MSYS.DAL
             IFactoryDbPool pool = OledbConnectionSingletion.CreateInstance();
             try
             {
-                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OracleConnectionString"];
+                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OledbConnectionString"];
                 OledbConnectionSingletion.ConnectionString = settings.ConnectionString;
                 //Borrow the SqlConnection object from the pool
                 myConn = pool.BorrowDBConnection();
@@ -77,12 +77,10 @@ namespace MSYS.DAL
                 pool.ReturnDBConnection(myConn);
             }
         }
-
-        public string TransactionCommand(ArrayList commandStringList)
+      public  string TransactionCommand(List<String> commandStringList)
         {
-
             IFactoryDbPool pool = OracleConnectionSingletion.CreateInstance();
-            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OracleConnectionString"];
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OledbConnectionString"];
             OledbConnectionSingletion.ConnectionString = settings.ConnectionString;
             //Borrow the SqlConnection object from the pool
             DbConnection myConn = pool.BorrowDBConnection();
@@ -94,7 +92,7 @@ namespace MSYS.DAL
             try
             {
                 foreach (string commandString in commandStringList)
-                {                   
+                {
                     sqlcom.CommandText = commandString;
                     influenceRowCount += sqlcom.ExecuteNonQuery();
                 }
@@ -112,7 +110,7 @@ namespace MSYS.DAL
                 sqlcom.Dispose();
                 pool.ReturnDBConnection(myConn);
             }
-
         }
+    
     }
 }

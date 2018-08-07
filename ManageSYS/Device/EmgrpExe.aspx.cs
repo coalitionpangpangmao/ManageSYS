@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Collections;
 public partial class Device_EmgrpExe : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -49,14 +50,18 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         if (ckFault.Checked)
         {
-            string[] seg1 = { "ERROR_NAME", "EQP_TYPE", "SPECIFIC_LOCATION", "SECTION_CODE", "FAULT_TYPE1", "FAULT_TYPE2", "FAULT_TYPE3", "FAULT_TYPE4", "FAULT_TYPE5", "FAULT_TYPE6", "SCEAN", "ERROR_DESCRIPTION", "FAILURE_CAUSE", "SOLUTION" };
-            string[] value1 = { txtName.Text, listEqType.SelectedValue, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text };
-            opt.InsertData(seg1, value1, "HT_EQ_FAULT_DB");
-            string ftID = opt.GetSegValue("select max(ID) as ID  from HT_EQ_FAULT_DB", "ID");
+            List<String> commandlist = new List<String>();
+            string ftID = opt.GetSegValue("select fault_id_seq.nextval from dual", "nextval");
+            string[] seg1 = { "ID","ERROR_NAME", "EQP_TYPE", "SPECIFIC_LOCATION", "SECTION_CODE", "FAULT_TYPE1", "FAULT_TYPE2", "FAULT_TYPE3", "FAULT_TYPE4", "FAULT_TYPE5", "FAULT_TYPE6", "SCEAN", "ERROR_DESCRIPTION", "FAILURE_CAUSE", "SOLUTION" };
+            string[] value1 = {ftID, txtName.Text, listEqType.SelectedValue, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text };
+            commandlist.Add(opt.InsertDatastr(seg1, value1, "HT_EQ_FAULT_DB"));
+         
+          
             string status = "2";
             string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_EMG", "REASON", "CONTENT", "FAULT_ID", "STATUS" };
             string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtReasons.Text, txtContent.Text, ftID, status };
-            opt.InsertData(seg, value, "HT_EQ_RP_PLAN_DETAIL");
+            commandlist.Add(opt.InsertDatastr(seg, value, "HT_EQ_RP_PLAN_DETAIL"));
+            opt.TransactionCommand(commandlist);
         }
         else
         {

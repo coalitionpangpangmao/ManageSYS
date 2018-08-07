@@ -56,7 +56,7 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         if (str == "")
             str = "000000000";
         txtCode.Text = listSection.SelectedValue + (Convert.ToInt16(str.Substring(5)) + 1).ToString().PadLeft(5, '0');
-      
+       
     }
     protected string getType()
     {
@@ -97,21 +97,14 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_TECH_PARA where PARA_CODE = '" + txtCode.Text + "'");
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" };
-            string[] value = { txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text };
-            string condition = " where PARA_CODE = '" + txtCode.Text + "'";
-            opt.UpDateData(seg, value, "HT_PUB_TECH_PARA", condition);
-        }
-        else
+     
         {
             string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" };
             string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text };
-            opt.InsertData(seg, value, "HT_PUB_TECH_PARA");
+            opt.MergeInto(seg, value,1, "HT_PUB_TECH_PARA");
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "error", "updateModel();", true);
+     
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {

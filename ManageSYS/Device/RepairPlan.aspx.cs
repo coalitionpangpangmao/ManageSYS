@@ -395,10 +395,10 @@ public partial class Device_RepairPlan : MSYS.Web.BasePage
         try
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.UpDateOra("delete from HT_EQ_RP_PLAN where PZ_CODE = '" + txtCode.Text + "'");
-            string[] seg = { "MT_NAME", "PZ_CODE", "CREATE_ID", "CREATE_DEPT_ID", "EXPIRED_DATE", "REMARK", "CREATE_TIME" };
-            string[] value = { txtName.Text, txtCode.Text, listEditor.SelectedValue, listApt.SelectedValue, txtExptime.Text, txtdscrpt.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-            opt.InsertData(seg, value, "HT_EQ_RP_PLAN");
+
+            string[] seg = { "PZ_CODE", "MT_NAME", "CREATE_ID", "CREATE_DEPT_ID", "EXPIRED_DATE", "REMARK", "CREATE_TIME" };
+            string[] value = { txtCode.Text, txtName.Text, listEditor.SelectedValue, listApt.SelectedValue, txtExptime.Text, txtdscrpt.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+            opt.MergeInto(seg, value,1, "HT_EQ_RP_PLAN");
         }
         catch (Exception ee)
         {

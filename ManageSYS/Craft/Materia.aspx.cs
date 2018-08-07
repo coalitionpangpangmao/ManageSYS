@@ -75,7 +75,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
         string[] seg = { "mattree_code", "MATTREE_NAME", "PARENT_CODE", "IS_VALID" };
         string[] value = {txtCode.Text, txtName.Text, listPrt.SelectedValue, Convert.ToInt16(ckValid.Checked).ToString() };
 
-        ArrayList commandlist = new ArrayList();
+        List<String> commandlist = new List<String>();
         commandlist.Add("delete from HT_PUB_MATTREE where MATTREE_CODE = '" + txtCode.Text + "'");
         commandlist.Add(opt.InsertDatastr(seg,value,"HT_PUB_MATTREE"));
        

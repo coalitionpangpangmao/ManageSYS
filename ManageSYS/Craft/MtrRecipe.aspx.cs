@@ -134,27 +134,16 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select * from ht_qa_mater_formula where FORMULA_CODE = '" + txtCode.Text + "'";
-        DataSet data = opt.CreateDataSetOra(query);
+    
         hdcode.Value = txtCode.Text;
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
-            string[] value = { txtName.Text, listPro.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
-            string condition = " where FORMULA_CODE = '" + txtCode.Text + "'";
-            string log_message = opt.UpDateData(seg, value, "ht_qa_mater_formula", condition)=="Success"?"原料配方保存成功，":"原料配方保存失败，";
-            log_message += "保存信息：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-        }
-        else
-        {
+      
 
             string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
             string[] value = { txtCode.Text, txtName.Text, listPro.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
-            string log_message = opt.InsertData(seg, value, "ht_qa_mater_formula")=="Success"?"原料配方保存成功，":"原料配方保存失败，";
+            string log_message = opt.MergeInto(seg, value,1, "ht_qa_mater_formula")=="Success"?"原料配方保存成功，":"原料配方保存失败，";
             log_message += "保存信息：" + string.Join(" ", value);
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-        }
+      
         bindGrid();
         
     }
@@ -218,10 +207,10 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
             if (Rowindex >= 0)
             {
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                opt.UpDateOra("delete from ht_qa_mater_formula_detail  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'");
+              
                 string[] seg = { "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "MATER_FLAG" };
                 string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtAmountM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtGroupM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listGridType")).SelectedValue };
-                string log_message = opt.InsertData(seg, value, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+                string log_message = opt.MergeInto(seg, value,2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += ",物料编码：" + txtCode.Text;
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
 

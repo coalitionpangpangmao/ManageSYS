@@ -73,8 +73,7 @@ namespace MSYS.DAL
                 pool.ReturnDBConnection(myConn);
             }
         }
-
-        public string TransactionCommand(ArrayList commandStringList)
+        public string TransactionCommand(List<String> commandStringList)
         {
 
             IFactoryDbPool pool = SQLConnectionSingletion.CreateInstance();
@@ -110,5 +109,7 @@ namespace MSYS.DAL
             }
 
         }
+
+    
     }
 }

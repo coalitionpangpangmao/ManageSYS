@@ -170,11 +170,10 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
             GridViewRow row = GridView1.Rows[rowIndex];          
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             ///判断URL是否在数据库中有MAP映射，每个URL页面有唯一的URL           
-           
-            opt.UpDateOra("delete from   ht_svr_sys_menu  where f_ID = '" + id + "'");
+          
             string[] seg = { "F_ID", "F_MENU", "F_MAPID", "F_PID", "F_DESCRIPT", "F_TYPE" };
             string[] value = { id, ((TextBox)row.FindControl("txtMenu")).Text, ((DropDownList)row.FindControl("listMap")).SelectedValue, ((DropDownList)row.FindControl("listPrt")).SelectedValue, ((TextBox)row.FindControl("txtDscrp")).Text, ((DropDownList)row.FindControl("listType")).SelectedValue };
-            opt.InsertData(seg, value, "ht_svr_sys_menu");
+            opt.MergeInto(seg, value,1, "ht_svr_sys_menu");
             bindData();
     }
     protected void btnDelete_Click(object sender, EventArgs e)

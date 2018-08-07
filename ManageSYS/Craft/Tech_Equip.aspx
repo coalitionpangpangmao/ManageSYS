@@ -13,7 +13,16 @@
 <body>
     <form id="form1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>   
+    </asp:ScriptManager>  
+        <div class="gridtools  auth">               
+                    <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
+                        Text="新增" />
+                    &nbsp; &nbsp;
+                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
+                        Text="保存" />
+                    &nbsp; &nbsp;
+                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />       
+       
        <asp:HiddenField ID="hdcode" runat="server" />         
         <asp:Button ID="btnUpdate" runat="server"  CssClass = "btnhide"  OnClick = "btnUpdate_Click"/>      
         <div class="framelist">
@@ -31,21 +40,37 @@
                                             </asp:DropDownList>
                                         </td>
                                        <td width="100">
-                                            设备名称
+                                            设备分类
                                         </td>
                                         <td>
-                                       <asp:DropDownList ID="listEquip"  runat="server" CssClass="drpdwnlist">
+                                       <asp:DropDownList ID="listSort"  runat="server" CssClass="drpdwnlist">
+                                            <asp:ListItem Value="01">生产设备</asp:ListItem>
                                             </asp:DropDownList>
                                            </td>
                                      
                                      
                                     </tr>
                                     <tr>
+                                          <td width="100">
+                                            设备编码
+                                        </td>
+                                        <td>
+                                        <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="False" ></asp:TextBox>
+                                           </td>
+                                     
+                                          <td width="100">
+                                            设备名称
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtName" runat="server" class="dfinput1" ></asp:TextBox>
+                                           </td>
+                                     </tr>
+                                    <tr>
                                        <td width="100">
                                             备注
                                         </td>
-                                        <td colspan="3" width="500px">
-                                            <asp:TextBox ID="txtDscpt" runat="server" class="dfinput1"></asp:TextBox>
+                                        <td colspan="3" >
+                                            <asp:TextBox ID="txtDscpt" runat="server" class="dfinput1" Width ="500px"></asp:TextBox>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -53,7 +78,9 @@
                     </ContentTemplate>
                     <Triggers>  
                         <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
-                       
+                       <asp:AsyncPostBackTrigger ControlID ="btnAdd" />
+                          <asp:AsyncPostBackTrigger ControlID="btnModify" />
+                       <asp:AsyncPostBackTrigger ControlID ="btnDel" />
                     </Triggers>
                 </asp:UpdatePanel>
        

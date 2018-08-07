@@ -108,7 +108,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     protected void btnSave_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       ArrayList commandlist = new ArrayList();
+       List<String> commandlist = new List<String>();
        commandlist.Add("delete from ht_qlt_inspect_proj where INSPECT_CODE = '" + txtCode.Text + "'");
        string[] seg = { "INSPECT_GROUP", "INSPECT_CODE", "INSPECT_NAME", "INSPECT_TYPE", "REMARK", "CREATE_ID", "CREATE_TIME", "UNIT" };
             string[] value = {listSection2.SelectedValue, txtCode.Text,txtName.Text,listType2.SelectedValue,txtRemark.Text,listCreator.SelectedValue,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtUnit.Text};

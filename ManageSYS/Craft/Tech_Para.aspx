@@ -10,11 +10,7 @@
     
 </head>
 <body>
-<script type = "text/javascript">
-    function updateModel() {
-        window.parent.update();
-    }
-</script>
+
     <form id="form1" runat="server">
       <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
@@ -60,7 +56,7 @@
         <td><asp:TextBox ID="txtUnit" runat="server" class="dfinput1"    ></asp:TextBox></td>
         <td  width="100">是否有效</td>
         <td>
-            <asp:CheckBox ID="rdValid" runat="server" Text=" " />
+            <asp:CheckBox ID="rdValid" runat="server" Text=" "  Checked="true"/>
         </td>
       
         </tr>

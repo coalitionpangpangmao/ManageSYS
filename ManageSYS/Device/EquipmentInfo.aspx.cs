@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.IO;
 using System.Text;
-
+using System.Collections;
 public partial class Device_EquipmentInfo :MSYS.Web.BasePage
 {   
     protected void Page_Load(object sender, EventArgs e)
@@ -67,6 +67,7 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender,EventArgs e)
     {
+        txtIDKey.Text = "02";
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "addequip", " $('#tabs').tabs('select', '设备详情');", true);
     }
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -228,12 +229,12 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {       
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.UpDateOra("delete from HT_EQ_EQP_TBL where IDKEY = '" + txtIDKey.Text + "'");
-        string[] seg = { "IDKEY", "CLS_CODE",  "EQ_NAME", "SGS_CODE", "NC_CODE", "FINANCE_EQ_NAME", "EQ_TYPE", "EQ_STATUS", "ZG_DATE", "EQ_MODEL", "ORI_WORTH", "NET_WORTH", " USED_DATE", "RATED_POWER", "REAL_POWER", "POWER_UNIT", "OWNER_NAME", "EQP_FROM", "ORI_OWNER_NAME", "MANUFACTURER", "SERIAL_NUMBER", "SUPPLIER", "IS_SPEC_EQP", "IS_MADEINCHINA", "MGT_DEPT_CODE", "MGT_DEPT_NAME", "USE_DEPT_CODE", "USE_DEPT_NAME", "DUTY_NAME", "EQP_IP", " EQP_MAC", "EQP_SN", "EQP_SYS", "REMARK", "CREATOR", "CREATE_TIME", "PROCESS_CODE" };
+       List<String> commandlist = new List<String>();
+      
+       string[] seg = { "IDKEY", "CLS_CODE", "EQ_NAME", "SGS_CODE", "NC_CODE", "FINANCE_EQ_NAME", "EQ_TYPE", "EQ_STATUS", "ZG_DATE", "EQ_MODEL", "ORI_WORTH", "NET_WORTH", " USED_DATE", "RATED_POWER", "REAL_POWER", "POWER_UNIT", "OWNER_NAME", "EQP_FROM", "ORI_OWNER_NAME", "MANUFACTURER", "SERIAL_NUMBER", "SUPPLIER", "IS_SPEC_EQP", "IS_MADEINCHINA", "MGT_DEPT_CODE", "MGT_DEPT_NAME", "USE_DEPT_CODE", "USE_DEPT_NAME", "DUTY_NAME", "EQP_IP", " EQP_MAC", "EQP_SN", "EQP_SYS", "REMARK", "CREATOR", "CREATE_TIME", "SECTION_CODE" };
         string[] value = { txtIDKey.Text, txtCLS.Text, txtEqname.Text, txtSGSCode.Text, txtNCCode.Text, txtFncName.Text, txtEQType.Text, listEQStatus.SelectedValue, txtZGDate.Text, txtEQModel.Text, txtOriWorth.Text, txtNetWorth.Text, txtUsedDate.Text, txtRatedPower.Text, txtRealPower.Text, txtPowerUnit.Text, txtOwner.Text, txtEQSource.Text, txtOriOwner.Text, txtManufct.Text, txtSerialNo.Text, txtSupplier.Text, Convert.ToInt16(rdSpecEQ.Checked).ToString(), Convert.ToInt16(rdMadeChina.Checked).ToString(), listMGdept.SelectedValue, listMGdept.SelectedItem.Text, listUseDept.SelectedValue, listUseDept.SelectedItem.Text, txtDutier.Text, txtIp.Text, txtMAC.Text, txtSN.Text, txtOpSYS.Text, txtDscpt.Text, "", System.DateTime.Now.ToString("yyyy-MM-hh"), listSection.SelectedValue };
-        //Session["UserID"].ToString()
-       
-        opt.InsertData(seg, value, "HT_EQ_EQP_TBL");
+        opt.MergeInto(seg, value,1, "HT_EQ_EQP_TBL");
+    
         bindGrid();
 
     }
@@ -249,9 +250,9 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from ht_eq_eqp_cls where ID_KEY = '" + txt3Code.Text + "'");
-        string[] seg = { "NODE_NAME", "ID_KEY", "TYPE", "PATH", "PARENT_ID" };
-        string[] value = { txt3Name.Text, txt3Code.Text, list3Type.SelectedValue, list3Path.SelectedValue, "" };
-        opt.InsertData(seg, value, "ht_eq_eqp_cls");
+        string[] seg = { "ID_KEY", "NODE_NAME", "TYPE", "PATH", "PARENT_ID" };
+        string[] value = { txt3Code.Text, txt3Name.Text, list3Type.SelectedValue, list3Path.SelectedValue, "" };
+        opt.MergeInto(seg, value,1, "ht_eq_eqp_cls");
  
      //   tvHtml = InitTree("",true);
         ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "", "togtreeview();", true);

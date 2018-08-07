@@ -142,24 +142,12 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select * from HT_TECH_STDD_CODE where TECH_CODE = '" + txtCode.Text + "'";
-        DataSet data = opt.CreateDataSetOra(query);
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "TECH_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
-            string[] value = { txtName.Text, listProd.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
-            string condition = " where FORMULA_CODE = '" + txtCode.Text + "'";
-            string log_message = opt.UpDateData(seg, value, "HT_TECH_STDD_CODE", condition)=="Success" ? "保存标准成功":"保存标准失败";
-            log_message += ", 保存数据：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-
-        }
-        else
+       
         {
 
             string[] seg = { "TECH_CODE", "TECH_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
             string[] value = { txtCode.Text, txtName.Text, listProd.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
-            string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE")=="Success" ? "保存标准成功":"保存标准失败";
+            string log_message = opt.MergeInto(seg, value,1, "HT_TECH_STDD_CODE")=="Success" ? "保存标准成功":"保存标准失败";
             log_message += ",保存数据：" + string.Join(" ", value);
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         }
@@ -326,22 +314,11 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             if (Rowindex >= 0)
             {
                MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                string query = "select * from HT_TECH_STDD_CODE_DETAIL  where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
-                DataSet data = opt.CreateDataSetOra(query);
-                if (data != null && data.Tables[0].Rows.Count > 0)
-                {                    
-                    string[] seg = {"PARA_CODE",  "VALUE", "UPPER_LIMIT", "LOWER_LIMIT","EER_DEV", "UNIT" ,"IS_DEL"};
-                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text,  ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text, "0"};
-                    string condition =  "where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
-                    string log_message = opt.UpDateData(seg, value, "HT_TECH_STDD_CODE_DETAIL", condition)=="Success" ? "保存参数成功":"保存参数失败";
-                    log_message += ", 保存数据:" + string.Join(" ", value);
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
-                }
-                else
+            
                 {
-                    string[] seg = { "PARA_CODE",  "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT",   "TECH_CODE" };
-                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text,  txtCode.Text };
-                    string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE_DETAIL")=="Success" ? "保存参数成功":"保存参数失败";
+                    string[] seg = { "PARA_CODE",  "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT"   };
+                    string[] value = { ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text, txtCode.Text,((TextBox)GridView1.Rows[Rowindex].FindControl("txtValueM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtLlimitM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtDevM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtUnitM")).Text };
+                    string log_message = opt.MergeInto(seg, value,2, "HT_TECH_STDD_CODE_DETAIL")=="Success" ? "保存参数成功":"保存参数失败";
                     log_message += ", 保存数据：" + string.Join(" ", value);
                     opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
                 }

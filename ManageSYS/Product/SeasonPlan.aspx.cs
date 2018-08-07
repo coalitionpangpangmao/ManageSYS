@@ -121,7 +121,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string id = GridView1.DataKeys[rowindex].Value.ToString();
         string query = "update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        ArrayList commandlist = new ArrayList();
+        List<String> commandlist = new List<String>();
         commandlist.Add("update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'");
         commandlist.Add("update ht_prod_season_plan_detail set is_del = '1' where QUARTER_PLAN_ID =  '" + id + "'");
         opt.TransactionCommand(commandlist);

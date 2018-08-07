@@ -94,11 +94,7 @@
                                             OnClick="btnFLow_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnPath" runat="server" Text="路径设置" class="btn1 auth" OnClick="btnPath_Click" Width ="75px"   />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                              
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
@@ -183,6 +179,7 @@
                                 </span>
                             </div>
                             <asp:HiddenField ID="hidePlanID" runat="server" />
+                             <asp:HiddenField ID="hidePzcode" runat="server" />
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                 DataKeyNames="计划号">
                                 <Columns>
@@ -216,6 +213,11 @@
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                       <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnPath" runat="server" Text="路径设置" class="btn1 auth" OnClick="btnPath_Click" Width ="75px"   />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" />
@@ -290,26 +292,23 @@
                                         <ItemTemplate>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作">
-                                        <ItemTemplate>
-                                            <asp:Button ID="btnGrid4Save" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnGrid4Save_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                 
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
                                  <AlternatingRowStyle CssClass="gridalterrow" />
-                            </asp:GridView>                         
+                            </asp:GridView>      
+                               <div align="center">   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>                   
                         </ContentTemplate>
                         <Triggers>
                            
                             <asp:AsyncPostBackTrigger ControlID="GridView4" />
                             <asp:AsyncPostBackTrigger ControlID="btnSavePath" />
-                            <asp:AsyncPostBackTrigger ControlID ="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID ="GridView2" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-    <div >   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>
+ 
              </div>
                    
             </div>

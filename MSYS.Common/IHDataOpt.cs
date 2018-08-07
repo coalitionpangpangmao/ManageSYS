@@ -383,16 +383,16 @@ namespace MSYS.Common
         public DataRowCollection GetData(string btime, string etime, string nodeid)
         {
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select * from HT_QLT_COLLECTION where PARA_CODE = '" + nodeid + "'");
+            DataSet data = opt.CreateDataSetOra("select s.value_tag,r.periodic from HT_QLT_COLLECTION r left join ht_pub_tech_para s on s.para_code = r.para_code where r.PARA_CODE = '" + nodeid + "'");
             if (data == null || data.Tables[0].Rows.Count == 0)
                 return null;
             DataRow row = data.Tables[0].Rows[0];
             ////////////////////工艺点标签//////////////////////////////////////////////
-            string tagname = row["CUTOFF_POINT_TAG"].ToString();
+            string tagname = row["value_tag"].ToString();
             string interval = row["PERIODIC"].ToString();
-            int timegap = Convert.ToInt32(row["CUTOFF_TIMEGAP"].ToString());
+          
 
-            string query = "SELECT  timestamp as 时间,value as 值  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + btime + "' and '" + etime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
+            string query = "SELECT  timestamp,value  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + btime + "' and '" + etime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
             data = CreateDataSetIH(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {

@@ -44,19 +44,11 @@ public partial class Craft_Tech_Process : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
          MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-          DataSet data = opt.CreateDataSetOra("select *  from HT_PUB_INSPECT_PROCESS where PROCESS_CODE = '" + txtCode.Text + "'");
-          if (data != null && data.Tables[0].Rows.Count > 0)
-          {
-              string[] seg = { "PROCESS_NAME", "REMARK", "IS_VALID", "MODIFY_ID", "MODIFY_TIME" };
-              string[] value = { txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-              string condition = " where PROCESS_CODE = '" + txtCode.Text + "'";
-              opt.UpDateData(seg, value, "HT_PUB_INSPECT_PROCESS", condition);
-          }
-          else
+         
           {
               string[] seg = { "PROCESS_CODE", "PROCESS_NAME", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME" };
               string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-              opt.InsertData(seg, value, "HT_PUB_INSPECT_PROCESS");
+              opt.MergeInto(seg, value,1, "HT_PUB_INSPECT_PROCESS");
           }
     }
     protected void btnDel_Click(object sender, EventArgs e)

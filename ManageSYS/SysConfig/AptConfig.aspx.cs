@@ -85,10 +85,10 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {       
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();        
-        opt.UpDateOra("delete from HT_SVR_ORG_GROUP  where F_CODE = '" + txtCode.Text + "'");
+    
         string[] seg = { "F_CODE", "F_NAME", "F_PARENTID", "F_PRITYPE","F_WEIGHT", "F_KEY", "F_ROLE" };
         string[] value = { txtCode.Text, txtName.Text, listParent.SelectedValue, txtType.Text,txtWeight.Text, txtSapID.Text,  listRole.SelectedValue };      
-        opt.InsertData(seg, value, "HT_SVR_ORG_GROUP");
+        opt.MergeInto(seg, value,1, "HT_SVR_ORG_GROUP");
         bindData();
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
     }

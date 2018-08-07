@@ -116,7 +116,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
         string id = GridView1.DataKeys[Rowindex].Value.ToString();
-        ArrayList commandlist = new ArrayList();
+        List<String> commandlist = new List<String>();
         commandlist.Add("update ht_prod_month_plan set IS_DEL = '1'  where ID = '" + id + "'");
         commandlist.Add("update ht_prod_month_plan_detail set is_del = '1' where month_plan_id = '" + id + "'");     
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -345,10 +345,10 @@ public partial class Product_Plan : MSYS.Web.BasePage
     {
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string ID = GridView1.DataKeys[rowIndex].Value.ToString();
-        hidePlanID.Value = ID;
+        string ID = GridView2.DataKeys[rowIndex].Value.ToString();
+        hidePzcode.Value = ID;
         bindGrid4();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#pathinfo').fadeIn(200);", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#pathinfo').fadeIn(200);", true);
     }
     protected string createQuery(string section)
     {
@@ -371,9 +371,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
     protected void bindGrid4()
     {
-       
-            //string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + hidePlanID.Value + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
-            string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code  and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
+
+        string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + hidePzcode.Value + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
+            //string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code  and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             GridView4.DataSource = data;
@@ -412,18 +412,18 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }//绑定GridView4数据源
 
   
-    protected void btnGrid4Save_Click(object sender, EventArgs e)
-    {
-        Button btn = (Button)sender;
-        int index = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
-        string[] value = { GridView4.DataKeys[index].Value.ToString(), ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePlanID.Value };
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[index].Value.ToString() + "' and PROD_PLAN = '" + hidePlanID.Value + "'");
-        opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
-        bindGrid4();
+    //protected void btnGrid4Save_Click(object sender, EventArgs e)
+    //{
+    //    Button btn = (Button)sender;
+    //    int index = ((GridViewRow)btn.NamingContainer).RowIndex;
+    //    string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
+    //    string[] value = { GridView4.DataKeys[index].Value.ToString(), ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePlanID.Value };
+    //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+    //    opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[index].Value.ToString() + "' and PROD_PLAN = '" + hidePlanID.Value + "'");
+    //    opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
+    //    bindGrid4();
 
-    }
+    //}
     protected void listpath_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
@@ -461,12 +461,18 @@ public partial class Product_Plan : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
+        List<String> commandlist = new List<String>();
         for (int i = 0; i < GridView4.Rows.Count; i++)
         {
-            string[] value = { GridView4.DataKeys[i].Value.ToString(), ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePlanID.Value };
-            opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[i].Value.ToString() + "' and PROD_PLAN = '" + hidePlanID.Value + "'");
-            opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
+            if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
+            {
+                string[] value = { GridView4.DataKeys[i].Value.ToString(), ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePzcode.Value };
+                commandlist.Add("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[i].Value.ToString() + "' and PROD_PLAN = '" + hidePzcode.Value + "'");
+                commandlist.Add(opt.InsertDatastr(seg, value, "HT_PUB_PATH_PLAN"));
+            }
+           
         }
+        opt.TransactionCommand(commandlist);
         bindGrid4();
     }
 

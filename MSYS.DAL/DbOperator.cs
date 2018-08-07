@@ -45,7 +45,9 @@ namespace MSYS.DAL
         {
             return dboperator.CreateDataSet(query);
         }
-        public string TransactionCommand(ArrayList commandStringList)
+    
+
+        public string TransactionCommand(List<String> commandStringList)
         {
             return dboperator.TransactionCommand(commandStringList);
         }
