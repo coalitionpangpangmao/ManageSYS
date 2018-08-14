@@ -110,7 +110,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         }
         bindGrid1();
         bindGrid2();
-
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
     }
 
 

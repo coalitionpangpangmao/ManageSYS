@@ -34,7 +34,7 @@
             <div class="framelist"> 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                             DataKeyNames="section_code">
                             <Columns>
                                 <asp:TemplateField HeaderText = "工艺段">
@@ -75,7 +75,7 @@
            <div class="framelist"> 
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
                             DataKeyNames="ID">
                             <Columns>
                                 

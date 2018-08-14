@@ -2,7 +2,7 @@
 namespace MSYS.Common
 {
     using MSYS.DAL;
-    using System.Collections;
+    using System.Collections.Generic;
     using System;
     using System.Data;
     public partial class IHDataOpt
@@ -16,7 +16,7 @@ namespace MSYS.Common
             public string endtime;
             public TimeSegType type;//BEGIN 只有任务头，END 只有任务尾，BOTH 头尾都有，ALL生产进行中
             public string planno;
-            public string nodecode;
+            public string nodecode;          
             public TimeSeg(string a, string b, TimeSegType c, string d, string e)
             {
                 this.starttime = a;
@@ -24,10 +24,10 @@ namespace MSYS.Common
                 this.type = c;
                 this.planno = d;
                 this.nodecode = e;
-
+               
             }
         };
-        struct Gaptime
+       public struct Gaptime
         {
             public string starttime;
             public string endtime;
@@ -40,6 +40,11 @@ namespace MSYS.Common
             }
         }
         private OledbOperator opt = null;
+        private List<Gaptime> gaptime = null;
+        public List<Gaptime> getGaptime()
+        {
+            return gaptime;
+        }
         public IHDataOpt()
         {
             opt = new OledbOperator();
@@ -50,19 +55,19 @@ namespace MSYS.Common
             return opt.CreateDataSet(query);
         }
 
-        public int TaskShiftNum(string Btime, string Etime, string nodeid)//查取时间段内是否有任务报告记录
+        public int TaskShiftNum(string Btime, string Etime, string section)//查取时间段内是否有任务报告记录
         {
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select count(rowid) from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and STARTTIME between '" + Btime + "' and '" + Etime + "' or ENDTIME between '" + Btime + "' and '" + Etime + "'");
+            DataSet data = opt.CreateDataSetOra("select count(rowid) from ht_prod_report t where t.section_code = '" +section + "' and STARTTIME between '" + Btime + "' and '" + Etime + "' or ENDTIME between '" + Btime + "' and '" + Etime + "'");
             return Convert.ToInt16(data.Tables[0].Rows[0][0].ToString());
 
         }
 
-        public ArrayList TimeCut(string btime, string etime, string nodeid)//将一段时间按任务划分为不同的时间段
+        public List<TimeSeg> TimeCut(string btime, string etime, string nodeid)//将一段时间按任务划分为不同的时间段
         {
-            ArrayList listTimeseg = new ArrayList();
+            List<TimeSeg> listTimeseg = new List<TimeSeg>();
             DbOperator opt = new DbOperator();
-            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '' and endtime between '" + btime + "' and '" + etime + "' order by rstime";
+            string query = "select starttime as rstime, 'b' as tag,PLANNO, from ht_prod_report t where t.section_code = '' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '' and endtime between '" + btime + "' and '" + etime + "' order by rstime";
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -177,9 +182,9 @@ namespace MSYS.Common
             return seg;
         }
 
-        public ArrayList GetGapTime(string starttime, string endtime, string tag, string tagvalue, int headdelay, int taildelay)//获取两段时间间的断流信息
+        public List<Gaptime> GetGapTime(string starttime, string endtime, string tag, string tagvalue, int headdelay, int taildelay)//获取两段时间间的断流信息
         {
-            ArrayList gaplist = new ArrayList();
+            List<Gaptime> gaplist = null;
             string query;
             DataSet data = new DataSet();
             DbOperator opt = new DbOperator();
@@ -187,6 +192,7 @@ namespace MSYS.Common
             data = CreateDataSetIH(query);
             if (data != null && data.Tables[0].Select().Length > 30)
             {
+                gaplist = new List<Gaptime>();
                 while (Convert.ToDateTime(starttime) < Convert.ToDateTime(endtime))
                 {
                     string GapStarttime = "";
@@ -224,7 +230,10 @@ namespace MSYS.Common
             }
             return gaplist;
         }
-
+        public List<Gaptime> gaptimes()
+        {
+            return gaptime;
+        }
         public DataTable GetIHOrgDataSet(TimeSeg seg)
         {
             ///////////读取数据库中的采集条件
@@ -313,7 +322,7 @@ namespace MSYS.Common
                     }
                 }
                 ////////////////////选取数据/判断是否断料,并记录下相应的断料时间//////
-                ArrayList gaptime = GetGapTime(tailBtime, tailEtime, tag, RstValue, batchheadDelay, batchtailDelay);
+                gaptime = GetGapTime(tailBtime, tailEtime, tag, RstValue, batchheadDelay, batchtailDelay);
                 query = "SELECT  timestamp as 时间,value as 值  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
                 data = CreateDataSetIH(query);
                 if (data != null && data.Tables[0].Select().Length > 0)
@@ -324,7 +333,6 @@ namespace MSYS.Common
                     ResT = data.Tables[0];
 
                     ResT.Columns.Add("状态");
-
 
                     foreach (DataRow Res in ResRows)
                     {

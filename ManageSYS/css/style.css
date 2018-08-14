@@ -159,7 +159,7 @@ h2{font-weight:normal;}
 .btnred{ width: 50px; height: 20px;background: no-repeat;font-size: 12px; font-weight: bold;
     color: #FFFFFF; cursor: pointer; background-color: #993333;}
 .btngrey{width: 50px; height: 20px;background: no-repeat;font-size: 12px;font-weight: bold;
-    color: #FFFFFF;  background-color: #F4F4F4;}
+    color: #000000;  background-color: #848383;}
 .btn1{width:50px;height:20px; background:url(../images/btnbg.png) no-repeat; font-size:12px;font-weight:bold;color:#fff; cursor:pointer;}
 .btnSelect{width:140px;height:35px; background:#fcfdfd; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 .btnUnsel{width:140px;height:35px; background:url(../images/btnbg.png) no-repeat; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;}

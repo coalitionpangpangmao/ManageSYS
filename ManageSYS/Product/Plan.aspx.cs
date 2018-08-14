@@ -22,7 +22,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
+        string query = "select g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0' order by g.id";
         if (txtStart.Text != "" && txtStart.Text != "")
             query += " and PLAN_TIME between '" + txtStart.Text + "' and  '" + txtStop.Text + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -38,9 +38,27 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 ((Label)GridView1.Rows[i].FindControl("labAprv")).Text = mydrv["审批状态"].ToString();
                 ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = mydrv["下发状态"].ToString();
                 if (!(mydrv["审批状态"].ToString() == "未提交" || mydrv["审批状态"].ToString() == "未通过"))
+                {
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
+                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "查看计划";                    
+                }
+                else
+                {
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
+                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "编制计划";     
+                }
                 if (mydrv["下发状态"].ToString() != "未下发")
+                {
                     ((Button)GridView1.Rows[i].FindControl("btnIssued")).Enabled = false;
+                    ((Button)GridView1.Rows[i].FindControl("btnIssued")).CssClass = "btngrey";
+                }
+                else
+                {
+                    ((Button)GridView1.Rows[i].FindControl("btnIssued")).Enabled = true;
+                    ((Button)GridView1.Rows[i].FindControl("btnIssued")).CssClass = "btn1 auth";
+                }  
 
             }
         }
@@ -49,6 +67,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
+        SetEnable(true);
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
     }
 
@@ -118,12 +137,24 @@ public partial class Product_Plan : MSYS.Web.BasePage
         string id = GridView1.DataKeys[Rowindex].Value.ToString();
         List<String> commandlist = new List<String>();
         commandlist.Add("update ht_prod_month_plan set IS_DEL = '1'  where ID = '" + id + "'");
-        commandlist.Add("update ht_prod_month_plan_detail set is_del = '1' where month_plan_id = '" + id + "'");     
+        commandlist.Add("update ht_prod_month_plan_detail set is_del = '1' where month_plan_id = '" + id + "'");
+        commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + id + "'");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.TransactionCommand(commandlist);
 
         bindGrid1();
 
+    }
+    protected void SetEnable(bool status)
+    {
+        btnAdd.Visible = status;
+        btnDelSel.Visible = status;
+        if (GridView2.Columns.Count == 8)
+        {
+            GridView2.Columns[5].Visible = status;
+            GridView2.Columns[6].Visible = status;
+            GridView2.Columns[7].Visible = status;
+        }
     }
     protected void btnGridEdit_Click(object sender, EventArgs e)//编制计划
     {
@@ -134,7 +165,13 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string id = GridView1.DataKeys[Rowindex].Value.ToString();
             txtYear.Text = GridView1.Rows[Rowindex].Cells[2].Text.Substring(0, 4);
             listMonth.SelectedValue = GridView1.Rows[Rowindex].Cells[2].Text.Substring(5, 2);
+            string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
             bindGrid2(id);
+            if (aprvstatus == "未提交")
+                SetEnable(true);
+            else
+                SetEnable(false);
+           
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
             //   string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
             //  MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
@@ -168,10 +205,10 @@ public partial class Product_Plan : MSYS.Web.BasePage
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { GridView1.Rows[index].Cells[2].Text, "06", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            if (MSYS.Common.AprvFlow.createApproval(subvalue))
-            {
-                opt.UpDateOra("update ht_prod_month_plan set B_FLOW_STATUS = '0'  where ID = '" + id + "'");
-            }
+            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+            log_message += "业务数据ID：" + id;
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+
             bindGrid1();
         }
         catch (Exception ee)
@@ -182,8 +219,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        try
-        {
+       
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string query = "select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
@@ -199,9 +235,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
             }
             else
                 data = set.Tables[0];
-            string planno = opt.GetSegValue("select nvl(Max(substr(PLAN_NO,9,2)),0)+1 as CODE from ht_prod_month_plan_detail where month_plan_ID = '" + hidePlanID.Value + "'", "CODE");
-            planno = "PD" + txtYear.Text + listMonth.SelectedValue + planno.PadLeft(2, '0');
-            object[] value = { "", planno, "", 0 };
+        
+            object[] value = { "", "", "", 0 };
             data.Rows.Add(value);
             GridView2.DataSource = data;
             GridView2.DataBind();
@@ -230,11 +265,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                          }*/
                 }
             }
-        }
-        catch (Exception ee)
-        {
-            string str = ee.Message;
-        }
+      
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
@@ -242,7 +273,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         string planname = txtYear.Text + "-" + listMonth.SelectedValue;
         string query = "select * from ht_prod_month_plan where plan_name = '" + planname + "生产月计划' and  is_del = '0'";
 
-        string[] seg = { "PLAN_NAME", "PLAN_TIME", "CREATE_ID    ", "CREATE_TIME", "REMARK" };
+        string[] seg = { "PLAN_NAME", "PLAN_TIME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { planname + "生产月计划", planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
         opt.InsertData(seg, value, "ht_prod_month_plan");
         hidePlanID.Value = opt.GetSegValue(query, "ID");
@@ -310,25 +341,26 @@ public partial class Product_Plan : MSYS.Web.BasePage
     {
         try
         {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             Button btn = (Button)sender;
-            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
-            string mtr_code = ((TextBox)GridView2.Rows[Rowindex].FindControl("txtPlanNo")).Text;
+            GridViewRow row =(GridViewRow) btn.NamingContainer;
+            int Rowindex = row.RowIndex;//获得行号             
+            string mtr_code = ((TextBox)row.FindControl("txtPlanNo")).Text;
+            string prod_code = ((DropDownList)row.FindControl("listProd")).SelectedValue;
+            if (mtr_code == "")
+            {                
+                string planno = opt.GetSegValue("select nvl(Max(substr(PLAN_NO,16,2)),0)+1 as CODE from ht_prod_month_plan_detail where month_plan_ID = '" + hidePlanID.Value + "'", "CODE");
+                mtr_code = "PD" + txtYear.Text + listMonth.SelectedValue + prod_code + planno.PadLeft(2, '0');
+            }
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-            string query = "select * from HT_PROD_MONTH_PLAN_DETAIL where MONTH_PLAN_ID = " + hidePlanID.Value + " and plan_no = '" + mtr_code + "'";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra(query);
-            if (data != null && data.Tables[0].Rows.Count > 0)
+           
+          
+           
+          
             {
-                string[] seg = { "plan_Sort", "prod_code", "plan_output", "is_del" };
-                string[] value = { ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text, "0" };
-                opt.UpDateData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL", " where MONTH_PLAN_ID = " + hidePlanID.Value + " and plan_no = '" + mtr_code + "'");
-            }
-
-            else
-            {
-                string[] seg = { "plan_Sort", "plan_no", "prod_code", "plan_output", "MONTH_PLAN_ID" };
-                string[] value = { ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, mtr_code, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text, hidePlanID.Value };
+                string[] seg = { "MONTH_PLAN_ID", "plan_no", "plan_Sort", "prod_code", "plan_output", };
+                string[] value = { hidePlanID.Value,mtr_code,((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, };
                 opt.InsertData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL");
             }
             bindGrid2(hidePlanID.Value);
@@ -372,7 +404,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     protected void bindGrid4()
     {
 
-        string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + hidePzcode.Value + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
+        string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + hidePzcode.Value + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
             //string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code  and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);

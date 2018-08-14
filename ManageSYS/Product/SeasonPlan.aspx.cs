@@ -39,11 +39,20 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
 
                 ((Label)GridView1.Rows[i].FindControl("labAprv")).Text = mydrv["审批状态"].ToString();
-                ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = mydrv["下发状态"].ToString();
-                if (mydrv["审批状态"].ToString() != "未提交")
+
+                if (!(mydrv["审批状态"].ToString() == "未提交" || mydrv["审批状态"].ToString() == "未通过"))
+                {
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
-                if (mydrv["下发状态"].ToString() != "未下发")
-                    ((Button)GridView1.Rows[i].FindControl("btnIssued")).Enabled = false;
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
+                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "查看计划";
+                }
+                else
+                {
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
+                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "编制计划";
+                }
+              
 
             }
         }
@@ -120,14 +129,25 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowindex].Value.ToString();
         string query = "update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'";
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+      
         List<String> commandlist = new List<String>();
         commandlist.Add("update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'");
         commandlist.Add("update ht_prod_season_plan_detail set is_del = '1' where QUARTER_PLAN_ID =  '" + id + "'");
+        commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + id + "'");
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.TransactionCommand(commandlist);
-
+        bindGrid1();
     }
-
+    protected void SetEnable(bool status)
+    {
+        btnAdd.Visible = status;
+        btnDelSel.Visible = status;
+        if (GridView2.Columns.Count == 6)
+        {
+            GridView2.Columns[4].Visible = status;
+            GridView2.Columns[5].Visible = status;          
+        }
+    }
     protected void btnGridEdit_Click(object sender, EventArgs e)//编制计划
     {
         Button btn = (Button)sender;
@@ -135,7 +155,13 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string id = GridView1.DataKeys[Rowindex].Value.ToString();
         txtYear.Text = GridView1.Rows[Rowindex].Cells[3].Text;
         listSeason2.SelectedValue = GridView1.Rows[Rowindex].Cells[4].Text;
+       
+        string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
         bindGrid2(id);
+        if (aprvstatus == "未提交")
+            SetEnable(true);
+        else
+            SetEnable(false);
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
 
 
@@ -143,6 +169,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
+        SetEnable(true);
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
     }
 
@@ -169,10 +196,10 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { GridView1.Rows[index].Cells[2].Text, "12", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            if (MSYS.Common.AprvFlow.createApproval(subvalue))
-            {
-                opt.UpDateOra("update ht_prod_Season_plan set FLOW_STATUS = '0'  where ID = '" + id + "'");
-            }
+            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+            log_message += "业务数据ID：" + id;
+            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+
             bindGrid1();
 
         }

@@ -92,16 +92,18 @@ public class faultDbHandler : IHttpHandler
                  //get rawdata from IHistorian 
                  MSYS.Common.IHDataOpt ihopt = new MSYS.Common.IHDataOpt();
                  DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
-
-                 datainfo.xAxis = new List<string>();
-                 datainfo.yAxis = new List<double>();
-                 foreach (DataRow srow in Rows)
+                 if (Rows != null)
                  {
-                     datainfo.xAxis.Add(srow[0].ToString().Substring(11));
-                     datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
-                 }
+                     datainfo.xAxis = new List<string>();
+                     datainfo.yAxis = new List<double>();
+                     foreach (DataRow srow in Rows)
+                     {
+                         datainfo.xAxis.Add(srow[0].ToString().Substring(11));
+                         datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
+                     }
 
-                datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
+                     datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
+                 }
             }
 
         }

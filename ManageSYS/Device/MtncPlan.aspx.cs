@@ -143,10 +143,10 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                     /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
             string[] subvalue = { GridView1.Rows[index].Cells[1].Text, "14", id, Page.Request.UserHostName.ToString() };
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            if (MSYS.Common.AprvFlow.createApproval(subvalue))
-            {
-                opt.UpDateOra("update HT_EQ_MT_PLAN set FLOW_STATUS = '0'  where PZ_CODE = '" + id + "'"); 
-            }
+           string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+           log_message += "业务数据ID：" + id;
+           opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+
             
         }
         catch (Exception ee)

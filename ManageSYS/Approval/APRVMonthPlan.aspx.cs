@@ -75,10 +75,11 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
             GridView1.DataBind();
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
-                for (int i = 0; i < GridView1.PageSize; i++)
+                for (int i = GridView1.PageSize * GridView1.PageIndex; i <GridView1.PageSize * (GridView1.PageIndex+1) && i  < data.Tables[0].Rows.Count; i++)
                 {
-                    DataRowView mydrv = data.Tables[0].DefaultView[i+GridView1.PageSize*GridView1.PageIndex];
-                    Label labState1 = (Label)GridView1.Rows[i].FindControl("labStatus1");
+                    DataRowView mydrv = data.Tables[0].DefaultView[i];
+                    GridViewRow row = GridView1.Rows[i - GridView1.PageSize * GridView1.PageIndex];
+                    Label labState1 = (Label)row.FindControl("labStatus1");
 
                     switch (mydrv["主业务审批状态"].ToString())
                     {
@@ -95,7 +96,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
                             labState1.Text = "办理中";
                             break;
                     }
-                    Label labState2 = (Label)GridView1.Rows[i].FindControl("labStatus2");
+                    Label labState2 = (Label)row.FindControl("labStatus2");
 
                     switch (mydrv["当前流程状态"].ToString())
                     {

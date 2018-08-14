@@ -20,7 +20,10 @@
             $("#browser").treeview({
                 toggle: function () {
                     console.log("%s was toggled.", $(this).find(">span").text());
-                }
+                },
+                persist: "cookie",
+                collapsed: true
+
             });
         });
         function treeClick(code) {
@@ -57,6 +60,7 @@
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btnModify" />
+                    <asp:AsyncPostBackTrigger ControlID ="btnDelete" />
                 </Triggers>
             </asp:UpdatePanel>
         </div>
@@ -84,7 +88,8 @@
                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="80px" OnClick="btnFLow_Click" />           
                                   &nbsp;&nbsp;           
                                   <asp:Button ID="btnAdd" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnAdd_Click" />
-                                    <asp:Button ID="btnModify" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnModify_Click" />
+                                    <asp:Button ID="btnModify" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnModify_Click" /> 
+                                    <asp:Button ID="btnDelete" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelete_Click" />
                                     <asp:Button ID="btnUpdate" runat="server" CssClass="btnhide" OnClick="btnUpdate_Click" />
                                 </span>
                             </div>
@@ -107,13 +112,7 @@
                                                 <td>
                                                     <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
                                                 </td>
-                                                <td width="100">
-                                                    产品编码
-                                                </td>
-                                                <td>
-                                                    <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"   >
-                                                    </asp:DropDownList>
-                                                </td>
+                                               <td></td><td></td>
                                             </tr>
                                             <tr>
                                                 <td width="100">
@@ -204,6 +203,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                                     <asp:AsyncPostBackTrigger ControlID = "btnAdd" />
                                     <asp:AsyncPostBackTrigger ControlID = "btnSubmit" />
+                                    <asp:AsyncPostBackTrigger ControlID ="btnDelete" />
                                 </Triggers>
                             </asp:UpdatePanel>
             </div>
@@ -217,15 +217,16 @@
                 <div class="listtitle">
                     工艺参数标准表<span style="position: relative; float: right">
                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                           <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave_Click" />
                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
-                        <asp:HiddenField ID="hideprc" runat="server" Value="7020201" />
+                        <asp:HiddenField ID="hideprc" runat="server" Value="70301" />
                         <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />
                     </span>
                 </div>
-                <div style="overflow: scroll">
+                <div style="overflow: scroll;height:350px">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">                        
                     <ContentTemplate>
-                    <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
+                    <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False">
                                     <Columns>
                                         <asp:TemplateField>
                                             <ItemTemplate>
@@ -240,8 +241,8 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="参数名" SortExpression="参数名">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listParaName_SelectedIndexChanged"
-                                                    AutoPostBack="True">
+                                                <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist"  Width ="200px"
+                                                  >
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -274,16 +275,7 @@
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField>
-                                            <ItemTemplate>
-                                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField>
-                                            <ItemTemplate>
-                                                <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click" />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
+                                     
                                     </Columns>
                                     <HeaderStyle CssClass="gridheader" />
                                     <RowStyle CssClass="gridrow" />
@@ -295,9 +287,9 @@
                             <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                             <asp:AsyncPostBackTrigger ControlID="UpdateGrid" />
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
-                            <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID="hideprc" />
                             <asp:AsyncPostBackTrigger ControlID="btnCopy" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnSave" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

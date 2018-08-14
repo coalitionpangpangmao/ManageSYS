@@ -25,7 +25,7 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
             txtCode.Text = session_code;
             txtName.Text = data.Tables[0].Rows[0]["SECTION_NAME"].ToString();
             txtDscrp.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
-            rdValid.Checked = Convert.ToBoolean(Convert.ToDecimal( data.Tables[0].Rows[0]["IS_VALID"].ToString()));
+            rdValid.Checked = Convert.ToBoolean(Convert.ToDecimal(data.Tables[0].Rows[0]["IS_PATH_CONFIG"].ToString()));
         }
     }
     protected void updateNav()
@@ -40,7 +40,8 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
         if (str == "")
             str = "00000";
         txtCode.Text = "703" + (Convert.ToInt16(str.Substring(3)) + 1).ToString().PadLeft(2, '0');
-     
+      txtName.Text = "";
+      txtDscrp.Text = "";
     }
 
     protected void btnModify_Click(object sender, EventArgs e)
@@ -48,7 +49,7 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
     
         {
-            string[] seg = { "SECTION_CODE", "SECTION_NAME", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME" };
+            string[] seg = { "SECTION_CODE", "SECTION_NAME", "REMARK", "IS_PATH_CONFIG", "CREATE_ID", "CREATE_TIME" };
             string[] value = { txtCode.Text, txtName.Text, txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
 
             opt.MergeInto(seg, value,1, "HT_PUB_TECH_SECTION");
@@ -64,6 +65,7 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
         opt.UpDateOra(query);
         query = "update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,5) =  '" + txtCode.Text + "'";
         opt.UpDateOra(query);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
         
     }
     protected void btnUpdate_Click(object sender, EventArgs e)

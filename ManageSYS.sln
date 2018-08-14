@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Common", "MSYS.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Security", "MSYS.Security\MSYS.Security.csproj", "{D88AD759-6B4E-44DE-84D3-8504653DC11D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector", "DataCollector\DataCollector.csproj", "{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D88AD759-6B4E-44DE-84D3-8504653DC11D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

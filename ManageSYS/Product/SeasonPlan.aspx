@@ -90,11 +90,7 @@
                                         <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="50" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="下发状态">
-                                    <ItemTemplate>
-                                        <asp:Label ID="labIssue" runat="server"  CssClass="labstatu"  Width="50" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                            
                                 <asp:BoundField DataField="计划名" HeaderText="计划名" />
                                  <asp:BoundField DataField="年份" HeaderText="年份" />
                                 <asp:BoundField DataField="年份" HeaderText="年份" />
@@ -119,12 +115,7 @@
                                         <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
                                             OnClick="btnFLow_Click" />
                                     </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                </asp:TemplateField>                             
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />

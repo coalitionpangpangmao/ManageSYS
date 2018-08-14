@@ -16,8 +16,8 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
         {
 
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listSection1, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0' order by section_code", "section_name", "section_code");
-            opt.bindDropDownList(listSection2, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0' order by section_code", "section_name", "section_code");
+           opt.bindDropDownList(listSection1, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0' and IS_PATH_CONFIG = '1' order by section_code", "section_name", "section_code");
+           opt.bindDropDownList(listSection2, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0'  and IS_PATH_CONFIG = '1'  order by section_code", "section_name", "section_code");
           
           
         }

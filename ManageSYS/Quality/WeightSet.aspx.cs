@@ -28,7 +28,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
             GridView1.DataBind();
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
-                for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+                for (int i = 0; i < GridView1.Rows.Count; i++)
                 {
                     DataRowView mydrv = data.Tables[0].DefaultView[i];
                     ((DropDownList)GridView1.Rows[i].FindControl("listSection")).SelectedValue = mydrv["section_code"].ToString();

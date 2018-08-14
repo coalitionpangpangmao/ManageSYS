@@ -68,7 +68,12 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         else
             return "";            
     }
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        tvHtml = InitTree();
 
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " $('#browser').treeview({ toggle: function () { console.log('%s was toggled.', $(this).find('>span').text());},  persist: 'cookie', collapsed: true });", true);
+    }
 
    
 }

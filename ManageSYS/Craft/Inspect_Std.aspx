@@ -67,7 +67,7 @@
                 <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize="8"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize="12"
                             DataKeyNames="检查项目编码">
                             <Columns>
                                 <asp:TemplateField>
@@ -77,19 +77,19 @@
                                 </asp:TemplateField> 
                                 <asp:TemplateField HeaderText = "检查类型">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listType" runat="server" CssClass = 'drpdwnlist' Width = '80px' DataSource = "<%#bindInspect() %>"  DataTextField = "INSPECT_TYPE"  DataValueField = "ID">
+                                        <asp:DropDownList ID="listType" runat="server" CssClass = 'drpdwnlist' Width = '80px' DataSource = "<%#bindInspect() %>"  DataTextField = "INSPECT_TYPE"  DataValueField = "ID" Enabled ="false">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText = "分组">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listGroup" runat="server" CssClass = 'drpdwnlist' >
+                                        <asp:DropDownList ID="listGroup" runat="server" CssClass = 'drpdwnlist'  Enabled="false">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>                               
                                 <asp:TemplateField HeaderText = "检查项目">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listInspect" runat="server" CssClass = 'drpdwnlist'>
+                                        <asp:DropDownList ID="listInspect" runat="server" CssClass = 'drpdwnlist' Enabled="false">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField> 

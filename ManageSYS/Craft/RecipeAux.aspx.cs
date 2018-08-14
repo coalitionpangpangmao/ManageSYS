@@ -132,9 +132,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
         bindData();
     }
     protected void btnModify_Click(object sender, EventArgs e)
-    {
-        try
-        {
+    {      
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
           
             hdcode.Value = txtCode.Text;
@@ -147,11 +145,8 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
         
             bindGrid();
-        }
-        catch (Exception error)
-        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
 
-        }
 
     }
     protected void btnDel_Click(object sender, EventArgs e)

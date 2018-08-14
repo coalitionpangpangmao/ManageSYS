@@ -49,7 +49,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" DataKeyNames="配方编码">
+                            <asp:GridView ID="GridView1" runat="server" class="grid"  DataKeyNames="配方编码" AutoGenerateColumns ="false">
                                 <Columns>
                                     <asp:TemplateField HeaderText="选择">
                                         <ItemTemplate>
@@ -61,6 +61,7 @@
                                             <asp:Button ID="btnGridDetail" runat="server" Text="配方详情" CssClass="btn1" Width="100px"
                                                 OnClick="btnGridDetail_Click" />
                                         </ItemTemplate>
+                                        <ItemStyle Width="110px" />
                                     </asp:TemplateField>
                                     <asp:TemplateField >
                                         <ItemTemplate>
@@ -73,7 +74,17 @@
                                             <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="100px"
                                                 OnClick="btnFLow_Click" />
                                         </ItemTemplate>
+                                        <ItemStyle Width="110px" />
                                     </asp:TemplateField>
+                                    <asp:BoundField DataField="配方编码" HeaderText="配方编码" />
+                                    <asp:BoundField DataField="配方名称" HeaderText="配方名称" />
+                                    <asp:BoundField DataField="启用时间" HeaderText="启用时间" />
+                                    <asp:BoundField DataField="编辑人员" HeaderText="编辑人员" />
+                                    <asp:TemplateField HeaderText="审批状态">
+                                    <ItemTemplate>
+                                        <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="50" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />

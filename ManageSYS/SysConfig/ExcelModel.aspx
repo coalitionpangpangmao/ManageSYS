@@ -15,11 +15,23 @@
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#browser").treeview();
+        $("#browser").treeview({
+            toggle: function () {
+                console.log("%s was toggled.", $(this).find(">span").text());
+            },
+            persist: "cookie",
+            collapsed: true
+
         });
         function initTreetoggle() {
-            $("#browser").treeview();
+            $("#browser").treeview({
+                toggle: function () {
+                    console.log("%s was toggled.", $(this).find(">span").text());
+                },
+                persist: "cookie",
+                collapsed: true
+
+            });
         }
         function tab1Click(code) {
             $('#tabtop1').click();

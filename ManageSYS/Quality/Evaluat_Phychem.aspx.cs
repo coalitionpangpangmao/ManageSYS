@@ -41,8 +41,9 @@ public partial class Quality_Evaluat_PhyChem : MSYS.Web.BasePage
     protected void initView()
     {
         txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
+        createView();
         bindgrid();
-
+       
     }
 
     protected void btngridview_Click(object sender, EventArgs e)
@@ -135,7 +136,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
         if (prod_name == "&nbsp;")
             return;
 
-        createView();
+        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "select * from  hv_Phychem_daily_report where 产品 = '" + prod_name + "'  and  substr(检测时间,1,7) = '" + txtBtime.Text + "'";
         if (team_name != "&nbsp;") 

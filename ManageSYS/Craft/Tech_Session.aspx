@@ -38,7 +38,7 @@
         <tr>
         <td width="100">备注</td>
         <td><asp:TextBox ID="txtDscrp" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">是否有效</td>
+        <td  width="100">路径配置</td>
         <td title=" ">
             <asp:CheckBox ID="rdValid" runat="server" Text=" " />
        </td>

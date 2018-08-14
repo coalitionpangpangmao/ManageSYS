@@ -78,7 +78,7 @@
                                 <asp:BoundField DataField="编制人" HeaderText="编制人" />
                                <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1 auth" Width="75"
+                                        <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1" Width="75"
                                             OnClick="btnGridEdit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -196,7 +196,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="计划号" SortExpression="计划号">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号"
+                                            <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号" Width ="200px"
                                                 CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -298,7 +298,7 @@
                                 <RowStyle CssClass="gridrow" />
                                  <AlternatingRowStyle CssClass="gridalterrow" />
                             </asp:GridView>      
-                               <div align="center">   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>                   
+                               <div align="center" style="margin-top: 10px">   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>                   
                         </ContentTemplate>
                         <Triggers>
                            

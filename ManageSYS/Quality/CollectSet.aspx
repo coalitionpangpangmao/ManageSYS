@@ -17,7 +17,9 @@
             $("#browser").treeview({
                 toggle: function () {
                     console.log("%s was toggled.", $(this).find(">span").text());
-                }
+                },
+                persist: "cookie",
+                collapsed: true
             });
             $('.gapinfo').hide();
         });
@@ -46,7 +48,7 @@
     </asp:ScriptManager>
     <div class="mainbox">
         <div class="mainleft">
-            <div class="leftinfo">
+            <div class="leftinfo" style="overflow: scroll">
                 <div class="listtitle">
                     工艺模型</div>
                 <% = tvHtml %>

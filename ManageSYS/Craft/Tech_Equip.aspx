@@ -2,12 +2,10 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1. 0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head runat="server">   
     <title>工艺模型</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="../js/jquery.js"></script>
-  
+    <script type="text/javascript" src="../js/jquery.js"></script>  
   
 </head>
 <body>
@@ -24,7 +22,8 @@
                     <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />       
        
        <asp:HiddenField ID="hdcode" runat="server" />         
-        <asp:Button ID="btnUpdate" runat="server"  CssClass = "btnhide"  OnClick = "btnUpdate_Click"/>      
+        <asp:Button ID="btnUpdate" runat="server"  CssClass = "btnhide"  OnClick = "btnUpdate_Click"/>    
+            </div>  
         <div class="framelist">
        
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
@@ -67,10 +66,17 @@
                                      </tr>
                                     <tr>
                                        <td width="100">
+                                            控制设备
+                                        </td>
+                                        <td >
+                                            <asp:CheckBox ID="ckCtrl" runat="server"  Text=""/>
+                                        </td>
+                                   
+                                       <td width="100">
                                             备注
                                         </td>
-                                        <td colspan="3" >
-                                            <asp:TextBox ID="txtDscpt" runat="server" class="dfinput1" Width ="500px"></asp:TextBox>
+                                        <td >
+                                            <asp:TextBox ID="txtDscpt" runat="server" class="dfinput1" ></asp:TextBox>
                                         </td>
                                     </tr>
                                 </tbody>

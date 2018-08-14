@@ -27,7 +27,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
+        DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0'  order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
@@ -50,7 +50,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     public string InitTreePara(string section_code)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and  para_type like '___1%' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
+        DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and  para_type like '___1_' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";

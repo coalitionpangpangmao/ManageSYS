@@ -66,8 +66,8 @@
         <td colspan="3">
             <p>
                 <asp:CheckBox ID="ckCenterCtrl" runat="server" Text="集控显示" />
-                <asp:CheckBox ID="ckRecipePara" runat="server" Text="工艺参数" />
-                <asp:CheckBox ID="ckSetPara" runat="server" Text="设备参数" />
+                <asp:CheckBox ID="ckRecipePara" runat="server" Text="设定参数" />
+                <asp:CheckBox ID="ckSetPara" runat="server" Text="工艺参数" />
                  <asp:CheckBox ID="ckQuality" runat="server" Text="质量统计" />
                     <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" />
             </p>

@@ -80,9 +80,9 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     protected void initView()
     {        
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       opt.bindDropDownList(listtype, "select ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
-       opt.bindDropDownList(listType2, "select ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
-       opt.bindDropDownList(listCreator, "select ID,Name from ht_svr_user where is_DEL = '0'", "Name", "ID");
+       opt.bindDropDownList(listtype, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
+       opt.bindDropDownList(listType2, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
+       opt.bindDropDownList(listCreator, "select distinct ID,Name from ht_svr_user where is_DEL = '0'", "Name", "ID");
         
     }
 

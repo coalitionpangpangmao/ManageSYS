@@ -56,6 +56,14 @@ namespace MSYS.Common
                     commandlist.Add(opt.InsertDatastr(subseg, subvalue, "HT_PUB_APRV_OPINION"));
                 }
             }
+            //3.从审批主表中匹配审批业务详情，将主业务置为办理中
+            data = opt.CreateDataSetOra("select t.aprv_table,t.aprv_tabseg,t.BUZ_ID from   ht_pub_aprv_type t   where t.pz_type = '" + keys[1] + "'");           
+            string table = data.Tables[0].Rows[0][0].ToString();
+            string tableseg = data.Tables[0].Rows[0][1].ToString();
+            string busid = data.Tables[0].Rows[0][2].ToString();                  
+                commandlist.Add("update " + table + " set " + tableseg + " = '0' where " + busid + " = '" + keys[2] + "'");
+          
+            //4、上述操作作为事务进行处理
             if ("Success" == opt.TransactionCommand(commandlist))
                 return true;
 

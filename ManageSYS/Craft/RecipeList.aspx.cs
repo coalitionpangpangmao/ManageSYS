@@ -28,24 +28,69 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
     }
     protected void btnDel_Click(object sender, EventArgs e)//删除还没有完善
     {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         for (int i = 0; i < GridView1.Rows.Count; i++)
         {
             CheckBox ck = (CheckBox)GridView1.Rows[i].FindControl("chk");
             if (ck.Checked == true)
             {
-                //DBOpt opt = new DBOpt();
-                //opt.UpDateOra(" 
+                string recipeno = GridView1.Rows[i].Cells[4].Text;
+                List<String> commandlist = new List<String>();
+                switch (recipeno.Substring(0,5))
+                {
+                    case "70306":
+                        commandlist.Add("update ht_qa_mater_formula set is_del = '1' where formula_code = '" + recipeno + "'");
+                        commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
+                        opt.TransactionCommand(commandlist);
+                        break;
+                    case "70307":
+                        commandlist.Add("update ht_qa_aux_formula set is_del = '1' where formula_code = '" + recipeno + "'");
+                        commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
+                        opt.TransactionCommand(commandlist);
+                        break;
+                    default:
+                        commandlist.Add("update ht_qa_coat_formula set is_del = '1' where formula_code = '" + recipeno + "'");
+                        commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
+                        opt.TransactionCommand(commandlist);
+                        break;
+                }
+
             }
            
         }
+        bindGrid();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
     }
     protected void bindGrid()
     {
-        string query = "select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效,(case FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_qa_mater_formula where prod_code ='" + hdcode.Value + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效,(case FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_qa_aux_formula where prod_code = '" + hdcode.Value + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效,(case FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态  from ht_qa_coat_formula  where prod_code = '" + hdcode.Value + "'  and is_del ='0'";
+        string query = "select r.formula_code as 配方编码，r.formula_name as 配方名称,r.b_date as 启用时间,r.CREATE_ID as 编辑人员,s.name as 审批状态  from ht_qa_mater_formula r left join ht_inner_aprv_status s on s.id = r.flow_status  where r.prod_code ='" + hdcode.Value + "' and r.is_del ='0' union select r.formula_code as 配方编码，r.formula_name as 配方名称,r.b_date as 启用时间,r.CREATE_ID as 编辑人员,s.name as 审批状态   from ht_qa_aux_formula r left join ht_inner_aprv_status s on s.id = r.flow_status  where r.prod_code = '" + hdcode.Value + "' and r.is_del ='0'  union select r.formula_code as 配方编码，r.formula_name as 配方名称,r.b_date as 启用时间,r.CREATE_ID as 编辑人员,s.name as 审批状态  from ht_qa_coat_formula r left join ht_inner_aprv_status s on s.id = r.flow_status   where r.prod_code = '" + hdcode.Value + "'  and r.is_del ='0'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data =  opt.CreateDataSetOra(query);
         GridView1.DataSource =data;
-        GridView1.DataBind();        
+        GridView1.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+
+                ((Label)GridView1.Rows[i].FindControl("labAprv")).Text = mydrv["审批状态"].ToString();
+
+                if (!(mydrv["审批状态"].ToString() == "未提交" || mydrv["审批状态"].ToString() == "未通过"))
+                {
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
+
+                }
+                else
+                {
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
+                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
+
+                }
+            }
+        }
+            
     }
     protected void btnGridDetail_Click(object sender, EventArgs e)
     {
@@ -101,13 +146,10 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "配方:" + GridView1.Rows[index].Cells[4].Text, mode, id, Page.Request.UserHostName.ToString() };
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            if (MSYS.Common.AprvFlow.createApproval(subvalue))
-            {
-                string log_message = opt.UpDateOra("update " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '" + mode + "'", "APRV_TABLE") + " set " + opt.GetSegValue("select * from ht_pub_aprv_type where PZ_TYPE = '" + mode + "'", "APRV_TABSEG") + " = '0'  where FORMULA_CODE = '" + id + "'") == "Success" ? "提交审批成功," : "提交审批失败，";
-                log_message += "业务数据ID：" + id;
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+           string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+           log_message += "业务数据ID：" + id;
+           opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
 
-            }
             bindGrid();
 
         }

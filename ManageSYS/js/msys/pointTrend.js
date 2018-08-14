@@ -12,11 +12,16 @@ function treeClick(code) {
     //在charframe中添加控件，完成数据刷新
 }
 
+$(document).ready(function () {
     $("#browser").treeview({
         toggle: function () {
             console.log("%s was toggled.", $(this).find(">span").text());
-        }
+        },
+        persist: "cookie",
+        collapsed: true
+
     });
+});
 
    
     function GetPointJsonData() {
@@ -37,7 +42,9 @@ function treeClick(code) {
             data: JSON.stringify(GetPointJsonData()),
             dataType: "json",
             success: function (result) {
+                debugger;
                 DrawPicture(result[0]);
+                if(result[0]["statics"])
                 $('#statics').append(result[0]["statics"].toString());
             },
             error: function (message) {

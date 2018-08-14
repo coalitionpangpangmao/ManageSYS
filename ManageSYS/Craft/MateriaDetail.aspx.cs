@@ -10,8 +10,11 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
    protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
-           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-           opt.bindDropDownList(listType, "select  MATTREE_CODE ,  MATTREE_NAME ,  PARENT_CODE    from HT_PUB_MATTREE where  is_del = '0' order by PARENT_CODE", "MATTREE_NAME", "MATTREE_CODE");
+        if (!IsPostBack)
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList(listType, "select  MATTREE_CODE ,  MATTREE_NAME ,  PARENT_CODE    from HT_PUB_MATTREE where  is_del = '0' order by PARENT_CODE", "MATTREE_NAME", "MATTREE_CODE");
+        }
            
       
     }

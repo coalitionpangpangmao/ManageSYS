@@ -42,7 +42,7 @@
                 <asp:UpdatePanel ID="updtpanel" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" Width="95%" CssClass="grid" border="0"
-                            CellPadding="2" CellSpacing="1" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="14" HeaderStyle-Wrap="False" AutoGenerateColumns ="false">
+                            CellPadding="2" CellSpacing="1" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="14" HeaderStyle-Wrap="False" AutoGenerateColumns ="false">
                             <Columns>
                                 <asp:BoundField DataField="用户" HeaderText="用户">
                                 <ItemStyle Width="60px" />
@@ -57,8 +57,7 @@
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
-                            <AlternatingRowStyle CssClass="gridalterrow" />
-                            <PagerSettings FirstPageText="第一页" LastPageText="最后页" Mode="NumericFirstLast" />
+                            <AlternatingRowStyle CssClass="gridalterrow" />                        
                             <PagerStyle CssClass="gridpager" />
                             <PagerTemplate>
                                 <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>

@@ -41,6 +41,7 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
             listSection.SelectedValue = row["SECTION_CODE"].ToString();
             txtCode.Text = eqcode;
             txtName.Text = row["EQ_NAME"].ToString();
+            ckCtrl.Checked = ("1" == row["IS_CTRL"].ToString());
         }
     }
 
@@ -51,7 +52,8 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "message", "alert('请选择设备所属工段及分类')", true);
         else
         {
-            txtCode.Text = listSection.SelectedValue + opt.GetSegValue("select nvl(max(substr(idkey,6,3)),0)+1 as code from ht_eq_eqp_tbl where SECTION_CODE = '" + listSection.SelectedValue + "'", "CODE").PadLeft(3, '0');           
+            txtCode.Text = listSection.SelectedValue + opt.GetSegValue("select nvl(max(substr(idkey,6,3)),0)+1 as code from ht_eq_eqp_tbl where SECTION_CODE = '" + listSection.SelectedValue + "'", "CODE").PadLeft(3, '0'); 
+            txtName.Text = "";   
            
         }
     }
@@ -59,13 +61,15 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
+        if(txtCode.Text.Length == 8 && txtCode.Text.Substring(0,5) == listSection.SelectedValue)
         {
-            string[] seg = { "IDKEY", "CLS_CODE", "EQ_NAME", "SECTION_CODE", "REMARK", "CREATOR", "CREATE_TIME" };
-            string[] value = { txtCode.Text,listSort.SelectedValue, txtName.Text,listSection.SelectedValue, txtDscpt.Text, ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+            string[] seg = { "IDKEY", "CLS_CODE", "EQ_NAME", "SECTION_CODE", "REMARK", "CREATOR", "CREATE_TIME" ,"IS_CTRL"};
+            string[] value = { txtCode.Text,listSort.SelectedValue, txtName.Text,listSection.SelectedValue, txtDscpt.Text, ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),Convert.ToInt16(ckCtrl.Checked).ToString() };
             opt.MergeInto(seg, value, 1, "HT_EQ_EQP_TBL");
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
         }
+        else
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "message", "alert('请确认设备所属工艺段是否正确')", true);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
@@ -74,6 +78,7 @@ public partial class Device_EquipmentInfo : MSYS.Web.BasePage
         commandlist.Add( "update HT_EQ_EQP_TBL set IS_DEL = '1' where IDKEY = '" + txtCode.Text + "'");
         commandlist.Add("update HT_PUB_TECH_PARA set IS_DEL = '1' where EQUIP_CODE =  '" + txtCode.Text + "'");
         opt.TransactionCommand(commandlist);
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
     }
 
   

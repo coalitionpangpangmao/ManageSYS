@@ -42,6 +42,7 @@ public partial class Quality_Evaluat_Process : MSYS.Web.BasePage
     protected void initView()
     {
         txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
+        createView();
         bindgrid();
 
     }
@@ -135,7 +136,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
         if (prod_name == "&nbsp;")
             return;
 
-        createView();
+      
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "select * from  hv_Process_daily_report where 产品 = '" + prod_name + "'  and  substr(检测时间,1,7) = '" + txtBtime.Text + "'";
         if (team_name != "&nbsp;")

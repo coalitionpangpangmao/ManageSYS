@@ -57,11 +57,12 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
     protected void bindGrid()
     {
         string query = "select r.inspect_type as 检查类型,r.inspect_group as 分组, r.inspect_code as 检查项目编码,j.upper_value as 上限 ,j.lower_value as 下限,j.minus_score as 单次扣分,j.REMARK as 备注 from ht_qlt_inspect_proj r left join ht_QLT_inspect_stdd j on j.inspect_code = r.inspect_code  where r.is_del = '0' and r.is_valid = '1' ";   
-        if (listtype.SelectedValue == "")
-            query = " and r.inspect_type = '" + listtype.SelectedValue + "'";
+        if (listtype.SelectedValue != "")
+            query += " and r.inspect_type = '" + listtype.SelectedValue + "'";
         
             if(listSection.SelectedValue != "")
                 query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
+            query += " order by r.inspect_code";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -104,7 +105,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
     protected void initView()
     {        
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       opt.bindDropDownList(listtype, "select ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
+       opt.bindDropDownList(listtype, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
    
         
     }

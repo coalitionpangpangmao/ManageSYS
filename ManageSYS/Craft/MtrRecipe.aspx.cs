@@ -145,7 +145,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
       
         bindGrid();
-        
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {

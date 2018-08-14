@@ -19,7 +19,10 @@
             $("#browser").treeview({
                 toggle: function () {
                     console.log("%s was toggled.", $(this).find(">span").text());
-                }
+                },
+                persist: "cookie",
+                collapsed: true
+
             });
         });
         function tab1Click(code) {
@@ -42,69 +45,70 @@
         }
         function update() {
             $('#btnUpdate').click();
-           
-            }
+
+        }
     </script>
 </head>
 <body>
     <form id="Form1" runat="server">
-    <div class="place">
-        <span>位置：</span>
-        <ul class="placeul">
-            <li><a href="#">工艺管理</a></li>
-            <li><a href="#">工艺模型</a></li>
-        </ul>
-    </div>
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>
-    <div class="mainbox">
-        <div class="mainleft">
-            <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <asp:Button ID="btnUpdate" CssClass="btnhide" runat="server" OnClick="btnUpdate_Click" />
-                    <div class="leftinfo">
-                        <div class="listtitle">
-                            工艺模型</div>
-                        <% = tvHtml %>
-                    </div>
-                </ContentTemplate>
-                <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
-                </Triggers>
-            </asp:UpdatePanel>
+        <div class="place">
+            <span>位置：</span>
+            <ul class="placeul">
+                <li><a href="#">工艺管理</a></li>
+                <li><a href="#">工艺模型</a></li>
+            </ul>
         </div>
-        <!--mainleft end-->
-        <div class="mainright">
-            <div id="usual1" class="usual">
-                <div class="itab">
-                    <ul>
-                        <li><a href="#tab1" class="selected" id="tabtop1">工艺段</a></li>
-                        <li><a href="#tab2" id="tabtop2">设备</a></li>
-                        <li><a href="#tab3" id="tabtop3">参数点</a></li>
-                    </ul>
-                </div>
-                <div id="tab1" class="tabson">
-                    <iframe id="sessionFrame" name="sessionFrame" src="Tech_Session.aspx" height="400"
-                        scrolling="no" style="width: 80%; position: absolute"></iframe>
-                </div>
-                <div id="tab2" class="tabson">
-                    <iframe id="ProcessFrame" name="ProcessFrame" src="Tech_Equip.aspx" height="400"
-                        scrolling="no" style="width: 80%; position: absolute"></iframe>
-                </div>
-                <div id="tab3" class="tabson">
-                    <iframe id="ParaFrame" name="ParaFrame" src="Tech_Para.aspx" height="400" scrolling="no"
-                        style="width: 80%; position: absolute"></iframe>
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <div class="mainbox">
+            <div class="mainleft">
+                <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:Button ID="btnUpdate" CssClass="btnhide" runat="server" OnClick="btnUpdate_Click" />
+                        <div class="leftinfo" style="overflow: scroll">
+                            <div class="listtitle">
+                                工艺模型
+                            </div>
+                            <% = tvHtml %>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+            <!--mainleft end-->
+            <div class="mainright">
+                <div id="usual1" class="usual">
+                    <div class="itab">
+                        <ul>
+                            <li><a href="#tab1" class="selected" id="tabtop1">工艺段</a></li>
+                            <li><a href="#tab2" id="tabtop2">设备</a></li>
+                            <li><a href="#tab3" id="tabtop3">参数点</a></li>
+                        </ul>
+                    </div>
+                    <div id="tab1" class="tabson">
+                        <iframe id="sessionFrame" name="sessionFrame" src="Tech_Session.aspx" height="400"
+                            scrolling="no" style="width: 80%; position: absolute"></iframe>
+                    </div>
+                    <div id="tab2" class="tabson">
+                        <iframe id="ProcessFrame" name="ProcessFrame" src="Tech_Equip.aspx" height="400"
+                            scrolling="no" style="width: 80%; position: absolute"></iframe>
+                    </div>
+                    <div id="tab3" class="tabson">
+                        <iframe id="ParaFrame" name="ParaFrame" src="Tech_Para.aspx" height="400" scrolling="no"
+                            style="width: 80%; position: absolute"></iframe>
+                    </div>
                 </div>
             </div>
+            <!--mainright end-->
+            <script type="text/javascript">
+                $("#usual1 ul").idTabs();
+            </script>
+            <script type="text/javascript">
+                $('.tablelist tbody tr:odd').addClass('odd');
+            </script>
         </div>
-        <!--mainright end-->
-        <script type="text/javascript">
-            $("#usual1 ul").idTabs(); 
-        </script>
-        <script type="text/javascript">
-            $('.tablelist tbody tr:odd').addClass('odd');
-        </script>
-    </div>
     </form>
 </body>
 </html>

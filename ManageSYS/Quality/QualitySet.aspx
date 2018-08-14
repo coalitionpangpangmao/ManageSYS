@@ -50,6 +50,10 @@
                                     OnSelectedIndexChanged="listVersion_SelectedIndexChanged">
                                 </asp:DropDownList>
                                 <span style="position: relative; float: right">
+                                      审批状态：<asp:DropDownList ID="listAprv" runat="server" CssClass="drpdwnlist" Width = "80px" Enabled="False"> </asp:DropDownList>
+                                       <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1  auth" Width="80px"  OnClick="btnSubmit_Click" />   
+                                       &nbsp;   
+                                       <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="80px" OnClick="btnFLow_Click" />        
                                       <asp:Button ID="btnNew" runat="server" Text="新增" class="btnadd auth" OnClick="btnNew_Click" />
                                     <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel auth" OnClick="btnDel_Click" />
                                     <asp:Button ID="btnModify" runat="server" Text="保存" class="btnmodify auth" OnClick="btnModify_Click" />
@@ -234,6 +238,24 @@
         </table>
     </div>
     <!--mainright end-->
+        <div class="aprvinfo" id="flowinfo">
+        <div class="tiptop">
+            <span>审批流程详情</span><a onclick="$('#flowinfo').fadeOut(100);"></a></div>
+        <div class="flowinfo">
+            <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:GridView ID="GridView3" runat="server" class="grid">
+                        <HeaderStyle CssClass="gridheader" />
+                        <RowStyle CssClass="gridrow" />
+                         <AlternatingRowStyle CssClass="gridalterrow" />
+                    </asp:GridView>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="btnFlow" />
+                </Triggers>
+            </asp:UpdatePanel>
+        </div>
+    </div>
     <script type="text/javascript">
         $('.tablelist tbody tr:odd').addClass('odd');
     </script>
