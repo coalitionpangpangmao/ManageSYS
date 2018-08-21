@@ -14,22 +14,18 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            tvHtml = InitTree("");
-            txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            txtBtime.Text = System.DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss");
-           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listPlanno, "select * from ht_prod_report t where  STARTTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or ENDTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (STRATTIME < '" + txtBtime.Text + "' and  ENDTIME > '" + txtEtime.Text + "'" , "PLANNO", "PLANNO");
+            tvHtml = InitTree();
+         
         }
     }
 
 
 
-    public string InitTree(string planno)
+    public string InitTree()
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query ="select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ";
-        if (planno != "")
-            query = "select  g.section_code,g.section_name from ht_prod_report g1 left join  ht_pub_tech_section g on g1.section_code = g.section_code and  g.IS_VALID = '1' and g.IS_DEL = '0' where g1.planno ='" + planno + "' order by g.section_code ";
+       
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -61,7 +57,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
             foreach (DataRow row in rows)
             {
                 // tvHtml += "<li ><a href='Tech_Para.aspx?para_code=" + row["para_code"].ToString() + "' target='ProcessFrame'><span class='file'  onclick = \"$('#tabtop4').click()\">" + row["para_name"].ToString() + "</span></a>";
-                tvHtml += "<li ><span class='file'  onclick = \"treeClick(" + row["para_code"].ToString() + ")\">" + row["para_name"].ToString() + "</span></a>";
+                tvHtml += "<li ><span class='file'  onclick = \"treeClick('" + row["para_code"].ToString() + "')\">" + row["para_name"].ToString() + "</span></a>";
                 tvHtml += "</li>";
             }
             tvHtml += "</ul>";
@@ -72,18 +68,5 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
     }
 
  
-    protected void txtBtime_TextChanged(object sender, EventArgs e)
-    {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listPlanno, "select * from ht_prod_report t where  STARTTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or ENDTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (STRATTIME < '" + txtBtime.Text + "' and  ENDTIME > '" + txtEtime.Text + "'", "PLANNO", "PLANNO");
-    }
-    protected void txtEtime_TextChanged(object sender, EventArgs e)
-    {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listPlanno, "select * from ht_prod_report t where  STARTTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or ENDTIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (STRATTIME < '" + txtBtime.Text + "' and  ENDTIME > '" + txtEtime.Text + "'", "PLANNO", "PLANNO");
-    }
-    protected void listPlanno_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        tvHtml = InitTree(listPlanno.SelectedValue);
-    }
+ 
 }

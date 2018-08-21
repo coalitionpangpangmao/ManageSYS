@@ -354,14 +354,11 @@ public partial class Product_Plan : MSYS.Web.BasePage
             }
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-           
-          
-           
           
             {
-                string[] seg = { "MONTH_PLAN_ID", "plan_no", "plan_Sort", "prod_code", "plan_output", };
-                string[] value = { hidePlanID.Value,mtr_code,((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, };
-                opt.InsertData(seg, value, "HT_PROD_MONTH_PLAN_DETAIL");
+                string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output", };
+                string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, };
+                opt.MergeInto(seg, value,1, "HT_PROD_MONTH_PLAN_DETAIL");
             }
             bindGrid2(hidePlanID.Value);
         }

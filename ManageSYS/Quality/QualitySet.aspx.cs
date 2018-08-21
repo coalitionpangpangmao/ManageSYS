@@ -223,7 +223,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {
-                    string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text;
+                    string mtr_code = ((DropDownList)GridView1.Rows[i].FindControl("listParaName")).SelectedValue;
                     string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     opt.UpDateOra(query);
@@ -273,7 +273,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             foreach (DataRow row in data.Tables[0].Rows)
             {
                 string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE" };
-                string[] value = { listtechC.SelectedValue, row["PARA_CODE"].ToString(), row["QLT_TYPE"].ToString(), row["LOWER"].ToString(), row["UPPER"].ToString(), row["REMARK"].ToString(),row["txtScore"].ToString()};
+                string[] value = { listtechC.SelectedValue, row["PARA_CODE"].ToString(), row["QLT_TYPE"].ToString(), row["LOWER"].ToString(), row["UPPER"].ToString(), row["REMARK"].ToString(), row["MINUS_SCORE"].ToString() };
                 opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL");
 
             }

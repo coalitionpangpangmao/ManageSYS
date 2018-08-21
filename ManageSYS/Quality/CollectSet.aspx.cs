@@ -57,7 +57,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                // tvHtml += "<li ><a href='Tech_Para.aspx?para_code=" + row["para_code"].ToString() + "' target='ProcessFrame'><span class='file'  onclick = \"$('#tabtop4').click()\">" + row["para_name"].ToString() + "</span></a>";
+              
                 tvHtml += "<li ><span class='file'  onclick = \"treeClick(" + row["para_code"].ToString() + ")\">" + row["para_name"].ToString() + "</span>";
                 tvHtml += "</li>";
             }
@@ -73,15 +73,9 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     protected void Save_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string[] seg = { "PARA_CODE", "PARA_TYPE", "WEIGHT", "UNIT", "PERIODIC", "RST_VALUE", "VARMONITOR_TAG", "HEAD_DELAY", "TAIL_DELAY", "BATCH_HEAD_DELAY", "BATCH_TAIL_DELAY", "IS_GAP_JUDGE", "DESCRIPT", "SYNCHRO_TIME", "GAP_POINT", "GAP_HDELAY", "GAP_TDELAY" };
-        string[] value = { txtID.Text, listStyle.SelectedValue, txtWeight.Text, txtUnit.Text, txtPeriodic.Text, txtRstValue.Text, txtVarTag.Text, txtHeadDelay.Text, txtTailDelay.Text, txtBatchHDelay.Text, txtBatchTDelay.Text, Convert.ToInt16(rdYes.Checked).ToString(), txtDescript.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listGappoint.SelectedValue, txtGapHeadDelay.Text, txtGapTailDelay.Text };
-        opt.MergeInto(seg, value, 1, "ht_qlt_collection");
-        if (rdYes.Checked)
-        {
-            string[] subseg = { "PARA_CODE", "RST_VALUE", "TIMEGAP" };
-            string[] subvalue = { txtID.Text, txtGapRst.Text, txtGapTime.Text };
-            opt.MergeInto(subseg, subvalue, 1, "HT_QLT_GAP_COLLECTION");
-        }
+        string[] seg = { "PARA_CODE", "PARA_TYPE", "WEIGHT", "PERIODIC", "RST_VALUE", "HEAD_DELAY", "TAIL_DELAY", "BATCH_HEAD_DELAY", "BATCH_TAIL_DELAY", "IS_GAP_JUDGE", "DESCRIPT", "SYNCHRO_TIME", "CTRL_POINT", "GAP_HDELAY", "GAP_TDELAY","GAP_TIME" };
+        string[] value = { txtID.Text, listStyle.SelectedValue, txtWeight.Text, txtPeriodic.Text, txtRstValue.Text, txtHeadDelay.Text, txtTailDelay.Text, txtBatchHDelay.Text, txtBatchTDelay.Text, Convert.ToInt16(rdYes.Checked).ToString(), txtDescript.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listGappoint.SelectedValue, txtGapHeadDelay.Text, txtGapTailDelay.Text,txtGapTime.Text };
+        opt.MergeInto(seg, value, 1, "ht_qlt_collection");      
 
     }
     protected void Delete_Click(object sender, EventArgs e)
@@ -97,46 +91,48 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         txtID.Text = hidecode.Value;
         listSection.SelectedValue = txtID.Text.Substring(0, 5);
-        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where  is_del = '0' and is_valid = '1'  and  para_type like '___1%' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
-        opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from HT_QLT_GAP_COLLECTION r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1_' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from ht_qlt_collection r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0' and r.is_gap_judge = '1'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
         listPointname.SelectedValue = txtID.Text;
         DataSet data = opt.CreateDataSetOra("select * from ht_qlt_collection g1  where g1.is_del = '0' and g1.is_valid = '1' and  g1.para_code = '" + txtID.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             txtWeight.Text = data.Tables[0].Rows[0]["WEIGHT"].ToString();
-            listStyle.SelectedValue = data.Tables[0].Rows[0]["PARA_TYPE"].ToString();
-            txtUnit.Text = data.Tables[0].Rows[0]["UNIT"].ToString(); ;
+            listStyle.SelectedValue = data.Tables[0].Rows[0]["PARA_TYPE"].ToString();           
             txtPeriodic.Text = data.Tables[0].Rows[0]["PERIODIC"].ToString();
-            txtRstValue.Text = data.Tables[0].Rows[0]["RST_VALUE"].ToString();
-            txtVarTag.Text = data.Tables[0].Rows[0]["VARMONITOR_TAG"].ToString();
+            txtRstValue.Text = data.Tables[0].Rows[0]["RST_VALUE"].ToString();         
 
             txtHeadDelay.Text = data.Tables[0].Rows[0]["HEAD_DELAY"].ToString();
             txtTailDelay.Text = data.Tables[0].Rows[0]["TAIL_DELAY"].ToString();
             txtBatchHDelay.Text = data.Tables[0].Rows[0]["BATCH_HEAD_DELAY"].ToString();
             txtBatchTDelay.Text = data.Tables[0].Rows[0]["BATCH_TAIL_DELAY"].ToString();
-            rdYes.Checked = ("1" == data.Tables[0].Rows[0]["IS_GAP_JUDGE"].ToString());
-            listGappoint.SelectedValue = data.Tables[0].Rows[0]["GAP_POINT"].ToString();
+           
+            listGappoint.SelectedValue = data.Tables[0].Rows[0]["CTRL_POINT"].ToString();
             txtGapHeadDelay.Text = data.Tables[0].Rows[0]["GAP_HDELAY"].ToString();
             txtGapTailDelay.Text = data.Tables[0].Rows[0]["GAP_TDELAY"].ToString();
-            txtDescript.Text = data.Tables[0].Rows[0]["DESCRIPT"].ToString();       
-
-        }
-        if (rdYes.Checked)
-        {
-            data = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION  where is_del = '0' and para_code = '" + txtID.Text + "'");
-            if (data != null && data.Tables[0].Rows.Count > 0)
+            txtDescript.Text = data.Tables[0].Rows[0]["DESCRIPT"].ToString();
+            txtGapTime.Text = data.Tables[0].Rows[0]["GAP_TIME"].ToString();
+            bool isgappoint = ("1" == data.Tables[0].Rows[0]["IS_GAP_JUDGE"].ToString());
+            if (isgappoint)
             {
-                txtID.Text = data.Tables[0].Rows[0]["PARA_CODE"].ToString();
-                txtGapRst.Text = data.Tables[0].Rows[0]["RST_VALUE"].ToString();
-                txtGapTime.Text = data.Tables[0].Rows[0]["TIMEGAP"].ToString(); 
+                rdYes.Checked = true;
+                rdNo.Checked = false;
+                ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "showgap", "$('#rdYes').click();", true);
+            }
+            else
+            {
+                rdYes.Checked = false;
+                rdNo.Checked = true;
+                ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "showgap", "$('#rdNo').click();", true);
             }
         }
+     
     }
     protected void listSection_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1%' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
-        opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from HT_QLT_GAP_COLLECTION r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1_' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from ht_qlt_collection r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0' and r.is_gap_judge = '1'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
    
     }
     protected void listPointname_SelectedIndexChanged(object sender, EventArgs e)
@@ -147,11 +143,9 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     {
         txtWeight.Text = "";
         listStyle.SelectedValue = "";
-        txtUnit.Text = "";
-        txtPeriodic.Text = "";
-        txtRstValue.Text = "";
-        txtVarTag.Text = "";
-
+    
+        txtPeriodic.Text = "0";
+        txtRstValue.Text = "0";   
         txtHeadDelay.Text = "0";
         txtTailDelay.Text = "0";
         txtBatchHDelay.Text = "0";
@@ -160,8 +154,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         txtGapTailDelay.Text = "0";
         txtDescript.Text = "";
 
-        txtID.Text = "";
-        txtGapRst.Text = "";
-        txtGapTime.Text = "";
+        txtID.Text = "";      
+        txtGapTime.Text = "0";
     }
 }

@@ -48,8 +48,8 @@
     </div>
     </form>
     <script type="text/javascript" src="../js/code/highcharts.js"></script>
-    <script type="text/javascript" src="../../modules/series-label.js"></script>
-    <script type="text/javascript" src="../../modules/exporting.js"></script>
+    <script type="text/javascript" src="../js/code/modules/series-label.js"></script>
+    <script type="text/javascript" src="../js/code/modules/exporting.js"></script>
     <script type="text/javascript" src="../js/msys/dataAnlz.js"></script>
 </body>
 </html>

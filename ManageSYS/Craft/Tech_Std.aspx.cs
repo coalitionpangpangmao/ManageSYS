@@ -7,15 +7,16 @@ using System.Web.UI.WebControls;
 using System.Data;
 
 public partial class Craft_Tech_Std : MSYS.Web.BasePage
-{
-    protected string tvHtml;
+{    
     protected string subtvHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+           opt.bindDropDownList(listVersion, "select TECH_CODE,TECH_NAME from HT_TECH_STDD_CODE where is_valid = '1' and is_del= '0'", "TECH_NAME", "TECH_CODE");
+
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listtechC, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
@@ -23,36 +24,21 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where IS_DEL = '0'", "NAME", "ID");
 
             opt.bindDropDownList(listAprv, "select * from ht_inner_aprv_status ", "NAME", "ID");
-            tvHtml = InitTree();
+        
             subtvHtml = InitTreePrcss();
-
         }
     }
-    public string InitTree()
+    protected void initView()
     {
-
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select tech_code,tech_name from ht_tech_stdd_code where is_del ='0'");
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
-            DataRow[] rows = data.Tables[0].Select();
-            foreach (DataRow row in rows)
-            {
-                tvHtml += "<li  ><span class='file' onclick = \"treeClick('" + row["tech_code"].ToString() + "')\">" + row["tech_name"].ToString() + "</span></a>";
-                tvHtml += "</li>";
-            }
-            tvHtml += "</ul>";
-            return tvHtml;
-        }
-        else
-            return "";
+        opt.bindDropDownList(listVersion, "select TECH_CODE,TECH_NAME from HT_TECH_STDD_CODE where is_valid = '1' and is_del= '0'", "TECH_NAME", "TECH_CODE");
+        opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
+        opt.bindDropDownList(listtechC, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
     }
-
     public string InitTreePrcss()
     {
 
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -60,9 +46,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                // tvHtml += "<li ><a href='Tech_Session.aspx?session_code=" + row["section_code"].ToString() + "' target='sessionFrame'><span class='folder'  onclick = \"$('#tabtop1').click()\">" + row["section_name"].ToString() + "</span></a>";  
+                 
                 tvHtml += "<li ><span class='folder'  onclick = \"tabClick(" + row["section_code"].ToString() + ")\">" + row["section_name"].ToString() + "</span></a>";
-                //   tvHtml += InitTreeProcess(row["section_code"].ToString());
                 tvHtml += "</li>";
             }
             tvHtml += "</ul>";
@@ -71,7 +56,6 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         else
             return "";
     }
-
 
     protected void btnCopy_Click(object sender, EventArgs e)
     {
@@ -93,7 +77,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         }
 
         bindGrid(listtechC.SelectedValue, hideprc.Value);
-        tvHtml = InitTree();
+        bindGrid2(listtechC.SelectedValue, hideprc.Value);
+        initView();
 
     }
     //保存标准版本
@@ -114,7 +99,8 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
         opt.bindDropDownList(listtechC, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
         listAprv.SelectedValue = "-1";
-        tvHtml = InitTree();
+        initView();
+
 
 
     }
@@ -125,8 +111,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         commandlist.Add("delete HT_TECH_STDD_CODE  where TECH_CODE = '" + txtCode.Text + "'");
         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + txtCode.Text + "'");
         opt.TransactionCommand(commandlist);
-        tvHtml = InitTree();
-
+        initView();
     }
     protected void bindData(string rcpcode)
     {
@@ -170,14 +155,15 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     protected void UpdateGrid_Click(object sender, EventArgs e)
     {
         bindGrid(txtCode.Text, hideprc.Value);
+        bindGrid2(txtCode.Text, hideprc.Value);
     }
-
+   
     protected void bindGrid(string rcpcode, string prccode)
     {
         if (prccode.Length == 5)
         {
 
-            string query = "select PARA_CODE as 参数编码,VALUE as 标准值,UPPER_LIMIT as 上限,LOWER_LIMIT as 下限,EER_DEV as 允差,UNIT as 单位  from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '_1___' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1__' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1__' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -208,6 +194,42 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         }
 
     }
+    protected void bindGrid2(string rcpcode, string prccode)
+    {
+        if (prccode.Length == 5)
+        {
+
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '_1___' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '_1___' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            DataSet set = opt.CreateDataSetOra(query);
+            DataTable data = set.Tables[0];
+
+            GridView2.DataSource = data;
+            GridView2.DataBind();
+            if (data != null && data.Rows.Count > 0)
+            {
+                for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+                {
+                    DataRowView mydrv = data.DefaultView[i];
+                    DropDownList list = (DropDownList)GridView2.Rows[i].FindControl("listParaName");
+                    opt.bindDropDownList(list, "select r.para_code,case when length(r.para_name) >= 8 then r.para_name else  s.eq_name ||r.para_name end as name ,r.equip_code from ht_pub_tech_para r left join ht_eq_eqp_tbl s  on  r.equip_code = s.idkey where  r.is_del = '0' and substr(r.PARA_CODE,1,5) = '" + prccode + "'", "name", "PARA_CODE");
+                    ((TextBox)GridView2.Rows[i].FindControl("txtCodeM")).Text = mydrv["参数编码"].ToString();
+                    list.SelectedValue = mydrv["参数编码"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtValueM")).Text = mydrv["标准值"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtUlimitM")).Text = mydrv["上限"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtLlimitM")).Text = mydrv["下限"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtDevM")).Text = mydrv["允差"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtUnitM")).Text = mydrv["单位"].ToString();
+
+                    list.Enabled = false;
+
+                }
+
+            }
+        }
+
+    }
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
         try
@@ -215,6 +237,20 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
                 ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = true;
+            }
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+    protected void btnCkAll2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+            {
+                ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = true;
             }
         }
         catch (Exception ee)
@@ -245,7 +281,29 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             Response.Write(ee.Message);
         }
     }
-
+    protected void btnDelSel2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+            {
+                if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+                {
+                    string mtr_code = ((TextBox)GridView2.Rows[i].FindControl("txtCodeM")).Text;
+                    string query = "update HT_TECH_STDD_CODE_DETAIL set IS_DEL = '1'  where TECH_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                    string log_message = opt.UpDateOra(query) == "Success" ? "参数删除成功" : "参数删除失败";
+                    log_message += "，参数编码：" + txtCode.Text;
+                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                }
+            }
+            bindGrid(txtCode.Text, hideprc.Value);
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
     protected void btnDel_Click(object sender, EventArgs e)
     {
         try
@@ -276,19 +334,37 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
             {
-                string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT" };
-                string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text };
+                string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "IS_DEL" };
+                string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
                 string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
                 log_message += ", 保存数据：" + string.Join(" ", value);
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
             }
         }
         bindGrid(txtCode.Text, hideprc.Value);
+        bindGrid2(txtCode.Text, hideprc.Value);
+    }
+    protected void btnSave2_Click(object sender, EventArgs e)
+    {
+        for (int i = 0; i < GridView2.Rows.Count; i++)
+        {
+            GridViewRow row = GridView2.Rows[i];
+            string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
 
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
+            {
+                string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT","IS_DEL" };
+                string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
+                string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
+                log_message += ", 保存数据：" + string.Join(" ", value);
+                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            }
+        }
+        bindGrid(txtCode.Text, hideprc.Value);
+        bindGrid2(txtCode.Text, hideprc.Value);
 
     }
-
     protected void btnAdd_Click(object sender, EventArgs e)
     {
 
@@ -341,4 +417,12 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
 
         }
     }
+    protected void listVersion_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        bindData(listVersion.SelectedValue);
+        bindGrid2(listVersion.SelectedValue, hideprc.Value);
+        bindGrid(listVersion.SelectedValue, hideprc.Value);
+    }
+
+
 }

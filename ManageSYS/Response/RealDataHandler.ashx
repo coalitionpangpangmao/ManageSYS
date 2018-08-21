@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="faultDbHandler" %>
+﻿<%@ WebHandler Language="C#" Class="RealDataHandler" %>
 
 using System;
 using System.Web;
@@ -36,7 +36,7 @@ public struct pointData
     public string timetag;
     public double value;
 }
-public class faultDbHandler : IHttpHandler
+public class RealDataHandler : IHttpHandler
 {
 
     public void ProcessRequest(HttpContext context)
@@ -46,7 +46,10 @@ public class faultDbHandler : IHttpHandler
         var sr = new StreamReader(data.InputStream);
         var stream = sr.ReadToEnd();
         var javaScriptSerializer = new JavaScriptSerializer();
-        var PostedData = javaScriptSerializer.Deserialize<RequestDataJSON>(stream);
+        try
+        {
+            var PostedData = javaScriptSerializer.Deserialize<RequestDataJSON>(stream);
+      
         List<ResponseData> datainfo = new List<ResponseData>();
         if (PostedData.type == "Para")
         {
@@ -54,17 +57,17 @@ public class faultDbHandler : IHttpHandler
         }
         else
             datainfo = handleEquipData(PostedData);
-        try
-        {
-
-            var responseData = javaScriptSerializer.Serialize(datainfo);
-            context.Response.ContentType = "text/plain";
-            context.Response.Write(responseData);
+        var responseData = javaScriptSerializer.Serialize(datainfo);
+        context.Response.ContentType = "text/plain";
+        context.Response.Write(responseData);
         }
-        catch (Exception error)
+        catch (Exception ee)
         {
-
-        }
+            var e = ee.Message;
+        }     
+      
+            
+        
     }
     protected ResponseData getData(string prodcode, string point,string starttime,string endtime)
     {
@@ -125,7 +128,7 @@ public class faultDbHandler : IHttpHandler
         //query prod_code
         string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
         //query poininfo
-        DataSet pointinfo = opt.CreateDataSetOra("select t.para_name, t.para_code from ht_pub_tech_para t  where  t.EQUIP_CODE = '" + PostedData.point + "'");
+        DataSet pointinfo = opt.CreateDataSetOra("select t.para_name, t.para_code from ht_pub_tech_para t  where  t.EQUIP_CODE = '" + PostedData.point + "' and t.para_type like '___1_'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
         {
             foreach (DataRow row in pointinfo.Tables[0].Rows)

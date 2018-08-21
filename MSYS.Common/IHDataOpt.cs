@@ -182,7 +182,7 @@ namespace MSYS.Common
             return seg;
         }
 
-        public List<Gaptime> GetGapTime(string starttime, string endtime, string tag, string tagvalue, int headdelay, int taildelay)//获取两段时间间的断流信息
+        public List<Gaptime> GetGapTime(string starttime, string endtime, string tag, string tagvalue, int headdelay, int taildelay,int gaptime)//获取两段时间间的断流信息
         {
             List<Gaptime> gaplist = null;
             string query;
@@ -215,7 +215,7 @@ namespace MSYS.Common
 
                         query = "SELECT  timestamp,tagname,value  FROM ihrawdata  where  tagname = '" + tag + "' and timestamp between '" + GapStarttime + "' and '" + GapEndtime + "' and intervalmilliseconds =  2s and value < " + tagvalue;
                         data = CreateDataSetIH(query);
-                        if (data != null && data.Tables[0].Select().Length > 30)//只有断流超过一定时间才视为断流成立
+                        if (data != null && data.Tables[0].Select().Length > gaptime)//只有断流超过一定时间才视为断流成立
                         {
                             Gaptime gap;
                             gap.starttime = Convert.ToDateTime(GapStarttime).AddSeconds(headdelay).ToString("yyyy-MM-dd HH:mm:ss");
@@ -235,150 +235,182 @@ namespace MSYS.Common
             return gaptime;
         }
         public DataTable GetIHOrgDataSet(TimeSeg seg)
-        {
-            ///////////读取数据库中的采集条件
+        {            
+#region    ///////////读取数据库中的采集条件////////////////////////////////////////////////////////////////////////////////////////////////
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select * from HT_QLT_COLLECTION where PARA_CODE = '" + seg.nodecode + "'");
+            DataSet data = opt.CreateDataSetOra("select t.value_tag,r.gap_hdelay,r.gap_tdelay,r.ctrl_point,r.is_gap_judge,r.periodic,r.rst_value,r.gap_time,r.head_delay,r.tail_delay,r.batch_head_delay,r.batch_tail_delay from   HT_QLT_COLLECTION  r left join ht_pub_tech_para t on r.para_code = t.para_code where r.PARA_CODE = '" + seg.nodecode + "'");
             if (data == null || data.Tables[0].Rows.Count == 0)
                 return null;
             DataRow row = data.Tables[0].Rows[0];
             ////////////////////工艺点标签//////////////////////////////////////////////
-            string tagname = row["CUTOFF_POINT_TAG"].ToString();
-            string interval = row["PERIODIC"].ToString();
-            int timegap = Convert.ToInt32(row["CUTOFF_TIMEGAP"].ToString());
-            ////////////////////断流参考点标签/////////////////////////////////////////////
-            string tag = row["CUTOFF_POINT_TAG"].ToString();
-            string Rst = row["CUTOFF_RST"].ToString();
-            string RstValue = row["CUTOFF_RST_VALUE"].ToString();
-            ////////////////////批头批尾判定点标签////////////////////////////////////////////////
-            string tailtag = row["TAILLOGIC_TAG"].ToString();
-            if (tailtag == "")
-                tailtag = tag;
-            string tailRst = row["TAILLOGIC_RST"].ToString();
-            if (tailRst == "")
-                tailRst = Rst;
-            string tailRstValue = row["TAILLOGIC_RST_VALUE"].ToString();
-            if (tailRst == "0")
-                tailRst = RstValue;
-            ///////////////////////////////////////////////////////////////////               
-            int headDelay = Convert.ToInt32(row["HEAD_DELAY"].ToString());//料头
-            int tailDelay = Convert.ToInt32(row["TAIL_DELAY"].ToString());//料尾
-            int batchheadDelay = Convert.ToInt32(row["BATCH_HEAD_DELAY"].ToString());//批头
-            int batchtailDelay = Convert.ToInt32(row["BATCH_TAIL_DELAY"].ToString());//批尾
+            string tagname = row["value_tag"].ToString();
+            string interval = row["periodic"].ToString();
+            int timegap = Convert.ToInt32(row["gap_time"].ToString());
+            string  tailRst = row["rst_value"].ToString();
+            ////////////////////是否为工艺段断流判定点/////////////////////////////////////////////
+            bool gapctrl = ("1" == row["is_gap_judge"].ToString());
+        
+            //////////////////////偏移/////////////////////////////////////////////               
+            int headDelay = Convert.ToInt32(row["head_delay"].ToString());//料头
+            int tailDelay = Convert.ToInt32(row["tail_delay"].ToString());//料尾
+            int batchheadDelay = Convert.ToInt32(row["batch_head_delay"].ToString());//批头
+            int batchtailDelay = Convert.ToInt32(row["batch_tail_delay"].ToString());//批尾
+            int gap_hdelay = Convert.ToInt32(row["gap_hdelay"].ToString());//断流前
+            int gap_tdelay = Convert.ToInt32(row["gap_tdelay"].ToString());//断流后
+#endregion
+#region   //////////////////////寻找数据批头尾、料头尾  以及断流信息///////////////////////////////////////////////////////////////////////
             string query;
-            if (tagname != "" && interval != "")
+             string batchBtime="", batchEtime="";//电子秤参与后判定的批头批尾时间
+                string tailBtime="", tailEtime="";//电子秤参与后判定的料头料尾时间
+            if (gapctrl)
             {
-                string tailBtime, tailEtime;//电子秤参与后判定的料头料尾时间
-
-
-                tailBtime = seg.starttime;//初始料头时间
-                tailEtime = seg.endtime;//初始化料尾时间
-                ///////////////////////////自动寻找批头批尾/////////////////////////////////////////////////
-
-                if (tailtag != "" && tailRst != "")
+                if(tagname != "" && tailRst != "" && interval != "")
                 {
+               
+                    batchBtime =tailBtime = seg.starttime;//初始化料头时间
+                    batchEtime = tailEtime = seg.endtime;//初始化料尾时间
+                    ///////////////////////////自动寻找批头批尾/////////////////////////////////////////////////
                     if (seg.type == TimeSegType.BEGIN || seg.type == TimeSegType.BOTH)//寻找批头
                     {
-                        query = "SELECT  Min(timestamp),tagname  FROM ihrawdata where tagname = '" + tailtag + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "'  and value  <" + tailRst + " group by tagname";
+                       
+                        query = "SELECT  Min(timestamp),tagname  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "'  and value  <" + tailRst + " group by tagname";
                         data = CreateDataSetIH(query);
                         if (data != null && data.Tables[0].Select().Length > 0)
-                            seg.starttime = Convert.ToDateTime(data.Tables[0].Rows[0]["Min of timestamp"].ToString()).AddSeconds(-20).ToString("yyyy-MM-dd HH:mm:ss"); ;//自动获取批头时间，向前推20秒
+                            batchBtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Min of timestamp"].ToString()).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss"); ;//自动获取批头时间，向前推20秒
                     }
                     if (seg.type == TimeSegType.END || seg.type == TimeSegType.BOTH)//寻找批尾
                     {
                         string temptime = Convert.ToDateTime(seg.endtime).AddHours(1).ToString("yyyy-MM-dd HH:mm:ss");
-                        DataSet tempdata = CreateDataSetIH("select value from ihrawdata where tagname = '" + tailtag + "' and timestamp between '" + seg.endtime + "' and '" + Convert.ToDateTime(seg.endtime).AddSeconds(60).ToString("yyyy-MM-dd HH:mm:ss") + "'");
+                        DataSet tempdata = CreateDataSetIH("select value from ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.endtime + "' and '" + Convert.ToDateTime(seg.endtime).AddSeconds(60).ToString("yyyy-MM-dd HH:mm:ss") + "'");
                         double temp = 0;
                         if (tempdata != null && tempdata.Tables[0].Select().Length > 0)
                             temp = Convert.ToDouble(tempdata.Tables[0].Select()[0][0].ToString());
                         if (temp >= Convert.ToDouble(tailRst))
-                            query = "SELECT  Min(timestamp),tagname  FROM ihrawdata where tagname = '" + tailtag + "' and timestamp between '" + seg.endtime + "' and '" + temptime + "'  and value  <" + tailRst + " group by tagname";
+                            query = "SELECT  Min(timestamp),tagname  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.endtime + "' and '" + temptime + "'  and value  <" + tailRst + " group by tagname";
                         else
-                            query = "SELECT  Max(timestamp),tagname  FROM ihrawdata where tagname = '" + tailtag + "' and timestamp between '" + tailBtime + "' and '" + seg.endtime + "'  and value  >" + tailRst + " group by tagname";
+                            query = "SELECT  Max(timestamp),tagname  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + tailBtime + "' and '" + seg.endtime + "'  and value  >" + tailRst + " group by tagname";
                         data = CreateDataSetIH(query);
                         if (data != null && data.Tables[0].Select().Length > 0)
                         {
                             if (temp >= Convert.ToDouble(tailRst))
-                                seg.endtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Min of timestamp"].ToString()).AddSeconds(90).ToString("yyyy-MM-dd HH:mm:ss");//自动获取批尾时间
+                                batchEtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Min of timestamp"].ToString()).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");//自动获取批尾时间
                             else
-                                seg.endtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Max of timestamp"].ToString()).AddSeconds(90).ToString("yyyy-MM-dd HH:mm:ss");//自动获取批尾时间
+                                batchEtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Max of timestamp"].ToString()).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");//自动获取批尾时间
                         }
                     }
-                    tailBtime = seg.starttime;//初始料头时间
-                    tailEtime = seg.endtime;//初始化料尾时间
+                    ////////////////////////////////自动寻找料头料尾////////////////////////////////////////////////////////////////
                     if (seg.type == TimeSegType.BEGIN || seg.type == TimeSegType.BOTH)//寻找料头
                     {
-                        query = "SELECT  Min(timestamp),tagname  FROM ihrawdata where tagname = '" + tag + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "' and intervalmilliseconds =  " + interval + "s and value  >" + RstValue + " group by tagname";
+                        query = "SELECT  Min(timestamp),tagname  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + batchBtime + "' and '" + batchEtime + "' and intervalmilliseconds =  " + interval + "s and value  >" + tailRst + " group by tagname";
                         data = CreateDataSetIH(query);
                         if (data != null && data.Tables[0].Select().Length > 0)
                             tailBtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Min of timestamp"].ToString()).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");//经延时料头时间
                     }
                     if (seg.type == TimeSegType.END || seg.type == TimeSegType.BOTH)//寻找料尾
                     {
-                        query = "SELECT  Max(timestamp),tagname  FROM ihrawdata where tagname = '" + tag + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "' and intervalmilliseconds =  " + interval + "s and value  >" + RstValue + " group by tagname";
+                        query = "SELECT  Max(timestamp),tagname  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + batchBtime + "' and '" + batchEtime + "' and intervalmilliseconds =  " + interval + "s and value  >" + tailRst + " group by tagname";
                         data = CreateDataSetIH(query);
                         if (data != null && data.Tables[0].Select().Length > 0)
                             tailEtime = Convert.ToDateTime(data.Tables[0].Rows[0]["Max of timestamp"].ToString()).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");//经延时料尾时间   
                     }
-                }
-                ////////////////////选取数据/判断是否断料,并记录下相应的断料时间//////
-                gaptime = GetGapTime(tailBtime, tailEtime, tag, RstValue, batchheadDelay, batchtailDelay);
-                query = "SELECT  timestamp as 时间,value as 值  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
-                data = CreateDataSetIH(query);
-                if (data != null && data.Tables[0].Select().Length > 0)
-                {
-                    DataRow[] ResRows = data.Tables[0].Select();
-                    int count = ResRows.Length;
-                    DataTable ResT = new DataTable();
-                    ResT = data.Tables[0];
-
-                    ResT.Columns.Add("状态");
-
-                    foreach (DataRow Res in ResRows)
+                   string[] bseg = {  "ORDERNO","PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "BATCH_BTIME","BATCH_ETIME","GAP_BTIME", "GAP_ETIME", "TYPE",};
+                   string[] bvalue = {"0",seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), batchBtime,batchEtime,tailBtime,tailEtime,"0"};
+                   opt.MergeInto(bseg, bvalue, 5, "HT_QLT_GAP_COLLECTION");
+                    ////////////////////选取数据/判断是否断料,并记录下相应的断料时间//////              
+                    gaptime = GetGapTime(tailBtime, tailEtime, tagname, tailRst, gap_hdelay, gap_tdelay, timegap);
+                    int orderno = 1;
+                    string[] gapseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "GAPTIME ", "GAP_BTIME", "GAP_ETIME", "TYPE"};
+                    foreach (Gaptime time in gaptime)
                     {
-                        string tempstr = Convert.ToDateTime(Res["时间"].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
-
-                        if (string.Compare(tempstr, tailBtime) < 0)
+                        string[] gapvalue = { (orderno++).ToString(), seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), time.gaptime.ToString(), time.starttime, time.endtime,"1" };
+                        opt.MergeInto(gapseg, gapvalue, 5, "HT_QLT_GAP_COLLECTION");
+                    }
+                }
+                 else 
+                    return null;
+            }
+            else
+            {
+                string ctrlpoint = row["ctrl_point"].ToString();
+                DataSet gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '1' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
+                if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
+                {
+                    foreach(DataRow grow in gapdata.Tables[0].Rows)
+                    {
+                    Gaptime time = new Gaptime();
+                    time.gaptime = Convert.ToInt32(grow["gaptime"].ToString());
+                    time.starttime =Convert.ToDateTime( grow["startime"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    time.endtime = Convert.ToDateTime(grow["endtime"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    gaptime.Add(time);
+                    }
+                }
+                gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '0' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
+                if(gapdata != null && gapdata.Tables[0].Rows.Count > 0)
+                {
+                    DataRow brow = gapdata.Tables[0].Rows[0];
+                    batchBtime = brow["BATCH_BTIME"].ToString();
+                    batchEtime = brow["BATCH_ETIME"].ToString();
+                     tailBtime = brow["GAP_BTIME"].ToString();
+                    tailEtime = brow["GAP_ETIME"].ToString();              
+                }
+            }
+#endregion
+#region  //////////////////////////////选择数据///////////////////////////////////////////////////////////////////////////////////////////////
+            if(batchBtime != "")
+                seg.starttime = batchBtime;
+            if(batchEtime!= "")
+                seg.endtime = batchEtime;
+            query = "SELECT  timestamp as 时间,value as 值  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
+            data = CreateDataSetIH(query);
+            if (data != null && data.Tables[0].Select().Length > 0)
+            {
+                DataRow[] ResRows = data.Tables[0].Select();
+                int count = ResRows.Length;
+                DataTable ResT = new DataTable();
+                ResT = data.Tables[0];
+                ResT.Columns.Add("状态");
+                foreach (DataRow Res in ResRows)
+                {
+                    string tempstr = Convert.ToDateTime(Res["时间"].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
+                    if (string.Compare(tempstr, tailBtime) < 0)
+                    {
+                        Res["状态"] = "料头";
+                    }
+                    else if (tailEtime != seg.starttime && string.Compare(tempstr, tailEtime) > 0)
+                    {
+                        Res["状态"] = "料尾";
+                    }
+                    else
+                    {
+                        Res["状态"] = "过程值";
+                        int h = 0;
+                        while (h < gaptime.Count)
                         {
-                            Res["状态"] = "料头";
-                        }
-                        else if (tailEtime != seg.starttime && string.Compare(tempstr, tailEtime) > 0)
-                        {
-                            Res["状态"] = "料尾";
-                        }
-                        else
-                        {
-                            Res["状态"] = "过程值";
-                            int h = 0;
-                            while (h < gaptime.Count)
-                            {
-                                if (string.Compare(tempstr, ((Gaptime)gaptime[h]).starttime) > 0 && string.Compare(tempstr, ((Gaptime)gaptime[h]).endtime) < 0)
-                                    Res["状态"] = "断流值";
-                                h++;
-                            }
+                            if (string.Compare(tempstr, ((Gaptime)gaptime[h]).starttime) > 0 && string.Compare(tempstr, ((Gaptime)gaptime[h]).endtime) < 0)
+                                Res["状态"] = "断流值";
+                            h++;
                         }
                     }
-
-                    return ResT;
                 }
-                else return null;
+                return ResT;
             }
-            else return null;
+            else 
+                return null;
+#endregion
         }
 
         public DataRowCollection GetData(string btime, string etime, string nodeid, string planno)
         {
             TimeSeg seg = GetTimeSeg(btime, etime, nodeid, planno);
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select * from HT_QLT_COLLECTION where PARA_CODE = '" + seg.nodecode + "'");
+            DataSet data = opt.CreateDataSetOra("select t.value_tag,r.periodic from   HT_QLT_COLLECTION  r left join ht_pub_tech_para t on r.para_code = t.para_code where r.PARA_CODE = '" + seg.nodecode + "'");
             if (data == null || data.Tables[0].Rows.Count == 0)
                 return null;
             DataRow row = data.Tables[0].Rows[0];
             ////////////////////工艺点标签//////////////////////////////////////////////
-            string tagname = row["CUTOFF_POINT_TAG"].ToString();
-            string interval = row["PERIODIC"].ToString();
-            int timegap = Convert.ToInt32(row["CUTOFF_TIMEGAP"].ToString());
-
+            string tagname = row["value_tag"].ToString();
+            string interval = row["periodic"].ToString();
+          
             string query = "SELECT  timestamp as 时间,value as 值  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + seg.starttime + "' and '" + seg.endtime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
             data = CreateDataSetIH(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
@@ -401,22 +433,20 @@ namespace MSYS.Common
           
 
             string query = "SELECT  timestamp,value  FROM ihrawdata where tagname = '" + tagname + "' and timestamp between '" + btime + "' and '" + etime + "' and intervalmilliseconds =  " + interval + "s order by timestamp ASC";
-            data = CreateDataSetIH(query);
-            if (data != null && data.Tables[0].Rows.Count > 0)
+            try
             {
-                return data.Tables[0].Rows;
+                data = CreateDataSetIH(query);
+                if (data != null && data.Tables[0].Rows.Count > 0)
+                {
+                    return data.Tables[0].Rows;
+                }
+                else return null;
             }
-            else return null;
+            catch (Exception e)
+            {
+                return null;
+            }
         }
-
-
-        /// <summary>
-        /// /从IH中直接取数据
-        /// </summary>
-        /// <param name="batch"></param>
-        /// <param name="nodeId"></param>
-        /// <returns></returns>
-
 
 
 

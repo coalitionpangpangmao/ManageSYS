@@ -115,29 +115,24 @@
                                                 <asp:ListItem>其它</asp:ListItem>
                                             </asp:DropDownList>
                                         </td>
-                                       <td>
-                                            单位
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtUnit" runat="server" CssClass="dfinput1" Enabled="False"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            监控变量标签：
-                                        </td>
-                                        <td colspan="3">
-                                            <asp:TextBox ID="txtVarTag" runat="server" CssClass="dfinput"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                    
                                         <td>
                                             断流监控点：
                                         </td>
-                                        <td colspan="3">
-                                            <asp:RadioButton ID="rdYes" runat="server" Text="是" GroupName="gapnode" onclick ="$('.gapinfo').show();" />
-                                              <asp:RadioButton ID="rdNo" runat="server" Text="否" GroupName="gapnode" onclick ="$('.gapinfo').hide();" Checked="True"  />
+                                        <td >
+                                            <asp:RadioButton ID="rdYes" runat="server" Text="是" GroupName="gapnode" onclick ="$('.gapinfo').hide();" />
+                                              <asp:RadioButton ID="rdNo" runat="server" Text="否" GroupName="gapnode" onclick ="$('.gapinfo').show();" Checked="True"  />
                                         </td>
+                                    </tr>
+                                      <tr  class ="gapinfo">                                     
+                                        <td>
+                                            断流判定点：
+                                        </td>
+                                        <td colspan="4">
+                                            <asp:DropDownList ID="listGappoint" runat="server" CssClass="drpdwnlist"  Width ="300px">
+                                            </asp:DropDownList>
+                                        </td>
+                                      
                                     </tr>
                                     <tr>
                                         <td>
@@ -187,7 +182,7 @@
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtPeriodic" runat="server" CssClass="tbinput"></asp:TextBox>
-                                        </td>
+                                            秒</td>
                                         <td>
                                             料头延时:
                                         </td>
@@ -204,12 +199,11 @@
                                         </td>
                                     </tr>
                                     <tr >
-                                         <td>
-                                            数据点名称
+                                          <td>
+                                            判定时长
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="listGappoint" runat="server" CssClass="drpdwnlist" AutoPostBack="True" Width ="70px">
-                                            </asp:DropDownList>
+                                        <td >
+                                            <asp:TextBox ID="txtGapTime" runat="server" CssClass="tbinput"></asp:TextBox>秒
                                         </td>
                                         <td>
                                             断流前偏移
@@ -225,19 +219,8 @@
                                         </td>
                                        
                                     </tr>
-                                    <tr  class ="gapinfo">                                     
-                                        <td>
-                                            断流判定值：
-                                        </td>
-                                        <td colspan="2">
-                                            <asp:TextBox ID="txtGapRst" runat="server" CssClass="tbinput"></asp:TextBox>
-                                        </td>
-                                         <td>
-                                            判定时长
-                                        </td>
-                                        <td colspan="2">
-                                            <asp:TextBox ID="txtGapTime" runat="server" CssClass="tbinput"></asp:TextBox>秒
-                                        </td>
+                               
+                                       
                                     </tr>
                                     
                                     <tr>

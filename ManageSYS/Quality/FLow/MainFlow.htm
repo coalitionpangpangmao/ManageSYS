@@ -6,8 +6,7 @@
     <link href="../../css/flowchart.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../js/jquery.js"></script> 
     <script type = "text/javascript">
-        function clickArea(area) {
-            debugger;
+        function clickArea(area) {           
             var sendData = "area=" + area + "";
 
             var result = $.post("../../Response/FlowChartHandler.ashx", 
@@ -19,7 +18,7 @@
         }
 
         function clickEquip(code) {
-            window.location.href = '../DataAnlz.aspx?Equip_Code=12321432432'
+            window.location.href = '../DataAnlz.aspx?Equip_Code=70301002'
         }
     </script>
 </head>
