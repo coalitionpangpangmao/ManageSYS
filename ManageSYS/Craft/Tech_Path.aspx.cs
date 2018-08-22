@@ -169,8 +169,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     /// </summary>
     protected void bindGrid1()
     {
-        try
-        {
+      
             string query = hideQuery.Value;
             if (query != "")
             {
@@ -207,11 +206,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
 
                 }
             }
-        }
-        catch (Exception ee)
-        {
-
-        }
+       
     }
     protected void createGridView()
     {

@@ -455,8 +455,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     //}
     protected void listpath_SelectedIndexChanged(object sender, EventArgs e)
     {
-        try
-        {
+       
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             for (int i = 0; i < GridView4.Rows.Count; i++)
             {
@@ -480,11 +479,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                     }
                 }
             }
-        }
-        catch (Exception ee)
-        {
-        }
-
+       
     }
     protected void btnSavePath_Click(object sender, EventArgs e)
     {

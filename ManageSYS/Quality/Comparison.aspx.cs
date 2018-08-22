@@ -95,8 +95,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
     }
     protected void btnDeltime_Click(object sender, EventArgs e)
     {
-        try
-        {
+       
             List<ListItem> items = new List<ListItem>();
             foreach (ListItem item in cklistPara.Items)
             {
@@ -108,46 +107,9 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
                 if (item.Selected)
                     cklistPara.Items.Remove(item);
             }
-        }
-        catch (Exception ee)
-        {
-        }
-           
-        
+     
     }
 
 
- [WebMethod]
-    public static string initData(CheckBoxList cklistPara)
-    {
-        try
-        {
-            string datahtml = "";
-            foreach (ListItem item in cklistPara.Items)
-            {
-                datahtml += "{ name: '" + item.Text.Substring(0, item.Text.IndexOf('_')) + "',";
-                string paracode = item.Value;
-                string starttime = item.Text.Substring(item.Text.IndexOf('_') + 1, item.Text.IndexOf('~') - item.Text.IndexOf('_'));
-                string stoptime = item.Text.Substring(item.Text.IndexOf('~'));
-                MSYS.Common.IHDataOpt ihopt = new MSYS.Common.IHDataOpt();
-                DataRowCollection rows = ihopt.GetData(starttime, stoptime, paracode);
-                datahtml += " data:[";
-                foreach (DataRow row in rows)
-                {
-                    datahtml += row[1].ToString() + ",";
-                }
-                datahtml = datahtml.Substring(0, datahtml.LastIndexOf(','));
-                datahtml += "]},";
-            }
-            datahtml = datahtml.Substring(0, datahtml.LastIndexOf(','));
-           
-            return datahtml;
-        }
-        catch (Exception ee)
-        {
-            return "";
-        }
-
-    }
  
 }

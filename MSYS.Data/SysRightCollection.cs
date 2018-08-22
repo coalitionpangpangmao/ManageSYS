@@ -25,7 +25,7 @@ namespace MSYS.Data
         //
         // 返回结果:
         //     权限对象
-        public SysRight this[int index]
+        public  SysRight this[int index]
         {
             get
             {
@@ -68,7 +68,7 @@ namespace MSYS.Data
         // 参数:
         //   index:
         //     权限对象在集合中的位置
-        public void RemoveAt(int index)
+        public override void RemoveAt(int index)
         {
             base.RemoveAt(index);
         }

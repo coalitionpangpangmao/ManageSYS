@@ -139,9 +139,7 @@ public partial class Login : MSYS.Web.BasePage
         string[] cookies = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
 
         foreach (string file in cookies)
-        {
-            try
-            {
+        {           
                 StreamReader sr = new StreamReader(file);
                 string txt = sr.ReadToEnd();
                 sr.Close();
@@ -149,11 +147,7 @@ public partial class Login : MSYS.Web.BasePage
                 {
                     File.Delete(file);
                 }
-            }
-            catch (Exception ex)
-            {
-
-            }
+         
         }
     }
 }

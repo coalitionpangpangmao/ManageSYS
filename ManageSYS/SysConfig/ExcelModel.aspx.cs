@@ -198,8 +198,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     //删除报表
     protected void Delete_Click(object sender, EventArgs e)//应该进行事务封装
     {
-        try
-        {
+      
             string query;
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            
@@ -210,11 +209,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "删除报名为" + ReportName.Text + "的所有配置信息");
                 tvHtml = InitTree();
                 ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);
-        }
-        catch (Exception ee)
-        {
-           
-        }
+      
 
     }
     //保存报表字段

@@ -234,8 +234,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
 
     protected void btnAddR_Click(object sender, EventArgs e)
     {
-        try
-        {
+       
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string str = opt.GetSegValue("select Max(Formula_code) as code from ht_qa_aux_formula ", "CODE");
             if (str == "")
@@ -254,9 +253,6 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
             listStatus.SelectedValue = "";
             txtDscpt.Text = "";
             ckValid.Checked = false;
-        }
-        catch (Exception error)
-        {
-        }
+     
     }
 }

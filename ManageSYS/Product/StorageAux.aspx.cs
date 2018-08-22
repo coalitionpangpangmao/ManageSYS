@@ -27,8 +27,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        try
-        {
+       
             string query = "select g.out_date as 领退日期,g.strg_type as 出入库类型，g.order_sn as 单据号 ,g.ware_house as 仓库,g.audit_mark as 状态,g.creator as 编制人,g.issuer as 收发人  from HT_STRG_AUX g   where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and IS_DEL = '0'";
             if (rdOut1.Checked)
                 query += " and g.strg_type = '0'";
@@ -37,12 +36,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             GridView1.DataSource = opt.CreateDataSetOra(query); ;
             GridView1.DataBind();
-        }
-        catch (Exception ee)
-        {
-
-        }
-
+       
     }//绑定gridview1数据源
     protected void btnSearch_Click(object sender, EventArgs e)
     {

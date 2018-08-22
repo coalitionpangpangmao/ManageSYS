@@ -17,27 +17,19 @@ namespace DataCollect
         public Form1()
         {
             InitializeComponent();
-
-            System.Timers.Timer aTimer = new System.Timers.Timer();
-            aTimer.Elapsed += new ElapsedEventHandler(InsertQuaReport);  //到达时间的时候执行事件；
+            //正式运行时取消注释
+            //System.Timers.Timer aTimer = new System.Timers.Timer();
+            //aTimer.Elapsed += new ElapsedEventHandler(InsertQuaReport);  //到达时间的时候执行事件；
             
-            aTimer.Interval = 120 * 60 * 1000;
-            aTimer.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
-            aTimer.Enabled = true; //是否执行System.Timers.Timer.Elapsed事件；
-            Qua_Start.Enabled = false;
+            //aTimer.Interval = 120 * 60 * 1000;
+            //aTimer.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
+            //aTimer.Enabled = true; //是否执行System.Timers.Timer.Elapsed事件；
+            //Qua_Start.Enabled = false;
         }
 
         public void Qua_Start_Click(object sender, EventArgs e)
-        {
-            System.Timers.Timer aTimer = new System.Timers.Timer();
-            aTimer.Elapsed += new ElapsedEventHandler(InsertQuaReport);  //到达时间的时候执行事件；
-            // 设置引发时间的时间间隔 此处设置为1秒（1000毫秒） 
-            aTimer.Interval = 120 * 60 * 1000;
-            aTimer.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
-            aTimer.Enabled = true; //是否执行System.Timers.Timer.Elapsed事件；
-            Qua_Start.Enabled = false;
-
-            //  InsertQuaReport();
+        {   
+             InsertQuaReport(new Object(),null);
         }
 
         public void Qua_show_Click(object sender, EventArgs e)
@@ -54,7 +46,8 @@ namespace DataCollect
 
         private void InsertQuaReport(object source, System.Timers.ElapsedEventArgs e)
         {
-            string datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            //对每一班组的生产过程数据进行统计分析计算
+            string datetime = System.DateTime.Now.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra("select * from ht_prod_schedule t  where date_begin <='" + datetime + "' and date_end >= '" + datetime + "'");
             if (data != null && data.Tables[0].Rows.Count > 0)

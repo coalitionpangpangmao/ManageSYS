@@ -204,7 +204,7 @@ namespace MSYS.Common
                 xlBooks.Close();
                 xlApp.Quit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

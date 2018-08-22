@@ -8,7 +8,8 @@
 */
 
 $(function () {
-    // initialization chart and actions  
+    // initialization chart and actions 
+    showtempchart();
     $.ajax({
         type: "POST",
         url: "../Response/RealDataHandler.ashx",
@@ -166,7 +167,7 @@ $(function () {
     }
 
     function showtempchart() {
-
+        debugger;
         var chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
@@ -179,8 +180,7 @@ $(function () {
                 type: 'datetime',
                 labels: {
                     overflow: 'justify'
-                },
-                categories: xAxis,
+                },              
                 crosshair: true
             },
             yAxis: {
@@ -257,7 +257,7 @@ $(function () {
                     //                                pointStart: Date.UTC(2018, 4, 31, 0, 0, 0)
                 }
             },
-            series: [{ name: "数据点趋势", data: [3,4.5,8,11,14,16,10.5,12,13.6,6,9], tooltip: { value: ' ' } }]
+            series: [{ name: "数据点趋势", data: [5,4.5,8,11,13,9.8,16,12,8.9,7,9], tooltip: { value: ' ' } }]
         });
     }
 });

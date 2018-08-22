@@ -26,8 +26,7 @@ public partial class Product_InOutRatio : MSYS.Web.BasePage
     //根据所选条件从数据库选取数据
     protected void initData()
     {
-        try
-        {
+       
             //string query = "";
             //if (rdSort1.Checked == true)
             //    ;
@@ -38,11 +37,7 @@ public partial class Product_InOutRatio : MSYS.Web.BasePage
             //hdcode1.Value = "";
             //hdcode2.Value = "";
             //hdcode3.Value = "";
-        }
-        catch (Exception ee)
-        {
-           
-        }
+     
 
     }
 

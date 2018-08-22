@@ -118,8 +118,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     }
     protected void btnSave2_Click(object sender, EventArgs e)
     {
-        try
-        {
+     
             if (txtMenu.Text == "")
                 ScriptManager.RegisterStartupScript(UpdatePanel2, this.GetType(), "", "alert('请输入菜单名');", true);
             else
@@ -136,26 +135,17 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                 opt.MergeInto(seg, value, 1,"HT_SVR_PRT_MENU");
                 BindList(RightTree.Nodes, "");
             }
-        }
-        catch (Exception ex)
-        {
-
-        }
+    
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-        try
-        {
+       
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string query = "delete from HT_SVR_PRT_MENU where NAME = '" + txtMenu.Text + "'";
             opt.UpDateOra(query);
             BindList(RightTree.Nodes, "");
             SetBlank();
-        }
-        catch (Exception ex)
-        {
-
-        }
+     
     }
 
     protected void btnSave_Click(object sender, EventArgs e)

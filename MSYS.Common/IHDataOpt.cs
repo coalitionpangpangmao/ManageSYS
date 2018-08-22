@@ -58,16 +58,15 @@ namespace MSYS.Common
         public int TaskShiftNum(string Btime, string Etime, string section)//查取时间段内是否有任务报告记录
         {
             DbOperator opt = new DbOperator();
-            DataSet data = opt.CreateDataSetOra("select count(rowid) from ht_prod_report t where t.section_code = '" +section + "' and STARTTIME between '" + Btime + "' and '" + Etime + "' or ENDTIME between '" + Btime + "' and '" + Etime + "'");
+            DataSet data = opt.CreateDataSetOra("select count(rowid) from ht_prod_report t where t.section_code = '" +section + "' and STARTTIME between '" + Btime + "' and '" + Etime + "' or ENDTIME between '" + Btime + "' and '" + Etime + "' or (starttime <= '" + Btime + "' and endtime >= '" + Etime + "')");
             return Convert.ToInt16(data.Tables[0].Rows[0][0].ToString());
-
         }
 
         public List<TimeSeg> TimeCut(string btime, string etime, string nodeid)//将一段时间按任务划分为不同的时间段
         {
             List<TimeSeg> listTimeseg = new List<TimeSeg>();
             DbOperator opt = new DbOperator();
-            string query = "select starttime as rstime, 'b' as tag,PLANNO, from ht_prod_report t where t.section_code = '' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '' and endtime between '" + btime + "' and '" + etime + "' order by rstime";
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0,5) + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0,5)+ "' and endtime between '" + btime + "' and '" + etime + "'  order by rstime";
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -77,7 +76,7 @@ namespace MSYS.Common
                     seg.nodecode = nodeid;
                     if (i == 0)
                     {
-                        if (data.Tables[0].Rows[i - 1]["tag"].ToString() == "e")
+                        if (data.Tables[0].Rows[i]["tag"].ToString() == "e")
                         {
                             seg.starttime = btime;
                             seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();
@@ -128,7 +127,7 @@ namespace MSYS.Common
             }
             else
             {
-                query = "select * from ht_prod_report where (starttime < '" + btime + "' and  endtime > '" + etime + "') or (starttime < '" + btime + "' and  endtime is null'";
+                query = "select * from ht_prod_report where (starttime < '" + btime + "' and  endtime > '" + etime + "') or (starttime < '" + btime + "' and  endtime is null)";
                 data = opt.CreateDataSetOra(query);
                 if (data != null && data.Tables[0].Rows.Count > 0)
                 {
@@ -442,7 +441,7 @@ namespace MSYS.Common
                 }
                 else return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

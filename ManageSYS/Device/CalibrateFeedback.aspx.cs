@@ -83,8 +83,7 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
 
     protected void bindGrid2(string code)
     {
-        try
-        {
+      
             string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.OLDVALUE as 原值,t.POINTVALUE as 校准值,t.SAMPLE_TIME as 校准时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail  t where t.main_id = '" + code + "' and t.is_del = '0' ";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -104,12 +103,7 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
 
                 }
             }
-        }
-        catch (Exception e)
-        {
-
-        }
-
+      
     }//绑定GridView2数据源
     protected void btnGridview_Click(object sender, EventArgs e)//查看明细
     {

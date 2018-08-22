@@ -142,7 +142,7 @@ namespace MSYS.Common
                 opt.TransactionCommand(commandlist);
 
             }
-            catch (Exception ee)
+            catch (Exception)
             {
             }
 

@@ -32,8 +32,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
     /// </summary>
     protected void bindGrid1()
     {
-        try
-        {
+    
             string query = "select g2.f_name as 申请部门,g1.name  as 申请人,case g.is_pickup when '0' then '未领用' else '己领用' end  as 领用状态,g.pickup_date as 领用时间,g.remark  as 备注,(case g.Flow_Status when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end)  as 审批状态,g.PZ_CODE from ht_eq_STG_PICKUP g left join ht_svr_user g1 on g.create_id = g1.id left join ht_svr_org_group g2 on g.create_dept_id = g2.f_code where g.is_del = '0'";
             if (txtStart.Text != "" && txtStop.Text != "")
                 query += " and g.pickup_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'";
@@ -42,12 +41,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             GridView1.DataSource = opt.CreateDataSetOra(query); ;
             GridView1.DataBind();
-        }
-        catch (Exception ee)
-        {
-
-        }
-
+      
     }//绑定gridview1数据源
     protected void btnSearch1_Click(object sender, EventArgs e)
     {
