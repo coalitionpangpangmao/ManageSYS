@@ -60,6 +60,7 @@
                 <ContentTemplate>
                     <div class="listtitle">
                         审批模版配置<span style="position: relative; float: right">
+                          
                             <asp:Button ID="btnModify" runat="server" CssClass="btnhide" Text="保存" OnClick="btnModify_Click" />
                             <asp:Button ID="btnUpdate" runat="server" CssClass="btnhide" OnClick="btnUpdate_Click" />
                         </span>
@@ -84,6 +85,7 @@
                     </table>
                     <div class="listtitle">
                         模版流程表<span style="position: relative; float: right">
+                               <asp:Button ID="btnAdd" runat="server" CssClass="btnadd" Text="新建" OnClick="btnAdd_Click" />
                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click" />
                         </span>
@@ -142,6 +144,7 @@
                     <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                     <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
                     <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                    <asp:AsyncPostBackTrigger ControlID ="btnAdd" />
                 </Triggers>
             </asp:UpdatePanel>
         </div>

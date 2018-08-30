@@ -9,7 +9,7 @@
     <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
+      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>    <script type ="text/javascript" src ="../js/jquery.PrintArea.js"></script>
     <script type="text/javascript">
 
         function GridClick() {
@@ -116,11 +116,13 @@
                 <div class="listtitle">
                     交接班详情<span style="position: relative; float: right">
                         <asp:Button ID="btnSave" runat="server" Text="保存" class="btnview auth" OnClick="btnSave_Click" />
+                               <input id="btnPrint" type="button" value="打印" class ="btnpatch"  onclick ="$('#report').printArea();"/> <asp:Button ID="btnExport" runat="server" Text="导出" class="btnset" OnClick="btnExport_Click" />
                     </span>
                 </div>
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
+                              <div id="report" class="PrintArea" style="width: 100%; ">
                             <table class="tablelist">
                                 <tbody>
                                     <tr>
@@ -146,7 +148,7 @@
                                         </td>
                                   
                                         <td width="100">
-                                            牌号
+                                            产品
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist">
@@ -171,13 +173,15 @@
                                             交班人
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtOlder" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:DropDownList ID="listOlder" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                          
                                         </td>
                                         <td width="100">
                                             接班人
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtNewer" runat="server" class="dfinput1"></asp:TextBox>
+                                              <asp:DropDownList ID="listNewer" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                          
                                         </td>
                                     </tr>
                                     <tr>
@@ -284,6 +288,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                                  </div>
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnSave" />
@@ -291,7 +296,7 @@
                             <asp:AsyncPostBackTrigger ControlID="Gridview2" />
                             <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             <asp:AsyncPostBackTrigger ControlID="btnckAll" />
-                            <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
+                            <asp:AsyncPostBackTrigger ControlID="btnDelSel" />                           
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

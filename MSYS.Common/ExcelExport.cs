@@ -8,7 +8,7 @@
     using System.Text.RegularExpressions;
 namespace MSYS.Common
 {
-    class ExcelExport
+    public class ExcelExport
     {
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
@@ -177,7 +177,9 @@ namespace MSYS.Common
         {
             try
             {
+                
                 xlBook.SaveAs(filename, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                //xlBook.SaveAs(filename, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 xlBook.Close(false, Type.Missing, Type.Missing);
                 xlBooks.Close();
                 xlApp.Quit();

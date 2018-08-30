@@ -93,13 +93,25 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        if (listType2.SelectedValue != "" && listSection2.SelectedValue != "")
+        if (listtype.SelectedValue != "" && listSection.SelectedValue != "")
         {
+            listType2.SelectedValue = listtype.SelectedValue;
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string temp = opt.GetSegValue("select nvl(max(substr(inspect_code,10,3)),0) + 1 as code from Ht_Qlt_Inspect_Proj where inspect_type = '" + listType2.SelectedValue + "' and inspect_group = '" + listSection2.SelectedValue + "'", "code");
-            txtCode.Text = "703" + listType2.SelectedValue + listSection2.SelectedValue.PadLeft(5, '0') + temp.PadLeft(3, '0');
+            if (listType2.SelectedValue == "0")
+            {
+                opt.bindDropDownList(listSection2, "select Section_code,Section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "Section_name", "Section_code");
+
+            }
+            else
+            {
+                opt.bindDropDownList(listSection2, "select ID,Name from ht_inner_inspect_group t", "Name", "ID");
+            }
+            listSection2.SelectedValue = listSection.SelectedValue;
+            string temp = opt.GetSegValue("select nvl(max(substr(inspect_code,10,3)),0) + 1 as code from Ht_Qlt_Inspect_Proj where inspect_type = '" + listtype.SelectedValue + "' and inspect_group = '" + listSection.SelectedValue + "'", "code");
+            txtCode.Text = "703" + listtype.SelectedValue + listSection.SelectedValue.PadLeft(5, '0') + temp.PadLeft(3, '0');
             listCreator.SelectedValue = ((MSYS.Data.SysUser)Session["User"]).id;
             txtName.Text = "";
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
         }
         else
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "noselect", "alert('请选择检查项目类型及所属分组');", true);
@@ -157,8 +169,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void btnEdit_Click(object sender, EventArgs e)//
     {
-        try
-        {
+       
             Button btn = (Button)sender;
             int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
             string projcode = GridView1.DataKeys[rowIndex].Value.ToString();
@@ -184,13 +195,8 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                 listCreator.SelectedValue = data.Tables[0].Rows[0]["CREATE_ID"].ToString();
                 txtUnit.Text = data.Tables[0].Rows[0]["UNIT"].ToString();
             }
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
-            UpdatePanel2.Update();
-        }
-        catch (Exception ee)
-        {
-            Response.Write(ee.Message);
-        }
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
+      
     }
 
     protected void listtype_SelectedIndexChanged(object sender, EventArgs e)

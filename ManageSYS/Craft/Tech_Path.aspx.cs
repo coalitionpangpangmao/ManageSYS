@@ -18,9 +18,11 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            opt.bindDropDownList(listSection1, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0' and IS_PATH_CONFIG = '1' order by section_code", "section_name", "section_code");
            opt.bindDropDownList(listSection2, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del= '0'  and IS_PATH_CONFIG = '1'  order by section_code", "section_name", "section_code");
-          
-          
+           listSection1.SelectedValue = "70301";
+           listSection2.SelectedValue = "70301";
+           bindGrid2();
         }
+      
         createGridView();
         bindGrid1();
     }
@@ -248,10 +250,9 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             customField.ShowHeader = true;
             customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "操作", "");
             customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "Grid1Save", "Button");
-            ViewState["btn_Grid1Save"] = true;
-            
+            ViewState["btn_Grid1Save"] = true;            
             GridView1.Columns.Add(customField);
-           
+          
     
         }
     }

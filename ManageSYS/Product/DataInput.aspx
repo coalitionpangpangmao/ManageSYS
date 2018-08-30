@@ -1,126 +1,183 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DataInput.aspx.cs" Inherits="Product_DataInput" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<link href="../css/style.css" rel="stylesheet" type="text/css" />
-
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>过程物料录入</title>
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".click").click(function () {
-            $(".tip").fadeIn(200);
-        });
-
-        $(".tiptop a").click(function () {
-            $(".tip").fadeOut(200);
-        });
-
-        $(".sure").click(function () {
-            $(".tip").fadeOut(100);
-        });
-
-        $(".cancel").click(function () {
-            $(".tip").fadeOut(100);
-        });
-
-    });
-</script>
 </head>
-
 <body>
-<form id="Form1" runat = "server">
-	<div class="place">
-    <span>位置：</span>
-    <ul class="placeul">
-    <li><a href="#">生产管理</a></li>
-    <li><a href="#">数据手动录入</a></li>
-    </ul>
-    </div>
-    
-    <div class="rightinfo">    
- <table class="tablelist">    	
-        <tbody>
-        <tr>
-        <td width="100">数据类型</td>
-        <td><asp:TextBox ID="txtID" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">工艺段</td>
-        <td><asp:TextBox ID="TextBox1" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">参数值</td>
-        <td><asp:TextBox ID="TextBox2" runat="server" class="dfinput1"    ></asp:TextBox></td>
-      
-        </tr> 
-        <tr>
-        <td width="100">父级标识</td>
-        <td><asp:TextBox ID="TextBox3" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">班组</td>
-        <td><asp:TextBox ID="TextBox4" runat="server" class="dfinput1"    ></asp:TextBox></td>
-        <td  width="100">班次</td>
-        <td><asp:TextBox ID="TextBox5" runat="server" class="dfinput1"    ></asp:TextBox></td>
-      
-        </tr>
-     
-        </tbody>
-        </table>
-        <div class="tools auth">
-    
-    	<ul class="toolbar">
-        <li class="click"><span><img src="../images/t01.png" /></span>添加</li>
-        <li class="click"><span><img src="../images/t02.png" /></span>修改</li>
-        <li><span><img src="../images/t03.png" /></span>删除</li>
-        <li><span><img src="../images/t04.png" /></span>统计</li>
-        </ul>
-    
-    </div>
-         <table class="tablelist">    
-                <thead>
-    	<tr>
-        <th colspan="6">
-        查看详情
-        </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-        <td colspan="6">
-          <asp:GridView ID="GridView1" runat="server" Width="1200px" CssClass="datable" border="0"
-            CellPadding="2" CellSpacing="1">
-            <RowStyle CssClass="lupbai" />
-           
-            <HeaderStyle CssClass="lup" />
-            <AlternatingRowStyle CssClass="trnei" />
-        </asp:GridView>
-        </td>
-        </tr></tbody>
-    </table>
-    
-   
-    
-    
-    
-    <div class="tip">
-    	<div class="tiptop"><span>提示信息</span><a></a></div>
-        
-      <div class="tipinfo">
-        <span><img src="../images/ticon.png" /></span>
-        <div class="tipright">
-        <p>是否确认对信息的修改 ？</p>
-        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <div class="place">
+            <span>位置：</span>
+            <ul class="placeul">
+                <li><a href="#">生产管理</a></li>
+                <li><a href="#">过程物料录入</a></li>
+            </ul>
         </div>
+        <div class="formbody">
+
+
+            <div class="framelist">
+                <div class="listtitle">
+                    查询条件<span style="position: relative; float: right">
+                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
+                       
+                    </span>
+                </div>
+                <table class="tablelist">
+                    <tbody>
+                        <tr>
+                            <td width="100">产品名称
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+                            </td>
+                            <td width="100">班组
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+                            </td>
+                            <td width="100">记录时间
+                            </td>
+                            <td width="100">
+                                <asp:TextBox ID="txtRecordtime" runat="server"   CssClass ="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="listtitle" style="margin-top: 10px">
+                    物料记录 <span style="position: relative; float: right">
+                        <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
+                            Text="新增" />
+                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                    </span>
+                </div>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging="True" DataKeyNames ="rowid"
+                            AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
+                            <Columns>  
+                                <asp:TemplateField HeaderText="审批状态">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chk" runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>                            
+                                <asp:BoundField DataField="计划号" HeaderText="计划号" />
+                                <asp:BoundField DataField="产品" HeaderText="产品" />
+                                <asp:BoundField DataField="记录项目" HeaderText="记录项目" />
+                                 <asp:BoundField DataField="记录值" HeaderText="记录值" />
+                                <asp:BoundField DataField="班组" HeaderText="班组" />
+                                <asp:BoundField DataField="记录时间" HeaderText="记录时间" />
+                                  <asp:BoundField DataField="记录人" HeaderText="记录人" />
+                              
+                            </Columns>
+                            <HeaderStyle CssClass="gridheader" />
+                            <RowStyle CssClass="gridrow" />
+                            <AlternatingRowStyle CssClass="gridalterrow" />
+                            <PagerStyle CssClass="gridpager" />
+                            <PagerTemplate>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+
+                            </PagerTemplate>
+                        </asp:GridView>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                        <asp:AsyncPostBackTrigger ControlID="btnCkAll" />
+                        <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnModify" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnSearch" />
+                      
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>         
+
+            <div class="shade">
+                <div class="info">
+                    <div class="tiphead">
+                        <span>过程物料记录</span><a onclick="$('.shade').fadeOut(100);"></a>
+                    </div>
+                    <div class="gridinfo">
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <table class="tablelist">
+                                    <tbody>
+                                        <tr>
+                                            <td width="100">产品名称
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listProd2" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                            </td>
+                                            <td width="100">计划号
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtPlanno" runat="server" class="dfinput1" ></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                           
+                                            <td width="100">记录项目
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listPara" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                            </td>
+                                              <td width="100">数据值
+                                            </td>                                        
+                                         
+                                            <td>
+                                                <asp:TextBox ID="txtValue" runat="server" class="dfinput1"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                           <td width="100">班组
+                                            </td>
+                                            <td>
+                                                 <asp:DropDownList ID="listTeam2" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                            </td>
+                                             <td width="100">记录人员
+                                            </td>
+                                            <td>
+                                                 <asp:TextBox ID="txtCreator" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                     
+                                    </tbody>
+                                </table>
+                                <div class="shadebtn" align="center">
+                                    <asp:HiddenField ID="hdScrollY" runat="server" />
+                                    <asp:Button ID="btnModify" class="sure" runat="server" Text="保存" OnClick="btnModify_Click" />
+                                    <input name="" type="button" class="cancel" value="关闭" onclick="$('.shade').fadeOut(100);" />
+                                </div>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                                <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="tipbtn">
-        <input name="" type="button"  class="sure" value="确定" />&nbsp;
-        <input name="" type="button"  class="cancel" value="取消" />
-        </div>    
-    </div>
-    </div>   
+      
         <script type="text/javascript">
             $('.tablelist tbody tr:odd').addClass('odd');
-	</script>   
-</form>
+        </script>
+    </form>
 </body>
 </html>

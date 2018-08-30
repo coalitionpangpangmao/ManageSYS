@@ -9,7 +9,6 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript" src="../js/select-ui.min.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
@@ -24,7 +23,14 @@
                 collapsed: true
 
             });
+           
+           
         });
+        
+        function saveScroll() {
+            var y = $("#gridPanel").scrollTop();            
+            $("#hideY").val(y);
+        }
         function tab1Click(code) {
             $('#tabtop1').click();
             $("#sessionFrame").contents().find("'*[id$=hdcode]'").attr('value', code);
@@ -44,7 +50,7 @@
             $("#ParaFrame").contents().find("'*[id$=btnUpdate]'").click();
         }
         function update() {
-            $('#btnUpdate').click();
+            $('#btnUpdate').click();           
 
         }
     </script>
@@ -64,8 +70,9 @@
             <div class="mainleft">
                 <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
                     <ContentTemplate>
+                        <asp:HiddenField ID="hideY" runat="server" />
                         <asp:Button ID="btnUpdate" CssClass="btnhide" runat="server" OnClick="btnUpdate_Click" />
-                        <div class="leftinfo" style="overflow: scroll">
+                        <div class="leftinfo" id ="gridPanel" style="overflow: scroll" onscroll="saveScroll()">
                             <div class="listtitle">
                                 工艺模型
                             </div>

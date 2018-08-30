@@ -63,7 +63,7 @@ h2{font-weight:normal;}
 .mainright{margin-left:220px !important;
    margin-left:26%; 
  /*  height:auto !important; */ }
-.leftinfo{border:#d3dbde solid 1px; height:550px;margin-right: 5px;position:relative;}
+.leftinfo{border:#d3dbde solid 1px; height:450px;margin-right: 5px;position:relative;}
 .dfsublist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;margin-top:10px;margin-left:10px;}
 .dflist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;}
 .framelist{border:#d3dbde solid 1px; position:relative;width:90%; float:left;}
@@ -97,7 +97,7 @@ h2{font-weight:normal;}
 .dfinput1{width:150px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .tbinput{width:70px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .tbinput1{width:100px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
-
+.labinfo{ height:25px;display:block; float:left;}
 .drpdwnlist
 {
     border: thin ridge #CCCCFF;

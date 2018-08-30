@@ -18,7 +18,7 @@ public partial class Energy_Comparison : MSYS.Web.BasePage
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             txtBtime.Text = System.DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss");
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listpara, "select para_code,para_name from ht_pub_tech_para where para_Type like '__0_%'", "para_name", "Para_CODE");
+            opt.bindDropDownList(listpara, "select para_code,para_name from ht_pub_tech_para where para_Type like '__0%'", "para_name", "Para_CODE");
             tvHtml = InitTree();
         }
     }

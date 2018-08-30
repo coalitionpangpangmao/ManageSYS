@@ -31,29 +31,15 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
     protected void btnSaveT_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select * from  from ht_sys_team where TEAM_CODE = '" + txtCodeT.Text + "'";
-        DataSet data = opt.CreateDataSetOra(query);
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "TEAM_CODE", "TEAM_NAME", "WORKSHOP_ID", "MODIFY_TIME", "IS_DEL" };
-            string[] value = { txtCodeT.Text, txtNameT.Text, listLineT.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "0" };           
-            string condition = " where TEAM_CODE = '" + txtCodeT.Text + "'";
-            if (opt.UpDateData(seg, value, "ht_sys_team", condition) == "Success")
+      
+        
+            string[] seg = { "TEAM_CODE", "TEAM_NAME", "WORKSHOP_ID", "CREATE_TIME","IS_DEL" };
+            string[] value = { txtCodeT.Text, txtNameT.Text, listLineT.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") ,"0"};
+            if(opt.MergeInto(seg, value, 1,"ht_sys_team")=="Success")
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置保存成功， 保存参数："+string.Join(" ", value));
             else
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置保存失败， 保存参数：" + string.Join(" ", value));
-        
-        }
-        else
-        {
-            string[] seg = { "TEAM_CODE", "TEAM_NAME", "WORKSHOP_ID", "CREATE_TIME" };
-            string[] value = { txtCodeT.Text, txtNameT.Text, listLineT.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-            if(opt.InsertData(seg, value, "ht_sys_team")=="Success")
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置保存成功， 保存参数："+string.Join(" ", value));
-            else
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置保存失败， 保存参数：" + string.Join(" ", value));
-        
-        }
+     
         bindGrid1();
     }
 
@@ -69,29 +55,14 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
     protected void btnSaveS_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select * from  from ht_sys_shift where SHIFT_CODE = '" + txtCodeS.Text + "'";
-        DataSet data = opt.CreateDataSetOra(query);
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "SHIFT_CODE", "SHIFT_NAME", "WORKSHOP_ID", "BEGIN_TIME", "END_TIME", "MODIFY_TIME", "IS_DEL", "INTER_DAY" };
-            string[] value = {txtCodeS.Text,txtNameS.Text,listLineS.SelectedValue,txtStarttime.Text,txtEndtime.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "0",Convert.ToInt16(ckInter.Checked).ToString() };
-            string condition = " where SHIFT_CODE = '" + txtCodeS.Text + "'";
-            if (opt.UpDateData(seg, value, "ht_sys_shift", condition) == "Success")
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置保存成功， 保存参数："+ string.Join(" ", value));
-            else
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置保存失败， 保存参数：" + string.Join(" ", value));
-        
-        }
-        else
-        {
-            string[] seg = { "SHIFT_CODE", "SHIFT_NAME", "WORKSHOP_ID", "BEGIN_TIME", "END_TIME", "CREATE_TIME", "INTER_DAY" };
-            string[] value = { txtCodeS.Text, txtNameS.Text, listLineS.SelectedValue, txtStarttime.Text, txtEndtime.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToInt16(ckInter.Checked).ToString() };
-            if(opt.InsertData(seg, value, "ht_sys_shift")=="Success")
+     
+            string[] seg = { "SHIFT_CODE", "SHIFT_NAME", "WORKSHOP_ID", "BEGIN_TIME", "END_TIME", "CREATE_TIME", "INTER_DAY","IS_DEL" };
+            string[] value = { txtCodeS.Text, txtNameS.Text, listLineS.SelectedValue, txtStarttime.Text, txtEndtime.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToInt16(ckInter.Checked).ToString() ,"0"};
+            if(opt.MergeInto(seg, value,1, "ht_sys_shift")=="Success")
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置保存成功， 保存参数：" + string.Join(" ", value));
             else
                 opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置保存失败， 保存参数：" + string.Join(" ", value));
-        
-        }
+      
         bindGrid2();
     }
 

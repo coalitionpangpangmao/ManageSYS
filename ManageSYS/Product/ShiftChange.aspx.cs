@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using System.IO;
 public partial class Product_ShiftChange : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -20,6 +21,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             opt.bindDropDownList(listShift, "select t.shift_code,t.shift_name  from ht_sys_shift t where t.is_valid = '1' and t.is_del = '0' order by t.shift_code", "shift_name", "shift_code");
             opt.bindDropDownList(listTeam, "select t.team_code,t.team_name  from ht_sys_team t where t.is_valid = '1' and t.is_del = '0' order by t.team_code", "team_name", "team_code");
             opt.bindDropDownList(listProd, "select t.prod_code,t.prod_name  from ht_pub_prod_design t where t.is_valid = '1' and t.is_del = '0' order by t.prod_code", "prod_name", "prod_code");
+            opt.bindDropDownList(listOlder,"select ID,NAME from ht_svr_user where levelgroupid = '00700700' and is_del = '0'","NAME","ID");
+            opt.bindDropDownList(listNewer, "select ID,NAME from ht_svr_user where levelgroupid = '00700700' and is_del = '0'", "NAME", "ID");
             bindGrid1();
          
            
@@ -100,7 +103,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             string query = "select t.mater_code as 物料名称,t.mater_vl as 数量,t.bz_unit as 单位,t.remark as 备注 from ht_prod_shiftchg_detail t where t.shift_main_id = '" + hdID.Value + "'";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
-           
+            GridView2.DataSource = data;
+            GridView2.DataBind();
             
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -145,8 +149,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             txtPlanNo.Text = row["计划号"].ToString();
             txtEditor.Text = row["create_id"].ToString();
             txtOutput.Text = row["output_vl"].ToString();
-            txtOlder.Text = row["shift_id"].ToString();
-            txtNewer.Text = row["succ_id"].ToString();
+            listOlder.SelectedValue = row["shift_id"].ToString();
+           listNewer.SelectedValue = row["succ_id"].ToString();
             txtDevice.Text = row["devicestatus"].ToString();
             txtQlt.Text = row["qlt_status"].ToString();
             txtScean.Text = row["scean_status"].ToString();
@@ -159,11 +163,16 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     protected void btnSave_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
+       // hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
         string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK", "OUTPLUS" };
-        string[] value = {hdID.Value,txtDate.Text,listShift.SelectedValue,listTeam.SelectedValue,listProd.SelectedValue,txtPlanNo.Text,txtOutput.Text,"cookieID",txtOlder.Text,txtNewer.Text,txtDevice.Text,txtQlt.Text,txtScean.Text,txtRemark.Text,txtOutPlus.Text };
+        string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, txtPlanNo.Text, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id , listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
         opt.InsertData(seg, value, "HT_PROD_SHIFTCHG");
 
+    }
+    protected void btnExport_Click(object sender, EventArgs e)
+    {
+        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xlsx");
+     
     }
     protected DataSet gridTypebind()
     {

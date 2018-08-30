@@ -9,7 +9,8 @@ using System.Web.SessionState;
 using MSYS.DAL;
 using MSYS.Data;
 using System.Linq;
-
+using System.IO;
+using System.Diagnostics;
 
 namespace MSYS.Web
 {
@@ -204,6 +205,299 @@ namespace MSYS.Web
             this.Page.Header.Controls.Add(child);
         }
 
+        //根据操作用户插入日志
+        public void InsertTlog(string record)
+        {
+            MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string query = "insert into HT_SVR_LOGIN_RECORD(F_USER,F_COMPUTER,F_TIME,F_DESCRIPT)values('"
+                  + user.text + "','"
+                  + Page.Request.UserHostName.ToString() + Page.Request.UserHostAddress.ToString() + "','"
+                  + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','"
+                  + record + "')";           
+        
+        }
+  //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览
+        public void ExportExcel(string filename,string brand,string startDate,string endDate,string team)      
+        {
+            string style = ".xlsx";           
+            MSYS.Common.ExcelExport openXMLExcel = null;          
+            try
+            {                       
+
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string bookid = opt.GetSegValue("select F_ID from ht_sys_excel_book where F_NAME = '" + filename + "'","F_ID" );
+                string booktype = opt.GetSegValue("select F_TYPE from ht_sys_excel_book where F_NAME = '" + filename + "'", "F_TYPE");
+
+
+                if (!System.IO.Directory.Exists(@"C:\TEMP"))
+                {
+                    // 目录不存在，建立目录 
+                    System.IO.Directory.CreateDirectory(@"C:\TEMP");
+                } 
+                //导出文件模板所在位置
+                String sourcePath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"\templates\" + booktype + @"\" + filename + style;
+
+                String filepath = @"C:\TEMP\" + filename + style;
+                //bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
+                //System.IO.File.Copy(sourcePath, filepath, isrewrite);
+                string query = "select * from ht_sys_excel_seg where F_BOOK_ID = '" + bookid + "'";
+                DataSet data = opt.CreateDataSetOra(query);               
+
+                //申明一个ExcelSaveAs对象，该对象完成将数据写入Excel的操作           
+                openXMLExcel = new MSYS.Common.ExcelExport(sourcePath, false);              
+                if (data.Tables[0].Select().GetLength(0) > 0)
+                {
+                    DataRow[] rows = data.Tables[0].Select();
+
+                    foreach (DataRow row in rows)
+                    {
+                        string sqlstr = row["F_SQL"].ToString();
+                        //设定选择的数据的日期及牌号等信息                     
+                        if(brand != "")
+                        sqlstr = sqlstr.Replace("$brand$", brand);
+                        if(startDate != "")
+                        sqlstr = sqlstr.Replace("$startDate$",startDate);
+                        if(endDate != "")
+                        sqlstr = sqlstr.Replace("$endDate$", endDate);
+                        if(team != "")
+                        sqlstr = sqlstr.Replace("$team$", team);
+                        if (sqlstr != "")
+                        {
+                            //将选择的数据写入Excel
+                            if (sqlstr.Substring(0, 3) == "STR")
+                            {
+                                sqlstr = sqlstr.Substring(4);
+                                Response.Write(openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString())));
+                                Response.Write(openXMLExcel.WriteData(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, sqlstr));
+                            }
+                            if (sqlstr.Substring(0, 3) == "SQL")
+                            {
+                                sqlstr = sqlstr.Substring(4).Trim();
+                                DataSet set = new DataSet();
+                                if (sqlstr.Substring(0, 5) == "SHIFT")
+                                {
+                                    sqlstr = sqlstr.Substring(6).Trim();
+                                    set =opt.ShiftTable(sqlstr);
+                                }
+                                else
+                                {
+                                    set = opt.CreateDataSetOra(sqlstr);
+                                }
+                                if (set != null)
+                                {
+                                    DataTable dt = set.Tables[0];
+                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
+                                    openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+                ///客户端再下载该文件，在客户端进行浏览
+                FileInfo fi = new FileInfo(filepath);
+                if (fi.Exists)     //判断文件是否已经存在,如果存在就删除!
+                {
+                    fi.Delete();
+                }
+                openXMLExcel.SaveAs(filepath);
+                openXMLExcel.Dispose();
+                openXMLExcel = null;
+                KillProcess("EXCEL.EXE");            
+
+             
+                Response.ContentType = "application/octet-stream";
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
+                Response.TransmitFile(filepath);
+            }
+            catch
+            {
+                if (openXMLExcel != null)
+                {
+                    openXMLExcel.Dispose();
+                }             
+            }
+            finally
+            {
+            }
+        }
+
+        public void CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style)
+        {           
+            MSYS.Common.ExcelExport openXMLExcel = null;
+            try
+            {
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string bookid = opt.GetSegValue("select F_ID from ht_sys_excel_book where F_NAME = '" + filename + "'", "F_ID");
+                string booktype = opt.GetSegValue("select F_TYPE from ht_sys_excel_book where F_NAME = '" + filename + "'", "F_TYPE");
+
+                string basedir = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+                if (!System.IO.Directory.Exists(basedir + @"\TEMP"))
+                {
+                    // 目录不存在，建立目录 
+                    System.IO.Directory.CreateDirectory(basedir + @"\TEMP");
+                }
+                //导出文件模板所在位置
+                String sourcePath = basedir + @"templates\" + booktype + @"\" + filename + ".xlsx";
+
+                String filepath = basedir + @"TEMP\" + filename + style;
+                //bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
+                //System.IO.File.Copy(sourcePath, filepath, isrewrite);
+                string query = "select * from ht_sys_excel_seg where F_BOOK_ID = '" + bookid + "'";
+                DataSet data = opt.CreateDataSetOra(query);
+
+                //申明一个ExcelSaveAs对象，该对象完成将数据写入Excel的操作           
+                openXMLExcel = new MSYS.Common.ExcelExport(sourcePath, false);
+                if (data.Tables[0].Select().GetLength(0) > 0)
+                {
+                    DataRow[] rows = data.Tables[0].Select();
+
+                    foreach (DataRow row in rows)
+                    {
+                        string sqlstr = row["F_SQL"].ToString();
+                        //设定选择的数据的日期及牌号等信息                     
+                        if (brand != "")
+                            sqlstr = sqlstr.Replace("$brand$", brand);
+                        if (startDate != "")
+                            sqlstr = sqlstr.Replace("$startDate$", startDate);
+                        if (endDate != "")
+                            sqlstr = sqlstr.Replace("$endDate$", endDate);
+                        if (team != "")
+                            sqlstr = sqlstr.Replace("$team$", team);
+                        if (sqlstr != "")
+                        {
+                            //将选择的数据写入Excel
+                            if (sqlstr.Substring(0, 3) == "STR")
+                            {
+                                sqlstr = sqlstr.Substring(4);
+                                Response.Write(openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString())));
+                                Response.Write(openXMLExcel.WriteData(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, sqlstr));
+                            }
+                            if (sqlstr.Substring(0, 3) == "SQL")
+                            {
+                                sqlstr = sqlstr.Substring(4).Trim();
+                                DataSet set = new DataSet();
+                                if (sqlstr.Substring(0, 5) == "SHIFT")
+                                {
+                                    sqlstr = sqlstr.Substring(6).Trim();
+                                    set = opt.ShiftTable(sqlstr);
+                                }
+                                else
+                                {
+                                    set = opt.CreateDataSetOra(sqlstr);
+                                }
+                                if (set != null)
+                                {
+                                    DataTable dt = set.Tables[0];
+                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
+                                    openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+                ///客户端再下载该文件，在客户端进行浏览
+                FileInfo fi = new FileInfo(filepath);
+                if (fi.Exists)     //判断文件是否已经存在,如果存在就删除!
+                {
+                    fi.Delete();
+                }
+                if (style == ".xlsx")
+                    openXMLExcel.SaveAs(filepath);
+                else
+                    openXMLExcel.SaveAsHtm(filepath);
+                openXMLExcel.Dispose();
+                openXMLExcel = null;
+                KillProcess("EXCEL.EXE");
+           
+            }
+            catch
+            {
+                if (openXMLExcel != null)
+                {
+                    openXMLExcel.Dispose();
+                }
+            }
+            finally
+            {
+            }
+        }
+
+        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style)
+        {
+            try
+            {
+                CreateExcel(filename, brand, startDate, endDate, team, style);
+                String filepath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"TEMP\" + filename + style;
+                Response.ContentType = "application/octet-stream";
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
+                Response.TransmitFile(filepath);
+            }
+            catch
+            {
+                Response.Write("文件下载出错！！");
+            }
+        }
+        private void KillProcess(string processname)
+        {
+            Process[] allProcess = Process.GetProcesses();
+            foreach (Process p in allProcess)
+            {
+                if (p.ProcessName.ToLower() + ".exe" == processname.ToLower())
+                {
+                    for (int i = 0; i < p.Threads.Count; i++)
+                    {
+                       if((System.DateTime.Now - p.Threads[i].StartTime).Seconds >30)
+                        p.Threads[i].Dispose();
+                    }
+                   // p.Kill();
+
+                    // break;
+                }
+            }
+        }
+
+        private int getColumn(string Col)
+        {
+            int ColNum;
+            switch (Col)
+            {
+                case "A": ColNum = 0; break;
+                case "B": ColNum = 1; break;
+                case "C": ColNum = 2; break;
+                case "D": ColNum = 3; break;
+                case "E": ColNum = 4; break;
+                case "F": ColNum = 5; break;
+                case "G": ColNum = 6; break;
+                case "H": ColNum = 7; break;
+                case "I": ColNum = 8; break;
+                case "J": ColNum = 9; break;
+                case "K": ColNum = 10; break;
+                case "L": ColNum = 11; break;
+                case "M": ColNum = 12; break;
+                case "N": ColNum = 13; break;
+                case "O": ColNum = 14; break;
+                case "P": ColNum = 15; break;
+                case "Q": ColNum = 16; break;
+                case "R": ColNum = 17; break;
+                case "S": ColNum = 18; break;
+                case "T": ColNum = 19; break;
+                case "U": ColNum = 20; break;
+                case "V": ColNum = 21; break;
+                case "W": ColNum = 22; break;
+                case "X": ColNum = 23; break;
+                case "Y": ColNum = 24; break;
+                case "Z": ColNum = 25; break;
+                default: ColNum = 26; break;
+            }
+            return ColNum;
+        }
 
 
 

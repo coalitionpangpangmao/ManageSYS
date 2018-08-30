@@ -128,7 +128,7 @@ public class RealDataHandler : IHttpHandler
         //query prod_code
         string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
         //query poininfo
-        DataSet pointinfo = opt.CreateDataSetOra("select t.para_name, t.para_code from ht_pub_tech_para t  where  t.EQUIP_CODE = '" + PostedData.point + "' and t.para_type like '___1_'");
+        DataSet pointinfo = opt.CreateDataSetOra("select t.para_name, t.para_code from ht_pub_tech_para t  where  t.EQUIP_CODE = '" + PostedData.point + "' and t.para_type like '___1%'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
         {
             foreach (DataRow row in pointinfo.Tables[0].Rows)

@@ -140,7 +140,10 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
 
             string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
             string[] value = { txtCode.Text, txtName.Text, listPro.SelectedValue, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text, };
-            string log_message = opt.MergeInto(seg, value,1, "ht_qa_mater_formula")=="Success"?"原料配方保存成功，":"原料配方保存失败，";
+           List<String> commandlist = new List<string>();
+                commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_mater_formula"));
+                commandlist.Add("update ht_pub_prod_design set mater_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
+                string log_message = opt.TransactionCommand(commandlist) == "Success" ? "原料配方保存成功，":"原料配方保存失败，";
             log_message += "保存信息：" + string.Join(" ", value);
             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
       

@@ -56,7 +56,7 @@
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField ItemStyle-Width="110">
+                                    <asp:TemplateField >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridDetail" runat="server" Text="配方详情" CssClass="btn1" Width="100px"
                                                 OnClick="btnGridDetail_Click" />
@@ -68,8 +68,9 @@
                                             <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1  auth" Width="100px"
                                                 OnClick="btnSubmit_Click" />
                                         </ItemTemplate>
+                                          <ItemStyle Width="110px" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField ItemStyle-Width="110">
+                                    <asp:TemplateField >
                                         <ItemTemplate>
                                             <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="100px"
                                                 OnClick="btnFLow_Click" />

@@ -49,7 +49,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
     public string InitTreePara(string section_code)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' and  para_type like '___1_'   order by para_code");
+       DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' and  para_type like '___1%'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";

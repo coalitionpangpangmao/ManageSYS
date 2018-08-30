@@ -225,6 +225,11 @@ namespace MSYS.Common
                         }
                         starttime = Convert.ToDateTime(GapEndtime).AddSeconds(taildelay).ToString("yyyy-MM-dd HH:mm:ss");
                     }
+                    else
+                    {
+                        starttime = endtime;
+                    }
+                   
                 }
             }
             return gaplist;

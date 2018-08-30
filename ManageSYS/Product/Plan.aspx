@@ -191,13 +191,12 @@
                                     <asp:TemplateField HeaderText="顺序号" SortExpression="顺序号">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号"
-                                                CssClass="tbinput1"></asp:TextBox>
+                                                CssClass="tbinput1" Width ="40px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="计划号" SortExpression="计划号">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号" Width ="200px"
-                                                CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                            <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号" Width ="150px"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="产品规格" SortExpression="产品规格">
@@ -210,6 +209,12 @@
                                     <asp:TemplateField HeaderText="计划产量" SortExpression="计划产量">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtOutput" runat="server" DataValueField="计划产量" DataTextField="计划产量"
+                                                CssClass="tbinput" ></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="路径编码" >
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtPathCode" runat="server" DataValueField="路径编码" DataTextField="路径编码" Enabled ="false" Width ="150px"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -238,6 +243,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID = "btnAddPlan" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnSavePath" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -271,7 +277,7 @@
                     </div>
                     <div class="gridinfo">                       
                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                        <ContentTemplate>
+                        <ContentTemplate>                            
                             <asp:GridView ID="GridView4" runat="server" class="grid" DataKeyNames="section_code"
                                 AutoGenerateColumns="False">
                                 <Columns>
@@ -298,7 +304,7 @@
                                 <RowStyle CssClass="gridrow" />
                                  <AlternatingRowStyle CssClass="gridalterrow" />
                             </asp:GridView>      
-                               <div align="center" style="margin-top: 10px">   <asp:Button ID="btnSavePath" runat="server" Text="保存" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>                   
+                               <div align="center" style="margin-top: 10px">   <asp:Button ID="btnSavePath" runat="server" Text="确认" CssClass ="btnmodify" OnClick="btnSavePath_Click" /></div>                   
                         </ContentTemplate>
                         <Triggers>
                            

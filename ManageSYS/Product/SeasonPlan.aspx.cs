@@ -127,8 +127,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         Button btn = (Button)sender;
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string id = GridView1.DataKeys[rowindex].Value.ToString();
-        string query = "update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'";
+        string id = GridView1.DataKeys[rowindex].Value.ToString();       
       
         List<String> commandlist = new List<String>();
         commandlist.Add("update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'");
@@ -194,11 +193,11 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Value.ToString();
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
-            string[] subvalue = { GridView1.Rows[index].Cells[2].Text, "12", id, Page.Request.UserHostName.ToString() };
+            string[] subvalue = { GridView1.Rows[index].Cells[1].Text, "12", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
             log_message += "业务数据ID：" + id;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
 
             bindGrid1();
 
@@ -257,14 +256,15 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string planname = txtYear.Text + "-" + listSeason2.SelectedValue + "生产计划";
+        string planname = txtYear.Text + "-" + listSeason2.SelectedValue + "季度生产计划";
 
         opt.UpDateOra("delete from  HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'");
         string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
-        opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN");
+         string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新建季度生产计划成功" : "新建季度生产计划失败";      
+        log_message += "详情:" + string.Join(",",value);
+        InsertTlog(log_message);
         hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");
-
         bindGrid1();
 
     }

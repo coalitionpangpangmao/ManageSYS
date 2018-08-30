@@ -217,6 +217,7 @@ namespace MSYS.DAL
                     + record + "')";
             return UpDateOra(query);
         }
+
         //绑定下拉表
         public void bindDropDownList(DropDownList list, string query, string textField, string valueField)
         {
@@ -244,7 +245,7 @@ namespace MSYS.DAL
             else return "NoRecord";
         }
         //查询语句后  行列倒置
-        protected DataSet ShiftTable(string query)
+        public DataSet ShiftTable(string query)
         {
             DataSet DstTemp = CreateDataSetOra(query);
             DataTable TabTemp = new DataTable();

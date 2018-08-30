@@ -57,7 +57,6 @@ namespace DataCollect
                 string starttime = row["date_end"].ToString();
                 InsertSectionQuaReport(starttime, endtime);
             }
-
         }
 
         private void InsertSectionQuaReport(string starttime, string endtime)
@@ -70,7 +69,7 @@ namespace DataCollect
                 //判断该工艺段是否有批次报告记录
                 if (ihopt.TaskShiftNum(starttime, endtime, row["section_code"].ToString()) > 0)
                 {
-                    string query = "select r.para_code from ht_pub_tech_para r where substr(r.para_code,1,5) = '" + row["section_code"].ToString() + "' and r.para_type like '___1_'";
+                    string query = "select r.para_code from ht_pub_tech_para r where substr(r.para_code,1,5) = '" + row["section_code"].ToString() + "' and r.para_type like '___1%'";
                     DataSet pointsets = opt.CreateDataSetOra(query);
                     foreach (DataRow prow in pointsets.Tables[0].Rows)
                     {

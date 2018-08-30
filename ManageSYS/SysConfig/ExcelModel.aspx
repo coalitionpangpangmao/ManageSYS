@@ -15,13 +15,8 @@
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $("#browser").treeview({
-            toggle: function () {
-                console.log("%s was toggled.", $(this).find(">span").text());
-            },
-            persist: "cookie",
-            collapsed: true
-
+        $(document).ready(function () {
+            initTreetoggle();
         });
         function initTreetoggle() {
             $("#browser").treeview({
@@ -30,7 +25,6 @@
                 },
                 persist: "cookie",
                 collapsed: true
-
             });
         }
         function tab1Click(code) {
@@ -111,6 +105,21 @@
                                             <asp:TextBox ID="ReportName" runat="server" Width="400" CssClass="dfinput"></asp:TextBox>
                                         </td>
                                     </tr>
+                                     <tr>
+                                        <td height="30" width="100">
+                                            报表类型
+                                        </td>
+                                        <td colspan="3">
+                                            <asp:DropDownList ID="listType" runat="server" CssClass="drpdwnlist" Width="400px" >
+                                                <asp:ListItem></asp:ListItem>
+                                                <asp:ListItem>系统</asp:ListItem>
+                                                <asp:ListItem>质量</asp:ListItem>
+                                                <asp:ListItem>生产</asp:ListItem>
+                                                <asp:ListItem>库存</asp:ListItem>
+                                                <asp:ListItem>工艺</asp:ListItem>
+                                            </asp:DropDownList> 
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>
                                             参数集
@@ -154,7 +163,7 @@
                                             报表名
                                         </td>
                                         <td colspan="3">
-                                            <asp:TextBox ID="txtReport" runat="server" CssClass="dfinput" Width="400px"></asp:TextBox>
+                                           <asp:DropDownList runat="server" ID ="listReport" CssClass ="drpdwnlist" />
                                         </td>
                                     </tr>
                                     <tr>

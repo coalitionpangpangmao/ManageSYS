@@ -81,7 +81,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         if (Regex.IsMatch(planID, @"^[+-]?/d*$"))
             hidePlanID.Value = planID;
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
-        string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + planID + " order by plan_Sort";
+        string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量,path_code as  路径编码 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + planID + " order by plan_Sort";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -97,7 +97,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text = mydrv["计划号"].ToString();
                 ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品规格"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
-
+                ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
             }
 
         }
@@ -222,7 +222,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
        
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-            string query = "select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
+            string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量,path_code as  路径编码 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
@@ -232,11 +232,12 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 data.Columns.Add("计划号");
                 data.Columns.Add("产品规格");
                 data.Columns.Add("计划产量");
+                data.Columns.Add("路径编码");
             }
             else
                 data = set.Tables[0];
         
-            object[] value = { "", "", "", 0 };
+            object[] value = { "", "", "", 0," " };
             data.Rows.Add(value);
             GridView2.DataSource = data;
             GridView2.DataBind();
@@ -249,6 +250,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                     ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text = mydrv["计划号"].ToString();
                     ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品规格"].ToString();
                     ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
                     /*     if (i < GridView1.Rows.Count - 1)
                          {
                              ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Enabled = false;
@@ -347,18 +349,21 @@ public partial class Product_Plan : MSYS.Web.BasePage
             int Rowindex = row.RowIndex;//获得行号             
             string mtr_code = ((TextBox)row.FindControl("txtPlanNo")).Text;
             string prod_code = ((DropDownList)row.FindControl("listProd")).SelectedValue;
+            if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
+                hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
+            string path_code = ((TextBox)row.FindControl("txtPathCode")).Text;
             if (mtr_code == "")
             {                
                 string planno = opt.GetSegValue("select nvl(Max(substr(PLAN_NO,16,2)),0)+1 as CODE from ht_prod_month_plan_detail where month_plan_ID = '" + hidePlanID.Value + "'", "CODE");
                 mtr_code = "PD" + txtYear.Text + listMonth.SelectedValue + prod_code + planno.PadLeft(2, '0');
             }
-            if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
-                hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-          
-            {
-                string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output", };
-                string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, };
+                string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output","path_code"};
+                string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code };
                 opt.MergeInto(seg, value,1, "HT_PROD_MONTH_PLAN_DETAIL");
+          
+            if (path_code != " ")
+            {
+                insertSectionPath(path_code,mtr_code);
             }
             bindGrid2(hidePlanID.Value);
         }
@@ -368,14 +373,37 @@ public partial class Product_Plan : MSYS.Web.BasePage
         }
     }
 
+    private void insertSectionPath(string path_code,string planno)
+    {
+        string[] seg = { "SECTION_CODE","PROD_PLAN" ,"PATHCODE", "PATHNAME", "CREATE_TIME"};
+        List<String> commandlist = new List<String>();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string[] subpath = path_code.Split('-');
+        DataSet data = opt.CreateDataSetOra("select g.section_name , g.section_code from ht_pub_tech_section g  where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code");
+        if (data != null && data.Tables[0].Rows.Count == subpath.Length)
+        {
+            for (int i = 0; i < subpath.Length; i++)
+            {
+                DataRow row = data.Tables[0].Rows[i];
+                string sectioncode = row["section_code"].ToString();
+                string pathname = opt.GetSegValue("select pathname from ht_pub_path_section  where section_code = '" + sectioncode + "' and pathcode = '" + subpath[i] + "'", "pathname");
+                if (subpath[i] != " ")
+                {
+                    string[] value = { sectioncode, planno, subpath[i], pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")};                   
+                    commandlist.Add(opt.getMergeStr(seg, value,2, "HT_PUB_PATH_PLAN"));
+                }
+            }
+        }
+        opt.TransactionCommand(commandlist);
+    }
 
     //////////////////////////////////////////////////////////////////////////////////
      protected void btnPath_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string ID = GridView2.DataKeys[rowIndex].Value.ToString();
-        hidePzcode.Value = ID;
+       
+        hidePzcode.Value = rowIndex.ToString();
         bindGrid4();
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#pathinfo').fadeIn(200);", true);
     }
@@ -440,19 +468,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     }//绑定GridView4数据源
 
-  
-    //protected void btnGrid4Save_Click(object sender, EventArgs e)
-    //{
-    //    Button btn = (Button)sender;
-    //    int index = ((GridViewRow)btn.NamingContainer).RowIndex;
-    //    string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
-    //    string[] value = { GridView4.DataKeys[index].Value.ToString(), ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[index].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePlanID.Value };
-    //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-    //    opt.UpDateOra("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[index].Value.ToString() + "' and PROD_PLAN = '" + hidePlanID.Value + "'");
-    //    opt.InsertData(seg, value, "HT_PUB_PATH_PLAN");
-    //    bindGrid4();
 
-    //}
     protected void listpath_SelectedIndexChanged(object sender, EventArgs e)
     {
        
@@ -484,20 +500,39 @@ public partial class Product_Plan : MSYS.Web.BasePage
     protected void btnSavePath_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME", "PROD_PLAN" };
-        List<String> commandlist = new List<String>();
-        for (int i = 0; i < GridView4.Rows.Count; i++)
-        {
-            if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
+        int index = Convert.ToInt16(hidePzcode.Value);
+        string planno =   GridView2.DataKeys[index].Value.ToString();
+      
+            string pathcode = "";
+            for (int i = 0; i < GridView4.Rows.Count; i++)
             {
-                string[] value = { GridView4.DataKeys[i].Value.ToString(), ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), hidePzcode.Value };
-                commandlist.Add("delete from HT_PUB_PATH_PLAN where section_code = '" + GridView4.DataKeys[i].Value.ToString() + "' and PROD_PLAN = '" + hidePzcode.Value + "'");
-                commandlist.Add(opt.InsertDatastr(seg, value, "HT_PUB_PATH_PLAN"));
+                if (i > 0)
+                    pathcode += "-";
+                DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+                if (list.SelectedValue != "")
+                {
+                    pathcode += list.SelectedValue;
+                }
+                else
+                    pathcode += " ";
             }
-           
-        }
-        opt.TransactionCommand(commandlist);
-        bindGrid4();
+            ((TextBox)GridView2.Rows[index].FindControl("txtPathCode")).Text = pathcode;
+      
+            string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
+            List<String> commandlist = new List<String>();
+            for (int i = 0; i < GridView4.Rows.Count; i++)
+            {
+                if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
+                {
+                    string[] value = { GridView4.DataKeys[i].Value.ToString(), planno, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                   
+                    commandlist.Add(opt.getMergeStr(seg, value, 2,"HT_PUB_PATH_PLAN"));
+                }
+
+            }
+            opt.TransactionCommand(commandlist);            
+      
+        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "close", "$('.shade').fadeOut(100);", true);
     }
 
 }

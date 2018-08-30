@@ -44,22 +44,12 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select * from ht_pub_aprv_type where pz_type = '" + txtCode.Text + "'";
-        DataSet data = opt.CreateDataSetOra(query);
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            string[] seg = { "pz_type_name" };
-            string[] value = { txtName.Text};
-            string condition = " where pz_type = '" + txtCode.Text + "'";
-            opt.UpDateData(seg, value, "ht_pub_aprv_type", condition);
-        }
-        else
-        {
+       
 
             string[] seg = { "pz_type", "pz_type_name"};
             string[] value = { txtCode.Text, txtName.Text };
-            opt.InsertData(seg, value, "ht_pub_aprv_type");
-        }
+            opt.MergeInto(seg, value, 1,"ht_pub_aprv_type");
+      
         bindData(txtCode.Text);
         tvHtml = InitTree();
 
@@ -67,27 +57,21 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
     
     protected void bindData(string rcpcode)
     {
-        string query = "select g1.pz_type,g1.pz_type_name as 审批类型,g2.index_no as 顺序号,g2.role as 角色,g2.flow_name as 发送环节名 from ht_pub_aprv_type g1  left join ht_pub_aprv_model g2 on g2.pz_type = g1.pz_type where g1.pz_type = '" + rcpcode + "'";
+        string query = "select g1.pz_type,g1.pz_type_name as 审批类型,g2.index_no as 顺序号,g2.role as 角色,g2.flow_name as 发送环节名 from ht_pub_aprv_type g1  left join ht_pub_aprv_model g2 on g2.pz_type = g1.pz_type where g1.pz_type = '" + rcpcode + "' and g2.index_no is not null";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
-        if (set != null && set.Tables[0].Rows.Count > 0)
+        if (set != null )
         {
-            txtCode.Text = rcpcode;
             DataTable data = set.Tables[0];
-            txtName.Text = data.Rows[0]["审批类型"].ToString();            
-            if (data == null)
-            {
-                data = new DataTable();
-                data.Columns.Add("pz_type");
-                data.Columns.Add("审批类型");
-                data.Columns.Add("顺序号");
-                data.Columns.Add("角色");
-                data.Columns.Add("发送环节名");
-            }
-            object[] value = { "", "",null,"", "" };
-            data.Rows.Add(value);
-            GridView1.DataSource = data;
+          bindGrid(data);
+        }      
+    }
+
+    protected void bindGrid(DataTable data)
+    {
+          GridView1.DataSource = data;
             GridView1.DataBind();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             if (data != null && data.Rows.Count > 0)
             {
                 for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
@@ -105,7 +89,6 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
                 }
 
             }
-        }      
     }
 
     protected void btnUpdate_Click(object sender, EventArgs e)
@@ -113,9 +96,30 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
         bindData(txtCode.Text);
 
     }
-  
 
-   
+
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        string query = "select g1.pz_type,g1.pz_type_name as 审批类型,g2.index_no as 顺序号,g2.role as 角色,g2.flow_name as 发送环节名 from ht_pub_aprv_type g1  left join ht_pub_aprv_model g2 on g2.pz_type = g1.pz_type where g1.pz_type = '" + txtCode.Text + "' and g2.index_no is not null";
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+        DataSet set = opt.CreateDataSetOra(query);
+        if (set != null )
+        {           
+            DataTable data = set.Tables[0];          
+            if (data == null)
+            {
+                data = new DataTable();
+                data.Columns.Add("pz_type");
+                data.Columns.Add("审批类型");
+                data.Columns.Add("顺序号");
+                data.Columns.Add("角色");
+                data.Columns.Add("发送环节名");
+            }
+            object[] value = { "", "", null, "", "" };
+            data.Rows.Add(value);
+            bindGrid(data);
+        }
+    }
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
         try
@@ -183,27 +187,14 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
             if (Rowindex >= 0)
             {
                MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                string query = "select * from ht_pub_aprv_model   where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text + "'";
-                DataSet data = opt.CreateDataSetOra(query);
-                if (data != null && data.Tables[0].Rows.Count > 0)
-                {
-                    string[] seg = { "ROLE", "FLOW_NAME"};
-                    string[] value = { ((DropDownList)GridView1.Rows[Rowindex].FindControl("listRole")).SelectedValue, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtFlowname")).Text};
-                    string condition ="  where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text + "'";
-                    if (opt.UpDateData(seg, value, "ht_pub_aprv_model", condition) == "Success")
-                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "模板流程表保存成功， 保存参数:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text);
-                    else
-                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "模板流程表保存失败， 保存参数:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text);
-                }
-                else
-                {
+                
                     string[] seg = {"PZ_TYPE","INDEX_NO", "ROLE", "FLOW_NAME" };
                     string[] value = { ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listRole")).SelectedValue, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtFlowname")).Text };
-                    if (opt.InsertData(seg, value, "ht_pub_aprv_model") == "Success")
+                    if (opt.MergeInto(seg, value,2, "ht_pub_aprv_model") == "Success")
                         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "模板流程表保存成功， 保存参数:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text);
                     else
                         opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "模板流程表保存失败， 保存参数:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text);
-                }
+          
                 bindData(txtCode.Text);
             }
         }

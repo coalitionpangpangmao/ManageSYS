@@ -50,7 +50,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     public string InitTreePara(string section_code)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and  para_type like '___1_' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
+        DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and  para_type like '___1%' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";
@@ -91,7 +91,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         txtID.Text = hidecode.Value;
         listSection.SelectedValue = txtID.Text.Substring(0, 5);
-        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1_' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1%' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
         opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from ht_qlt_collection r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0' and r.is_gap_judge = '1'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
         listPointname.SelectedValue = txtID.Text;
         DataSet data = opt.CreateDataSetOra("select * from ht_qlt_collection g1  where g1.is_del = '0' and g1.is_valid = '1' and  g1.para_code = '" + txtID.Text + "'");
@@ -131,7 +131,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     protected void listSection_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1_' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1%' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
         opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from ht_qlt_collection r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0' and r.is_gap_judge = '1'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
    
     }

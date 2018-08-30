@@ -109,7 +109,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
     {
         tvHtml = InitTree();
 
-        ScriptManager.RegisterStartupScript(UpdatePanel1,this.Page.GetType(),"updatetree"," $('#browser').treeview({ toggle: function () { console.log('%s was toggled.', $(this).find('>span').text());},  persist: 'cookie', collapsed: true });",true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1,this.Page.GetType(),"updatetree"," $('#browser').treeview({ toggle: function () { console.log('%s was toggled.', $(this).find('>span').text());},  persist: 'cookie', collapsed: true }); $('#gridPanel').scrollTop = $('#hideY').val();",true);
     }
     //public string InitTreePara( string process_code)
     //{

@@ -60,7 +60,7 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         txtUnit.Text = "";
         txtSetTag.Text = "";
         txtValueTag.Text = "";
-        setType("0000");
+        setType("0000000");
         txtDscrp.Text = "";
        
     }
@@ -71,18 +71,32 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
             type += "1";
         else
             type += "0";
+
         if (ckRecipePara.Checked)
             type += "1";
         else
             type += "0";
+
         if (ckSetPara.Checked)
             type += "1";
         else
             type += "0";
+
         if (ckQuality.Checked)
             type += "1";
         else
             type += "0";
+
+        if (ckManul.Checked)
+            type += "1";
+        else
+            type += "0";
+
+        if (ckEqpara.Checked)
+            type += "1";
+        else
+            type += "0";
+
         if (ckCalibrate.Checked)
             type += "1";
         else
@@ -91,13 +105,16 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
     }
     protected void setType(string Type)
     {
-        if (Type.Length >= 5)
+        Type = Type.PadRight(7, '0');
+        if (Type.Length >= 7)
         {
             ckCenterCtrl.Checked =("1"==Type.Substring(0, 1));
             ckRecipePara.Checked = ("1" == Type.Substring(1, 1));
             ckSetPara.Checked = ("1" == Type.Substring(2, 1));
             ckQuality.Checked = ("1" == Type.Substring(3, 1));
-            ckCalibrate.Checked = ("1" == Type.Substring(4, 1));
+            ckManul.Checked = ("1" == Type.Substring(4, 1));
+            ckEqpara.Checked = ("1" == Type.Substring(5, 1));
+            ckCalibrate.Checked = ("1" == Type.Substring(6, 1));
         }
     }
     protected void btnModify_Click(object sender, EventArgs e)

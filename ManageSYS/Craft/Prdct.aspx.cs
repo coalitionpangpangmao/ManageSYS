@@ -138,8 +138,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             txtValue.Text = data.Tables[0].Rows[0]["STANDARD_VALUE"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
-        UpdatePanel2.Update();
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
+      
 
     }
     //查看审批单
@@ -152,7 +152,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#flowinfo').fadeIn(200);", true);
     }
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
     {
@@ -180,12 +180,30 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
+        setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string str = opt.GetSegValue("select Max(PROD_CODE) as code from ht_pub_prod_design where substr(Prod_code,0,4) = '703" + listType.SelectedValue + "'", "CODE");
         if (str == "")
             str = "0000000";
         txtCode.Text = "703" + listType.SelectedValue + (Convert.ToInt16(str.Substring(4)) + 1).ToString().PadLeft(3, '0');
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
 
+    }
+
+    protected void setBlank()
+    {
+         txtCode.Text = ""; 
+        txtName.Text = ""; 
+        txtPack.Text = ""; 
+        listType.SelectedValue = ""; 
+        listTechStd.SelectedValue = ""; 
+        listMtrl.SelectedValue = ""; 
+        listAux.SelectedValue = ""; 
+        listcoat.SelectedValue = ""; 
+        listqlt.SelectedValue = ""; 
+        txtValue.Text = "";
+        txtDscpt.Text = ""; 
+        
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {

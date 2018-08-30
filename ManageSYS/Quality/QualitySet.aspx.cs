@@ -96,7 +96,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             {
                 DataRowView mydrv = data.DefaultView[i];
                 DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listParaName");
-                opt.bindDropDownList(list, "select case when length(r.para_name) <8 then s.eq_name||r.para_name else r.para_name end as para_name,r.para_code  from HT_PUB_TECH_PARA r left join ht_eq_eqp_tbl s on s.idkey = r.equip_code  where  r.para_type like '___1_' and r.is_del = '0' and substr(r.PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
+                opt.bindDropDownList(list, "select case when length(r.para_name) <8 then s.eq_name||r.para_name else r.para_name end as para_name,r.para_code  from HT_PUB_TECH_PARA r left join ht_eq_eqp_tbl s on s.idkey = r.equip_code  where  r.para_type like '___1%' and r.is_del = '0' and substr(r.PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
                 list.SelectedValue = mydrv["参数编码"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtLower")).Text = mydrv["下限"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtUpper")).Text = mydrv["上限"].ToString();

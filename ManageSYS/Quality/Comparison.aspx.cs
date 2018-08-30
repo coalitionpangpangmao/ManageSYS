@@ -18,7 +18,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             txtBtime.Text = System.DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss");
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listpara, "select para_code,para_name from ht_pub_tech_para where  IS_VALID = '1' and IS_DEL = '0' and  para_type like '___1_'   order by para_code", "para_name", "Para_CODE");
+            opt.bindDropDownList(listpara, "select para_code,para_name from ht_pub_tech_para where  IS_VALID = '1' and IS_DEL = '0' and  para_type like '___1%'   order by para_code", "para_name", "Para_CODE");
             tvHtml = InitTree();
         }
     }
@@ -49,7 +49,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
     public string InitTreePara(string section_code)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' and  para_type like '___1_'   order by para_code");
+       DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' and  para_type like '___1%'   order by para_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";
