@@ -34,12 +34,12 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
       
         
             string[] seg = { "TEAM_CODE", "TEAM_NAME", "WORKSHOP_ID", "CREATE_TIME","IS_DEL" };
-            string[] value = { txtCodeT.Text, txtNameT.Text, listLineT.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") ,"0"};
-            if(opt.MergeInto(seg, value, 1,"ht_sys_team")=="Success")
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置保存成功， 保存参数："+string.Join(" ", value));
-            else
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置保存失败， 保存参数：" + string.Join(" ", value));
-     
+            string[] value = { txtCodeT.Text, txtNameT.Text, listLineT.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") ,"0"};          
+
+            string log_message = opt.MergeInto(seg, value, 1, "ht_sys_team") == "Success" ? "班组配置保存成功" : "班组配置保存失败";
+            log_message += "详情:" + string.Join(",", value);
+            InsertTlog(log_message);
+       
         bindGrid1();
     }
 
@@ -57,12 +57,12 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
      
             string[] seg = { "SHIFT_CODE", "SHIFT_NAME", "WORKSHOP_ID", "BEGIN_TIME", "END_TIME", "CREATE_TIME", "INTER_DAY","IS_DEL" };
-            string[] value = { txtCodeS.Text, txtNameS.Text, listLineS.SelectedValue, txtStarttime.Text, txtEndtime.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToInt16(ckInter.Checked).ToString() ,"0"};
-            if(opt.MergeInto(seg, value,1, "ht_sys_shift")=="Success")
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置保存成功， 保存参数：" + string.Join(" ", value));
-            else
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置保存失败， 保存参数：" + string.Join(" ", value));
-      
+            string[] value = { txtCodeS.Text, txtNameS.Text, listLineS.SelectedValue, txtStarttime.Text, txtEndtime.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToInt16(ckInter.Checked).ToString() ,"0"};           
+
+            string log_message = opt.MergeInto(seg, value, 1, "ht_sys_shift") == "Success" ? "班时配置保存成功" : "班时配置保存失败";
+            log_message += "详情:" + string.Join(",", value);
+            InsertTlog(log_message);
+        
         bindGrid2();
     }
 
@@ -72,10 +72,9 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string query = "update ht_sys_team set IS_DEL = '1'  where TEAM_CODE = '" + GridView1.Rows[rowIndex].Cells[1].Text + "'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        if (opt.UpDateOra(query) == "Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置删除成功, 班组编码：" + GridView1.Rows[rowIndex].Cells[1].Text);
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班组配置删除失败, 班组编码:" + GridView1.Rows[rowIndex].Cells[1].Text);
+       string log_message = opt.UpDateOra(query) == "Success" ? "删除班组成功" : "删除班组失败";
+       log_message += "标识:" + GridView1.Rows[rowIndex].Cells[1].Text;
+       InsertTlog(log_message);
         bindGrid1();
     }
 
@@ -85,10 +84,9 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string query = "update ht_sys_shift set IS_DEL = '1'  where SHIFT_CODE = '" + GridView2.Rows[rowIndex].Cells[1].Text + "'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        if (opt.UpDateOra(query) == "Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置删除成功， 班时编码：" + GridView2.Rows[rowIndex].Cells[1].Text);
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "班时配置删除失败， 班时编码：" + GridView2.Rows[rowIndex].Cells[1].Text);
+       string log_message = opt.UpDateOra(query) == "Success" ? "删除班时成功" : "删除班时失败";
+       log_message += "标识:" + GridView2.Rows[rowIndex].Cells[1].Text;
+       InsertTlog(log_message);
         bindGrid2();
     }
 }

@@ -81,7 +81,10 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     protected void Delete_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.UpDateOra("delete from ht_qlt_collection where para_code = '" + txtID.Text + "'");
+        string query = "delete from ht_qlt_collection where para_code = '" + txtID.Text + "'";
+        string log_message = opt.UpDateOra(query) == "Success" ? "删除数采条件成功" : "删除数采条件失败";
+        log_message += "标识:" + txtID.Text;
+        InsertTlog(log_message);
     }
     protected void btnView_Click(object sender, EventArgs e)
     {

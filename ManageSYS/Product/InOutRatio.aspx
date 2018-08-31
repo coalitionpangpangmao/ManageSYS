@@ -114,8 +114,8 @@
                     <table class="tablelist">
                         <tr>
                             <th>
-                                牌号：<asp:DropDownList ID="listRecipe" runat="server" CssClass="drpdwnlist" 
-                                    onselectedindexchanged="listRecipe_SelectedIndexChanged">
+                                产品：<asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist" 
+                                    onselectedindexchanged="listProd_SelectedIndexChanged">
                                 </asp:DropDownList>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:RadioButton ID="rdSort1" runat="server" GroupName="Sort" Text="按月" 

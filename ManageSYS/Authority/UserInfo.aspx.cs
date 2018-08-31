@@ -59,10 +59,10 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string[] seg = { "ID", "NAME", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "EMAIL", "LEVELGROUPID", "DESCRIPTION", "ROLE" };
         string[] value = { txtID.Text, txtName.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtEmail.Text, listApt.SelectedValue, txtDscp.Text, listRole.SelectedValue };
-        if (opt.UpDateData(seg, value, "ht_svr_user", " where ID = '" + txtID.Text + "'") != "Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户失败， 数据值：" + string.Join(" ", value));
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户成功， 数据值：" + string.Join(" ", value));
+
+        string log_message = opt.UpDateData(seg, value, "ht_svr_user", " where ID = '" + txtID.Text + "'") == "Success" ? "修改用户成功" : "修改用户失败";
+        log_message += "数据信息:" + string.Join(" ", value);
+        InsertTlog(log_message);      
 
     }
 

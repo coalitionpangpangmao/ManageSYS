@@ -8,7 +8,6 @@
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-<script type="text/javascript" src="../js/select-ui.min.js"></script>
    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
    <script type="text/javascript">
        $(document).ready(function () {

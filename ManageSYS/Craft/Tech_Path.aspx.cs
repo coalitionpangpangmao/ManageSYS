@@ -129,7 +129,9 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_PUB_PATH_NODE set IS_DEL = '1'  where ID = '" + ID + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径节点成功" : "删除工艺路径节点失败";
+                   log_message += "工艺路径节点ID:" + ID;
+                   InsertTlog(log_message);
                 }
             }
             bindGrid2();
@@ -151,11 +153,16 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             string[] value = { ((TextBox)GridView2.Rows[Rowindex].FindControl("txtSection")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtNodeName")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtDscrpt")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), ((TextBox)GridView2.Rows[Rowindex].FindControl("txtTag")).Text };
             if (ID == "0")
             {
-                opt.InsertData(seg, value, "ht_pub_path_node");
+                string log_message = opt.InsertData(seg, value, "ht_pub_path_node") == "Success" ? "新建路径节点成功" : "新建路径节点失败";
+                log_message += "详情:" + string.Join(",", value);
+                InsertTlog(log_message);
+        
             }
             else
             {
-                opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'");
+                string log_message =  opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'") == "Success" ? "更新路径节点成功" : "更新路径节点失败";
+                log_message += "详情:" + string.Join(",", value);
+                InsertTlog(log_message);               
             }
 
             bindGrid2();
@@ -307,7 +314,9 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string pathcode = GridView1.DataKeys[i].Values[1].ToString();
                     string query = "update ht_pub_path_section set IS_DEL = '1'  where SECTION_CODE = '" + sectioncode + "' and pathcode = '" + pathcode + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径成功" : "删除工艺路径失败";
+                   log_message += "工艺段:" + sectioncode + "路径" + pathcode;
+                   InsertTlog(log_message);
                 }
             }
             createGridView();

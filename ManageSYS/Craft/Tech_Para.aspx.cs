@@ -135,7 +135,9 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();      
        string query = "delete from HT_PUB_TECH_PARA  where PARA_CODE =  '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+       string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺参数点成功" : "删除工艺参数点失败";
+       log_message += "工艺参数点ID:" + txtCode.Text;
+       InsertTlog(log_message);
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
     }
     protected void btnUpdate_Click(object sender, EventArgs e)

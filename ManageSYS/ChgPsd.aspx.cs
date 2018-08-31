@@ -30,8 +30,10 @@ public partial class Authority_ChgPsd : MSYS.Web.BasePage
                     if (txtPwd1.Text == txtpwd2.Text)
                     {
                         string userPwd = MSYS.Security.Encrypt.GetMD5String(txtPwd1.Text);
-                        opt.UpDateOra("update ht_svr_user set PASSWORD = '" + userPwd + "' where ID = '" + userID + "'");
-                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改密码");
+
+                        string log_message = opt.UpDateOra("update ht_svr_user set PASSWORD = '" + userPwd + "' where ID = '" + userID + "'") == "Success" ? "修改密码成功" : "修改密码失败";
+                        log_message += "用户ID:" + userID;
+                        InsertTlog(log_message);
                         string returnUrl = Request["ReturnUrl"];
                         if (string.IsNullOrEmpty(returnUrl))
                             returnUrl = "default.aspx";

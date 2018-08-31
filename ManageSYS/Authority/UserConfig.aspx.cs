@@ -147,13 +147,11 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
  	
     string userPwd = txtPswd.Text ==""?opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'","password"):  MSYS.Security.Encrypt.GetMD5String(txtPswd.Text);
         string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE" };
-        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };
-        if(opt.MergeInto(seg, value, 1,"ht_svr_user")!="Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户失败， 数据值：" + string.Join(" ", value));
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "修改用户成功， 数据值：" + string.Join(" ", value));
+        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };        
 
-        
+        string log_message = opt.MergeInto(seg, value, 1, "ht_svr_user") == "Success" ? "修改用户成功" : "修改用户失败";
+        log_message += "数据值：" + string.Join(" ", value);
+        InsertTlog(log_message);  
 
         bindData();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
@@ -165,11 +163,9 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
         {
             if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
             {
-                if(opt.UpDateOra("delete from ht_svr_user where ID = '" + GridView1.DataKeys[i].Value.ToString() + "'")!="Success")
-      		    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "删除用户失败， ID：" + GridView1.DataKeys[i].Value.ToString());
-        	else
-        	    
-        	     opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "删除用户成功， ID：" + GridView1.DataKeys[i].Value.ToString());    
+                string log_message = opt.UpDateOra("delete from ht_svr_user where ID = '" + GridView1.DataKeys[i].Value.ToString() + "'") == "Success" ? "删除用户成功" : "删除用户失败";
+                log_message += "标识:" + GridView1.DataKeys[i].Value.ToString();
+                InsertTlog(log_message);                
             }
         	       	     
         	           	    

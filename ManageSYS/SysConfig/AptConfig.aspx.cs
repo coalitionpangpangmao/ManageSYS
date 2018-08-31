@@ -100,7 +100,9 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
             if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
             {
                 string query = "delete from HT_SVR_ORG_GROUP where F_CODE = '" + GridView1.DataKeys[i].Value.ToString() + "'";
-                opt.UpDateOra(query);
+                string log_message = opt.UpDateOra(query) == "Success" ? "删除部门成功" : "删除部门失败";
+                log_message += "标识:" + GridView1.DataKeys[i].Value.ToString();
+                InsertTlog(log_message);
             }
         }
         bindData();

@@ -41,13 +41,13 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 {
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
-                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "查看计划";                    
+                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "查看计划";
                 }
                 else
                 {
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
-                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "编制计划";     
+                    ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "编制计划";
                 }
                 if (mydrv["下发状态"].ToString() != "未下发")
                 {
@@ -58,7 +58,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 {
                     ((Button)GridView1.Rows[i].FindControl("btnIssued")).Enabled = true;
                     ((Button)GridView1.Rows[i].FindControl("btnIssued")).CssClass = "btn1 auth";
-                }  
+                }
 
             }
         }
@@ -120,7 +120,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
         {
             string query = "update ht_prod_month_plan set ISSUED_STATUS = '1'  where ID = '" + id + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.UpDateOra(query);
+            string log_message = opt.UpDateOra(query) == "Success" ? "下发计划成功" : "下发计划失败";
+            log_message += "标识:" + id;
+            InsertTlog(log_message);
         }
         else
         {
@@ -171,7 +173,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 SetEnable(true);
             else
                 SetEnable(false);
-           
+
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
             //   string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
             //  MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
@@ -207,7 +209,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
             log_message += "业务数据ID：" + id;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
 
             bindGrid1();
         }
@@ -219,55 +221,55 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-       
-            if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
-                hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-            string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量,path_code as  路径编码 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet set = opt.CreateDataSetOra(query);
-            DataTable data = new DataTable();
-            if (set == null)
+
+        if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
+            hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
+        string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品规格,plan_output as 计划产量,path_code as  路径编码 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet set = opt.CreateDataSetOra(query);
+        DataTable data = new DataTable();
+        if (set == null)
+        {
+            data.Columns.Add("顺序号");
+            data.Columns.Add("计划号");
+            data.Columns.Add("产品规格");
+            data.Columns.Add("计划产量");
+            data.Columns.Add("路径编码");
+        }
+        else
+            data = set.Tables[0];
+
+        object[] value = { "", "", "", 0, " " };
+        data.Rows.Add(value);
+        GridView2.DataSource = data;
+        GridView2.DataBind();
+        if (data != null && data.Rows.Count > 0)
+        {
+            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
-                data.Columns.Add("顺序号");
-                data.Columns.Add("计划号");
-                data.Columns.Add("产品规格");
-                data.Columns.Add("计划产量");
-                data.Columns.Add("路径编码");
+                DataRowView mydrv = data.DefaultView[i];
+                ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Text = mydrv["顺序号"].ToString();
+                ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text = mydrv["计划号"].ToString();
+                ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品规格"].ToString();
+                ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
+                ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
+                /*     if (i < GridView1.Rows.Count - 1)
+                     {
+                         ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Enabled = false;
+                         ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Enabled = false;
+                         ((DropDownList)GridView2.Rows[i].FindControl("listProd")).Enabled = false;
+                         ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Enabled = false;
+                     }
+                     else
+                     {
+                         ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Enabled = true;
+                         ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Enabled = true;
+                         ((DropDownList)GridView2.Rows[i].FindControl("listProd")).Enabled = true;
+                         ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Enabled = true;
+                     }*/
             }
-            else
-                data = set.Tables[0];
-        
-            object[] value = { "", "", "", 0," " };
-            data.Rows.Add(value);
-            GridView2.DataSource = data;
-            GridView2.DataBind();
-            if (data != null && data.Rows.Count > 0)
-            {
-                for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-                {
-                    DataRowView mydrv = data.DefaultView[i];
-                    ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Text = mydrv["顺序号"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text = mydrv["计划号"].ToString();
-                    ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品规格"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
-                    /*     if (i < GridView1.Rows.Count - 1)
-                         {
-                             ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Enabled = false;
-                             ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Enabled = false;
-                             ((DropDownList)GridView2.Rows[i].FindControl("listProd")).Enabled = false;
-                             ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Enabled = false;
-                         }
-                         else
-                         {
-                             ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Enabled = true;
-                             ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Enabled = true;
-                             ((DropDownList)GridView2.Rows[i].FindControl("listProd")).Enabled = true;
-                             ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Enabled = true;
-                         }*/
-                }
-            }
-      
+        }
+
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
@@ -277,7 +279,11 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
         string[] seg = { "PLAN_NAME", "PLAN_TIME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { planname + "生产月计划", planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
-        opt.InsertData(seg, value, "ht_prod_month_plan");
+
+        string log_message = opt.InsertData(seg, value, "ht_prod_month_plan") == "Success" ? "新建月度生产计划成功" : "新建月度生产计划失败";
+        log_message += "详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+      
         hidePlanID.Value = opt.GetSegValue(query, "ID");
 
 
@@ -311,7 +317,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
                     string mtr_code = ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text;
                     string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除生产计划明细成功" : "删除生产计划明细失败";
+                    log_message += "标识:" + mtr_code;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid2(hidePlanID.Value);
@@ -330,7 +338,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string mtr_code = ((TextBox)GridView2.Rows[Rowindex].FindControl("txtPlanNo")).Text;
             string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.UpDateOra(query);
+            string log_message = opt.UpDateOra(query) == "Success" ? "删除月度生产计划明细成功" : "删除月度生产计划明细失败";
+            log_message += "标识:" + mtr_code;
+            InsertTlog(log_message);
             bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)
@@ -345,7 +355,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             Button btn = (Button)sender;
-            GridViewRow row =(GridViewRow) btn.NamingContainer;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
             int Rowindex = row.RowIndex;//获得行号             
             string mtr_code = ((TextBox)row.FindControl("txtPlanNo")).Text;
             string prod_code = ((DropDownList)row.FindControl("listProd")).SelectedValue;
@@ -353,17 +363,17 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string path_code = ((TextBox)row.FindControl("txtPathCode")).Text;
             if (mtr_code == "")
-            {                
+            {
                 string planno = opt.GetSegValue("select nvl(Max(substr(PLAN_NO,16,2)),0)+1 as CODE from ht_prod_month_plan_detail where month_plan_ID = '" + hidePlanID.Value + "'", "CODE");
                 mtr_code = "PD" + txtYear.Text + listMonth.SelectedValue + prod_code + planno.PadLeft(2, '0');
             }
-                string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output","path_code"};
-                string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code };
-                opt.MergeInto(seg, value,1, "HT_PROD_MONTH_PLAN_DETAIL");
-          
+            string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output", "path_code" };
+            string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code };
+            opt.MergeInto(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL");
+
             if (path_code != " ")
             {
-                insertSectionPath(path_code,mtr_code);
+                insertSectionPath(path_code, mtr_code);
             }
             bindGrid2(hidePlanID.Value);
         }
@@ -373,9 +383,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
         }
     }
 
-    private void insertSectionPath(string path_code,string planno)
+    private void insertSectionPath(string path_code, string planno)
     {
-        string[] seg = { "SECTION_CODE","PROD_PLAN" ,"PATHCODE", "PATHNAME", "CREATE_TIME"};
+        string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
         List<String> commandlist = new List<String>();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string[] subpath = path_code.Split('-');
@@ -389,8 +399,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 string pathname = opt.GetSegValue("select pathname from ht_pub_path_section  where section_code = '" + sectioncode + "' and pathcode = '" + subpath[i] + "'", "pathname");
                 if (subpath[i] != " ")
                 {
-                    string[] value = { sectioncode, planno, subpath[i], pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")};                   
-                    commandlist.Add(opt.getMergeStr(seg, value,2, "HT_PUB_PATH_PLAN"));
+                    string[] value = { sectioncode, planno, subpath[i], pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                    commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
                 }
             }
         }
@@ -398,11 +408,11 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
 
     //////////////////////////////////////////////////////////////////////////////////
-     protected void btnPath_Click(object sender, EventArgs e)
+    protected void btnPath_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-       
+
         hidePzcode.Value = rowIndex.ToString();
         bindGrid4();
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#pathinfo').fadeIn(200);", true);
@@ -430,40 +440,40 @@ public partial class Product_Plan : MSYS.Web.BasePage
     {
 
         string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code and g1.prod_plan = '" + hidePzcode.Value + "' and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
-            //string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code  and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra(query);
-            GridView4.DataSource = data;
-            GridView4.DataBind();
-            if (data != null && data.Tables[0].Rows.Count > 0)
+        //string query = "select g.section_name as 工艺段, nvl(g1.pathname,'') as 路径选择, nvl(g1.pathcode,'') as 路径详情,g.section_code from ht_pub_tech_section g left join  ht_pub_path_plan g1 on g1.section_code = g.section_code  and g1.is_del = '0' where g.is_valid = '1' and g.is_del = '0' order by g.section_code";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView4.DataSource = data;
+        GridView4.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            for (int i = 0; i < GridView4.Rows.Count; i++)
             {
-                for (int i = 0; i < GridView4.Rows.Count; i++)
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                ((TextBox)GridView4.Rows[i].FindControl("txtSection")).Text = mydrv["工艺段"].ToString();
+                DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+                opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "'", "pathname", "pathcode");
+                list.SelectedValue = mydrv["路径详情"].ToString();
+                query = createQuery(mydrv["section_code"].ToString());
+                if (query != "")
                 {
-                    DataRowView mydrv = data.Tables[0].DefaultView[i];
-                    ((TextBox)GridView4.Rows[i].FindControl("txtSection")).Text = mydrv["工艺段"].ToString();
-                    DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
-                    opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "'", "pathname", "pathcode");
-                    list.SelectedValue = mydrv["路径详情"].ToString();
-                    query = createQuery(mydrv["section_code"].ToString());
-                    if (query != "")
+                    query += " and pathcode = '" + list.SelectedValue + "'";
+                    DataSet set = opt.CreateDataSetOra(query);
+                    for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
                     {
-                        query += " and pathcode = '" + list.SelectedValue + "'";
-                        DataSet set = opt.CreateDataSetOra(query);
-                        for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
-                        {
-                            CheckBox ck = new CheckBox();
-                            // ck.Enabled = false;
-                            if (0 == set.Tables[0].Rows.Count)
-                                ck.Checked = false;
-                            else
-                                ck.Checked = (set.Tables[0].Rows[0][j].ToString() == "1");
+                        CheckBox ck = new CheckBox();
+                        // ck.Enabled = false;
+                        if (0 == set.Tables[0].Rows.Count)
+                            ck.Checked = false;
+                        else
+                            ck.Checked = (set.Tables[0].Rows[0][j].ToString() == "1");
 
-                            ck.Text = set.Tables[0].Columns[j].Caption;
-                            GridView4.Rows[i].Cells[2].Controls.Add(ck);
-                        }
+                        ck.Text = set.Tables[0].Columns[j].Caption;
+                        GridView4.Rows[i].Cells[2].Controls.Add(ck);
                     }
                 }
             }
+        }
 
 
     }//绑定GridView4数据源
@@ -471,67 +481,67 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     protected void listpath_SelectedIndexChanged(object sender, EventArgs e)
     {
-       
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            for (int i = 0; i < GridView4.Rows.Count; i++)
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        for (int i = 0; i < GridView4.Rows.Count; i++)
+        {
+            DataSet set = opt.CreateDataSetOra("select * from HT_PUB_PATH_NODE where SECTION_CODE ='" + GridView4.DataKeys[i].Value.ToString() + "' and is_del = '0'");
+            DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+            string pathcode = list.SelectedValue;
+            if (set != null && set.Tables[0].Rows.Count > 0)
             {
-                DataSet set = opt.CreateDataSetOra("select * from HT_PUB_PATH_NODE where SECTION_CODE ='" + GridView4.DataKeys[i].Value.ToString() + "' and is_del = '0'");
-                DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
-                string pathcode = list.SelectedValue;
-                if (set != null && set.Tables[0].Rows.Count > 0)
+                if (pathcode.Length < set.Tables[0].Rows.Count)
+                    pathcode = pathcode.PadRight(set.Tables[0].Rows.Count, '0');
+                for (int j = 0; j < set.Tables[0].Rows.Count; j++)
                 {
-                    if (pathcode.Length < set.Tables[0].Rows.Count)
-                        pathcode = pathcode.PadRight(set.Tables[0].Rows.Count, '0');
-                    for (int j = 0; j < set.Tables[0].Rows.Count; j++)
-                    {
-                        CheckBox ck = new CheckBox();
-                        // ck.Enabled = false;               
-                        ck.Text = set.Tables[0].Rows[j]["NODENAME"].ToString();
-                        GridView4.Rows[i].Cells[2].Controls.Add(ck);
-                        if (pathcode.Length > 0)
-                            ck.Checked = (pathcode.Substring(j, 1) == "1");
-                        else
-                            ck.Checked = false;
-                    }
+                    CheckBox ck = new CheckBox();
+                    // ck.Enabled = false;               
+                    ck.Text = set.Tables[0].Rows[j]["NODENAME"].ToString();
+                    GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                    if (pathcode.Length > 0)
+                        ck.Checked = (pathcode.Substring(j, 1) == "1");
+                    else
+                        ck.Checked = false;
                 }
             }
-       
+        }
+
     }
     protected void btnSavePath_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         int index = Convert.ToInt16(hidePzcode.Value);
-        string planno =   GridView2.DataKeys[index].Value.ToString();
-      
-            string pathcode = "";
-            for (int i = 0; i < GridView4.Rows.Count; i++)
-            {
-                if (i > 0)
-                    pathcode += "-";
-                DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
-                if (list.SelectedValue != "")
-                {
-                    pathcode += list.SelectedValue;
-                }
-                else
-                    pathcode += " ";
-            }
-            ((TextBox)GridView2.Rows[index].FindControl("txtPathCode")).Text = pathcode;
-      
-            string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
-            List<String> commandlist = new List<String>();
-            for (int i = 0; i < GridView4.Rows.Count; i++)
-            {
-                if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
-                {
-                    string[] value = { GridView4.DataKeys[i].Value.ToString(), planno, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-                   
-                    commandlist.Add(opt.getMergeStr(seg, value, 2,"HT_PUB_PATH_PLAN"));
-                }
+        string planno = GridView2.DataKeys[index].Value.ToString();
 
+        string pathcode = "";
+        for (int i = 0; i < GridView4.Rows.Count; i++)
+        {
+            if (i > 0)
+                pathcode += "-";
+            DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+            if (list.SelectedValue != "")
+            {
+                pathcode += list.SelectedValue;
             }
-            opt.TransactionCommand(commandlist);            
-      
+            else
+                pathcode += " ";
+        }
+        ((TextBox)GridView2.Rows[index].FindControl("txtPathCode")).Text = pathcode;
+
+        string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
+        List<String> commandlist = new List<String>();
+        for (int i = 0; i < GridView4.Rows.Count; i++)
+        {
+            if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
+            {
+                string[] value = { GridView4.DataKeys[i].Value.ToString(), planno, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+
+                commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
+            }
+
+        }
+        opt.TransactionCommand(commandlist);
+
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "close", "$('.shade').fadeOut(100);", true);
     }
 

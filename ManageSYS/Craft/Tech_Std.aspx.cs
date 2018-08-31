@@ -70,7 +70,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 string[] value = { row["PARA_CODE"].ToString(), row["VALUE"].ToString(), row["UPPER_LIMIT"].ToString(), row["LOWER_LIMIT"].ToString(), row["EER_DEV"].ToString(), row["UNIT"].ToString(), listtechC.SelectedValue };
                 string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "复制标准成功" : "复制标准失败";
                 log_message += ",复制数据：" + string.Join(" ", value);
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
 
             }
 
@@ -92,7 +92,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             string[] value = { txtCode.Text, txtName.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
             string log_message = opt.MergeInto(seg, value, 1, "HT_TECH_STDD_CODE") == "Success" ? "保存标准成功" : "保存标准失败";
             log_message += ",保存数据：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
         }
         bindGrid(txtCode.Text, hideprc.Value);
 
@@ -271,7 +271,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "参数删除成功" : "参数删除失败";
                     log_message += "，参数编码：" + txtCode.Text;
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid(txtCode.Text, hideprc.Value);
@@ -294,7 +294,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "参数删除成功" : "参数删除失败";
                     log_message += "，参数编码：" + txtCode.Text;
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid(txtCode.Text, hideprc.Value);
@@ -315,7 +315,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "删除参数成功" : "删除参数失败";
             log_message += ",参数编码" + txtCode.Text;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             bindGrid(txtCode.Text, hideprc.Value);
         }
         catch (Exception ee)
@@ -338,7 +338,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
                 string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
                 log_message += ", 保存数据：" + string.Join(" ", value);
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
             }
         }
         bindGrid(txtCode.Text, hideprc.Value);
@@ -358,7 +358,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
                 string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
                 log_message += ", 保存数据：" + string.Join(" ", value);
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
             }
         }
         bindGrid(txtCode.Text, hideprc.Value);
@@ -411,7 +411,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         {
             string log_message = "工艺标准:" + txtName.Text + "提交审批成功";
             listAprv.SelectedValue = "0";
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             btnSubmit.Enabled = false;
             btnSubmit.CssClass = "btngrey";
 

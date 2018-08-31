@@ -115,7 +115,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
             string[] value = { txtPlanno.Text, listProd2.SelectedValue, listPara.SelectedValue, txtValue.Text, listTeam2.SelectedValue, txtCreator.Text, System.DateTime.Now.ToString("yyyy-MM-dd") };
             string log_message = opt.InsertData(seg, value, "HT_PROD_MANUAL_RECORD") == "Success" ? "保存物料过程数据成功," : "保存物料过程数据失败,";
             log_message += "记录：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             bindGrid();
         }
         else
@@ -148,7 +148,9 @@ public partial class Product_DataInput : MSYS.Web.BasePage
                     string rowid = GridView1.DataKeys[i].Value.ToString();
                     string query = "update ht_prod_manual_record set IS_DEL = '1'  where rowid = '" + rowid + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除人工录入记录成功" : "删除人工录入记录失败";
+                    log_message += "标识:" + rowid;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid();

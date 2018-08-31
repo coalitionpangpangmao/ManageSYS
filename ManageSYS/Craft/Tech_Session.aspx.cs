@@ -59,12 +59,14 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
     protected void btnDel_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "update HT_PUB_TECH_SECTION set IS_DEL = '1' where SECTION_CODE = '" + txtCode.Text + "'";  
-        opt.UpDateOra(query);
-        query = "update ht_pub_inspect_process set IS_DEL = '1' where substr(PROCESS_CODE,1,5) = '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
-        query = "update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,5) =  '" + txtCode.Text + "'";
-        opt.UpDateOra(query);
+        List<string> commandlist = new List<string>();
+        commandlist.Add("update HT_PUB_TECH_SECTION set IS_DEL = '1' where SECTION_CODE = '" + txtCode.Text + "'");
+        commandlist.Add("update ht_pub_inspect_process set IS_DEL = '1' where substr(PROCESS_CODE,1,5) = '" + txtCode.Text + "'");
+        commandlist.Add("update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,5) =  '" + txtCode.Text + "'");
+
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除工艺段成功" : "删除工艺段失败";
+        log_message += "工艺段ID:" + txtCode.Text;
+        InsertTlog(log_message);
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", "  window.parent.update()", true);
         
     }

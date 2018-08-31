@@ -67,35 +67,76 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
             return;
         }
 
-        for (int j = GridView1.PageIndex * GridView1.PageCount; j < (GridView1.PageIndex+1) * GridView1.PageCount && j<GridView1.Rows.Count; j++)
-        {
-            DataRowView myv = (DataRowView)data.Tables[0].DefaultView[j];
-            int i = j - GridView1.PageIndex * GridView1.PageCount; 
-            if (myv["cpk"].ToString() == "")
-                GridView1.Rows[i].BackColor = Color.FromArgb(20, 0, 200, 100);
-        }
-      
-            for(int i = 0;i<2;i++)
-            {
-                TableCell oldtc = GridView1.Rows[0].Cells[i];
-                oldtc.RowSpan = 1;               
-                for (int j = 1; j < GridView1.Rows.Count; j++)
-                {
-                    TableCell newtc = GridView1.Rows[j].Cells[i];                   
-                    if (newtc.Text == oldtc.Text)
-                    {
-                        newtc.Visible = false;
-                        oldtc.RowSpan = oldtc.RowSpan + 1;
-                        oldtc.VerticalAlign = VerticalAlign.Middle;                       
-                    }
-                    else
-                    {
-                        oldtc = newtc;
-                        oldtc.RowSpan = 1;                        
-                    }
+        //for (int j = GridView1.PageIndex * GridView1.PageCount; j < (GridView1.PageIndex + 1) * GridView1.PageCount && j < GridView1.Rows.Count; j++)
+        //{
+        //    DataRowView myv = (DataRowView)data.Tables[0].DefaultView[j];
+        //    int i = j - GridView1.PageIndex * GridView1.PageCount;
+        //    if (myv["cpk"].ToString() == "")
+        //    {               
+        //        GridView1.Rows[i].BackColor = Color.FromArgb(80, 0, 200, 180);
+        //    }
+        //}
 
-                }               
+        for (int i = 0; i < 2; i++)
+        {
+            TableCell oldtc = GridView1.Rows[0].Cells[i];
+          
+            oldtc.RowSpan = 1;
+            for (int j = 1; j < GridView1.Rows.Count; j++)
+            {
+                TableCell newtc = GridView1.Rows[j].Cells[i];
+                if (newtc.Text == oldtc.Text)
+                {
+                    newtc.Visible = false;
+                    oldtc.RowSpan = oldtc.RowSpan + 1;
+                    oldtc.VerticalAlign = VerticalAlign.Middle;
+                }
+                else
+                {
+                    oldtc = newtc;
+                    oldtc.RowSpan = 1;
+                }
             }
+        }
+
+
+       
+            //TableCell oldtc1 = GridView1.Rows[0].Cells[0];
+            //TableCell oldtc2 = GridView1.Rows[0].Cells[1];    
+            //oldtc1.RowSpan = 1;
+            //oldtc2.RowSpan = 2;
+            //for (int j = 1; j < GridView1.Rows.Count; j++)
+            //{
+            //    TableCell newtc1 = GridView1.Rows[j].Cells[0];
+                
+            //    if (newtc1.Text == oldtc1.Text)
+            //    {
+            //        newtc1.Visible = false;
+            //        oldtc1.RowSpan = oldtc1.RowSpan + 1;
+            //        oldtc1.VerticalAlign = VerticalAlign.Middle;
+            //    }
+            //    else
+            //    {
+            //        for (int h = j+1 - oldtc1.RowSpan; h < oldtc1.RowSpan+1; h++)
+            //        {
+            //            TableCell newtc2 = GridView1.Rows[h].Cells[1];
+            //            if (newtc2.Text == oldtc2.Text)
+            //            {
+            //                newtc2.Visible = false;
+            //                oldtc2.RowSpan = oldtc2.RowSpan + 1;
+            //                oldtc2.VerticalAlign = VerticalAlign.Middle;
+            //            }
+            //            else
+            //            {
+            //                oldtc2 = newtc2;
+            //                oldtc2.RowSpan = 1;
+            //            }
+            //        }
+            //        oldtc1 = newtc1;
+            //        oldtc1.RowSpan = 1;
+            //    }
+            //}               
+
        
     }
 

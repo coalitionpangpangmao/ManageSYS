@@ -36,6 +36,7 @@ namespace MSYS.Web
              try
              {
                  MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                 List<string> commandlist = new List<string>();
                  foreach (XmlNode xxNode in xxList)
                  {
                      XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合
@@ -60,13 +61,16 @@ namespace MSYS.Web
                                  code = segvalue[3].Substring(0, 6) + opt.GetSegValue("select nvl( Max(substr(F_CODE,7,2))+1,1) as code from Ht_Svr_Org_Group where F_parentid = '" + segvalue[3] + "'", "CODE").PadLeft(2, '0');
                              segvalue[count - 1] = code;
                          }
-                         opt.InsertData(this.seg, segvalue, this.tablename);
+                         
+                         commandlist.Add(opt.InsertDatastr(this.seg, segvalue, this.tablename));
                      }
                      else
                      {
                          return "字段与值个数不匹配";
                      }
                  }
+
+                 opt.TransactionCommand(commandlist);                 
                  return "Success";
 
              }

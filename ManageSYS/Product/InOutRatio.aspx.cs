@@ -16,7 +16,7 @@ public partial class Product_InOutRatio : MSYS.Web.BasePage
             txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
             txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM") + "-01";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listRecipe, "select Prod_code,Prod_name from ht_pub_prod_design  where is_del = '0' and B_FLOW_STATUS = '2'", "PROD_NAME", "PROD_CODE"); 
+            opt.bindDropDownList(listProd, "select Prod_code,Prod_name from ht_pub_prod_design  where is_del = '0' ", "PROD_NAME", "PROD_CODE"); 
          
         }
     }
@@ -42,7 +42,7 @@ public partial class Product_InOutRatio : MSYS.Web.BasePage
     }
 
 
-    protected void listRecipe_SelectedIndexChanged(object sender, EventArgs e)
+    protected void listProd_SelectedIndexChanged(object sender, EventArgs e)
     {
         initData();
     }

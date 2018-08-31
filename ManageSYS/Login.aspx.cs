@@ -37,8 +37,7 @@ public partial class Login : MSYS.Web.BasePage
     //登录操作
 
     private void Submit()
-    {
-        HttpContext.Current.Session["UserName"] = null;
+    {        
         FormsAuthentication.SignOut();
         HttpContext.Current.Session.Clear();
 
@@ -83,10 +82,9 @@ public partial class Login : MSYS.Web.BasePage
 
                 //设置Session 并跳转
                 FormsAuthentication.RedirectFromLoginPage(userID, false);
-               //设置Session
-                Session["UserName"] = userTable.Rows[0]["NAME"].ToString();
+               //设置Session              
                 Session["User"] = new SysUser(userID);
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "登入");
+                InsertTlog( "登入");
                 string returnUrl = Request["ReturnUrl"];
                 if (string.IsNullOrEmpty(returnUrl))
                     returnUrl = "main.aspx";
@@ -115,11 +113,9 @@ public partial class Login : MSYS.Web.BasePage
         {
             if (userID == userTable.Rows[0]["ID"].ToString() && userPwd == userTable.Rows[0]["Password"].ToString())
             {
-                Session["UserName"] = userTable.Rows[0]["NAME"].ToString();
+               
                 Session["User"] = new SysUser(userID);
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "登入");
-
-
+               InsertTlog( "登入");
                 string returnUrl = Request["ReturnUrl"];
                 if (string.IsNullOrEmpty(returnUrl))
                     returnUrl = "main.aspx";

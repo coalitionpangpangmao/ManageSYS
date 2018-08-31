@@ -146,7 +146,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
             log_message += "业务数据ID：" + id;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
 
 
         }
@@ -447,16 +447,20 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "select * from ht_eq_lb_plan_detail where MAIN_ID = '" + listModel.SelectedValue + "' and is_del = '0'";
         DataSet data = opt.CreateDataSetOra(query);
+        List<string> commandlist = new List<string>();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             foreach (DataRow row in data.Tables[0].Rows)
             {
                 string[] seg = { "section", "equipment_id", "Remark", "CREATE_TIME", "MAIN_ID", "EXP_FINISH_TIME" };
                 string[] value = { row["section"].ToString(), row["equipment_id"].ToString(), row["position"].ToString(), row["Remark"].ToString(), row["remark"].ToString(), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtCode.Text, System.DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd HH:mm:ss") };
-                opt.InsertData(seg, value, "ht_eq_lb_plan_detail");
+                commandlist.Add(opt.InsertDatastr(seg, value, "ht_eq_lb_plan_detail"));
 
             }
-
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "按模版生成维保计划成功" : "按模版生成维保计划失败";
+            log_message += "计划ID号：" + txtCode.Text;
+            InsertTlog(log_message);
+       
         }
         bindGrid2(txtCode.Text);
     }

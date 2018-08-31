@@ -146,10 +146,9 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
                 if (((CheckBox)GridView1.Rows[i].FindControl("ckBox")).Checked)
                 {                   
                     string[] value = {"","2"};
-                    if (MSYS.Common.AprvFlow.authorize(GridView1.DataKeys[i].Values[0].ToString(), value))
-                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批成功, 参数：" + "2");
-                    else
-                        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批失败， 参数：" + "2");
+                    string log_message = MSYS.Common.AprvFlow.authorize(GridView1.DataKeys[i].Values[0].ToString(), value) ? "审批成功" : "审批失败";
+                    log_message += GridView1.DataKeys[i].Values[0].ToString();
+                    InsertTlog(log_message);                  
                 }
             }
         }
@@ -242,10 +241,9 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
          else
              status = "1";
          string[] seg = {txtComments.Text,status};
-         if (MSYS.Common.AprvFlow.authorize(hideAprvid.Value, seg))
-             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "通过审批, 保存参数:" + string.Join(" ", seg));
-         else
-             opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "审批失败, 保存参数:" + string.Join(" ", seg));
+         string log_message = MSYS.Common.AprvFlow.authorize(hideAprvid.Value, seg) ? "审批成功" : "审批失败";
+         log_message += hideAprvid.Value + string.Join(" ",seg);
+         InsertTlog(log_message);  
          bindGrid1();
     }
 

@@ -166,12 +166,15 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
        // hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
         string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK", "OUTPLUS" };
         string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, txtPlanNo.Text, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id , listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
-        opt.InsertData(seg, value, "HT_PROD_SHIFTCHG");
 
+        string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "新生产交接班记录失败";
+        log_message += "交接班ID：" + hdID.Value;
+        InsertTlog(log_message);
+       
     }
     protected void btnExport_Click(object sender, EventArgs e)
     {
-        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xlsx");
+        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xlsx",DateTime.Now);
      
     }
     protected DataSet gridTypebind()

@@ -215,7 +215,9 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
                     string projcode = GridView1.DataKeys[i].Values.ToString();
                     string query = "delete from  HT_QLT_INSPECT_STDD   where INSPECT_CODE = '" + projcode + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查标准成功" : "删除工艺检查标准失败";
+                   log_message += "标识:" + projcode;
+                   InsertTlog(log_message);
                 }
             }           
             bindGrid();

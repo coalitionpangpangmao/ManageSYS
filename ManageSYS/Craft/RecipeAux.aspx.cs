@@ -143,7 +143,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
                 commandlist.Add("update ht_pub_prod_design set aux_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "辅料配方保存成功" : "辅料配方保存失败";
                 log_message += ",辅料配方保存信息：" + string.Join(" ", value);
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
         
             bindGrid();
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
@@ -161,7 +161,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
             log_message += ",物料编号：" + txtCode.Text;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             bindGrid();
         }
         catch (Exception ee)
@@ -196,7 +196,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? " 物料删除成功" : "物料删除失败";
                     log_message += ",物料编号:" + txtCode.Text;
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid();

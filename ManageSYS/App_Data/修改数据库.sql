@@ -230,3 +230,29 @@ alter table HT_PROD_MANUAL_RECORD
 alter table HT_PROD_MANUAL_RECORD
   add constraint FK_TEAM_CODE foreign key (TEAM)
   references HT_SYS_TEAM (TEAM_CODE) on delete cascade;
+
+
+-- Create table
+create table HT_PUB_PROD_DESIGN
+(
+  ID                 INTEGER,
+  PROD_CODE          VARCHAR2(32) not null,
+  PROD_NAME          VARCHAR2(100),
+  PACK_NAME          VARCHAR2(32),
+  HAND_MODE          VARCHAR2(32),
+  TECH_STDD_CODE     VARCHAR2(30),
+  MATER_FORMULA_CODE VARCHAR2(30),
+  AUX_FORMULA_CODE   VARCHAR2(30),
+  COAT_FORMULA_CODE  VARCHAR2(30),
+  IS_VALID           VARCHAR2(1) default 1,
+  IS_DEL             VARCHAR2(1) default 0,
+  REMARK             VARCHAR2(256),
+  CREATEOR_ID        VARCHAR2(32),
+  CREATE_TIME        VARCHAR2(19),/**/
+  MODIFY_ID          VARCHAR2(32),
+  MODIFY_TIME        VARCHAR2(19),/**/
+  STANDARD_VALUE     VARCHAR2(32),
+  XY_PROD_CODE       VARCHAR2(32),
+  QLT_CODE           VARCHAR2(500),
+  B_FLOW_STATUS      VARCHAR2(2) default -1
+)

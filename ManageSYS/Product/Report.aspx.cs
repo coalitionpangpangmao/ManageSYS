@@ -25,8 +25,8 @@ public partial class Product_Report : MSYS.Web.BasePage
     {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listProd, "select prod_code,prod_name from ht_pub_prod_design where is_del = '0' and is_valid = '1'", "prod_name", "prod_code");
-        opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team  where is_del = '0' and is_valid = '1'", "team_name", "team_code");
+        opt.bindDropDownList(listProd, "select prod_code,prod_name,CREATE_TIME from ht_pub_prod_design where is_del = '0' and is_valid = '1' order by CREATE_TIME", "prod_name", "prod_code");
+        opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team  where is_del = '0' and is_valid = '1' order by team_code", "team_name", "team_code");
         DataSet data = opt.CreateDataSetOra("select F_ID,F_NAME  from HT_SYS_EXCEL_BOOK where F_TYPE = '" + type + "'  order by F_ID ");
 
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -52,8 +52,9 @@ public partial class Product_Report : MSYS.Web.BasePage
         string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
         if (filename != "NoRecord")
         {
-            CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm");
-            string path = "../TEMP/" + filename + ".htm";
+            DateTime time = DateTime.Now;
+            CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm",time);
+            string path = "../TEMP/" + filename + time.ToString("HHmmss") + ".htm";
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "refresh", " $('#Frame1').attr('src','" + path + "');", true);
 
         }
@@ -63,7 +64,7 @@ public partial class Product_Report : MSYS.Web.BasePage
     {
          MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
-        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xlsx");
+        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xlsx",DateTime.Now);
         //ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02", ".xlsx");
     }
 

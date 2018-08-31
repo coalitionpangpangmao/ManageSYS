@@ -109,7 +109,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                 commandlist.Add("update ht_pub_prod_design set coat_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "回填夜配方保存成功" : "回填夜配方保存失败";
             log_message += ",保存参数：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
         }
         bindGrid1();
         bindGrid2();
@@ -176,7 +176,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query)=="Success" ? "物料删除成功":"物料删除失败";
             log_message += ",物料编号：" + txtCode.Text;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             bindGrid1();
         }
         catch (Exception ee)
@@ -211,7 +211,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query)=="Success" ? "物料删除成功":"物料删除失败";
                     log_message += "，物料编号：" + txtCode.Text;
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid1();
@@ -236,7 +236,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                 string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtScale")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtPercent")).Text, "XJ" };
                 string log_message = opt.MergeInto(seg, value,2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += "，物料编号:" + txtCode.Text;
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
                 bindGrid1();
             }
         }
@@ -294,7 +294,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query)=="Success" ? "物料删除成功":"物料删除失败";
             log_message += ",物料编号:" + txtCode.Text;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             bindGrid2();
         }
         catch (Exception ee)
@@ -329,7 +329,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query)=="Success" ? "物料删除成功":"物料删除失败";
                     log_message += ",物料编号：" + txtCode.Text;
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid2();
@@ -354,7 +354,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                 string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtCodeM")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtScale2")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtRemark")).Text, "TPY" };
                 string log_message = opt.MergeInto(seg, value,2, "ht_qa_coat_formula_detail")=="Success" ? "物料保存成功":"物料保存失败";
                 log_message += ",物料编号：" + txtCode.Text;
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
                 bindGrid2();
             }
         }

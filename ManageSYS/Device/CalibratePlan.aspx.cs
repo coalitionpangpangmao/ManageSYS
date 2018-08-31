@@ -100,7 +100,9 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                     string order_sn = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_MCLBR_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除校准计划成功" : "删除校准计划失败";
+                    log_message += "标识:" + order_sn;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid1();
@@ -145,7 +147,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
             log_message += "业务数据ID：" + id;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
 
 
         }
@@ -252,7 +254,9 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_MCLBR_PLAN_detail set IS_DEL = '1'  where ID = '" + ID + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除校准计划明细成功" : "删除校准计划明细失败";
+                    log_message += "标识:" + ID;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid2(txtCode.Text);
@@ -329,16 +333,17 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //if (opt.GetSegValue("select flow_status from ht_eq_mclbr_plan where pz_code = '" + txtCode.Text + "'", "flow_status") != "2")
         //    return;
+        List<string> commandlist = new List<string>();
         for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
         {
             if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
             {
                 string ID = GridView2.DataKeys[i].Value.ToString();
-                string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '5'  where ID = '" + ID + "' and status = '4'";
-
-                opt.UpDateOra(query);
+                commandlist.Add("update HT_EQ_MCLBR_PLAN_detail set STATUS = '5'  where ID = '" + ID + "' and status = '4'");               
             }
         }
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "确认校准反馈成功" : "确认校准反馈失败";       
+        InsertTlog(log_message);
         string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '5' where t.main_id = '" + txtCode.Text + "')", "status");
         if (alter == "1")
         {
@@ -478,8 +483,11 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             {
                 string[] seg = { "section", "equipment_id", "point", "exp_finish_time", "remark", "CREATE_TIME", "MAIN_ID" };
                 string[] value = { row["section"].ToString(), row["equipment_id"].ToString(), row["point"].ToString(), System.DateTime.Now.AddMonths(1).ToString("yyyy-MM") + "-01", row["remark"].ToString(), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtCode.Text };
-                opt.InsertData(seg, value, "HT_EQ_MCLBR_PLAN_detail");
 
+                string log_message = opt.InsertData(seg, value, "HT_EQ_MCLBR_PLAN_detail") == "Success" ? "新建校准计划明细成功" : "新建校准计划明细失败";
+                log_message += "详情:" + string.Join(",", value);
+                InsertTlog(log_message);
+       
             }
 
         }

@@ -145,7 +145,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
                 commandlist.Add("update ht_pub_prod_design set mater_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "原料配方保存成功，":"原料配方保存失败，";
             log_message += "保存信息：" + string.Join(" ", value);
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
       
         bindGrid();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
@@ -161,7 +161,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query)=="Success"?"删除配方详情成功，":"删除配方详情失败,";
             log_message += "物料编码：" + mtr_code;
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+            InsertTlog(log_message);
             bindGrid();
         }
         catch (Exception ee)
@@ -195,7 +195,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query)=="Success"?"删除配方详情成功":"删除配方详情失败";
                     log_message += ",物料编码：" + txtCode.Text;
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid();
@@ -215,7 +215,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
                 string[] value = { txtCode.Text, mtr_code, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtAmountM")).Text, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtGroupM")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listGridType")).SelectedValue };
                 string log_message = opt.MergeInto(seg, value,2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += ",物料编码：" + txtCode.Text;
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
 
                 bindGrid();
             }

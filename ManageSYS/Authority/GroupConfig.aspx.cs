@@ -183,7 +183,10 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "update  ht_svr_sys_menu  set is_del = '1' where f_ID = '" + id + "'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.UpDateOra(query);
+
+       string log_message = opt.UpDateOra(query) == "Success" ? "删除权限成功" : "删除权限失败";
+       log_message += "标识:" + id;
+        InsertTlog(log_message);
         bindData();
     }
 
@@ -218,7 +221,10 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                         + Right.Text + "',F_TIME = '"
                         + DateTime.Now.ToString("yyyy-MM-dd") + "' where F_ROLE = '"
                         + Role.Text.Trim() + "'";
-                    opt.UpDateOra(query);
+
+                    string log_message = opt.UpDateOra(query) == "Success" ? "更新角色权限成功" : "更新角色权限失败";
+                    log_message += "标识:" + Role.Text;
+                    InsertTlog(log_message);
                     BindList();
                 }
                 else
@@ -229,8 +235,11 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                         + Right.Text + "','"
                         + code + "','"
                         + DateTime.Now.ToString("yyyy-MM-dd") + "')";
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "新建角色权限成功" : "新建角色权限失败";
+                    log_message += "标识:" + Role.Text;
+                    InsertTlog(log_message);
                     BindList();
+                  
                 }
             }
       
@@ -241,7 +250,9 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string query = "delete from HT_SVR_SYS_Role where F_ROLE = '" + Role.Text + "'";
-            opt.UpDateOra(query);
+            string log_message = opt.UpDateOra(query) == "Success" ? "删除角色成功" : "删除角色失败";
+            log_message += "标识:" + Role.Text;
+            InsertTlog(log_message);
             BindList();
             SetBlank();
        

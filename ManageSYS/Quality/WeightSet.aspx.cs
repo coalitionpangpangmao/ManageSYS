@@ -71,7 +71,10 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         string[] seg = {  "Weight", "remark" };
         string[] value = { ((TextBox)GridView1.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView1.Rows[rowindex].FindControl("txtRemark")).Text };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue + "'");
+
+            string log_message = opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue + "'") == "Success" ? "修改工艺段质量评估权重成功" : "修改工艺段质量评估权重失败";
+            log_message += "工艺段:" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue;
+            InsertTlog(log_message);
     }
 
     protected void btnGrid2Save_Click(object sender, EventArgs e)
@@ -81,7 +84,10 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         string[] seg = { "Weight", "remark" ,"CREATE_ID","CREATE_DATE"};
         string[] value = { ((TextBox)GridView2.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView2.Rows[rowindex].FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[rowindex].Value.ToString() + "'");
+
+        string log_message = opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[rowindex].Value.ToString() + "'") == "Success" ? "更改质量评估权重成功" : "更改质量评估权重失败";
+        log_message += "详情:" + string.Join(",", value);
+        InsertTlog(log_message);
     }
   
 

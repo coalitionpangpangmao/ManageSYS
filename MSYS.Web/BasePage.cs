@@ -217,115 +217,9 @@ namespace MSYS.Web
                   + record + "')";           
         
         }
-  //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览
-        public void ExportExcel(string filename,string brand,string startDate,string endDate,string team)      
-        {
-            string style = ".xlsx";           
-            MSYS.Common.ExcelExport openXMLExcel = null;          
-            try
-            {                       
+  //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览   
 
-                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                string bookid = opt.GetSegValue("select F_ID from ht_sys_excel_book where F_NAME = '" + filename + "'","F_ID" );
-                string booktype = opt.GetSegValue("select F_TYPE from ht_sys_excel_book where F_NAME = '" + filename + "'", "F_TYPE");
-
-
-                if (!System.IO.Directory.Exists(@"C:\TEMP"))
-                {
-                    // 目录不存在，建立目录 
-                    System.IO.Directory.CreateDirectory(@"C:\TEMP");
-                } 
-                //导出文件模板所在位置
-                String sourcePath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"\templates\" + booktype + @"\" + filename + style;
-
-                String filepath = @"C:\TEMP\" + filename + style;
-                //bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
-                //System.IO.File.Copy(sourcePath, filepath, isrewrite);
-                string query = "select * from ht_sys_excel_seg where F_BOOK_ID = '" + bookid + "'";
-                DataSet data = opt.CreateDataSetOra(query);               
-
-                //申明一个ExcelSaveAs对象，该对象完成将数据写入Excel的操作           
-                openXMLExcel = new MSYS.Common.ExcelExport(sourcePath, false);              
-                if (data.Tables[0].Select().GetLength(0) > 0)
-                {
-                    DataRow[] rows = data.Tables[0].Select();
-
-                    foreach (DataRow row in rows)
-                    {
-                        string sqlstr = row["F_SQL"].ToString();
-                        //设定选择的数据的日期及牌号等信息                     
-                        if(brand != "")
-                        sqlstr = sqlstr.Replace("$brand$", brand);
-                        if(startDate != "")
-                        sqlstr = sqlstr.Replace("$startDate$",startDate);
-                        if(endDate != "")
-                        sqlstr = sqlstr.Replace("$endDate$", endDate);
-                        if(team != "")
-                        sqlstr = sqlstr.Replace("$team$", team);
-                        if (sqlstr != "")
-                        {
-                            //将选择的数据写入Excel
-                            if (sqlstr.Substring(0, 3) == "STR")
-                            {
-                                sqlstr = sqlstr.Substring(4);
-                                Response.Write(openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString())));
-                                Response.Write(openXMLExcel.WriteData(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, sqlstr));
-                            }
-                            if (sqlstr.Substring(0, 3) == "SQL")
-                            {
-                                sqlstr = sqlstr.Substring(4).Trim();
-                                DataSet set = new DataSet();
-                                if (sqlstr.Substring(0, 5) == "SHIFT")
-                                {
-                                    sqlstr = sqlstr.Substring(6).Trim();
-                                    set =opt.ShiftTable(sqlstr);
-                                }
-                                else
-                                {
-                                    set = opt.CreateDataSetOra(sqlstr);
-                                }
-                                if (set != null)
-                                {
-                                    DataTable dt = set.Tables[0];
-                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
-                                    openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
-
-                                }
-
-                            }
-                        }
-                    }
-                }
-
-                ///客户端再下载该文件，在客户端进行浏览
-                FileInfo fi = new FileInfo(filepath);
-                if (fi.Exists)     //判断文件是否已经存在,如果存在就删除!
-                {
-                    fi.Delete();
-                }
-                openXMLExcel.SaveAs(filepath);
-                openXMLExcel.Dispose();
-                openXMLExcel = null;
-                KillProcess("EXCEL.EXE");            
-
-             
-                Response.ContentType = "application/octet-stream";
-                Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
-                Response.TransmitFile(filepath);
-            }
-            catch
-            {
-                if (openXMLExcel != null)
-                {
-                    openXMLExcel.Dispose();
-                }             
-            }
-            finally
-            {
-            }
-        }
-
-        public void CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style)
+        public void CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date)
         {           
             MSYS.Common.ExcelExport openXMLExcel = null;
             try
@@ -335,15 +229,30 @@ namespace MSYS.Web
                 string booktype = opt.GetSegValue("select F_TYPE from ht_sys_excel_book where F_NAME = '" + filename + "'", "F_TYPE");
 
                 string basedir = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
-                if (!System.IO.Directory.Exists(basedir + @"\TEMP"))
+                string strFolderPath = basedir + @"\TEMP";
+                if (!System.IO.Directory.Exists(strFolderPath))
                 {
                     // 目录不存在，建立目录 
-                    System.IO.Directory.CreateDirectory(basedir + @"\TEMP");
+                    System.IO.Directory.CreateDirectory(strFolderPath);
+                }
+               
+                DirectoryInfo dyInfo = new DirectoryInfo(strFolderPath);
+                //获取文件夹下所有的文件
+                foreach (FileInfo feInfo in dyInfo.GetFiles())
+                {
+                    //判断文件日期是否小于今天，是则删除
+                    if (feInfo.CreationTime < DateTime.Now.AddSeconds(-10))
+                        feInfo.Delete();
+                }
+                foreach (DirectoryInfo dir in dyInfo.GetDirectories())
+                {
+                    if (dir.CreationTime < DateTime.Now.AddSeconds(-10))
+                        dir.Delete(true);
                 }
                 //导出文件模板所在位置
                 String sourcePath = basedir + @"templates\" + booktype + @"\" + filename + ".xlsx";
 
-                String filepath = basedir + @"TEMP\" + filename + style;
+                String filepath = basedir + @"TEMP\" + filename + date.ToString("HHmmss") + style;
                 //bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
                 //System.IO.File.Copy(sourcePath, filepath, isrewrite);
                 string query = "select * from ht_sys_excel_seg where F_BOOK_ID = '" + bookid + "'";
@@ -429,12 +338,12 @@ namespace MSYS.Web
             }
         }
 
-        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style)
+        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style,DateTime date)
         {
             try
             {
-                CreateExcel(filename, brand, startDate, endDate, team, style);
-                String filepath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"TEMP\" + filename + style;
+                CreateExcel(filename, brand, startDate, endDate, team, style,date);
+                String filepath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"TEMP\" + filename + date.ToString("HHmmss") + style;
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
                 Response.TransmitFile(filepath);

@@ -192,20 +192,18 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
             {
                 string[] seg = { "F_PARA", "F_TYPE" };
                 string[] value = { GetPara(),listType.SelectedValue };
-                if (opt.UpDateData(seg, value, "HT_SYS_EXCEL_BOOK", " where F_NAME = '" + ReportName.Text + "'") == "Success")
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "更新成功，更新报名为" + ReportName.Text + "的参数信息");
-                else
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "更新失败，更新报名为" + ReportName.Text + "的参数信息");
+                string log_message = opt.UpDateData(seg, value, "HT_SYS_EXCEL_BOOK", " where F_NAME = '" + ReportName.Text + "'") == "Success" ? "更新报表成功" : "更新报表失败";
+                log_message += "标识:" + ReportName.Text;
+                InsertTlog(log_message);               
 
             }
             else
             {
                 string[] seg = { "F_PARA", "F_NAME", "F_SYNCHRO_TIME", "F_TYPE" };
                 string[] value = { GetPara(), ReportName.Text, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),listType.SelectedValue };
-                if (opt.InsertData(seg, value, "HT_SYS_EXCEL_BOOK") == "Success")
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "插入成功，插入报名为" + ReportName.Text + "的记录");
-                else
-                    opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "插入失败，插入报名为" + ReportName.Text + "的记录");
+                string log_message = opt.InsertData(seg, value, "HT_SYS_EXCEL_BOOK") == "Success" ? "插入报表成功" : "插入报表失败";
+                log_message += "标识:" + ReportName.Text;
+                InsertTlog(log_message);
             }
             tvHtml = InitTreeR();
             ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);
@@ -223,9 +221,9 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         query = "delete from HT_SYS_EXCEL_BOOK where F_NAME = '" + ReportName.Text.Trim() + "'";
-        opt.UpDateOra(query);
-
-        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "删除报名为" + ReportName.Text + "的所有配置信息");
+        string log_message = opt.UpDateOra(query) == "Success" ? "删除报表成功" : "删除报表失败";
+        log_message += "标识:" + ReportName.Text;
+        InsertTlog(log_message);
         tvHtml = InitTreeR();
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);
 
@@ -240,11 +238,10 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
 
         string[] seg = { "F_BOOK_ID", "F_SHEET", "F_DES", "F_SQL", "F_DESX", "F_DESY", "F_SHEETINDEX", "F_SYNCHRO_TIME" };
         string[] value = { listReport.SelectedValue, Sheet1.Text , DesC.Text.Trim()+ DesR.Text.Trim() ,SQLText.Text.Replace("'","''") , DesR.Text , DesC.Text ,Index.Text ,DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") };
-        if (opt.MergeInto(seg, value, 3, "HT_SYS_EXCEL_SEG") == "Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "插入成功，插入报名为" + ReportName.Text + "工作表名为" + Sheet1.Text + "位置为" + DesC.Text.Trim() + DesR.Text.Trim() + "的记录");
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "插入失败，插入报名为" + ReportName.Text + "工作表名为" + Sheet1.Text + "位置为" + DesC.Text.Trim() + DesR.Text.Trim() + "的记录");
-
+        string log_message = opt.MergeInto(seg, value, 3, "HT_SYS_EXCEL_SEG") == "Success" ? "插入报表记录成功" : "插入报表记录失败";
+        log_message += "详情" + ReportName.Text + "工作表名为" + Sheet1.Text + "位置为" + DesC.Text.Trim() + DesR.Text.Trim();
+        InsertTlog(log_message);
+         
         tvHtml = InitTreeR();
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "initTreetoggle();", true);
 
@@ -287,10 +284,9 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "delete from HT_SYS_EXCEL_SEG where  F_SHEETINDEX='"
                       + Index.Text + "' and F_BOOK_ID = '" +listReport.SelectedValue + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'";
-        if (opt.UpDateOra(query) == "Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "数据填充保存成功，数据参数：" + Sheet1.Text + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + listReport.SelectedItem.Text + "'", "F_ID"));
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "数据填充保存失败，数据参数：" + Sheet1.Text + opt.GetSegValue("select * from HT_SYS_EXCEL_BOOK where F_NAME = '" + listReport.SelectedItem.Text + "'", "F_ID"));
+        string log_message = opt.UpDateOra(query) == "Success" ? "删除报表记录成功" : "删除报表记录失败";
+        log_message += "标识:F_SHEETINDEX='" + Index.Text + "' and F_BOOK_ID = '" + listReport.SelectedValue + "' and f_des = '" + DesC.Text.Trim() + DesR.Text.Trim() + "'";
+        InsertTlog(log_message);
         tvHtml = InitTreeR();
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);
     }

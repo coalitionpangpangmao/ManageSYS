@@ -7,9 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
 <script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/chili-1.7.pack.js"></script>
-<script type="text/javascript" src="js/jquery.easing.js"></script>
-<script type="text/javascript" src="js/jquery.dimensions.js"></script>
 <script type="text/javascript" src="js/jquery.accordion.js"></script>
    <script language="javascript" type="text/javascript">
        jQuery().ready(function () {

@@ -55,7 +55,7 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12">
 
                             <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
+                            <RowStyle CssClass="gridrow" BorderStyle="Solid" BorderWidth="1" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
                                    <PagerStyle CssClass="gridpager" />
                                 <PagerTemplate>

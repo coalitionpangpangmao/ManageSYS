@@ -192,7 +192,9 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
             string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.UpDateOra(query);
+           string log_message = opt.UpDateOra(query) == "Success" ? "删除质量标准明细成功" : "删除质量标准明细失败";
+           log_message += "标识:" + txtCode.Text + ":" + mtr_code;
+           InsertTlog(log_message);
             bindGrid(txtCode.Text, hideprc.Value);
         }
         catch (Exception ee)
@@ -226,7 +228,9 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
                     string mtr_code = ((DropDownList)GridView1.Rows[i].FindControl("listParaName")).SelectedValue;
                     string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除质量标准明细成功" : "删除质量标准明细失败";
+                   log_message += "标识:" + txtCode.Text + ":" + mtr_code;
+                   InsertTlog(log_message);
                 }
             }
             bindGrid(txtCode.Text, hideprc.Value);
@@ -317,7 +321,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             if (MSYS.Common.AprvFlow.createApproval(subvalue))
             {
                 string log_message = "质量考核标准提交审批成功,业务数据ID：" + txtCode.Text;
-                opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+                InsertTlog(log_message);
                 listAprv.SelectedValue = "0";
                 btnSubmit.Enabled = false;
                 btnSubmit.CssClass = "btngrey";

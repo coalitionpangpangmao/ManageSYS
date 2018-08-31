@@ -73,10 +73,9 @@ public partial class Authority_LoginRecord : MSYS.Web.BasePage
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string query = "delete from HT_SVR_LOGIN_RECORD where  F_TIME between '" + StartTime.Text + "' and  '" + EndTime.Text + "'";
-        if(opt.UpDateOra(query)=="Success")
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "删除日志成功，开始时间：" + StartTime.Text + " 结束时间: " + EndTime.Text);
-        else
-            opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), "删除日志失败，开始时间：" + StartTime.Text + " 结束时间: " + EndTime.Text);
+        string log_message = opt.UpDateOra(query) == "Success" ? "删除日志成功" : "删除日志失败";
+        log_message += "开始时间：" + StartTime.Text + " 结束时间: " + EndTime.Text;
+        InsertTlog(log_message);       
         bindGrid();       
     }
 }

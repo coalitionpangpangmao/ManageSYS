@@ -151,7 +151,8 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();        
         string[] seg = { "ID"," WORKSHOP_CODE"," SHIFT_CODE"," TEAM_CODE"," HANDOVER_DATE"," B_TIME"," E_TIME"," CREATE_ID"," MODIFY_ID"," RECORD_TIME"," REMARK"," MAINTENANCE_TYPE" };
         string[] value = {hdID.Value,listApt.SelectedValue,listShift.SelectedValue,listTeam.SelectedValue,txtDate.Text,txtBtime.Text,txtEtime.Text,listolder.SelectedValue,listnewer.SelectedValue,System.DateTime.Now.ToString("yyyy-MM-dd"),txtRemark.Text,listtype.SelectedValue};
-        opt.InsertData(seg, value, "HT_EQ_MT_SHIFT");
+        List<string> commandlist = new List<string>();
+        commandlist.Add(opt.InsertDatastr(seg, value, "HT_EQ_MT_SHIFT"));       
         if (GridView2.Rows.Count > 0)
         {
             for (int i = 0; i < GridView2.Rows.Count; i++)
@@ -160,9 +161,13 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
 
                 string[] seg1 = {  "SHIFT_MAIN_ID","MAINTENANCE_TYPE","MANAGE_STATUS","BUZ_ID" };
                 string[] value1 = { hdID.Value, listtype.SelectedValue, "1", key };
-                opt.InsertData(seg1, value1, "HT_EQ_MT_SHIFT_DETAIL");
+                commandlist.Add(opt.InsertDatastr(seg1, value1, "HT_EQ_MT_SHIFT_DETAIL")); 
             }
         }
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "新建机电交接班记录成功" : "新建机电交接班记录失败";
+        log_message += "详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+      
     }
   
   

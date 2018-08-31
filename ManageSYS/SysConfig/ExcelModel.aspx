@@ -8,8 +8,7 @@
     <title>报表模版管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript" src="../js/select-ui.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>  
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>

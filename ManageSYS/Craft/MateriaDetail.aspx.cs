@@ -45,7 +45,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string log_message = opt.MergeInto(seg, value,1, "HT_PUB_MATERIEL")=="Success" ? "物料添加成功":"物料添加失败";
         log_message += ",物料信息:" + string.Join(" ", value);
-        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+        InsertTlog(log_message);
         
     }
 
@@ -56,7 +56,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_MATERIEL") == "Success" ? "物料添加成功" : "物料添加失败";
         log_message += ",物料信息:" + string.Join(" ", value);
-        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+        InsertTlog(log_message);
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
@@ -64,7 +64,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string log_message = opt.UpDateOra(query)== "Success" ? "物料删除成功":"物料删除失败";
         log_message += ",物料编码：" + txtCode.Text;
-        opt.InsertTlog(Session["UserName"].ToString(), Page.Request.UserHostName.ToString(), log_message);
+        InsertTlog(log_message);
 
         
     }
