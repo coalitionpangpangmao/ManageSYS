@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-public partial class Product_Report : MSYS.Web.BasePage
+public partial class Quality_Report : MSYS.Web.BasePage
 {
     protected string tvHtml;
     protected void Page_Load(object sender, EventArgs e)
@@ -14,7 +14,7 @@ public partial class Product_Report : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            tvHtml = InitTree("生产");
+            tvHtml = InitTree("质量");
             
         }
 
@@ -47,14 +47,14 @@ public partial class Product_Report : MSYS.Web.BasePage
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
+
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");       
+        string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
         if (filename != "NoRecord")
         {
             DateTime time = DateTime.Now;
-           CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm", time);
-          
-            string path = "../TEMP/" + filename + time.ToString("HHmmss") + ".htm";           
+            CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm",time);
+            string path = "../TEMP/" + filename + time.ToString("HHmmss") + ".htm";
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "refresh", " $('#Frame1').attr('src','" + path + "');", true);
 
         }

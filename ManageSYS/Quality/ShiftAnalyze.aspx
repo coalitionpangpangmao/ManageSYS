@@ -17,7 +17,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">质量评估</a></li>
-                <li><a href="#">班组评估</a></li>
+                <li><a href="#">每日班组评估</a></li>
             </ul>
         </div>
         <div class="rightinfo">

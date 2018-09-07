@@ -18,7 +18,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">质量管理</a></li>
-            <li><a href="#">权重设置</a></li>
+            <li><a href="#">考核权重设置</a></li>
         </ul>
     </div>
     <div class="formbody">

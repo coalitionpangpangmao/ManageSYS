@@ -12,7 +12,7 @@ namespace MSYS.Web
     {
         public UpdateUserInfo()
         {
-            this.seg = new string[] { "LOGINNAME", "NAME", "ID", "LEVELGROUPID"};
+            this.seg = new string[] { "ID", "LOGINNAME", "NAME", "LEVELGROUPID","PASSWORD" };
             this.tablename = "HT_SVR_USER";
             this.rootname = "USERINFO";
         }
@@ -36,25 +36,34 @@ namespace MSYS.Web
              try
              {
                  MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                 
                  foreach (XmlNode xxNode in xxList)
                  {
                      XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合
-                     int count = childList.Count;
+                     int count = childList.Count+1;
                      if (count == seg.Length)
                      {
                          string[] segvalue = new string[count];
-                         for (int i = 0; i < count ; i++)
-                         {
-                             segvalue[i] = childList[i].InnerText;
-                         }
-                         segvalue[3] = opt.GetSegValue("select F_CODE  from Ht_Svr_Org_Group where F_KEY = '" + segvalue[3] + "'", "F_CODE");
-                         opt.InsertData(this.seg, segvalue, this.tablename);
+                         segvalue[0] = childList[2].InnerText;
+                         segvalue[1] = childList[0].InnerText;
+                         segvalue[2] = childList[1].InnerText;
+                         segvalue[3] = childList[3].InnerText;
+                         string dpno = opt.GetSegValue("select F_CODE  from Ht_Svr_Org_Group where F_KEY = '" + segvalue[3] + "'", "F_CODE");
+                         if (dpno != "NoRecord")
+                             segvalue[3] = dpno;
+                         string psd = opt.GetSegValue("select Password from HT_SVR_USER where ID = '" + segvalue[0] + "'","PassWord");
+                         if (psd == "NoRecord" || psd == "")
+                             segvalue[4] = "e10adc3949ba59abbe56e057f20f883e";
+                         else
+                             segvalue[4] = psd;
+                         opt.MergeInto(this.seg, segvalue, 1, this.tablename);
                      }
                      else
                      {
                          return "字段与值个数不匹配";
                      }
                  }
+
                  return "Success";
 
              }

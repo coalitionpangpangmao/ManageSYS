@@ -121,6 +121,11 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string prod_code = GridView1.DataKeys[rowIndex].Value.ToString();
+        string aprvstatus = ((Label)GridView1.Rows[rowIndex].FindControl("labGrid1Status")).Text;
+        if (aprvstatus == "未提交")
+            btnModify.Visible = true;
+        else
+            btnModify.Visible = false;
         string query = "select * from ht_pub_prod_design where PROD_CODE = '" + prod_code + "' and  is_del = '0'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);

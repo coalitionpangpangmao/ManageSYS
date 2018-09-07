@@ -23,7 +23,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">系统管理</a></li>
-                <li><a href="#">组织机构</a></li>
+                <li><a href="#">组织机构配置</a></li>
             </ul>
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
@@ -38,10 +38,12 @@
                     Text="查看" />
                     &nbsp; &nbsp;
                 <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
+                             &nbsp; &nbsp;
+    <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
                 </ul>
             </div>
             <div id="gridPanel" onscroll="saveScroll()" style="height: 350px; overflow: scroll">
-                <asp:UpdatePanel ID="updtpanel2" runat="server">
+                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" CssClass="grid" DataKeyNames="组织机构代码">
                             <Columns>
@@ -65,6 +67,7 @@
                         <asp:AsyncPostBackTrigger ControlID="btnDel" />
                         <asp:AsyncPostBackTrigger ControlID="btnView" />
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                          <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

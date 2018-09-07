@@ -80,7 +80,16 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
     }
 
-
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        MSYS.Web.UpdateDeptInfo info = new MSYS.Web.UpdateDeptInfo();
+        //  string str = info.GetXmlStr();
+        if ("Success" == info.InsertLocalFromMaster())
+        {
+            bindData();
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "update", "alert('更新完毕！！！')", true);
+        }
+    }
 
     protected void btnModify_Click(object sender, EventArgs e)
     {       

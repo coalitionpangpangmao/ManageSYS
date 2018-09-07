@@ -20,10 +20,17 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
     }
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
+        int ckno = 0;
         for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            CheckBox ck = (CheckBox)GridView1.Rows[i].FindControl("chk");
-            ck.Checked = true;
+            if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
+                ckno++;
+        }
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
+        {
+            ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnDel_Click(object sender, EventArgs e)//删除还没有完善

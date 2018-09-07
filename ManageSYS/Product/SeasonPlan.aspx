@@ -118,7 +118,7 @@
                                 </asp:TemplateField>                             
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />
+                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除该季度生产计划吗？');" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -253,7 +253,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid2Del_Click" />
+                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid2Del_Click" OnClientClick="javascript:return confirm('确认删除该生产计划吗？');"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

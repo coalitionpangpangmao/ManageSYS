@@ -85,10 +85,10 @@ namespace MSYS.Common
                     continue;
             }
             this.passcount = this.count - this.upcount - this.downcount;
-            this.uprate = this.upcount / this.count;
-            this.downrate = this.downcount / this.count;
+            this.uprate = (double)this.upcount / (double)this.count;
+            this.downrate = (double)this.downcount / (double)this.count;
             this.passrate = 1 - this.uprate - this.downrate;
-            this.avg = sum / count;
+            this.avg = (double)sum / (double)count;
             double sum2 = 0;
             sum = 0;
             for (int i = 0; i < this.count; i++)

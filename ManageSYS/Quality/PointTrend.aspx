@@ -23,14 +23,14 @@
             <span>位置:</span>
             <ul class="placeul">
                 <li><a href="#">质量分析与评估</a></li>
-                <li><a href="#">趋势图</a></li>
+                <li><a href="#">趋势图分析</a></li>
             </ul>
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
         <div class="mainbox">
             <div class="mainleft">
-                <div class="leftinfo"> 
+                <div class="leftinfo" style="overflow: scroll"> 
                     <asp:HiddenField ID ="hdPrcd"  runat ="server"/>
                      <div class="listtitle">
                         工艺模型
@@ -43,7 +43,7 @@
             <div class="mainright">  
                         <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
                         </div>
-                        <div id="statics">
+                        <div id="statics" >
                         </div>   
                 <!--mainright end-->
             </div>

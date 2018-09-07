@@ -243,16 +243,17 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
 
     protected void btnCkAll_Click(object sender, EventArgs e)//全选
     {
-        try
+        int ckno = 0;
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = true;
-            }
+            if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView2.Rows.Count);
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnDelSel_Click(object sender, EventArgs e)//删除选中记录

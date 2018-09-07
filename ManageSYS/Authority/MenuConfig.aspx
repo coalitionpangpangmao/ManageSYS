@@ -22,7 +22,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">权限管理</a></li>
-            <li><a href="#">菜单配置</a></li>
+            <li><a href="#">MAP配置</a></li>
         </ul>
     </div>
     <asp:ScriptManager ID="ScriptManager1" runat="server">

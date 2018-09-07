@@ -56,7 +56,9 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string prod_code = opt.GetSegValue("select prod_name,prod_code from ht_pub_prod_design where prod_name = '" + row.Cells[1].Text + "'", "prod_code");
         string team_code = opt.GetSegValue("select team_name,team_code from ht_sys_team where team_name = '" + row.Cells[2].Text + "'", "team_code");
-        string query = "select s.section_name,r.para_code,r.para_name,h.quarate,h.stddev,h.absdev,h.cpk from  ht_pub_tech_section s left join ht_pub_tech_para r on s.section_code = substr(r.para_code,1,5) left join hv_qlt_online_score h on h.para_code = r.para_code and substr(h.prodday,1,7) = '" + txtBtime.Text + "' and h.prod_code = '" + prod_code + "' and h.team = '" + team_code + "'  where r.para_type like '___1%' and r.is_del = '0' order by  s.section_code,r.para_code";
+        string query = "select s.section_name,r.para_code,r.para_name,h.quarate,h.stddev,h.absdev,h.cpk from  ( select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code) s left join ht_pub_tech_para r on s.section_code = substr(r.para_code,1,5) left join hv_qlt_online_score h on h.para_code = r.para_code and substr(h.prodday,1,7) = '" + txtBtime.Text + "' and h.prod_code = '" + prod_code + "' and h.team = '" + team_code + "'  where r.para_type like '___1%' and r.is_del = '0' order by  s.section_code,r.para_code";
+       
+
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
 
 
@@ -147,7 +149,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
     {      
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select section_code,section_name,remark,WEIGHT from ht_pub_tech_section where is_del= '0' and is_valid = '1' order by section_code";
+        string query = "select distinct r.section_code ,r.section_name,r.remark,r.weight  from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code";
         DataSet data = opt.CreateDataSetOra(query);
 
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -214,7 +216,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
     {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select section_code,section_name,remark,WEIGHT from ht_pub_tech_section where is_del= '0' and is_valid = '1' order by section_code";
+        string query = "select distinct r.section_code ,r.section_name ,r.remark,r.weight from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code";
         DataSet data = opt.CreateDataSetOra(query);
 
         if (data != null && data.Tables[0].Rows.Count > 0)

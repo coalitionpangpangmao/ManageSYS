@@ -65,13 +65,14 @@
         <td  width="100">类型</td>
         <td colspan="3">
             <p>
-                <asp:CheckBox ID="ckCenterCtrl" runat="server" Text="集控显示" />
-                <asp:CheckBox ID="ckRecipePara" runat="server" Text="设定参数" />
-                <asp:CheckBox ID="ckSetPara" runat="server" Text="工艺参数" />
-                 <asp:CheckBox ID="ckQuality" runat="server" Text="质量统计" />
-                  <asp:CheckBox ID="ckManul" runat="server" Text="人工录入" />
-                 <asp:CheckBox ID="ckEqpara" runat="server" Text="设备记录" />
-                    <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" />
+                <asp:CheckBox ID="ckCenterCtrl" runat="server" Text="集控显示" CssClass="ckfloat" />
+                <asp:CheckBox ID="ckRecipePara" runat="server" Text="设定参数" CssClass="ckfloat"/>
+                <asp:CheckBox ID="ckSetPara" runat="server" Text="工艺参数" CssClass="ckfloat"/>
+                 <asp:CheckBox ID="ckQuality" runat="server" Text="质量统计" OnCheckedChanged="ckQuality_CheckedChanged" AutoPostBack="True" CssClass="ckfloat"/>
+                  <asp:CheckBox ID="ckManul" runat="server" Text="人工录入" CssClass="ckfloat" />
+                 <asp:CheckBox ID="ckEqpara" runat="server" Text="设备记录" CssClass="ckfloat" Visible="False"/>
+                <asp:CheckBox ID="ckQuaAnalyze" runat="server" Text="质量考核" OnCheckedChanged="ckQuaAnalyze_CheckedChanged" AutoPostBack="True" CssClass="ckfloat"/>
+                    <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" CssClass="ckfloat"/>
                
             </p>
     
@@ -99,6 +100,8 @@
         <asp:AsyncPostBackTrigger ControlID = "btnModify" />
          <asp:AsyncPostBackTrigger ControlID = "txtCode" />
          <asp:AsyncPostBackTrigger ControlID = "listSection" />
+                 <asp:AsyncPostBackTrigger ControlID ="ckQuality" />
+                 <asp:AsyncPostBackTrigger ControlID ="ckQuaAnalyze" />
         </Triggers>           
         </asp:UpdatePanel>
  </div>

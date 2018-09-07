@@ -144,10 +144,18 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
- 	
-    string userPwd = txtPswd.Text ==""?opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'","password"):  MSYS.Security.Encrypt.GetMD5String(txtPswd.Text);
-        string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE" };
-        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue };        
+       string userPwd;
+    if (txtPswd.Text == "")
+    {
+        userPwd = opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'", "password");
+        txtPswd.Text = opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'", "psd");
+    }
+    else
+    {
+        userPwd = MSYS.Security.Encrypt.GetMD5String(txtPswd.Text);
+    }
+        string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE","PSD" };
+        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue,txtPswd.Text };        
 
         string log_message = opt.MergeInto(seg, value, 1, "ht_svr_user") == "Success" ? "修改用户成功" : "修改用户失败";
         log_message += "数据值：" + string.Join(" ", value);
@@ -166,15 +174,24 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
                 string log_message = opt.UpDateOra("delete from ht_svr_user where ID = '" + GridView1.DataKeys[i].Value.ToString() + "'") == "Success" ? "删除用户成功" : "删除用户失败";
                 log_message += "标识:" + GridView1.DataKeys[i].Value.ToString();
                 InsertTlog(log_message);                
-            }
-        	       	     
-        	           	    
+            }     	    
         }
-
-           
-
-
         bindData();
+    }
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        MSYS.Web.UpdateUserInfo info = new MSYS.Web.UpdateUserInfo();
+        //  string str = info.GetXmlStr();
+        string result = info.InsertLocalFromMaster();
+        if ("Success" == result)
+        {
+            bindData();
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "update", "alert('更新完毕！！！')", true);
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "update", "alert('" + result + "')", true);
+        }
     }
 
     protected void SetBlank()

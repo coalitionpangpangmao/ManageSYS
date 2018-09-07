@@ -18,7 +18,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">系统管理</a></li>
-                <li><a href="#">用户管理</a></li>
+                <li><a href="#">人员管理</a></li>
             </ul>
         </div>
         <div class="rightinfo">
@@ -29,7 +29,8 @@
        <asp:Button ID="btnView" CssClass="btnview  auth" runat="server" OnClick="btnView_Click" Text="查看" />
                     &nbsp; &nbsp;
        <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
-
+                     &nbsp; &nbsp;
+    <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
                 </ul>
             </div>
             <div id="gridPanel">
@@ -70,7 +71,8 @@
                         <asp:AsyncPostBackTrigger ControlID="btnModify" />
                         <asp:AsyncPostBackTrigger ControlID="btnDel" />
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                        <asp:AsyncPostBackTrigger ControlID='btnAdd' />
+                        <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

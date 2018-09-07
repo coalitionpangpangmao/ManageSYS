@@ -126,13 +126,17 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
     //全选
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
-        if (GridView1.Rows.Count > 0)
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count ; i++)
         {
-            for (int i = 0; i < GridView1.Rows.Count; i++)
-            {
-                ((CheckBox)GridView1.Rows[i].FindControl("ckBox")).Checked = true;
-               
-            }
+            if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
+                ckno++;
+        }
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
+        {
+            ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     //批量审批

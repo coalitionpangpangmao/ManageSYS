@@ -122,12 +122,12 @@
                                             <td width="100">产品名称
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="listProd2" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                                <asp:DropDownList ID="listProd2" runat="server" CssClass ="drpdwnlist" OnSelectedIndexChanged ="ListProd2_SelectedIndexChanged" AutoPostBack ="true"></asp:DropDownList>
                                             </td>
                                             <td width="100">计划号
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtPlanno" runat="server" class="dfinput1" ></asp:TextBox>
+                                                  <asp:DropDownList ID="listPlanno" runat="server" CssClass ="drpdwnlist" ></asp:DropDownList>
                                             </td>
                                         </tr>
                                         <tr>
@@ -168,6 +168,7 @@
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="GridView1" />
                                 <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                                <asp:AsyncPostBackTrigger ControlID ="listProd2" />
                             </Triggers>
                         </asp:UpdatePanel>
                     </div>

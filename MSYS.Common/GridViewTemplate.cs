@@ -118,8 +118,7 @@ namespace MSYS.Common
         }
         void btn_Click(object sender, EventArgs e)
         {
-            try
-            {
+           
                 Button btn = (Button)sender;
 
                 GridView gv = (GridView)btn.NamingContainer.DataKeysContainer;
@@ -127,24 +126,21 @@ namespace MSYS.Common
                 int index = gvr.RowIndex;
                 string sectioncode = gv.DataKeys[index].Values[0].ToString();
                 string opathcode = gv.DataKeys[index].Values[1].ToString();
-                string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME" };
+                string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME" ,"IS_DEL"};
                 string pathcode = "";
-                for (int i = 2; i < gv.Columns.Count - 1; i++)
+                for (int i = 3; i < gv.Columns.Count - 1; i++)
                 {
                     pathcode += Convert.ToInt16(((CheckBox)gvr.FindControl("ck_" + (i - 1).ToString())).Checked).ToString();
                 }
-                string[] value = { sectioncode, pathcode, ((TextBox)gvr.FindControl("txt_Pathname")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                ((TextBox)gvr.FindControl("txt_Pathcode")).Text = pathcode;
+                string[] value = { sectioncode, pathcode, ((TextBox)gvr.FindControl("txt_Pathname")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),"0" };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
                 List<String> commandlist = new List<String>();
-                commandlist.Add("delete from HT_PUB_PATH_SECTION where SECTION_CODE = '" + sectioncode + "' and PATHCODE = '" + pathcode + "'");
+                commandlist.Add("delete from HT_PUB_PATH_SECTION where SECTION_CODE = '" + sectioncode + "' and PATHNAME = '" + ((TextBox)gvr.FindControl("txt_Pathname")).Text + "'");
                 commandlist.Add(opt.InsertDatastr(seg, value, "HT_PUB_PATH_SECTION"));
-                opt.TransactionCommand(commandlist);
-
-            }
-            catch (Exception)
-            {
-            }
+                opt.TransactionCommand(commandlist);           
+         
 
         }
         /*  void ck_DataBinding(object sender, EventArgs e)

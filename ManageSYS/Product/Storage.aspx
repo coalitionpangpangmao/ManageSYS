@@ -49,7 +49,7 @@
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
-            <li><a href="#">生产管理</a></li>
+            <li><a href="#">库存管理</a></li>
             <li><a href="#">库存查询</a></li>
         </ul>
     </div>

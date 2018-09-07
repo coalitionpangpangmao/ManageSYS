@@ -15,7 +15,7 @@ namespace MSYS.DAL
         private OracleConnectionSingletion() { }       
 
         private static string connectionString =
-            @"Data Source=ORCL;User ID=zs18;Password= zs18;Unicode=True";
+            @"Data Source=ORCL;User ID=zs18;Password= ZS18;Unicode=True";
 
         public static OracleConnectionSingletion CreateInstance()
         {
@@ -74,17 +74,21 @@ namespace MSYS.DAL
                 OracleConnection conn = (OracleConnection)o;
                 conn.Close();
             }
-            catch (OracleException) { }
+            catch (OracleException e) {
+                System.Diagnostics.Debug.WriteLine("Oracle Expire error:"+e.Message);
+            }
         }
 
         public DbConnection BorrowDBConnection()
         {
             try
             {
-                return (OracleConnection)base.GetObjectFromPool();
+                System.Diagnostics.Debug.WriteLine("正在获取数据库连接");
+                return (OracleConnection)base.GetObjectFromPool(typeof(OracleConnection));
             }
             catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine("获取数据库连接失败");
                 throw e;
             }
         }

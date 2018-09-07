@@ -51,7 +51,7 @@
     </asp:ScriptManager>
     <div class="mainbox">
         <div class="mainleft">
-            <div class="leftinfo">
+            <div class="leftinfo" style="overflow: scroll">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="listtitle">

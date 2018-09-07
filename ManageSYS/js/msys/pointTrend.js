@@ -62,8 +62,11 @@ Date.prototype.AddHours = function (h) {
             dataType: "json",
             success: function (result) {              
                 DrawPicture(result[0]);
-                if(result[0]["statics"])
-                $('#statics').append(result[0]["statics"].toString());
+                if (result[0]["statics"]) {
+                    $('#statics').empty();
+                    $('#statics').append(result[0]["statics"].toString());
+                   
+                }
             },
             error: function (message) {
                 $("#request-process-patent").html("从服务器获取数据失败！");

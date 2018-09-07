@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Report.aspx.cs" Inherits="Product_Report" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Report.aspx.cs" Inherits="Quality_Report" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,7 +51,6 @@
             <div class="mainright">
                   <div class="listtitle">查询条件
                       <span style="position: relative; float: right">
-                           
                         <asp:Button ID="btnSearch" runat="server" Text="查询" class="btnview" OnClick="btnSearch_Click" />    <asp:Button ID="btnExport" runat="server" Text="导出" class="btnset" OnClick="btnExport_Click" />
                           <asp:HiddenField ID ="hidebookid" runat ="server" />
                            <asp:Button ID="btnUpdate" runat="server" class="btnhide" OnClick="btnUpdate_Click" />  
@@ -60,7 +59,6 @@
                 <div>
                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:Label ID="MSG" runat ="server" />
                   <table class="tablelist">
                       <tr>
                         
@@ -76,8 +74,7 @@
                       </table>
                           </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />   
-                        <asp:AsyncPostBackTrigger ControlID ="btnSearch" />             
+                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />                
                     </Triggers>
                 </asp:UpdatePanel>
                 </div>
@@ -98,7 +95,6 @@
         </div>
         <!--mainright end-->
      
-
     </form>
 </body>
 </html>

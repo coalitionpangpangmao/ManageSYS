@@ -57,6 +57,7 @@
                         <asp:Button ID="btnGrid1Add" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnGrid1Add_Click" />
                         <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid1CkAll_Click" />
                         <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid1DelSel_Click" />
+                        
                     </span>
                 </div>
                 <div>

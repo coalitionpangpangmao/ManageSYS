@@ -61,7 +61,7 @@ public partial class Craft_Tech_Session : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         List<string> commandlist = new List<string>();
         commandlist.Add("update HT_PUB_TECH_SECTION set IS_DEL = '1' where SECTION_CODE = '" + txtCode.Text + "'");
-        commandlist.Add("update ht_pub_inspect_process set IS_DEL = '1' where substr(PROCESS_CODE,1,5) = '" + txtCode.Text + "'");
+        //commandlist.Add("update ht_pub_inspect_process set IS_DEL = '1' where substr(PROCESS_CODE,1,5) = '" + txtCode.Text + "'");
         commandlist.Add("update HT_PUB_TECH_PARA set IS_DEL = '1' where substr(PARA_CODE,1,5) =  '" + txtCode.Text + "'");
 
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除工艺段成功" : "删除工艺段失败";

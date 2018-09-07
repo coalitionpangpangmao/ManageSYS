@@ -100,41 +100,51 @@ public partial class Product_DataInput : MSYS.Web.BasePage
     {
         listProd2.SelectedValue = listProd.SelectedValue;
         listTeam2.SelectedValue = listTeam.SelectedValue;
-        listPara.SelectedValue = "";
-        txtPlanno.Text = "";
+        listPara.SelectedValue = "";       
         txtValue.Text = "";       
         
     }
+
+    protected void ListProd2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(listPlanno, "select distinct planno from ht_prod_report  where prod_code = '" + listProd2.SelectedValue + "'", "planno", "planno"); 
+    }
+
     protected void btnModify_Click(object sender, EventArgs e)
     {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        if (txtPlanno.Text.Length == 17 && txtPlanno.Text.Substring(8, 7) == listProd2.SelectedValue)
+        if (listProd2.SelectedValue == "" || listPlanno.SelectedValue == "" || listPara.SelectedValue == "" || txtValue.Text == "")
         {
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "message", "alert('请录入完整的数据信息')", true);
+            return;
+        }
             string[] seg = { "PLAN_NO", "PROD_CODE", "PARA_CODE", "VALUE", "TEAM", "CREATOR", "CREATE_TIME" };
-            string[] value = { txtPlanno.Text, listProd2.SelectedValue, listPara.SelectedValue, txtValue.Text, listTeam2.SelectedValue, txtCreator.Text, System.DateTime.Now.ToString("yyyy-MM-dd") };
+            string[] value = { listProd2.SelectedValue, listProd2.SelectedValue, listPara.SelectedValue, txtValue.Text, listTeam2.SelectedValue, txtCreator.Text, System.DateTime.Now.ToString("yyyy-MM-dd") };
             string log_message = opt.InsertData(seg, value, "HT_PROD_MANUAL_RECORD") == "Success" ? "保存物料过程数据成功," : "保存物料过程数据失败,";
             log_message += "记录：" + string.Join(" ", value);
             InsertTlog(log_message);
             bindGrid();
-        }
-        else
-            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "message", "alert('产品或计划号输入有误，请重新输入')", true);
+     
+      
+          
 
     }
 
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
-        try
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = true;
-            }
+            if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnDelSel_Click(object sender, EventArgs e)

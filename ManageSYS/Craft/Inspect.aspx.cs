@@ -127,6 +127,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
             commandlist.Add(opt.InsertDatastr(seg, value, "ht_qlt_inspect_proj"));
             opt.TransactionCommand(commandlist);
             bindGrid();
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
     }
 
     protected void btnGrid1CkAll_Click(object sender, EventArgs e)//全选
@@ -153,7 +154,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
                 {
-                    string projcode = GridView1.DataKeys[i].Values.ToString();                   
+                    string projcode = GridView1.DataKeys[i].Value.ToString();                   
                     string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where INSPECT_CODE = '" + projcode + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                    string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查项目成功" : "删除工艺检查项目失败";

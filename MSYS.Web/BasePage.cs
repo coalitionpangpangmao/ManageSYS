@@ -219,7 +219,7 @@ namespace MSYS.Web
         }
   //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览   
 
-        public void CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date)
+        public string CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date)
         {           
             MSYS.Common.ExcelExport openXMLExcel = null;
             try
@@ -241,12 +241,12 @@ namespace MSYS.Web
                 foreach (FileInfo feInfo in dyInfo.GetFiles())
                 {
                     //判断文件日期是否小于今天，是则删除
-                    if (feInfo.CreationTime < DateTime.Now.AddSeconds(-10))
+                    if (feInfo.CreationTime < DateTime.Now.AddMinutes(-5))
                         feInfo.Delete();
                 }
                 foreach (DirectoryInfo dir in dyInfo.GetDirectories())
                 {
-                    if (dir.CreationTime < DateTime.Now.AddSeconds(-10))
+                    if (dir.CreationTime < DateTime.Now.AddMinutes(-5))
                         dir.Delete(true);
                 }
                 //导出文件模板所在位置
@@ -324,14 +324,15 @@ namespace MSYS.Web
                 openXMLExcel.Dispose();
                 openXMLExcel = null;
                 KillProcess("EXCEL.EXE");
-           
+                return "Success";
             }
-            catch
+            catch(Exception e)
             {
                 if (openXMLExcel != null)
                 {
                     openXMLExcel.Dispose();
                 }
+                return e.Message;
             }
             finally
             {

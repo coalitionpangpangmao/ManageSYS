@@ -101,7 +101,7 @@ public class RealDataHandler : IHttpHandler
                      datainfo.yAxis = new List<double>();
                      foreach (DataRow srow in Rows)
                      {
-                         datainfo.xAxis.Add(srow[0].ToString().Substring(11));
+                         datainfo.xAxis.Add(Convert.ToDateTime(srow[0].ToString()).ToString("HH:mm"));
                          datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
                      }
 
@@ -147,7 +147,7 @@ public class RealDataHandler : IHttpHandler
 
         MSYS.Common.SPCFunctions spc = new MSYS.Common.SPCFunctions(array, upper, lower);
         string[] colname = { "工艺点", "总点数", "最大值", "最小值", "均值", "合格率", "超上限率", "超下限率", "标准差", "绝对差", "CPK", "开始时间", "结束时间" };
-        object[] colvalue = { name, spc.count, spc.max, spc.min, spc.avg.ToString("0.00"), spc.passrate.ToString("0.00"), spc.uprate.ToString("0.00"), spc.downrate.ToString("0.00"), spc.absdev.ToString("0.00"), spc.stddev.ToString("0.00"), spc.Cpk.ToString("0.00"), start, end };
+        object[] colvalue = { name, spc.count, spc.max.ToString("0.00"), spc.min.ToString("0.00"), spc.avg.ToString("0.00"), spc.passrate.ToString("0.00"), spc.uprate.ToString("0.00"), spc.downrate.ToString("0.00"), spc.absdev.ToString("0.00"), spc.stddev.ToString("0.00"), spc.Cpk.ToString("0.00"), start, end };
         if (colname.Length == colvalue.Length)
         {
             StringBuilder str = new StringBuilder("");

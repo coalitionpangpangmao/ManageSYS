@@ -28,14 +28,13 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     {
 
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
+       DataSet data = opt.CreateDataSetOra("select distinct section_code,section_name  from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%' order by r.section_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
-            {
-                // tvHtml += "<li ><a href='Tech_Session.aspx?session_code=" + row["section_code"].ToString() + "' target='sessionFrame'><span class='folder'  onclick = \"$('#tabtop1').click()\">" + row["section_name"].ToString() + "</span></a>";   
+            {               
                 tvHtml += "<li ><span class='folder'  onclick = \"tabClick(" + row["section_code"].ToString() + ")\">" + row["section_name"].ToString() + "</span></a>";
                 tvHtml += "</li>";
             }
@@ -96,7 +95,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             {
                 DataRowView mydrv = data.DefaultView[i];
                 DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listParaName");
-                opt.bindDropDownList(list, "select case when length(r.para_name) <8 then s.eq_name||r.para_name else r.para_name end as para_name,r.para_code  from HT_PUB_TECH_PARA r left join ht_eq_eqp_tbl s on s.idkey = r.equip_code  where  r.para_type like '___1%' and r.is_del = '0' and substr(r.PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
+                opt.bindDropDownList(list, "select case when length(r.para_name) <8 then s.eq_name||r.para_name else r.para_name end as para_name,r.para_code  from HT_PUB_TECH_PARA r left join ht_eq_eqp_tbl s on s.idkey = r.equip_code  where  r.para_type like '______1%' and r.is_del = '0' and substr(r.PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
                 list.SelectedValue = mydrv["参数编码"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtLower")).Text = mydrv["下限"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtUpper")).Text = mydrv["上限"].ToString();
@@ -205,16 +204,17 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
-        try
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = true;
-            }
+            if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnDelSel_Click(object sender, EventArgs e)

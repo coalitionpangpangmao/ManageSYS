@@ -9,7 +9,8 @@ using System.IO;
 using System.Text;
 using System.Collections;
 public partial class Device_EquipmentInfo :MSYS.Web.BasePage
-{   
+{
+    protected string tvHtml;
     protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
@@ -18,7 +19,9 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listMGdept, "select * from ht_svr_org_group", "F_NAME", "F_CODE");
             opt.bindDropDownList(listUseDept, "select * from ht_svr_org_group", "F_NAME", "F_CODE");
-            opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1'", "section_name", "section_code");
+            opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
+            opt.bindDropDownList(listSectionM, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1'  order by section_code", "section_name", "section_code");
+            tvHtml = InitTree();
             try
             {
                 string eqcode = Request["idkey"].ToString();
@@ -30,17 +33,132 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
             catch
             { }
         }
-    } 
-   
+    }
+    public string InitTree()
+    {
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
+            DataRow[] rows = data.Tables[0].Select();
+            foreach (DataRow row in rows)
+            {
+                tvHtml += "<li ><span class='folder'  onclick = \"treeClick(" + row["section_code"].ToString() + ")\">" + row["section_name"].ToString() + "</span>";              
+                tvHtml += InitTreeEquip(row["section_code"].ToString());
+                tvHtml += "</li>";
+            }
+            tvHtml += "</ul>";
+            return tvHtml;
+        }
+        else
+            return "";
+    }
+
+
+
+    public string InitTreeEquip(string section_code)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select IDKEY,EQ_NAME from ht_eq_eqp_tbl where section_code  = '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0' order by IDKEY");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string tvHtml = "<ul>";
+            DataRow[] rows = data.Tables[0].Select();
+            foreach (DataRow row in rows)
+            {
+
+                tvHtml += "<li ><span class='folder'  onclick = \"treeClick(" + row["IDKEY"].ToString() + ")\">" + row["EQ_NAME"].ToString() + "</span>";               
+                tvHtml += "</li>";
+            }
+            tvHtml += "</ul>";
+            return tvHtml;
+        }
+        else
+            return "";
+    }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-        if (hdcode.Value.Length < 11)
+
+        if (hdcode.Value.Length == 5)
         {
+            listSectionM.SelectedValue = hdcode.Value;
             bindGrid();
         }
         else
             bindData(hdcode.Value);
     }
+
+    protected void bindGrid()
+    {
+        
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string query = "select g.IDKEY as 设备编号,g.EQ_NAME as 设备名称,g.EQ_TYPE as 企业设备分类,g.EQ_STATUS as 设备状态,g.ZG_DATE as 转固日期,g.EQ_MODEL as 设备型号,g.USED_DATE as 投入使用日期,g.RATED_POWER as 额定生产能力,g.POWER_UNIT as 能力单位,g1.f_name as 设备管理部门, g2.f_name as 设备使用部门 from ht_eq_eqp_tbl g left join ht_svr_org_group g1 on g1.f_code = g.mgt_dept_code left join ht_svr_org_group g2 on g2.f_code = g.use_dept_code where g.is_del = '0' and g.is_valid = '1'";
+
+        if (listSectionM.SelectedValue != "")
+        {
+            query += " and g.section_code =  '" + listSectionM.SelectedValue + "'";           
+        }
+        if (txtType.Text != "")
+            query += " and g.EQ_TYPE = '" + txtType.Text + "'";
+        DataSet data = opt.CreateDataSetOra(query);
+
+        GridView1.DataSource = data;
+        GridView1.DataBind();
+
+    }
+
+
+    protected void bindData(string eqcode)
+    {
+
+        string query = "select * from HT_EQ_EQP_TBL where  IDKEY = '" + eqcode + "'";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            DataRow row = data.Tables[0].Rows[0];
+            txtIDKey.Text = eqcode;
+            //txtCLS.Text = row["CLS_CODE"].ToString();
+
+            txtEqname.Text = row["EQ_NAME"].ToString();
+            txtSGSCode.Text = row["SGS_CODE"].ToString();
+            txtNCCode.Text = row["NC_CODE"].ToString();
+            txtFncName.Text = row["FINANCE_EQ_NAME"].ToString();
+            txtEQType.Text = row["EQ_TYPE"].ToString();
+            listEQStatus.SelectedValue = row["EQ_STATUS"].ToString();
+            txtZGDate.Text = row["ZG_DATE"].ToString();
+            txtEQModel.Text = row["EQ_MODEL"].ToString();
+            txtOriWorth.Text = row["ORI_WORTH"].ToString();
+            txtNetWorth.Text = row["NET_WORTH"].ToString();
+            txtUsedDate.Text = row["USED_DATE"].ToString();
+            txtRatedPower.Text = row["RATED_POWER"].ToString();
+            txtRealPower.Text = row["REAL_POWER"].ToString();
+            txtPowerUnit.Text = row["POWER_UNIT"].ToString();
+            txtOwner.Text = row["OWNER_NAME"].ToString();
+            txtEQSource.Text = row["EQP_FROM"].ToString();
+            txtOriOwner.Text = row["ORI_OWNER_NAME"].ToString();
+            txtManufct.Text = row["MANUFACTURER"].ToString();
+            txtSerialNo.Text = row["SERIAL_NUMBER"].ToString();
+            txtSupplier.Text = row["SUPPLIER"].ToString();
+            rdSpecEQ.Checked = ("1" == row["IS_SPEC_EQP"].ToString());
+            rdMadeChina.Checked = ("1" == row["IS_MADEINCHINA"].ToString());
+            listMGdept.SelectedValue = row["MGT_DEPT_CODE"].ToString();
+            listUseDept.SelectedValue = row["USE_DEPT_CODE"].ToString();
+            txtDutier.Text = row["DUTY_NAME"].ToString();
+            txtIp.Text = row["EQP_IP"].ToString();
+            txtMAC.Text = row["EQP_MAC"].ToString();
+            txtSN.Text = row["EQP_SN"].ToString();
+            txtOpSYS.Text = row["EQP_SYS"].ToString();
+            txtDscpt.Text = row["REMARK"].ToString();
+            listSection.SelectedValue = row["SECTION_CODE"].ToString();
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "showinfo", " $('.shade').fadeIn(200);", true);
+        }
+
+
+    }
+
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         GridView theGrid = sender as GridView;
@@ -78,27 +196,14 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
 
         bindGrid();
     }
-    protected void bindGrid()
-    {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select g.IDKEY as 设备编号,g.EQ_NAME as 设备名称,g.EQ_TYPE as 企业设备分类,g.EQ_STATUS as 设备状态,g.ZG_DATE as 转固日期,g.EQ_MODEL as 设备型号,g.USED_DATE as 投入使用日期,g.RATED_POWER as 额定生产能力,g.POWER_UNIT as 能力单位,g1.f_name as 设备管理部门, g2.f_name as 设备使用部门 from ht_eq_eqp_tbl g left join ht_svr_org_group g1 on g1.f_code = g.mgt_dept_code left join ht_svr_org_group g2 on g2.f_code = g.use_dept_code where g.is_del = '0' and is_valid = '1'";
-        if (hdcode.Value != "")
-            query += " and g.CLS_CODE = '" + hdcode.Value.ToString() + "'";
-        if (txtNameS.Text != "")
-            query += " and g.EQ_NAME = '" + txtNameS.Text + "'";
-        if (txtType.Text != "")
-            query += " and g.EQ_TYPE = '" + txtType.Text + "'";
-        DataSet data = opt.CreateDataSetOra(query);
-       
-            GridView1.DataSource = data;
-            GridView1.DataBind();     
-
-    }
-
+   
     protected void btnAdd_Click(object sender,EventArgs e)
     {
-        txtIDKey.Text = "02";
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "addequip", " $('#tabs').tabs('select', '设备详情');", true);
+        setBlank();
+       MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        txtIDKey.Text = listSectionM.SelectedValue + opt.GetSegValue("select nvl(max(substr(idkey,6,3)),0)+1 as code from ht_eq_eqp_tbl where SECTION_CODE = '" + listSectionM.SelectedValue + "'", "CODE").PadLeft(3, '0');
+        listSection.SelectedValue = listSectionM.SelectedValue;
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "showinfo", " $('.shade').fadeIn(200);", true);
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
@@ -128,18 +233,20 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
     }
 
     protected void btnCkAll_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+    {       
+            int ckno = 0;
+            for (int i = 0; i < GridView1.Rows.Count; i++)
             {
-                ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = true;
+                if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
+                    ckno++;
             }
-        }
-        catch (Exception ee)
-        {
-            Response.Write(ee.Message);
-        }
+            bool check = (ckno < GridView1.Rows.Count);
+            for (int i = 0; i < GridView1.Rows.Count ; i++)
+            {
+                ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = check;
+                   
+            }
+       
     }
     protected void btnGridview_Click(object sender, EventArgs e)//查看设备详情
     {
@@ -166,54 +273,7 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
     /// /tab2操作
     /// </summary>
     /// <param name="eqcode"></param>
-    protected void bindData(string eqcode)
-    {
-       
-            string query = "select * from HT_EQ_EQP_TBL where  IDKEY = '" + eqcode + "'";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra(query);
-            if (data != null && data.Tables[0].Rows.Count > 0)
-            {
-                DataRow row = data.Tables[0].Rows[0];
-                txtIDKey.Text = eqcode;
-                //txtCLS.Text = row["CLS_CODE"].ToString();
-                
-                txtEqname.Text = row["EQ_NAME"].ToString();
-                txtSGSCode.Text = row["SGS_CODE"].ToString();
-                txtNCCode.Text = row["NC_CODE"].ToString();
-                txtFncName.Text = row["FINANCE_EQ_NAME"].ToString();
-                txtEQType.Text = row["EQ_TYPE"].ToString();
-                listEQStatus.SelectedValue = row["EQ_STATUS"].ToString();
-                txtZGDate.Text = row["ZG_DATE"].ToString();
-                txtEQModel.Text = row["EQ_MODEL"].ToString();
-                txtOriWorth.Text = row["ORI_WORTH"].ToString();
-                txtNetWorth.Text = row["NET_WORTH"].ToString();
-                txtUsedDate.Text = row["USED_DATE"].ToString();
-                txtRatedPower.Text = row["RATED_POWER"].ToString();
-                txtRealPower.Text = row["REAL_POWER"].ToString();
-                txtPowerUnit.Text = row["POWER_UNIT"].ToString();
-                txtOwner.Text = row["OWNER_NAME"].ToString();
-                txtEQSource.Text = row["EQP_FROM"].ToString();
-                txtOriOwner.Text = row["ORI_OWNER_NAME"].ToString();
-                txtManufct.Text = row["MANUFACTURER"].ToString();
-                txtSerialNo.Text = row["SERIAL_NUMBER"].ToString();
-                txtSupplier.Text = row["SUPPLIER"].ToString();
-                rdSpecEQ.Checked = ("1" == row["IS_SPEC_EQP"].ToString());
-                rdMadeChina.Checked = ("1" == row["IS_MADEINCHINA"].ToString());
-                listMGdept.SelectedValue = row["MGT_DEPT_CODE"].ToString();
-                listUseDept.SelectedValue = row["USE_DEPT_CODE"].ToString();
-                txtDutier.Text = row["DUTY_NAME"].ToString();
-                txtIp.Text = row["EQP_IP"].ToString();
-                txtMAC.Text = row["EQP_MAC"].ToString();
-                txtSN.Text = row["EQP_SN"].ToString();
-                txtOpSYS.Text = row["EQP_SYS"].ToString();
-                txtDscpt.Text = row["REMARK"].ToString();
-                listSection.SelectedValue = row["SECTION_CODE"].ToString();
-                ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "sel", " bindcombo('" + row["CLS_CODE"].ToString() + "');", true);
-            }
-     
-    
-    }
+ 
 
     protected void setBlank()
     {
@@ -276,27 +336,8 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
     /// <param name="Nd"></param>
   
 
-    protected void btn3Save_Click(object sender, EventArgs e)
-    {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.UpDateOra("delete from ht_eq_eqp_cls where ID_KEY = '" + txt3Code.Text + "'");
-        string[] seg = { "ID_KEY", "NODE_NAME", "TYPE", "PATH", "PARENT_ID" };
-        string[] value = { txt3Code.Text, txt3Name.Text, list3Type.SelectedValue, list3Path.SelectedValue, "" };
-        opt.MergeInto(seg, value,1, "ht_eq_eqp_cls");
  
-     //   tvHtml = InitTree("",true);
-        ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "", "togtreeview();", true);
-    }
-
-    protected void btn3Del_Click(object sender, EventArgs e)
-    {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        opt.UpDateOra("delete from ht_eq_eqp_cls where ID_KEY = '" + txt3Code.Text + "'");
- 
-     //   tvHtml = InitTree("",true);
-        ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "", "togtreeview();", true);
-    }
-
+  
 
   
 }

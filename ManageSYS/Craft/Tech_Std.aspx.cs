@@ -39,7 +39,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     {
 
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
+       DataSet data = opt.CreateDataSetOra("select distinct r.section_code,r.section_name  from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and ( s.para_type like '_1%' or s.para_type like '__1%')  order by r.section_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
@@ -163,7 +163,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         if (prccode.Length == 5)
         {
 
-            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1__' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -199,7 +199,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         if (prccode.Length == 5)
         {
 
-            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '_1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '_1___' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '_1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '_1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -232,16 +232,17 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     }
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
-        try
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = true;
-            }
+            if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnCkAll2_Click(object sender, EventArgs e)
@@ -275,6 +276,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 }
             }
             bindGrid(txtCode.Text, hideprc.Value);
+            bindGrid2(txtCode.Text, hideprc.Value);
         }
         catch (Exception ee)
         {
@@ -298,6 +300,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 }
             }
             bindGrid(txtCode.Text, hideprc.Value);
+            bindGrid2(txtCode.Text, hideprc.Value);
         }
         catch (Exception ee)
         {

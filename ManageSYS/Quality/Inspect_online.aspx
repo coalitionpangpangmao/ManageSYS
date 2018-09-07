@@ -52,7 +52,7 @@
             <div>
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12">
+                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
 
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" BorderStyle="Solid" BorderWidth="1" />

@@ -24,7 +24,7 @@ public partial class Quality_PointTrend : MSYS.Web.BasePage
     public string InitTree()
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query ="select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ";
+       string query = "select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '___1%'   order by r.section_code ";
        
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)

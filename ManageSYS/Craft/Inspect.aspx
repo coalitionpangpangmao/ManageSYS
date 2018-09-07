@@ -60,11 +60,11 @@
                         <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnGrid1CkAll_Click" />
                         <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnGrid1DelSel_Click" /></span>
                 </div>
-                <div style="height: 275px; overflow: auto">
+                <div style="height: 290px; overflow: auto">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
-                                DataKeyNames="检查项目编码" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8">
+                                DataKeyNames="检查项目编码" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
                                 <Columns>
                                     <asp:TemplateField>
                                         <ItemTemplate>

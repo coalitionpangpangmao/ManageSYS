@@ -63,7 +63,7 @@ public partial class Quality_Evaluat_Sensor : MSYS.Web.BasePage
     protected void initTable(GridViewRow row)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select t.name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_inner_inspect_group t on t.id = r.inspect_group where r.inspect_group ='4' order by r.inspect_code";
+        string query = "select t.name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_inner_inspect_group t on t.id = r.inspect_group where r.inspect_group ='4' and r.is_del = '0' order by r.inspect_code";
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
 
 
@@ -156,7 +156,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_group  ='4' order by inspect_code";
+        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_group  ='4' and is_del = '0' order by inspect_code";
         DataSet data = opt.CreateDataSetOra(query);
         StringBuilder sql = new StringBuilder();
         StringBuilder str = new StringBuilder();
@@ -231,7 +231,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
             sql.Append(",'' as 班组");
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_group  ='4' order by inspect_code";
+        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_group  ='4'  and is_del = '0' order by inspect_code";
         DataSet data = opt.CreateDataSetOra(query);
 
         if (data != null && data.Tables[0].Rows.Count > 0)

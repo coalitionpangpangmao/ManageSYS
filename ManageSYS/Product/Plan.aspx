@@ -102,7 +102,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />
+                                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除该月生产计划吗？');" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -175,7 +175,7 @@
                                 生产任务编制<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
                                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除所选生产计划吗？');" />
                                 </span>
                             </div>
                             <asp:HiddenField ID="hidePlanID" runat="server" />
@@ -199,7 +199,7 @@
                                             <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号" Width ="150px"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="产品规格" SortExpression="产品规格">
+                                    <asp:TemplateField HeaderText="产品名称" SortExpression="产品名称">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listProd" runat="server" DataSource='<%# ddlbind()%>' DataValueField="prod_code"
                                                 CssClass="drpdwnlist" DataTextField="产品规格">
@@ -225,12 +225,12 @@
                                 </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" />
+                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" OnClientClick="javascript:return confirm('确认保存该生产计划吗？');"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid2Del_Click" />
+                                            <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid2Del_Click"  OnClientClick="javascript:return confirm('确认删除该生产计划吗？');"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

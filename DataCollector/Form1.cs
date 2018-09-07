@@ -18,13 +18,13 @@ namespace DataCollect
         {
             InitializeComponent();
             //正式运行时取消注释
-            //System.Timers.Timer aTimer = new System.Timers.Timer();
-            //aTimer.Elapsed += new ElapsedEventHandler(InsertQuaReport);  //到达时间的时候执行事件；
-            
-            //aTimer.Interval = 120 * 60 * 1000;
-            //aTimer.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
-            //aTimer.Enabled = true; //是否执行System.Timers.Timer.Elapsed事件；
-            //Qua_Start.Enabled = false;
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(InsertQuaReport);  //到达时间的时候执行事件；
+
+            aTimer.Interval = 120 * 60 * 1000;
+            aTimer.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
+            aTimer.Enabled = true; //是否执行System.Timers.Timer.Elapsed事件；
+            Qua_Start.Enabled = false;
         }
 
         public void Qua_Start_Click(object sender, EventArgs e)
@@ -53,9 +53,11 @@ namespace DataCollect
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 DataRow row = data.Tables[0].Rows[0];
+                 string starttime = row["date_end"].ToString();
+                 string midtime = Convert.ToDateTime(starttime).AddHours(4).ToString("yyyy-MM-dd HH:mm:ss");
                 string endtime = row["date_begin"].ToString();
-                string starttime = row["date_end"].ToString();
-                InsertSectionQuaReport(starttime, endtime);
+                InsertSectionQuaReport(starttime, midtime);
+                InsertSectionQuaReport(midtime, endtime);
             }
         }
 

@@ -97,6 +97,11 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         else
             type += "0";
 
+        if (ckQuaAnalyze.Checked)
+            type += "1";
+        else
+            type += "0";
+
         if (ckCalibrate.Checked)
             type += "1";
         else
@@ -105,8 +110,8 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
     }
     protected void setType(string Type)
     {
-        Type = Type.PadRight(7, '0');
-        if (Type.Length >= 7)
+        Type = Type.PadRight(8, '0');
+        if (Type.Length >= 8)
         {
             ckCenterCtrl.Checked =("1"==Type.Substring(0, 1));
             ckRecipePara.Checked = ("1" == Type.Substring(1, 1));
@@ -114,7 +119,15 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
             ckQuality.Checked = ("1" == Type.Substring(3, 1));
             ckManul.Checked = ("1" == Type.Substring(4, 1));
             ckEqpara.Checked = ("1" == Type.Substring(5, 1));
-            ckCalibrate.Checked = ("1" == Type.Substring(6, 1));
+            ckQuaAnalyze.Checked = ("1" == Type.Substring(6, 1));
+            ckCalibrate.Checked = ("1" == Type.Substring(7, 1));
+        }
+        if (ckQuality.Checked)
+            ckSetPara.Enabled = false;
+        if (ckQuaAnalyze.Checked)
+        {
+            ckSetPara.Enabled = false;
+            ckQuality.Enabled = false;
         }
     }
     protected void btnModify_Click(object sender, EventArgs e)
@@ -142,6 +155,8 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
+        ckSetPara.Enabled = true;
+        ckQuality.Enabled = true;
         bindData(hdcode.Value);
 
     }
@@ -153,5 +168,30 @@ public partial class Craft_Tech_Para : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.Section_code = '" + listSection.SelectedValue + "' and t.is_del = '0'", "EQ_NAME", "IDKEY");
         txtCode.Text = "";
+    }
+    protected void ckQuality_CheckedChanged(object sender, EventArgs e)
+    {
+        if (ckQuality.Checked)
+        {
+            ckSetPara.Checked = true;
+            ckSetPara.Enabled = false;
+        }
+        else
+            ckSetPara.Enabled = true;
+    }
+    protected void ckQuaAnalyze_CheckedChanged(object sender, EventArgs e)
+    {
+        if (ckQuaAnalyze.Checked)
+        {
+            ckSetPara.Checked = true;
+            ckQuality.Checked = true;
+            ckSetPara.Enabled = false;
+            ckQuality.Enabled = false;
+        }
+        else
+        {
+            ckSetPara.Enabled = true;
+            ckQuality.Enabled = true;
+        }
     }
 }

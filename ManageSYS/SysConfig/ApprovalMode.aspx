@@ -34,7 +34,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">系统配置</a></li>
-            <li><a href="#">审批模版</a></li>
+            <li><a href="#">审批模版配置</a></li>
         </ul>
     </div>
     <asp:ScriptManager ID="ScriptManager1" runat="server">

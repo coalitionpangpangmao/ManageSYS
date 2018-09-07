@@ -148,21 +148,19 @@ public partial class Product_Schedual : MSYS.Web.BasePage
           }
       }
     
-        protected void btnckAll_Click(object sender, EventArgs e)//下发计划
+        protected void btnckAll_Click(object sender, EventArgs e)
         {
-            try
+            int ckno = 0;
+            for (int i = 0; i < GridView2.Rows.Count; i++)
             {
-                for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-                {
-                    if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
-                        ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = false;
-                    else
-                        ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = true;
-                }               
+                if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+                    ckno++;
             }
-            catch (Exception ee)
+            bool check = (ckno < GridView2.Rows.Count);
+            for (int i = 0; i < GridView2.Rows.Count; i++)
             {
-                Response.Write(ee.Message);
+                ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = check;
+
             }
         }
         protected void btnGridEdit_Click(object sender, EventArgs e)//计划编辑

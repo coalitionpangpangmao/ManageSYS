@@ -34,8 +34,8 @@
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
+            <li><a href="#">权限管理</a></li>
             <li><a href="#">审批管理</a></li>
-            <li><a href="#">生产任务审批</a></li>
         </ul>
     </div>
     <div class="formbody">

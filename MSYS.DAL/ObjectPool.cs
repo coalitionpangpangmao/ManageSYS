@@ -43,7 +43,7 @@ namespace MSYS.DAL
 
         protected abstract void Expire(object o);
 
-        internal object GetObjectFromPool()
+        internal object GetObjectFromPool(System.Type type =null)
         {
             long now = DateTime.Now.Ticks;
             lastCheckOut = now;
@@ -56,6 +56,9 @@ namespace MSYS.DAL
                     foreach (DictionaryEntry myEntry in unlocked)
                     {
                         o = myEntry.Key;
+                        if (type != null && myEntry.Key.GetType() != type)
+                            continue;
+                        System.Diagnostics.Debug.WriteLine("数据库连接池类型："+myEntry.Key.GetType().ToString());
                         unlocked.Remove(o);
                         if (Validate(o))
                         {
@@ -69,7 +72,10 @@ namespace MSYS.DAL
                         }
                     }
                 }
-                catch (Exception) { }
+                catch (Exception e) {
+                    System.Diagnostics.Debug.WriteLine("GetObjectFromPool产生严重错误");
+                    System.Diagnostics.Debug.WriteLine("GetObjectFromPool error:"+e.Message);
+                }
                 o = Create();
                 locked.Add(o, now);
             }

@@ -15,7 +15,7 @@ namespace MSYS.DAL
         private OledbConnectionSingletion() { }
 
         private static string connectionString =
-            @"Provider=IhOLEDB.iHistorian.1;Data Source=10.50.212.71;User ID=administrator;Password = CHANGkong18;";
+            @"Provider=IhOLEDB.iHistorian.1;Data Source=10.43.178.13;User ID=administrator;Password = admin@12345;";
 
         public static OledbConnectionSingletion CreateInstance()
         {
@@ -82,7 +82,7 @@ namespace MSYS.DAL
         {
             try
             {
-                return (OleDbConnection)base.GetObjectFromPool();
+                return (OleDbConnection)base.GetObjectFromPool(typeof(OleDbConnection));
             }
             catch (Exception e)
             {

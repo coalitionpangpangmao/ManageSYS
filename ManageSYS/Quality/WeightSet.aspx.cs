@@ -20,7 +20,8 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
   
     protected void bindGrid1()
     {
-        string query = "select section_code ,Weight,remark from ht_pub_tech_section  where is_del = '0' and is_valid = '1' order by section_code";
+        string query = "select distinct r.section_code ,r.Weight,r.remark   from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code";
+        
        
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);

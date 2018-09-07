@@ -199,7 +199,11 @@ h2{font-weight:normal;}
     text-indent: 11px;
     text-align: center;
 }
-
+.ckfloat
+{
+    float: left;
+    width:80px;
+}
 
 /*Approvaltable*/
 .aprvtablelist
