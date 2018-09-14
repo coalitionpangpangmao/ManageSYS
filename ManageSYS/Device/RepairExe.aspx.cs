@@ -113,14 +113,14 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
         string[] value1 = { ftID, txtName.Text, listEqType.SelectedValue, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text };
        
         string log_message = opt.InsertData(seg1, value1, "HT_EQ_FAULT_DB") == "Success" ? "故障处理信息入库成功" : "故障处理信息入库失败";
-        log_message += "故障信息ID:" + ftID;
+        log_message += ",故障信息ID:" + ftID;
         InsertTlog(log_message);       
 
         string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "FAULT_ID", "EXE_SEGTIME","STATUS" };
         string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, ftID, txtSegcount.Text,"2" };
 
          log_message = opt.UpDateData(seg, value, "HT_EQ_RP_PLAN_DETAIL", "where id = '" + txtCode.Text + "'") == "Success" ? "维修处理成功" : "维修处理失败";
-         log_message += "维修明细ID:" + txtCode.Text;
+         log_message += ",维修明细ID:" + txtCode.Text;
         InsertTlog(log_message);       
         bindGrid();
 

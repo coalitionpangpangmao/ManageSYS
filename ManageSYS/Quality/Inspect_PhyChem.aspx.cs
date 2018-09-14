@@ -85,8 +85,10 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
             string[] value = {GridView1.DataKeys[row.RowIndex].Value.ToString(), listProd.SelectedValue,  listTeam.SelectedValue, txtProdTime.Text,listShift.SelectedValue, ((TextBox)row.FindControl("txtPara")).Text, listEditor.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
            
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.MergeInto(seg, value, 4, "HT_QLT_INSPECT_RECORD");
-           
+
+            string log_message = opt.MergeInto(seg, value, 4, "HT_QLT_INSPECT_RECORD") == "Success" ? "保存理化检测结果成功" : "保存理化检测结果失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);
         }
     }
 

@@ -38,7 +38,7 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
             string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_EMG", "REASON", "CONTENT","STATUS" };
             string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtReasons.Text, txtContent.Text,"-1" };
             string log_message = opt.InsertData(seg, value, "HT_EQ_RP_PLAN_DETAIL") == "Success" ? "新建维修计划明细成功" : "新建维修计划明细失败";
-            log_message += "详情:" + string.Join(",", value);
+            log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
         }
     }
@@ -65,7 +65,7 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
             commandlist.Add(opt.InsertDatastr(seg, value, "HT_EQ_RP_PLAN_DETAIL"));
 
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "应急维修记录成功" : "应急维修记录失败";
-            log_message += "详情:" + string.Join(",", value);
+            log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
        
         }

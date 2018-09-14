@@ -125,7 +125,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
             string[] value1 = {ftID, txtName.Text, listEqType.SelectedValue, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text };
 
              log_message = opt.InsertData(seg1, value1, "HT_EQ_FAULT_DB") == "Success" ? "故障信息入库成功" : "故障信息入库失败";
-            log_message += "故障信息ID：" +ftID;
+            log_message += ",故障信息ID：" +ftID;
             InsertTlog(log_message);      
 
         }
@@ -133,7 +133,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
         string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_FAULT", "RECORD", "RESULTS", "CONDITION", "FAULT_ID", "EXE_SEGTIME","STATUS" };
         string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtRecord.Text, txtResults.Text, txtCondition.Text, ftID, txtSegcount.Text,"2" };
         log_message = opt.UpDateData(seg, value, "HT_EQ_MT_PLAN_DETAIL", "where id = '" + txtCode.Text + "'") == "Success" ? "维修执行成功" : "维修执行失败";
-        log_message += "维修明细ID：" + txtCode.Text;
+        log_message += ",维修明细ID：" + txtCode.Text;
         InsertTlog(log_message);      
         bindGrid();
     }

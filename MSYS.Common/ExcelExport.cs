@@ -32,6 +32,8 @@ namespace MSYS.Common
                 xlBooks = xlApp.Workbooks;
                 xlBook = xlBooks.Open(filename, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 xlsheets = xlBook.Worksheets;
+                xlApp.DisplayAlerts = false;
+                xlApp.AlertBeforeOverwriting = false;
                 intptr = new IntPtr(xlApp.Hwnd);
             }
             catch
@@ -52,6 +54,8 @@ namespace MSYS.Common
                 xlBooks = xlApp.Workbooks;
                 xlBook = xlBooks.Add(Type.Missing);
                 xlsheets = xlBook.Worksheets;
+                xlApp.DisplayAlerts = false;
+                xlApp.AlertBeforeOverwriting = false;
                 intptr = new IntPtr(xlApp.Hwnd);
             }
             catch
@@ -156,8 +160,91 @@ namespace MSYS.Common
             }
         }
 
+        //public void WriteDataRerange(int x, int y, System.Data.DataTable dt)
+        //{
+        //    try
+        //    {
+        //        int count = dt.Columns.Count;
+        //        int Rcount = dt.Rows.Count;
+        //        for (int j = 0; j < Rcount; j++)
+        //        {
+        //            for (int i = 0; i < count; i++)
+        //            {                      
+        //                string v = dt.Rows[j][i].ToString();
+        //                string up ;
+        //                int range = 0;
+        //                if (j > 0 && i == col)
+        //                {
+        //                    up = dt.Rows[j - 1][i].ToString();
+        //                    if (v == up)
+        //                        range++;
+        //                    else
+        //                    {
+        //                        if (range > 0)
+        //                        {
+        //                            RangeBuild(xlSheet,xlSheet.Cells[j-range-1,col], xlSheet.Cells[j-1,col],  up);
+        //                        }
+        //                        range = 0;
+        //                    }
+                                
+        //                }
+        //                if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
+        //                {
+        //                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).NumberFormatLocal = "@";                          
+        //                }
+        //                if((i == col && range == 0) || i != col)
+        //                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).Value2 = v;
 
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+        //    }
+        //}
 
+        public void WriteDataRerange(int x, int y, System.Data.DataTable dt)
+        {
+            try
+            {
+                int colnum = dt.Columns.Count;
+                int rownum = dt.Rows.Count;
+                for (int i = 0; i < colnum; i++)
+                {
+                    string old = dt.Rows[0][i].ToString();                  
+                    int range = 0;
+                    for (int j = 0; j < rownum;j++)
+                    {
+                        if (range == 0)
+                        {
+                            if (IsOnlyNumber(old) && Convert.ToDouble(old) > 100000000000)
+                            {
+                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).NumberFormatLocal = "@";
+                            }
+                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).Value2 = old;
+                        }
+                        string cur = dt.Rows[j][i].ToString();
+                        if (j != 0 && cur == old )
+                            range++;
+                        else
+                        {
+                            if (range > 0)
+                            {
+                                RangeBuild(xlSheet, xlSheet.Cells[j-1 + x - range, i+y], xlSheet.Cells[j-1 +x, i+y], old);
+                            }
+                            old = cur;
+                            range = 0;
+                        }
+                        if (j == rownum - 1 && range > 0)
+                            RangeBuild(xlSheet, xlSheet.Cells[j  + x - range, i + y], xlSheet.Cells[j  + x, i + y], old);
+
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
         public string WriteData(int x, int y, string data)
         {
             try
@@ -261,6 +348,32 @@ namespace MSYS.Common
             return r.Match(value).Success;
         }
 
+
+        private static void RangeBuild(_Worksheet oSheet, Range startcell, Range endcell, string value)
+        {
+            ///创建一个区域对象。第一个参数是开始格子号，第二个参数是终止格子号。比如选中A1——D3这个区域。
+            Range range = (Range)oSheet.get_Range(startcell, endcell);           
+            ///合并方法，0的时候直接合并为一个单元格
+            range.Merge(0);
+       
+            ///合并单元格之后，设置其中的文本
+            range.Value = value;
+            //横向居中
+            range.HorizontalAlignment = XlVAlign.xlVAlignCenter;
+            //自动调整列宽
+            range.EntireColumn.AutoFit();
+            ///字体大小
+            //range.Font.Size = 18;
+            ///字体
+           // range.Font.Name = "黑体";
+            ///行高
+           // range.RowHeight = 24;
+           
+            //填充颜色
+           // range.Interior.ColorIndex = 20;
+            //设置单元格边框的粗细
+           // range.Cells.Borders.LineStyle = 1;
+        }
     }
 }
 

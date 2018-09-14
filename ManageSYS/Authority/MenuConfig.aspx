@@ -81,7 +81,7 @@
                                             <td colspan="2" height="50px">
                                                 <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnview auth" OnClick="btnSave2_Click" />
                                                 &nbsp;&nbsp
-                                                <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel  auth" OnClick="btnDel_Click" />
+                                                <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel  auth" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                                 &nbsp;&nbsp
                                             </td>
                                         </tr>
@@ -144,7 +144,7 @@
                                 <asp:TemplateField HeaderText="操作" HeaderStyle-HorizontalAlign="Center">
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />
-                                        <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click" />
+                                        <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

@@ -36,7 +36,7 @@
                      Text="查询" CssClass="btn" OnClick="btnSearch_Click" />
                 &nbsp;
                   <asp:Button ID="btnDelete" runat="server" Height="25px" Width="72px"
-                      Text="删除" CssClass="btn auth" OnClick="btnDelete_Click" />
+                      Text="删除" CssClass="btn auth" OnClick="btnDelete_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
             </div>
             <div>
                 <asp:UpdatePanel ID="updtpanel" runat="server">

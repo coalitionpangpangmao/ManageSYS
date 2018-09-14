@@ -112,7 +112,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             string query = "update ht_prod_Season_plan set ISSUED_STATUS = '1'  where ID = '" + id + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "下发计划成功" : "下发计划失败";
-            log_message += "标识:" + id;
+            log_message += "--标识:" + id;
             InsertTlog(log_message);
             bindGrid1();
         }
@@ -198,7 +198,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             string[] subvalue = { GridView1.Rows[index].Cells[1].Text, "12", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-            log_message += "业务数据ID：" + id;
+            log_message += ",业务数据ID：" + id;
             InsertTlog(log_message);
 
             bindGrid1();
@@ -264,7 +264,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
          string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新建季度生产计划成功" : "新建季度生产计划失败";      
-        log_message += "详情:" + string.Join(",",value);
+        log_message += "--详情:" + string.Join(",",value);
         InsertTlog(log_message);
         hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");
         bindGrid1();
@@ -299,7 +299,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                     string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除季度生产计划明细成功" : "删除季度生产计划明细失败";
-                    log_message += "标识:" + mtr_code;
+                    log_message += "--标识:" + mtr_code;
                     InsertTlog(log_message);
                 }
             }
@@ -348,7 +348,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 string[] value = { ((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount1")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount2")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount3")).Text, "0" };
                 
                  log_message = opt.UpDateData(seg, value, "ht_prod_season_plan_Detail", " where QUARTER_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'")== "Success" ? "更新季度生产计划明细成功" : "更新季度生产计划明细失败";
-                log_message += "详情:" + string.Join(",", value);
+                log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
      
             }
@@ -359,7 +359,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 string[] value = { ((DropDownList)GridView2.Rows[Rowindex].FindControl("listProd")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOutput")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount1")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount2")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtAmount3")).Text, hidePlanID.Value };
 
                 log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新建季度生产计划明细成功" : "新建季度生产计划明细失败";
-                log_message += "详情:" + string.Join(",", value);
+                log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
             }
             bindGrid2(hidePlanID.Value);

@@ -168,13 +168,13 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, txtPlanNo.Text, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id , listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
 
         string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "新生产交接班记录失败";
-        log_message += "交接班ID：" + hdID.Value;
+        log_message += ",交接班ID：" + hdID.Value;
         InsertTlog(log_message);
        
     }
     protected void btnExport_Click(object sender, EventArgs e)
     {
-        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xlsx",DateTime.Now);
+        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xlsx",DateTime.Now,false);
      
     }
     protected DataSet gridTypebind()
@@ -268,7 +268,10 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     
         string[] seg = { "SHIFT_MAIN_ID", "mater_code", "mater_vl", "bz_unit", "remark" };
         string[] value = { hdID.Value, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listMater")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtAmount")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtUnit")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtDescpt")).Text };
-        opt.MergeInto(seg, value, 2,"HT_PROD_SHIFTCHG_DETAIL");
+
+        string log_message = opt.MergeInto(seg, value, 2, "HT_PROD_SHIFTCHG_DETAIL") == "Success" ? "保存生产交接班信息成功" : "保存生产交接班信息失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
     }
        
  

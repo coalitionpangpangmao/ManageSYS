@@ -93,7 +93,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
             string[] subvalue = { GridView1.Rows[index].Cells[4].Text+ "备件领用", "13", id, Page.Request.UserHostName.ToString() };
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-           log_message += "业务数据ID：" + id;
+           log_message += ",业务数据ID：" + id;
            InsertTlog(log_message);
 
 

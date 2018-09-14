@@ -60,7 +60,7 @@
                 <div>
                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:Label ID="MSG" runat ="server" />
+                        <asp:HiddenField ID="hideMerge" runat="server" Value="0" />
                   <table class="tablelist">
                       <tr>
                         
@@ -84,7 +84,7 @@
                 <div >
                       <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                    <iframe  id="Frame1" name="Frame1"  height="400"
+                    <iframe  id="Frame1" name="Frame1"  height="400" 
                         style="width: 100%; position: relative;"></iframe>
                            </ContentTemplate>
                     <Triggers>

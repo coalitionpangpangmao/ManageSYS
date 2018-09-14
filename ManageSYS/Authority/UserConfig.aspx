@@ -24,11 +24,11 @@
         <div class="rightinfo">
             <div class="gridtools  auth">
                 <ul class="toolbar">
-                    <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click" Text="添加" />
+                    <asp:Button ID="btnAdd" CssClass="btnhide" runat="server" OnClick="btnAdd_Click" Text="添加" />
                     &nbsp; &nbsp;
        <asp:Button ID="btnView" CssClass="btnview  auth" runat="server" OnClick="btnView_Click" Text="查看" />
                     &nbsp; &nbsp;
-       <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
+       <asp:Button ID="btnDel" CssClass="btnhide" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                      &nbsp; &nbsp;
     <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
                 </ul>
@@ -95,7 +95,7 @@
                                             <td width="120">人员名称
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtName" runat="server" class="dfinput1"></asp:TextBox>
+                                                <asp:TextBox ID="txtName" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
                                             </td>
                                             <td width="120">权重
                                             </td>
@@ -152,11 +152,11 @@
                                             <td width="120">组织机构名称
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist">
+                                                <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist" Enabled="False">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr class ="btnhide">
                                             <td width="120">是否本地
                                             </td>
                                             <td>

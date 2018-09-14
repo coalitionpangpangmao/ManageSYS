@@ -55,7 +55,7 @@
                                        &nbsp;   
                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="80px" OnClick="btnFLow_Click" />        
                                       <asp:Button ID="btnNew" runat="server" Text="新增" class="btnadd auth" OnClick="btnNew_Click" />
-                                    <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel auth" OnClick="btnDel_Click" />
+                                    <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel auth" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                                     <asp:Button ID="btnModify" runat="server" Text="保存" class="btnmodify auth" OnClick="btnModify_Click" />
                                 </span>
                             </div>
@@ -156,12 +156,12 @@
                                     质量标准参数表<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
                                         CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
-                                        <asp:HiddenField ID="hideprc" runat="server" Value="70202" />
+                                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                                        <asp:HiddenField ID="hideprc" runat="server" Value="" />
                                         <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />
                                     </span>
                                 </div>
-                                <div style="width: 900px; overflow: scroll">
+                                <div style="width: 900px; height:300px;overflow: scroll">
                                     <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
                                         <Columns>
                                             <asp:TemplateField>
@@ -212,7 +212,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGridDel_Click" />
+                                                    <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>

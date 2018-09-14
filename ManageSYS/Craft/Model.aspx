@@ -15,42 +15,40 @@
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            initTree();
+        });
+        function initTree() {
             $("#browser").treeview({
                 toggle: function () {
                     console.log("%s was toggled.", $(this).find(">span").text());
                 },
                 persist: "cookie",
                 collapsed: true
-
             });
-           
-           
-        });
-        
+            $("#gridPanel").scrollTop($("#hideY").val());
+        }
         function saveScroll() {
-            var y = $("#gridPanel").scrollTop();            
+            var y = $("#gridPanel").scrollTop();
             $("#hideY").val(y);
         }
-        function tab1Click(code) {
-            $('#tabtop1').click();
-            $("#sessionFrame").contents().find("'*[id$=hdcode]'").attr('value', code);
-            $("#sessionFrame").contents().find("'*[id$=btnUpdate]'").click();
-        }
-        function tab2Click(code) {
-            $('#tabtop2').click();
-            $("#ProcessFrame").contents().find("'*[id$=hdcode]'").attr('value', code);
 
-            $("#ProcessFrame").contents().find("'*[id$=btnUpdate]'").click();
-        }
-
-        function tab3Click(code) {
-            $('#tabtop3').click();
-            $("#ParaFrame").contents().find("'*[id$=hdcode]'").attr('value', code);
-
-            $("#ParaFrame").contents().find("'*[id$=btnUpdate]'").click();
-        }
+        function treeClick(code) {           
+            $('#hdcode').val(code);
+            if (code.length == 5) {
+                $('#tabtop1').click();
+                $('#btnUpdate1').click();
+            }
+            else if (code.length == 10) {
+                $('#tabtop3').click();
+                $('#btnUpdate3').click();
+            }
+            else {
+                $('#tabtop2').click();
+                $('#btnUpdate2').click();
+            }
+            }
         function update() {
-            $('#btnUpdate').click();           
+            $('#btnUpdate').click();
 
         }
     </script>
@@ -68,11 +66,11 @@
         </asp:ScriptManager>
         <div class="mainbox">
             <div class="mainleft">
-                <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
+                <asp:HiddenField ID="hdcode" runat="server" />
+                <asp:UpdatePanel runat="server" ID="UpdatePanel4" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:HiddenField ID="hideY" runat="server" />
-                        <asp:Button ID="btnUpdate" CssClass="btnhide" runat="server" OnClick="btnUpdate_Click" />
-                        <div class="leftinfo" id ="gridPanel" style="overflow: scroll" onscroll="saveScroll()">
+                        <div class="leftinfo" id="gridPanel" style="overflow: scroll" onscroll="saveScroll()">
                             <div class="listtitle">
                                 工艺模型
                             </div>
@@ -80,7 +78,12 @@
                         </div>
                     </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                        <asp:AsyncPostBackTrigger ControlID="btnDel1" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify2" />
+                        <asp:AsyncPostBackTrigger ControlID="btnDel2" />
+                        <asp:AsyncPostBackTrigger ControlID="btnDel" />
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
@@ -95,16 +98,222 @@
                         </ul>
                     </div>
                     <div id="tab1" class="tabson">
-                        <iframe id="sessionFrame" name="sessionFrame" src="Tech_Session.aspx" height="400"
-                            scrolling="no" style="width: 80%; position: absolute"></iframe>
+                        <div class="gridtools  auth">
+                            <asp:Button ID="btnAdd1" CssClass="btnadd auth" runat="server" OnClick="btnAdd1_Click"
+                                Text="新增" />
+                            &nbsp; &nbsp;
+                    <asp:Button ID="btnModify1" CssClass="btnview  auth" runat="server" OnClick="btnModify1_Click"
+                        Text="保存" />
+                            &nbsp; &nbsp;
+                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                            <asp:Button ID="btnUpdate1" runat="server" CssClass="btnhide" OnClick="btnUpdate1_Click" />
+                        </div>
+                        <div class="framelist">
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate>
+                                    <table class="tablelist">
+                                        <tbody>
+                                            <tr>
+                                                <td width="100">工艺段编码</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtCode_1" runat="server" class="dfinput1" Enabled="False"></asp:TextBox></td>
+                                                <td width="100">名称</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtName_1" runat="server" class="dfinput1"></asp:TextBox></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">备注</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtDscrp_1" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                <td width="100">路径配置</td>
+                                                <td title=" ">
+                                                    <asp:CheckBox ID="rdValid_1" runat="server" Text=" " />
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnAdd1" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
+                                    
+
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
                     </div>
                     <div id="tab2" class="tabson">
-                        <iframe id="ProcessFrame" name="ProcessFrame" src="Tech_Equip.aspx" height="400"
-                            scrolling="no" style="width: 80%; position: absolute"></iframe>
+                        <div class="gridtools  auth">
+                            <asp:Button ID="btnAdd2" CssClass="btnadd auth" runat="server" OnClick="btnAdd2_Click"
+                                Text="新增" />
+                            &nbsp; &nbsp;
+                    <asp:Button ID="btnModify2" CssClass="btnview  auth" runat="server" OnClick="btnModify2_Click"
+                        Text="保存" />
+                            &nbsp; &nbsp;
+                    <asp:Button ID="btnDel2" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                            <asp:Button ID="btnUpdate2" runat="server" CssClass="btnhide" OnClick="btnUpdate2_Click" />
+                        </div>
+                        <div class="framelist">
+
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <table class="tablelist">
+                                        <tbody>
+                                            <tr>
+                                                <td>工艺段
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="listSection_2" runat="server" CssClass="drpdwnlist">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td width="100">设备分类
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="listSort_2" runat="server" CssClass="drpdwnlist">
+                                                        <asp:ListItem Value="01">生产设备</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
+
+
+                                            </tr>
+                                            <tr>
+                                                <td width="100">设备编码
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtCode_2" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
+                                                </td>
+
+                                                <td width="100">设备名称
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtName_2" runat="server" class="dfinput1"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">控制设备
+                                                </td>
+                                                <td>
+                                                    <asp:CheckBox ID="ckCtrl_2" runat="server" Text="" />
+                                                </td>
+
+                                                <td width="100">备注
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtDscpt_2" runat="server" class="dfinput1"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnUpdate2" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnAdd2" />
+                                     <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+
+                        </div>
                     </div>
                     <div id="tab3" class="tabson">
-                        <iframe id="ParaFrame" name="ParaFrame" src="Tech_Para.aspx" height="400" scrolling="no"
-                            style="width: 80%; position: absolute"></iframe>
+                        <div class="gridtools  auth">
+                            <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
+                                Text="新增" />
+                            &nbsp; &nbsp;
+                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
+                        Text="保存" />
+                            &nbsp; &nbsp;
+                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+
+                            <asp:Button ID="btnUpdate3" runat="server" CssClass="btnhide" OnClick="btnUpdate3_Click" />
+                        </div>
+                        <div class="framelist">
+                            <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <table class="tablelist">
+                                        <tbody>
+                                            <tr>
+                                                <td width="100">所属工艺段</td>
+                                                <td>
+                                                    <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist"
+                                                        OnSelectedIndexChanged="listSection_SelectedIndexChanged"
+                                                        AutoPostBack="True">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>所属设备</td>
+                                                <td>
+                                                    <asp:DropDownList ID="listEquip" runat="server" CssClass="drpdwnlist">
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">参数点编码</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtCode" runat="server" class="dfinput1"
+                                                        Enabled="False"></asp:TextBox></td>
+                                                <td width="100">参数点名称</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtName" runat="server" class="dfinput1"></asp:TextBox></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">单位</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtUnit" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                <td width="100">是否有效</td>
+                                                <td>
+                                                    <asp:CheckBox ID="rdValid" runat="server" Text=" " Checked="true" />
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td width="100">类型</td>
+                                                <td colspan="3">
+                                                    <p>
+                                                        <asp:CheckBox ID="ckCenterCtrl" runat="server" Text="报表导出" CssClass="ckfloat" />
+                                                        <asp:CheckBox ID="ckRecipePara" runat="server" Text="设定参数" CssClass="ckfloat" />
+                                                        <asp:CheckBox ID="ckSetPara" runat="server" Text="工艺参数" CssClass="ckfloat" />
+                                                        <asp:CheckBox ID="ckQuality" runat="server" Text="质量统计" OnCheckedChanged="ckQuality_CheckedChanged" AutoPostBack="True" CssClass="ckfloat" />
+                                                        <asp:CheckBox ID="ckManul" runat="server" Text="人工录入" CssClass="ckfloat" />
+                                                        <asp:CheckBox ID="ckEqpara" runat="server" Text="设备记录" CssClass="ckfloat" Visible="False" />
+                                                        <asp:CheckBox ID="ckQuaAnalyze" runat="server" Text="质量考核" OnCheckedChanged="ckQuaAnalyze_CheckedChanged" AutoPostBack="True" CssClass="ckfloat" />
+                                                        <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" CssClass="ckfloat" />
+
+                                                    </p>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">设定标签地址</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtSetTag" runat="server" class="dfinput1"
+                                                        Width="200px"></asp:TextBox></td>
+                                                <td width="100">反馈标签地址</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtValueTag" runat="server" class="dfinput1"
+                                                        Width="200px"></asp:TextBox></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">备注</td>
+                                                <td colspan="3">
+                                                    <asp:TextBox ID="txtDscrp" runat="server" class="dfinput1"
+                                                        Width="500px"></asp:TextBox></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnUpdate3" />
+                                    <asp:AsyncPostBackTrigger ControlID="txtCode" />
+                                    <asp:AsyncPostBackTrigger ControlID="listSection" />
+                                    <asp:AsyncPostBackTrigger ControlID="ckQuality" />
+                                    <asp:AsyncPostBackTrigger ControlID="ckQuaAnalyze" />
+                                     <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
+
                     </div>
                 </div>
             </div>

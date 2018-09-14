@@ -239,7 +239,7 @@
                                             班组交接明细列表<span style="position: relative; float: right">
                                                 <asp:Button ID="btnAdd" runat="server" Text="增加" class="btn1 auth" OnClick="btnAdd_Click" />
                                                 <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1 auth" OnClick="btnCkAll_Click" />
-                                                <asp:Button ID="btnDelSel" runat="server" Text="删除" class="btn1 auth" OnClick="btnDelSel_Click" />
+                                                <asp:Button ID="btnDelSel" runat="server" Text="删除" class="btn1 auth" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                                             </span>
                                         </th>
                                     </tr>

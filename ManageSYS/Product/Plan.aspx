@@ -202,7 +202,7 @@
                                     <asp:TemplateField HeaderText="产品名称" SortExpression="产品名称">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listProd" runat="server" DataSource='<%# ddlbind()%>' DataValueField="prod_code"
-                                                CssClass="drpdwnlist" DataTextField="产品规格">
+                                                CssClass="drpdwnlist" DataTextField="产品名称">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -241,6 +241,7 @@
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
+                            <asp:AsyncPostBackTrigger ControlID="GridView2" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID = "btnAddPlan" />
                             <asp:AsyncPostBackTrigger ControlID ="btnSavePath" />

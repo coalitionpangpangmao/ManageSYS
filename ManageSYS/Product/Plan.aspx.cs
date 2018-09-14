@@ -22,7 +22,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
+        string query = "select distinct g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
         if (txtStart.Text != "" && txtStart.Text != "")
             query += " and PLAN_TIME between '" + txtStart.Text + "' and  '" + txtStop.Text + "'";
         query += " order by g.id";
@@ -122,7 +122,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string query = "update ht_prod_month_plan set ISSUED_STATUS = '1'  where ID = '" + id + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "下发计划成功" : "下发计划失败";
-            log_message += "标识:" + id;
+            log_message += "--标识:" + id;
             InsertTlog(log_message);
         }
         else
@@ -210,7 +210,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string[] subvalue = { GridView1.Rows[index].Cells[2].Text, "06", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-            log_message += "业务数据ID：" + id;
+            log_message += ",业务数据ID：" + id;
             InsertTlog(log_message);
 
             bindGrid1();
@@ -289,7 +289,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         string[] value = { planname + "生产月计划", planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
 
         string log_message = opt.InsertData(seg, value, "ht_prod_month_plan") == "Success" ? "新建月度生产计划成功" : "新建月度生产计划失败";
-        log_message += "详情:" + string.Join(",", value);
+        log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);        
         hidePlanID.Value = opt.GetSegValue(query, "ID");
 
@@ -326,7 +326,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                     string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除生产计划明细成功" : "删除生产计划明细失败";
-                    log_message += "标识:" + mtr_code;
+                    log_message += "--标识:" + mtr_code;
                     InsertTlog(log_message);
                 }
             }
@@ -347,7 +347,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "删除月度生产计划明细成功" : "删除月度生产计划明细失败";
-            log_message += "标识:" + mtr_code;
+            log_message += "--标识:" + mtr_code;
             InsertTlog(log_message);
             bindGrid2(hidePlanID.Value);
         }
@@ -370,16 +370,22 @@ public partial class Product_Plan : MSYS.Web.BasePage
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
             string path_code = ((TextBox)row.FindControl("txtPathCode")).Text;
-            if (mtr_code.Substring(8, 7) != prod_code)
-                opt.UpDateOra("delete from ht_prod_month_plan_detail where plan_no = '" + mtr_code + "'");
+          
             if (mtr_code == "" || mtr_code.Substring(8,7) != prod_code)
             {
+                if (mtr_code.Length >= 17 && mtr_code.Substring(8, 7) != prod_code)
+                    opt.UpDateOra("delete from ht_prod_month_plan_detail where plan_no = '" + mtr_code + "'");
                 string planno = opt.GetSegValue("select nvl(Max(substr(PLAN_NO,16,2)),0)+1 as CODE from ht_prod_month_plan_detail where month_plan_ID = '" + hidePlanID.Value + "'", "CODE");
                 mtr_code = "PD" + txtYear.Text + listMonth.SelectedValue + prod_code + planno.PadLeft(2, '0');
+              
             }
             string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output", "path_code","is_del" };
             string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code ,"0"};
-            opt.MergeInto(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL");
+          
+
+            string log_message = opt.MergeInto(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL") == "Success" ? "保存生产计划详情成功" : "生产计划详情失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);
 
             if (path_code != " ")
             {
@@ -396,7 +402,18 @@ public partial class Product_Plan : MSYS.Web.BasePage
     private void insertSectionPath(string path_code, string planno)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string path = opt.GetSegValue("select path_code from ht_prod_month_plan_detail where plan_no = '" + planno + "'", "path_code");
+        DataSet pathdata = opt.CreateDataSetOra("select  pathcode  from ht_pub_path_plan where prod_plan = '" + planno + "' order by section_code ");
+        string path = "";
+        if (pathdata != null && pathdata.Tables[0].Rows.Count > 0)
+        {
+            bool first = false;
+            foreach(DataRow row in pathdata.Tables[0].Rows)
+            {
+                if(first) path += "-";
+                path += row["pathcode"].ToString();
+                first = true;
+            }
+        }      
         if (path == path_code)
             return;
         string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
@@ -472,6 +489,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 if (query != "")
                 {
                     query += " and pathcode = '" + list.SelectedValue + "'";
+                
                     DataSet set = opt.CreateDataSetOra(query);
                     for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
                     {
@@ -485,7 +503,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                         ck.Text = set.Tables[0].Columns[j].Caption;
                         GridView4.Rows[i].Cells[2].Controls.Add(ck);
                     }
-                }
+                }               
             }
         }
 
@@ -541,20 +559,22 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 pathcode += " ";
         }
         ((TextBox)GridView2.Rows[index].FindControl("txtPathCode")).Text = pathcode;
-
-        string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
-        List<String> commandlist = new List<String>();
-        for (int i = 0; i < GridView4.Rows.Count; i++)
+        if (planno != "")
         {
-            if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
+            string[] seg = { "SECTION_CODE", "PROD_PLAN", "PATHCODE", "PATHNAME", "CREATE_TIME" };
+            List<String> commandlist = new List<String>();
+            for (int i = 0; i < GridView4.Rows.Count; i++)
             {
-                string[] value = { GridView4.DataKeys[i].Value.ToString(), planno, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                if (((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue != "")
+                {
+                    string[] value = { GridView4.DataKeys[i].Value.ToString(), planno, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedValue, ((DropDownList)GridView4.Rows[i].FindControl("listpath")).SelectedItem.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
 
-                commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
+                    commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
+                }
+
             }
-
+            opt.TransactionCommand(commandlist);
         }
-        opt.TransactionCommand(commandlist);
 
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "close", "$('.shade').fadeOut(100);", true);
     }

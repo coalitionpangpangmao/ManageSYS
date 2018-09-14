@@ -37,7 +37,7 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
             string[] value = { txtCodeT.Text, txtNameT.Text, listLineT.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") ,"0"};          
 
             string log_message = opt.MergeInto(seg, value, 1, "ht_sys_team") == "Success" ? "班组配置保存成功" : "班组配置保存失败";
-            log_message += "详情:" + string.Join(",", value);
+            log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
        
         bindGrid1();
@@ -60,7 +60,7 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
             string[] value = { txtCodeS.Text, txtNameS.Text, listLineS.SelectedValue, txtStarttime.Text, txtEndtime.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToInt16(ckInter.Checked).ToString() ,"0"};           
 
             string log_message = opt.MergeInto(seg, value, 1, "ht_sys_shift") == "Success" ? "班时配置保存成功" : "班时配置保存失败";
-            log_message += "详情:" + string.Join(",", value);
+            log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
         
         bindGrid2();
@@ -73,7 +73,7 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
         string query = "update ht_sys_team set IS_DEL = '1'  where TEAM_CODE = '" + GridView1.Rows[rowIndex].Cells[1].Text + "'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        string log_message = opt.UpDateOra(query) == "Success" ? "删除班组成功" : "删除班组失败";
-       log_message += "标识:" + GridView1.Rows[rowIndex].Cells[1].Text;
+       log_message += "--标识:" + GridView1.Rows[rowIndex].Cells[1].Text;
        InsertTlog(log_message);
         bindGrid1();
     }
@@ -85,7 +85,7 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
         string query = "update ht_sys_shift set IS_DEL = '1'  where SHIFT_CODE = '" + GridView2.Rows[rowIndex].Cells[1].Text + "'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        string log_message = opt.UpDateOra(query) == "Success" ? "删除班时成功" : "删除班时失败";
-       log_message += "标识:" + GridView2.Rows[rowIndex].Cells[1].Text;
+       log_message += "--标识:" + GridView2.Rows[rowIndex].Cells[1].Text;
        InsertTlog(log_message);
         bindGrid2();
     }

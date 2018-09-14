@@ -12,18 +12,43 @@ public partial class test_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        UpdateEquipInfo info = new UpdateEquipInfo();
-        string str = info.GetXmlStr();
+      //  UpdateUserInfo info = new UpdateUserInfo();
+      ////  string str = info.GetXmlStr();
+      //  info.InsertLocalFromMaster();
+        //UpdateMaterialInfo info2 = new UpdateMaterialInfo();
+        //str = info2.GetXmlStr();
 
-        UpdateMaterialInfo info2 = new UpdateMaterialInfo();
-        str = info2.GetXmlStr();
-
-        UpdateMarclassInfo info3 = new UpdateMarclassInfo();
-        str = info2.GetXmlStr();    
+        //UpdateMarclassInfo info3 = new UpdateMarclassInfo();
+        //str = info2.GetXmlStr();    
     }
     protected void bind()
     {
-       
+        /*
+        string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新建季度生产计划成功" : "新建季度生产计划失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+         * 
+         * 
+           string log_message = opt.UpDateOra(query) == "Success" ? "删除权限成功" : "删除权限失败";
+       log_message += "--标识:" + id;
+        InsertTlog(log_message);
+         
+         string log_message;
+            if (opt.MergeInto(seg, value, 1, "HT_PUB_TECH_SECTION") == "Success")
+            {
+                log_message = "保存工艺段成功";
+                tvHtml = InitTree();
+                opt.bindDropDownList(listSection_2, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
+                opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
+                ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('保存成功');", true);
+            }
+            else
+                log_message = "保存工艺段失败";
+            log_message += "--数据详情:" + string.Join("-",value);
+            InsertTlog(log_message);
+         * */
+
+
     }
   
     [WebMethod]

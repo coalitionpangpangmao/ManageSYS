@@ -7,12 +7,8 @@
     <title>工艺检查项目标准</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-        function GridClick() {
-            $('#tabtop2').click();
-        }
-    </script>
+   
+  
 </head>
 <body>
     <form id="form1" runat="server">
@@ -63,7 +59,7 @@
                     检查项目列表 <span style="position: relative; float: right">
                      
                         <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnGrid1CkAll_Click" />
-                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnGrid1DelSel_Click" /></span></div>
+                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnGrid1DelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/></span></div>
                 <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>

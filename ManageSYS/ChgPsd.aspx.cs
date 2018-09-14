@@ -32,7 +32,7 @@ public partial class Authority_ChgPsd : MSYS.Web.BasePage
                         string userPwd = MSYS.Security.Encrypt.GetMD5String(txtPwd1.Text);
 
                         string log_message = opt.UpDateOra("update ht_svr_user set PASSWORD = '" + userPwd + "' , PSD = '" + txtPwd1.Text + "' where ID = '" + userID + "'") == "Success" ? "修改密码成功" : "修改密码失败";
-                        log_message += "用户ID:" + userID;
+                        log_message += "--用户ID:" + userID;
                         InsertTlog(log_message);
                         string returnUrl = Request["ReturnUrl"];
                         if (string.IsNullOrEmpty(returnUrl))

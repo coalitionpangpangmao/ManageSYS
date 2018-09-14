@@ -151,7 +151,7 @@
                 配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                 </span>
             </div>
             <div>
@@ -189,7 +189,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click" />
+                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -214,7 +214,7 @@
                 配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2" runat="server"
                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" />
                     <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
-                    <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" />
+                    <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                 </span>
             </div>
             <div>
@@ -252,7 +252,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click" />
+                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

@@ -195,14 +195,19 @@ public partial class Quality_EventDeal : MSYS.Web.BasePage
         {
             string[] seg = { "RECORD_ID", "SORT", "STATUS", "REASON", "SCENE", "DEAL", "REMARK" };
             string[] value = { txtEventID.Text, listStyle.SelectedValue, "3", txtReason.Text, txtScean.Text, txtDeal.Text, txtPlus.Text };
-            opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+            
+            string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "处理工艺质量事件成功" : "处理工艺质量事件失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);
             bindgrid1();
         }
         else
         {
             string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "REASON", "SCENE", "DEAL", "REMARK" };
             string[] value = { txtEventID.Text, listStyle.SelectedValue, "3", txtReason.Text, txtScean.Text, txtDeal.Text, txtPlus.Text };
-            opt.MergeInto(seg, value, 2, "HT_QLT_INSPECT_EVENT");
+            string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "处理工艺质量事件成功" : "处理工艺质量事件失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);
             bindgrid2();
         }
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);

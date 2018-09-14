@@ -108,7 +108,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                 commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_coat_formula"));
                 commandlist.Add("update ht_pub_prod_design set coat_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "回填夜配方保存成功" : "回填夜配方保存失败";
-            log_message += ",保存参数：" + string.Join(" ", value);
+            log_message += ",保存参数：" + string.Join(",", value);
             InsertTlog(log_message);
         }
         bindGrid1();

@@ -206,7 +206,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
             string[] value = { txtName.Text, listEqType.SelectedValue, txtEditor.Text, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text };
 
             string log_message = opt.InsertData(seg, value, "HT_EQ_FAULT_DB") == "Success" ? "故障信息入库成功" : "故障信息入库失败";
-            log_message += "详情:" + string.Join(",", value);
+            log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
        
             bindGrid();

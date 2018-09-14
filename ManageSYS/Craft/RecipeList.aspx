@@ -42,7 +42,7 @@
                                 配方详情<span style="position: relative; float: right"><span style="position: relative;
                                     float: right">
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnDel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDel_Click" />
+                                    <asp:Button ID="btnDel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                 </span></span>
                             </div>
                         </td>

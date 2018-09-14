@@ -56,7 +56,7 @@
                     <span style="position: relative; float: right" class="click2">
                         <asp:Button ID="btnGrid1Add" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnGrid1Add_Click" />
                         <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid1CkAll_Click" />
-                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid1DelSel_Click" />
+                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid1DelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         
                     </span>
                 </div>
@@ -91,7 +91,7 @@
                     <span style="position: relative; float: right">
                         <asp:Button ID="btnGrid2Add" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnGrid2Add_Click" />
                         <asp:Button ID="btnGrid2CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid2CkAll_Click" />
-                        <asp:Button ID="btnGrid2DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid2DelSel_Click" />
+                        <asp:Button ID="btnGrid2DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid2DelSel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                     </span>
                 </div>
                 <div>

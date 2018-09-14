@@ -42,7 +42,7 @@
                                             用户名
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtName" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:TextBox ID="txtName" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
                                         </td>
                                         
                                     </tr>

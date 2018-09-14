@@ -58,13 +58,13 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     {
         string query = "";     
         if (listtype.SelectedValue == "")
-            query = "select h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0' union select h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
+            query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0' union select h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
         else
         {
             if (listtype.SelectedValue == "0")
-                query = "select h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0'";
+                query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0'";
             else
-                query = "select h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
+                query = "select distinct h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
             if(listSection.SelectedValue != "")
                 query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
         }
@@ -132,16 +132,17 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void btnGrid1CkAll_Click(object sender, EventArgs e)//全选
     {
-        try
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked = true;
-            }
+            if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked = check;
+
         }
     }
 
@@ -158,7 +159,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                     string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where INSPECT_CODE = '" + projcode + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                    string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查项目成功" : "删除工艺检查项目失败";
-                   log_message += "标识:" + projcode;
+                   log_message += "--标识:" + projcode;
                    InsertTlog(log_message);
                 }
             }           

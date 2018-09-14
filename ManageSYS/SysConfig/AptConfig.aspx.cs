@@ -96,8 +96,11 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();        
     
         string[] seg = { "F_CODE", "F_NAME", "F_PARENTID", "F_PRITYPE","F_WEIGHT", "F_KEY", "F_ROLE" };
-        string[] value = { txtCode.Text, txtName.Text, listParent.SelectedValue, txtType.Text,txtWeight.Text, txtSapID.Text,  listRole.SelectedValue };      
-        opt.MergeInto(seg, value,1, "HT_SVR_ORG_GROUP");
+        string[] value = { txtCode.Text, txtName.Text, listParent.SelectedValue, txtType.Text,txtWeight.Text, txtSapID.Text,  listRole.SelectedValue };
+
+        string log_message = opt.MergeInto(seg, value, 1, "HT_SVR_ORG_GROUP") == "Success" ? "保存部门信息成功" : "保存部门信息失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindData();
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
     }
@@ -110,7 +113,7 @@ public partial class SysConfig_AptConfig : MSYS.Web.BasePage
             {
                 string query = "delete from HT_SVR_ORG_GROUP where F_CODE = '" + GridView1.DataKeys[i].Value.ToString() + "'";
                 string log_message = opt.UpDateOra(query) == "Success" ? "删除部门成功" : "删除部门失败";
-                log_message += "标识:" + GridView1.DataKeys[i].Value.ToString();
+                log_message += "--标识:" + GridView1.DataKeys[i].Value.ToString();
                 InsertTlog(log_message);
             }
         }

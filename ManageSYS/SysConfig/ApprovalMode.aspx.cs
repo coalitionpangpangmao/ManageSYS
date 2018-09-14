@@ -48,10 +48,19 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
 
             string[] seg = { "pz_type", "pz_type_name"};
             string[] value = { txtCode.Text, txtName.Text };
-            opt.MergeInto(seg, value, 1,"ht_pub_aprv_type");
-      
-        bindData(txtCode.Text);
-        tvHtml = InitTree();
+           
+            string log_message;
+            if ( opt.MergeInto(seg, value, 1,"ht_pub_aprv_type") == "Success")
+            {
+                log_message = "保存审批模版成功";
+                bindData(txtCode.Text);
+                tvHtml = InitTree();
+            }
+            else
+                log_message = "保存审批模版失败";
+            log_message += "--数据详情:" + string.Join(",", value);
+            InsertTlog(log_message);
+       
 
     }
     
@@ -146,7 +155,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
                     string query = "delete from ht_pub_aprv_model   where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[i].FindControl("txtOrder")).Text + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                    string log_message = opt.UpDateOra(query) == "Success" ? "审批流程表删除成功" : "审批流程表删除失败";
-                   log_message += "标识:" + ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue;
+                   log_message += "--标识:" + ((DropDownList)GridView1.Rows[i].FindControl("listType")).SelectedValue;
                    InsertTlog(log_message);                 
                 }
             }
@@ -167,7 +176,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
             string query = "delete from ht_pub_aprv_model   where PZ_TYPE = '" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + "' and INDEX_NO = '" + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text + "'";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            string log_message = opt.UpDateOra(query) == "Success" ? "审批流程表删除成功" : "审批流程表删除失败";
-           log_message += "标识:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue;
+           log_message += "--标识:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue;
            InsertTlog(log_message);          
             bindData(txtCode.Text);
         }
@@ -191,7 +200,7 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
                     string[] value = { ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text, ((DropDownList)GridView1.Rows[Rowindex].FindControl("listRole")).SelectedValue, ((TextBox)GridView1.Rows[Rowindex].FindControl("txtFlowname")).Text };                    
 
                     string log_message = opt.MergeInto(seg, value, 2, "ht_pub_aprv_model") == "Success" ? "模板流程表保存成功" : "模板流程表保存失败";
-                    log_message += "保存参数:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text;
+                    log_message += ",保存参数:" + ((DropDownList)GridView1.Rows[Rowindex].FindControl("listType")).SelectedValue + " " + ((TextBox)GridView1.Rows[Rowindex].FindControl("txtOrder")).Text;
                     InsertTlog(log_message);  
           
                 bindData(txtCode.Text);

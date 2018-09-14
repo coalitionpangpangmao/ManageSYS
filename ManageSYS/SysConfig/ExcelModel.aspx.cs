@@ -14,8 +14,10 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList(listReport, "select F_ID,F_NAME  from HT_SYS_EXCEL_BOOK  order by F_ID ", "F_NAME", "F_ID");
             tvHtml = InitTreeR();
-            SetPara("0000");
+            SetPara("00000");
         }
     }
 
@@ -23,6 +25,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       
         DataSet data = opt.CreateDataSetOra("select distinct F_TYPE from ht_sys_excel_book   order by F_TYPE ");
        
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -46,7 +49,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select F_ID,F_NAME  from HT_SYS_EXCEL_BOOK where F_TYPE = '" + type + "'  order by F_ID ");
-        opt.bindDropDownList(listReport, "select F_ID,F_NAME  from HT_SYS_EXCEL_BOOK  order by F_ID", "F_NAME", "F_ID");
+       
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul >";
@@ -145,10 +148,12 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     }
     private void SetPara(string para)
     {
-        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$" };
+        if (para.Length < 5)
+            para = para.PadRight(5, '0');
+        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$","$merge$" };
         ArrayList plist = new ArrayList();
         ArrayList tlist = new ArrayList();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (para.Substring(i, 1) == "1")
                 plist.Add(paratable[i]);
@@ -162,18 +167,18 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     }
     private string GetPara()
     {
-        string para = "0000";
-        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$" };
+        string para = "00000";
+        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$","$merge$" };
         ListItemCollection list = new ListItemCollection();
         list = Paralist.Items;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (list.FindByValue(paratable[i]) != null)
             {
                 if (i == 0)
                     para = "10000";
-                else if (i == 3)
-                    para = para.Substring(0, 3) + "1";
+                else if (i == 4)
+                    para = para.Substring(0, 4) + "1";
                 else
                     para = para.Substring(0, i) + "1" + para.Substring(i + 1);
             }
@@ -193,7 +198,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
                 string[] seg = { "F_PARA", "F_TYPE" };
                 string[] value = { GetPara(),listType.SelectedValue };
                 string log_message = opt.UpDateData(seg, value, "HT_SYS_EXCEL_BOOK", " where F_NAME = '" + ReportName.Text + "'") == "Success" ? "更新报表成功" : "更新报表失败";
-                log_message += "标识:" + ReportName.Text;
+                log_message += "--标识:" + ReportName.Text;
                 InsertTlog(log_message);               
 
             }
@@ -202,7 +207,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
                 string[] seg = { "F_PARA", "F_NAME", "F_SYNCHRO_TIME", "F_TYPE" };
                 string[] value = { GetPara(), ReportName.Text, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),listType.SelectedValue };
                 string log_message = opt.InsertData(seg, value, "HT_SYS_EXCEL_BOOK") == "Success" ? "插入报表成功" : "插入报表失败";
-                log_message += "标识:" + ReportName.Text;
+                log_message += "--标识:" + ReportName.Text;
                 InsertTlog(log_message);
             }
             tvHtml = InitTreeR();
@@ -222,7 +227,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
 
         query = "delete from HT_SYS_EXCEL_BOOK where F_NAME = '" + ReportName.Text.Trim() + "'";
         string log_message = opt.UpDateOra(query) == "Success" ? "删除报表成功" : "删除报表失败";
-        log_message += "标识:" + ReportName.Text;
+        log_message += "--标识:" + ReportName.Text;
         InsertTlog(log_message);
         tvHtml = InitTreeR();
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);

@@ -59,6 +59,7 @@
                 <div>
                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
+                          <asp:HiddenField ID="hideMerge" runat="server" Value="0"/>
                   <table class="tablelist">
                       <tr>
                         

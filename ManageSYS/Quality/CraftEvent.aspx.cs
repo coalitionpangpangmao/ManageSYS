@@ -225,20 +225,17 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
 
     protected void btnSelAll1_Click(object sender, EventArgs e)
     {
-        bool check = true;
-        if ("全选" == btnSelAll.Text)
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            check = true;
-            btnSelAll.Text = "取消";
+            if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
+                ckno++;
         }
-        else
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            check = false;
-            btnSelAll.Text = "全选";
-        }
-        foreach (GridViewRow row in GridView1.Rows)
-        {
-            ((CheckBox)row.FindControl("ck")).Checked = check;
+            ((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked = check;
+
         }
     }
     protected void btnIgnore1_Click(object sender, EventArgs e)
@@ -253,7 +250,10 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
                 string[] seg = { "RECORD_ID", "SORT", "SCORE", "STATUS", "CREAT_ID", "CREATE_TIME" };
                 string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(), row.Cells[10].Text, "1", user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+
+                string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "保存工艺质量事件成功" : "保存工艺质量事件失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
                
             }
         }
@@ -270,7 +270,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
                 string[] seg = { "RECORD_ID", "SORT", "SCORE", "STATUS", "CREAT_ID", "CREATE_TIME" };
                 string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(), row.Cells[10].Text, "2", user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+                string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "保存工艺质量事件成功" : "保存工艺质量事件失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
             }
         }
         bindgrid1();
@@ -284,7 +286,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "SORT", "SCORE", "STATUS", "CREAT_ID", "CREATE_TIME" };
         string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(), row.Cells[10].Text, "1", user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+        string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "忽略工艺质量事件成功" : "忽略工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid1();
     }
     protected void btngrid1Sure_Click(object sender, EventArgs e)
@@ -296,7 +300,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "SORT", "SCORE", "STATUS", "CREAT_ID", "CREATE_TIME" };
         string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(), row.Cells[10].Text, "2", user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+        string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "确认工艺质量事件成功" : "确认工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid1();
     }
 
@@ -309,7 +315,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "SORT",  "STATUS" };
         string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(),  "4" };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+        string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid1();
     }
 
@@ -322,7 +330,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "SORT", "STATUS" };
         string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(), "6" };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT");
+        string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "完结工艺质量事件成功" : "完结工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid1();
     }
   
@@ -331,20 +341,17 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
     /// </summary>
     protected void btnSelAll_Click(object sender, EventArgs e)
     {
-        bool check = true;
-        if ("全选" == btnSelAll.Text)
+        int ckno = 0;
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            check = true;
-            btnSelAll.Text = "取消";
+            if (((CheckBox)GridView2.Rows[i].FindControl("ck")).Checked)
+                ckno++;
         }
-        else
+        bool check = (ckno < GridView2.Rows.Count);
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            check = false;
-            btnSelAll.Text = "全选";
-        }
-        foreach (GridViewRow row in GridView2.Rows)
-        {
-            ((CheckBox)row.FindControl("ck")).Checked = check;
+            ((CheckBox)GridView2.Rows[i].FindControl("ck")).Checked = check;
+
         }
     }
     protected void btnIgnore_Click(object sender, EventArgs e)
@@ -358,7 +365,11 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
                 string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS","SCORE", "CREAT_ID", "CREATE_TIME" };
                 string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "1", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT");
+                
+
+                string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "保存工艺质量事件成功" : "保存工艺质量事件失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
             }
         }
         bindgrid2();
@@ -374,7 +385,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
                 string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "SCORE", "CREAT_ID", "CREATE_TIME" };
                 string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "2", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT");
+                string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "确认工艺质量事件成功" : "确认工艺质量事件失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
             }
         }
         bindgrid2();
@@ -388,7 +401,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "SCORE", "CREAT_ID", "CREATE_TIME" };
         string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "1", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT");
+        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "忽略工艺质量事件成功" : "忽略工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid2();
     }
     protected void btngrid2Sure_Click(object sender, EventArgs e)
@@ -400,7 +415,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "SCORE", "CREAT_ID", "CREATE_TIME" };
         string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "2", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT");
+        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "保存工艺质量事件成功" : "保存工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid2();
     }
 
@@ -413,7 +430,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS" };
         string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "4"};
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT");
+        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid2();
     }
 
@@ -426,7 +445,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS" };
         string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "6" };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT");
+        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "完结工艺质量事件成功" : "完结工艺质量事件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindgrid2();
     }
 }

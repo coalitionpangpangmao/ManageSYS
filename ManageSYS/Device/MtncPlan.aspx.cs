@@ -144,7 +144,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             string[] subvalue = { GridView1.Rows[index].Cells[1].Text, "14", id, Page.Request.UserHostName.ToString() };
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-           log_message += "业务数据ID：" + id;
+           log_message += ",业务数据ID：" + id;
            InsertTlog(log_message);
 
             
@@ -428,7 +428,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             string[] value = { ((DropDownList)GridView2.Rows[rowIndex].FindControl("listGridarea")).SelectedValue, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listGridEq")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridReason")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridcntnt")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridExptime")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridremark")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtCode.Text };
 
             string log_message = opt.InsertData(seg, value, "ht_eq_mt_plan_detail") == "Success" ? "新建维修明细成功" : "新建维修明细失败";
-            log_message += "详情:" + string.Join(",", value);
+            log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
        
         }
@@ -455,7 +455,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
 
         }
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "按模版生成维修计划成功" : "按模版生成维修计划失败";
-        log_message += "维修计划ID：" + txtCode.Text;
+        log_message += ",维修计划ID：" + txtCode.Text;
         InsertTlog(log_message);      
         bindGrid2(txtCode.Text);
     }

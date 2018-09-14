@@ -53,7 +53,7 @@ public partial class Quality_Report : MSYS.Web.BasePage
         if (filename != "NoRecord")
         {
             DateTime time = DateTime.Now;
-            CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm",time);
+            CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm", time, hideMerge.Value == "0");
             string path = "../TEMP/" + filename + time.ToString("HHmmss") + ".htm";
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "refresh", " $('#Frame1').attr('src','" + path + "');", true);
 
@@ -64,7 +64,7 @@ public partial class Quality_Report : MSYS.Web.BasePage
     {
          MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
-        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xlsx",DateTime.Now);
+        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xlsx", DateTime.Now, hideMerge.Value == "0");
         //ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02", ".xlsx");
     }
 
@@ -72,7 +72,8 @@ public partial class Quality_Report : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string para = opt.GetSegValue("select F_PARA from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_PARA");
-        if (para.Length == 4)
+        if (para.Length < 5) para = para.PadRight(5, '0');
+        if (para.Length == 5)
         {
             if (para.Substring(0, 1) == "1")
             {
@@ -121,6 +122,7 @@ public partial class Quality_Report : MSYS.Web.BasePage
                 lab4.Visible = false;
                 listTeam.SelectedValue = "";
             }
+            hideMerge.Value = para.Substring(4, 1);
         }
     }
 }

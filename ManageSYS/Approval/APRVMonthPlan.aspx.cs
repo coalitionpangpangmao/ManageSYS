@@ -246,7 +246,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
              status = "1";
          string[] seg = {txtComments.Text,status};
          string log_message = MSYS.Common.AprvFlow.authorize(hideAprvid.Value, seg) ? "审批成功" : "审批失败";
-         log_message += hideAprvid.Value + string.Join(" ",seg);
+         log_message += hideAprvid.Value + string.Join(",",seg);
          InsertTlog(log_message);  
          bindGrid1();
     }

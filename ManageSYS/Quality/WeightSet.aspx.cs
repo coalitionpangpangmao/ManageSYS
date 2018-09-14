@@ -62,7 +62,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        return opt.CreateDataSetOra("select section_name, section_code  from ht_pub_tech_section  where is_del = '0' and is_valid = '1' order by section_code");
+        return opt.CreateDataSetOra("select distinct r.section_code ,r.section_name   from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code");
     }
 
     protected void btnGrid1Save_Click(object sender, EventArgs e)
@@ -74,7 +74,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
             string log_message = opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue + "'") == "Success" ? "修改工艺段质量评估权重成功" : "修改工艺段质量评估权重失败";
-            log_message += "工艺段:" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue;
+            log_message += ",工艺段:" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue;
             InsertTlog(log_message);
     }
 
@@ -87,7 +87,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         string log_message = opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[rowindex].Value.ToString() + "'") == "Success" ? "更改质量评估权重成功" : "更改质量评估权重失败";
-        log_message += "详情:" + string.Join(",", value);
+        log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
     }
   

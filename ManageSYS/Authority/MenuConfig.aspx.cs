@@ -133,6 +133,9 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                 string[] seg = { "ID", "NAME", "PID", "MENULEVEL" };
                 string[] value = { prtID, txtMenu.Text, listPrt.SelectedValue, listLevel.SelectedValue };
                 opt.MergeInto(seg, value, 1,"HT_SVR_PRT_MENU");
+                string log_message = opt.MergeInto(seg, value, 1, "ht_svr_sys_menu") == "Success" ? "保存父级菜单成功" : "保存父级菜单失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
                 BindList(RightTree.Nodes, "");
             }
     
@@ -143,7 +146,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string query = "delete from HT_SVR_PRT_MENU where NAME = '" + txtMenu.Text + "'";
             string log_message = opt.UpDateOra(query) == "Success" ? "删除父级菜单成功" : "删除父级菜单失败";
-            log_message += "标识:" + txtMenu.Text;
+            log_message += "--标识:" + txtMenu.Text;
             InsertTlog(log_message);
             BindList(RightTree.Nodes, "");
             SetBlank();
@@ -183,7 +186,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
              value[1] = "子框架" + ((DropDownList)row.FindControl("listPrt")).SelectedItem.Text;
        
         string log_message =  opt.InsertData(seg, value, "ht_svr_sys_menu")== "Success" ? "插入操作权限成功" : "插入操作权限失败";
-        log_message += "详情:" + string.Join(",", value);
+        log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
          
         bindData();
@@ -200,7 +203,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         commandlist.Add("update  ht_inner_map  set is_del = '1' where MAPID = '" + id + "'");
         commandlist.Add("update ht_svr_sys_menu set IS_DEL = '1' where F_MENU = '" + ((TextBox)GridView1.Rows[rowIndex].FindControl("txtMenu")).Text + "'");
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除Map表映射成功" : "删除Map表映射失败";
-        log_message += "标识:" + id;
+        log_message += "--标识:" + id;
         InsertTlog(log_message);
         bindData();
     }

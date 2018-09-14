@@ -142,7 +142,7 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
                 commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_aux_formula"));
                 commandlist.Add("update ht_pub_prod_design set aux_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "辅料配方保存成功" : "辅料配方保存失败";
-                log_message += ",辅料配方保存信息：" + string.Join(" ", value);
+                log_message += ",辅料配方保存信息：" + string.Join(",", value);
                 InsertTlog(log_message);
         
             bindGrid();

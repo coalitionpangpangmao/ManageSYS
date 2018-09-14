@@ -81,7 +81,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
        
        
         string log_message =  opt.TransactionCommand(commandlist) == "Success" ? "分类修改成功" : "分类修改失败";
-        log_message += ",分类信息：" + string.Join(" ", value);
+        log_message += ",分类信息：" + string.Join(",", value);
         InsertTlog(log_message);
         bindGrid(txtCode.Text);
 
@@ -155,7 +155,7 @@ public partial class Craft_Materia : MSYS.Web.BasePage
         string delSQL = "delete from HT_PUB_MATERIEL where MATERIAL_CODE= '" + code + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.UpDateOra(delSQL) == "Success" ? "删除物料信息成功" : "删除物料信息失败";
-        log_message += "标识:" + code;
+        log_message += "--标识:" + code;
         InsertTlog(log_message);
         bindGrid(txtCode.Text);//重新绑定
     }

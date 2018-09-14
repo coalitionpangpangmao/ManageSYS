@@ -130,7 +130,7 @@
                                     至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"></asp:TextBox>
                                     &nbsp;
                                     <asp:Button ID="btnAddtime" runat="server" Text="添加"  OnClick = "btnAddtime_Click" CssClass="btn1 auth" />
-                                     <asp:Button ID="btnDeltime" runat="server" Text="删除"  OnClick = "btnDeltime_Click" CssClass="btn1 auth" />
+                                     <asp:Button ID="btnDeltime" runat="server" Text="删除"  OnClick = "btnDeltime_Click" CssClass="btn1 auth" OnClientClick="javascript:return confirm('确认删除？');"/>
                                 </th>
                             </tr>
                             <tbody>

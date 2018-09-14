@@ -91,7 +91,7 @@
                                 设备列表<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
                                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                 </span>
                             </div>
                             <div style="width: 100%; height: 350px; overflow: scroll">

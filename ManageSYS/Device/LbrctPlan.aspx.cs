@@ -145,7 +145,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
             string[] subvalue = { GridView1.Rows[index].Cells[1].Text, "16", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-            log_message += "业务数据ID：" + id;
+            log_message += ",业务数据ID：" + id;
             InsertTlog(log_message);
 
 
@@ -459,7 +459,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
 
             }
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "按模版生成维保计划成功" : "按模版生成维保计划失败";
-            log_message += "计划ID号：" + txtCode.Text;
+            log_message += ",计划ID号：" + txtCode.Text;
             InsertTlog(log_message);
        
         }

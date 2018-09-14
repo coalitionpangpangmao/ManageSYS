@@ -9,7 +9,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
 </head>
 <body>
-      <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
@@ -27,7 +27,7 @@
                 <div class="listtitle">
                     查询条件<span style="position: relative; float: right">
                         <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
-                       
+
                     </span>
                 </div>
                 <table class="tablelist">
@@ -46,7 +46,7 @@
                             <td width="100">记录时间
                             </td>
                             <td width="100">
-                                <asp:TextBox ID="txtRecordtime" runat="server"   CssClass ="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                <asp:TextBox ID="txtRecordtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                         </tr>
                     </tbody>
@@ -55,28 +55,27 @@
                     物料记录 <span style="position: relative; float: right">
                         <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
                             Text="新增" />
-                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging="True" DataKeyNames ="rowid"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" DataKeyNames="rowid"
                             AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
-                            <Columns>  
-                                <asp:TemplateField HeaderText="审批状态">
+                            <Columns>
+                                <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
-                                </asp:TemplateField>                            
+                                </asp:TemplateField>
                                 <asp:BoundField DataField="计划号" HeaderText="计划号" />
                                 <asp:BoundField DataField="产品" HeaderText="产品" />
                                 <asp:BoundField DataField="记录项目" HeaderText="记录项目" />
-                                 <asp:BoundField DataField="记录值" HeaderText="记录值" />
+                                <asp:BoundField DataField="记录值" HeaderText="记录值" />
                                 <asp:BoundField DataField="班组" HeaderText="班组" />
                                 <asp:BoundField DataField="记录时间" HeaderText="记录时间" />
-                                  <asp:BoundField DataField="记录人" HeaderText="记录人" />
-                              
+                                <asp:BoundField DataField="记录人" HeaderText="记录人" />
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
@@ -101,81 +100,95 @@
                         <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                         <asp:AsyncPostBackTrigger ControlID="btnCkAll" />
                         <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
-                        <asp:AsyncPostBackTrigger ControlID ="btnModify" />
-                        <asp:AsyncPostBackTrigger ControlID ="btnSearch" />
-                      
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" />
+                        <asp:AsyncPostBackTrigger ControlID="btnSearch" />
+
                     </Triggers>
                 </asp:UpdatePanel>
-            </div>         
+            </div>
 
             <div class="shade">
-                <div class="info">
+                <div class="recordinfo">
                     <div class="tiphead">
                         <span>过程物料记录</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>
                     <div class="gridinfo">
-                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                        
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ChildrenAsTriggers ="true">
                             <ContentTemplate>
                                 <table class="tablelist">
-                                    <tbody>
-                                        <tr>
-                                            <td width="100">产品名称
-                                            </td>
-                                            <td>
-                                                <asp:DropDownList ID="listProd2" runat="server" CssClass ="drpdwnlist" OnSelectedIndexChanged ="ListProd2_SelectedIndexChanged" AutoPostBack ="true"></asp:DropDownList>
-                                            </td>
-                                            <td width="100">计划号
-                                            </td>
-                                            <td>
-                                                  <asp:DropDownList ID="listPlanno" runat="server" CssClass ="drpdwnlist" ></asp:DropDownList>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                           
-                                            <td width="100">记录项目
-                                            </td>
-                                            <td>
-                                                <asp:DropDownList ID="listPara" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
-                                            </td>
-                                              <td width="100">数据值
-                                            </td>                                        
-                                         
-                                            <td>
-                                                <asp:TextBox ID="txtValue" runat="server" class="dfinput1"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                           <td width="100">班组
-                                            </td>
-                                            <td>
-                                                 <asp:DropDownList ID="listTeam2" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
-                                            </td>
-                                             <td width="100">记录人员
-                                            </td>
-                                            <td>
-                                                 <asp:TextBox ID="txtCreator" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                     
-                                    </tbody>
-                                </table>
-                                <div class="shadebtn" align="center">
-                                    <asp:HiddenField ID="hdScrollY" runat="server" />
+                            <tbody>
+                                <tr>
+                                    <td width="100">产品名称
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="listProd2" runat="server" CssClass="drpdwnlist" AutoPostBack="true" OnSelectedIndexChanged="ListProd2_SelectedIndexChanged"></asp:DropDownList>
+                                    </td>
+                                    <td width="100">计划号
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="listPlanno" runat="server" CssClass="drpdwnlist" ></asp:DropDownList>
+                                    </td>
+                                    <td width="100">班组
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="listTeam2" runat="server" CssClass="drpdwnlist" ></asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100">记录类型
+                                    </td>
+                                    <td width="100">
+                                        <asp:RadioButton ID="rd1" runat="server" Text="过程记录" GroupName="RecordStyle" />
+                                        <asp:RadioButton ID="rd2" runat="server" Text="产品总记录" GroupName="RecordStyle" />
+                                    </td>
+                                    <td width="100">日期
+                                    </td>
+                                    <td width="100">
+                                        <asp:TextBox ID="txtDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" AutoPostBack="true"   ></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                                <div class="listtitle" style="margin-top: 10px">
+                    录入记录 <span style="position: relative; float: right">
+                          <asp:HiddenField ID="hdScrollY" runat="server" />
+                         <asp:Button ID="btnView" class="btnview" runat="server" Text="查看记录" OnClick="btnView_Click"   Width ="150px"/>
                                     <asp:Button ID="btnModify" class="sure" runat="server" Text="保存" OnClick="btnModify_Click" />
-                                    <input name="" type="button" class="cancel" value="关闭" onclick="$('.shade').fadeOut(100);" />
-                                </div>
+                    </span>
+                </div>
+                                <asp:GridView ID="GridView2" runat="server" class="grid"  DataKeyNames ="ID"
+                                    AutoGenerateColumns="False">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="参数点">
+                                            <ItemTemplate>
+                                                <asp:DropDownList ID="listPara" runat="server" CssClass="drpdwnlist" DataSource="<%#bindpara() %>" DataTextField="para_name" DataValueField="para_code" Width ="200px"></asp:DropDownList>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="参数值">
+                                            <ItemTemplate>
+                                                <asp:TextBox ID="txtParavalue" runat="server"></asp:TextBox>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                    </Columns>
+                                    <HeaderStyle CssClass="gridheader" />
+                                    <RowStyle CssClass="gridrow" />
+                                    <AlternatingRowStyle CssClass="gridalterrow" />
+                                </asp:GridView>
+                              
                             </ContentTemplate>
                             <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                                <asp:AsyncPostBackTrigger ControlID="btnAdd" />
-                                <asp:AsyncPostBackTrigger ControlID ="listProd2" />
+                                <asp:AsyncPostBackTrigger ControlID="btnAdd" />            
+                                 <asp:AsyncPostBackTrigger ControlID="btnView" />                         
                             </Triggers>
                         </asp:UpdatePanel>
                     </div>
                 </div>
             </div>
         </div>
-      
+
         <script type="text/javascript">
             $('.tablelist tbody tr:odd').addClass('odd');
         </script>

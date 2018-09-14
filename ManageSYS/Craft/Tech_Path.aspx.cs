@@ -130,7 +130,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string query = "delete from  HT_PUB_PATH_NODE   where ID = '" + ID + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径节点成功" : "删除工艺路径节点失败";
-                    log_message += "工艺路径节点ID:" + ID;
+                    log_message += ",工艺路径节点ID:" + ID;
                     InsertTlog(log_message);
                 }
             }
@@ -154,13 +154,13 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             if (ID == "0")
             {
                 string log_message = opt.InsertData(seg, value, "ht_pub_path_node") == "Success" ? "新建路径节点成功" : "新建路径节点失败";
-                log_message += "详情:" + string.Join(",", value);
+                log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
             }
             else
             {
                 string log_message = opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'") == "Success" ? "更新路径节点成功" : "更新路径节点失败";
-                log_message += "详情:" + string.Join(",", value);
+                log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
             }
 
@@ -325,7 +325,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string query = "delete from  ht_pub_path_section  where SECTION_CODE = '" + sectioncode + "' and pathcode = '" + pathcode + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径成功" : "删除工艺路径失败";
-                    log_message += "工艺段:" + sectioncode + "路径" + pathcode;
+                    log_message += ",工艺段:" + sectioncode + "路径" + pathcode;
                     InsertTlog(log_message);
                 }
             }

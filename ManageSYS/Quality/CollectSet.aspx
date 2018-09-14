@@ -226,7 +226,7 @@
                                     <tr>
                                         <td align="center" colspan="6">
                                             &nbsp;
-                                            <asp:Button ID="Delete" runat="server" Text="删除" OnClick="Delete_Click" CssClass="btndel auth" />
+                                            <asp:Button ID="Delete" runat="server" Text="删除" OnClick="Delete_Click" CssClass="btndel auth"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                             &nbsp;
                                             <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnview auth">
                                             </asp:Button>

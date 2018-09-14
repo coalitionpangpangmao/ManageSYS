@@ -122,7 +122,7 @@
                 <div class="listtitle" style="margin-top: 10px">
                     生产日历<span style="position: relative; float: right">
                         <asp:Button ID="btnckAll" runat="server" Text="全选" class="btn1 auth" OnClick="btnckAll_Click" />
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" />
+                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         <asp:Button ID="btnGridEdit" runat="server" Text="保存" class="btn1 auth" OnClick="btnGridEdit_Click" />
                     </span>
                 </div>

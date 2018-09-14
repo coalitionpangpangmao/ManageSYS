@@ -173,7 +173,10 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
           
             string[] seg = { "F_ID", "F_MENU", "F_MAPID", "F_PID", "F_DESCRIPT", "F_TYPE" };
             string[] value = { id, ((TextBox)row.FindControl("txtMenu")).Text, ((DropDownList)row.FindControl("listMap")).SelectedValue, ((DropDownList)row.FindControl("listPrt")).SelectedValue, ((TextBox)row.FindControl("txtDscrp")).Text, ((DropDownList)row.FindControl("listType")).SelectedValue };
-            opt.MergeInto(seg, value,1, "ht_svr_sys_menu");
+
+            string log_message = opt.MergeInto(seg, value, 1, "ht_svr_sys_menu") == "Success" ? "保存权限成功" : "保存权限失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);
             bindData();
     }
     protected void btnDelete_Click(object sender, EventArgs e)
@@ -185,7 +188,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
 
        string log_message = opt.UpDateOra(query) == "Success" ? "删除权限成功" : "删除权限失败";
-       log_message += "标识:" + id;
+       log_message += "--标识:" + id;
         InsertTlog(log_message);
         bindData();
     }
@@ -223,7 +226,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                         + Role.Text.Trim() + "'";
 
                     string log_message = opt.UpDateOra(query) == "Success" ? "更新角色权限成功" : "更新角色权限失败";
-                    log_message += "标识:" + Role.Text;
+                    log_message += "--标识:" + Role.Text;
                     InsertTlog(log_message);
                     BindList();
                 }
@@ -236,7 +239,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                         + code + "','"
                         + DateTime.Now.ToString("yyyy-MM-dd") + "')";
                     string log_message = opt.UpDateOra(query) == "Success" ? "新建角色权限成功" : "新建角色权限失败";
-                    log_message += "标识:" + Role.Text;
+                    log_message += "--标识:" + Role.Text;
                     InsertTlog(log_message);
                     BindList();
                   
@@ -247,11 +250,15 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-        
+        if (Role.Text == "系统管理员")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('删除系统管理员将导致部分系统功能不可用！拒绝');", true);
+            return;
+        }
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string query = "delete from HT_SVR_SYS_Role where F_ROLE = '" + Role.Text + "'";
             string log_message = opt.UpDateOra(query) == "Success" ? "删除角色成功" : "删除角色失败";
-            log_message += "标识:" + Role.Text;
+            log_message += "--标识:" + Role.Text;
             InsertTlog(log_message);
             BindList();
             SetBlank();

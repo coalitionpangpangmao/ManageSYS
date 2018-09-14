@@ -22,7 +22,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
 
     protected void bindData()
     {
-        string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, r.f_name  as 组织机构名称,s.f_role as 角色, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DEL = '0' order by t.ID";
+        string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称, r.f_name  as 组织机构名称,s.f_role as 角色,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DEL = '0' order by t.ID";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();
@@ -66,10 +66,17 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     }
     protected void ck_CheckedChanged(object sender, EventArgs e)
     {
-        CheckBox ck = (CheckBox)sender;
+        int ckno = 0;
         for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            ((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked = ck.Checked;
+            if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
+                ckno++;
+        }
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
+        {
+            ((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked = check;
+
         }
     }
 
@@ -148,7 +155,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     if (txtPswd.Text == "")
     {
         userPwd = opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'", "password");
-        txtPswd.Text = opt.GetSegValue("select password from ht_svr_user where id= '" + txtID.Text + "'", "psd");
+        txtPswd.Text = opt.GetSegValue("select psd from ht_svr_user where id= '" + txtID.Text + "'", "psd");
     }
     else
     {
@@ -158,7 +165,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
         string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue,txtPswd.Text };        
 
         string log_message = opt.MergeInto(seg, value, 1, "ht_svr_user") == "Success" ? "修改用户成功" : "修改用户失败";
-        log_message += "数据值：" + string.Join(" ", value);
+        log_message += "--详情：" + string.Join(",", value);
         InsertTlog(log_message);  
 
         bindData();
@@ -172,7 +179,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
             if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
             {
                 string log_message = opt.UpDateOra("delete from ht_svr_user where ID = '" + GridView1.DataKeys[i].Value.ToString() + "'") == "Success" ? "删除用户成功" : "删除用户失败";
-                log_message += "标识:" + GridView1.DataKeys[i].Value.ToString();
+                log_message += "--标识:" + GridView1.DataKeys[i].Value.ToString();
                 InsertTlog(log_message);                
             }     	    
         }

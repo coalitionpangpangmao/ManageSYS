@@ -25,24 +25,62 @@ public partial class Product_DataInput : MSYS.Web.BasePage
         opt.bindDropDownList(listProd2, "select prod_code,prod_name from ht_pub_prod_design where is_del = '0' and is_valid = '1' order by prod_code", "prod_name", "prod_code");
         opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team where is_del = '0' and is_valid = '1' order by team_code", "team_name", "team_code");
         opt.bindDropDownList(listTeam2, "select team_code,team_name from ht_sys_team where is_del = '0' and is_valid = '1' order by team_code", "team_name", "team_code");
-        opt.bindDropDownList(listPara, "select para_code,para_name  from ht_pub_tech_para where is_del = '0' and is_valid = '1' and para_type like '____1%' order by para_code", "para_name", "para_code");
+      
+    }
+
+      public DataSet bindpara()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select para_code,para_name  from ht_pub_tech_para where is_del = '0' and is_valid = '1' and para_type like '____1%' order by para_code");
     }
     protected void bindGrid()
     {
-        string query = "select r.rowid, r.plan_no as 计划号,t.prod_name as 产品,q.para_name as 记录项目,r.value as 记录值,s.team_name as 班组,r.create_time as 记录时间,r.creator as 记录人 from ht_prod_manual_record r left join ht_pub_prod_design t on t.prod_code = r.prod_code left join ht_sys_team s on s.team_code = r.team left join ht_pub_tech_para q on q.para_code = r.para_code where r.is_del = '0'";
+        string query = "select r.rowid, r.planno as 计划号,t.prod_name as 产品,q.para_name as 记录项目,r.value as 记录值,s.team_name as 班组,r.time as 记录时间,r.creator as 记录人 from HT_PROD_REPORT_DETAIL r left join ht_pub_prod_design t on t.prod_code = r.prod_code left join ht_sys_team s on s.team_code = r.team left join ht_pub_tech_para q on q.para_code = r.para_code where r.is_del = '0'";
         
             if(listProd.SelectedValue != "" )
                 query += " and r.prod_code = '" + listProd.SelectedValue + "'";
         if(listTeam.SelectedValue != "")
             query += " and r.team = '" + listTeam.SelectedValue + "'";
         if(txtRecordtime.Text != "")
-            query += " and r.create_time = '" + txtRecordtime.Text + "'";
+            query += " and r.time = '" + txtRecordtime.Text + "'";
       
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();       
 
+    }
+
+    protected void bindGrid2()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string query = " select r.para_code,r.value AS SEG_VALUE,r.rowid as id  from ht_prod_report_detail r where r.planno = '" + listPlanno.SelectedValue + "' and r.team = '" + listTeam2.SelectedValue + "' and r.time = '" + txtDate.Text + "' and r.prod_code = '" + listProd2.SelectedValue + "'  union select r.para_code,null as seg_value,r.rowid as id   from ht_pub_tech_para r where r.para_code in ( select para_code from ht_pub_tech_para  where r.para_type like '____1%' and is_del = '0' minus select para_code from ht_prod_report_detail where planno =  '" + listPlanno.SelectedValue + "' and team = '" + listTeam2.SelectedValue + "' and time = '" + txtDate.Text + "' and prod_code = '" + listProd2.SelectedValue + "') order by para_code";
+      
+        if (rd2.Checked)
+        {
+            query = "select r.para_code,t.seg_value,s.seg_name as id  from ht_pub_tech_para r left join ht_inner_report_contrast s on s.para_code = r.para_code left join hv_prod_report t on t.section_code = s.section_code and s.seg_name = t.seg and t.planno = '" + listPlanno.SelectedValue + "' where r.para_type like '____1%' and r.is_del = '0' order by r.para_code";
+        }
+        DataSet data = opt.CreateDataSetOra(query);
+        
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            GridView2.DataSource = data;
+            GridView2.DataBind();
+            int i = 0;
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                try
+                {
+                    ((DropDownList)GridView2.Rows[i].FindControl("listPara")).SelectedValue = row["para_code"].ToString();
+                    ((TextBox)GridView2.Rows[i].FindControl("txtParavalue")).Text = row["seg_value"].ToString();
+                    i++;
+                }
+                catch (Exception error)
+                {
+
+                }
+            }
+        }
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -91,17 +129,16 @@ public partial class Product_DataInput : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         setBlank();
-        txtCreator.Text = ((MSYS.Data.SysUser)Session["User"]).text;        
+        bindGrid2();
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
 
     }
 
     protected void setBlank()
     {
-        listProd2.SelectedValue = listProd.SelectedValue;
-        listTeam2.SelectedValue = listTeam.SelectedValue;
-        listPara.SelectedValue = "";       
-        txtValue.Text = "";       
+        listProd2.SelectedValue = "";
+        listTeam2.SelectedValue ="";
+        listPlanno.SelectedValue = "";
         
     }
 
@@ -110,21 +147,76 @@ public partial class Product_DataInput : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listPlanno, "select distinct planno from ht_prod_report  where prod_code = '" + listProd2.SelectedValue + "'", "planno", "planno"); 
     }
-
+    protected void initgrid2()
+    {
+        if (rd1.Checked)
+        {
+          //  if (listProd2.SelectedValue != "" && listPlanno.SelectedValue != "" && listTeam.SelectedValue != "" && txtDate.Text != "")
+                bindGrid2();
+        }
+        else
+        {
+          //  if (listProd2.SelectedValue != "" && listPlanno.SelectedValue != "")
+                bindGrid2();
+        }      
+    }
+  
+    protected void btnView_Click(object sender, EventArgs e)
+    {
+        initgrid2();
+    }
+  
     protected void btnModify_Click(object sender, EventArgs e)
     {
-
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        if (listProd2.SelectedValue == "" || listPlanno.SelectedValue == "" || listPara.SelectedValue == "" || txtValue.Text == "")
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();     
+        List<string> commandlist = new List<string>();
+        if (rd1.Checked)
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "message", "alert('请录入完整的数据信息')", true);
-            return;
+            if (listProd2.SelectedValue == ""||  listPlanno.SelectedValue == "" || listTeam2.SelectedValue == "" || txtDate.Text == "")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "message", "alert('请录入完整的数据信息')", true);
+                return;
+            }
+            else
+            {    
+                MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+                string[] seg = { "PLANNO", "PROD_CODE","SECTION_CODE", "TEAM", "TIME", "PARA_CODE", "CREATOR", "VALUE", };
+                foreach (GridViewRow row in GridView2.Rows)
+                {
+                    string paravalue = ((TextBox)row.FindControl("txtParavalue")).Text;
+                    string paracode = ((DropDownList)row.FindControl("listPara")).SelectedValue;
+                    if (((TextBox)row.FindControl("txtParavalue")).Text != "")
+                    {
+                        string[] value = { listPlanno.SelectedValue, listProd2.SelectedValue,paracode.Substring(0,5), listTeam2.SelectedValue, txtDate.Text, paracode, user.text, paravalue };
+                        commandlist.Add(opt.getMergeStr(seg, value, 6, "HT_PROD_REPORT_DETAIL"));
+                    }
+                }
+            }
         }
-            string[] seg = { "PLAN_NO", "PROD_CODE", "PARA_CODE", "VALUE", "TEAM", "CREATOR", "CREATE_TIME" };
-            string[] value = { listProd2.SelectedValue, listProd2.SelectedValue, listPara.SelectedValue, txtValue.Text, listTeam2.SelectedValue, txtCreator.Text, System.DateTime.Now.ToString("yyyy-MM-dd") };
-            string log_message = opt.InsertData(seg, value, "HT_PROD_MANUAL_RECORD") == "Success" ? "保存物料过程数据成功," : "保存物料过程数据失败,";
-            log_message += "记录：" + string.Join(" ", value);
+        else
+        {
+            if (listProd2.SelectedValue == "" || listPlanno.SelectedValue == "")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "message", "alert('请录入完整的数据信息')", true);
+                return;
+            }
+            else
+            {
+                foreach (GridViewRow row in GridView2.Rows)
+                {
+                     string paravalue = ((TextBox)row.FindControl("txtParavalue")).Text;
+                    string paracode = ((DropDownList)row.FindControl("listPara")).SelectedValue;
+                    string[] seg = { "SECTION_CODE", "PLANNO", GridView2.DataKeys[row.RowIndex].Value.ToString() };
+                    string[] value = { paracode.Substring(0, 5), listPlanno.SelectedValue, paravalue };
+                    commandlist.Add(opt.getMergeStr(seg,value,2,"HT_PROD_REPORT"));
+                }
+            }
+        }      
+       
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "保存物料过程数据成功," : "保存物料过程数据失败,";
+            log_message += "--详情产品：" + listProd2.SelectedValue + "计划号:" +  listPlanno.SelectedValue + "班组：" +  listTeam.SelectedValue +"日期：" +  txtDate.Text;
             InsertTlog(log_message);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
             bindGrid();
      
       
@@ -156,10 +248,10 @@ public partial class Product_DataInput : MSYS.Web.BasePage
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {
                     string rowid = GridView1.DataKeys[i].Value.ToString();
-                    string query = "update ht_prod_manual_record set IS_DEL = '1'  where rowid = '" + rowid + "'";
+                    string query = "delete from HT_PROD_REPORT_DETAIL   where rowid = '" + rowid + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除人工录入记录成功" : "删除人工录入记录失败";
-                    log_message += "标识:" + rowid;
+                    log_message += "--标识:" + rowid;
                     InsertTlog(log_message);
                 }
             }

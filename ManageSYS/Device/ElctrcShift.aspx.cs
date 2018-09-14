@@ -74,11 +74,13 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
             GridView1.DataBind();
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
-                int i = 0;
-                foreach (DataRow row in data.Tables[0].Rows)
+                for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
                 {
-                    Button btn = (Button)GridView1.Rows[i++].FindControl("btnGrid1Edit");
-                    if ("1" == row["shift_status"].ToString())
+                    int j = i - GridView1.PageSize * GridView1.PageIndex;
+                    DataRowView mydrv = data.Tables[0].DefaultView[i];
+                    GridViewRow row = GridView1.Rows[j];
+                    Button btn = (Button)row.FindControl("btnGrid1Edit");
+                    if ("1" == mydrv["shift_status"].ToString())
                     {
                         btn.Text = "查看";
                         btn.CssClass = "btnred";
@@ -165,7 +167,7 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
             }
         }
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "新建机电交接班记录成功" : "新建机电交接班记录失败";
-        log_message += "详情:" + string.Join(",", value);
+        log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
       
     }

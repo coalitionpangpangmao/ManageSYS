@@ -37,7 +37,7 @@
                 <asp:Button ID="btnView" CssClass="btnmodify  auth" runat="server" OnClick="btnView_Click"
                     Text="查看" />
                     &nbsp; &nbsp;
-                <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />
+                <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                              &nbsp; &nbsp;
     <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
                 </ul>

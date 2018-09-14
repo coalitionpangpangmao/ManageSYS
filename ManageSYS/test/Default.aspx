@@ -27,7 +27,14 @@
         <MSYS:GridView ID ="gridview" runat ="server" />
     </form>
 
+     <%-- <td colspan="8" align="center">
+                                                    <asp:Button ID="btnAdd" runat="server"
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
+                                                       <asp:Button ID="btnModify" runat="server" Text="保存" CssClass="btnview  auth" OnClick ="btnModify_Click" />
+                                                    <asp:Button ID="btnReset" runat="server" Text="重置" CssClass="btnset"  OnClick ="btnReset_Click"/>
+                                                 
 
+                                                </td>--%>
   
 </body>
 </html>

@@ -214,12 +214,13 @@ namespace MSYS.Web
                   + user.text + "','"
                   + Page.Request.UserHostName.ToString() + Page.Request.UserHostAddress.ToString() + "','"
                   + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','"
-                  + record + "')";           
+                  + record + "')";
+            opt.UpDateOra(query);
         
         }
   //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览   
 
-        public string CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date)
+        public string CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date,bool merge)
         {           
             MSYS.Common.ExcelExport openXMLExcel = null;
             try
@@ -241,12 +242,12 @@ namespace MSYS.Web
                 foreach (FileInfo feInfo in dyInfo.GetFiles())
                 {
                     //判断文件日期是否小于今天，是则删除
-                    if (feInfo.CreationTime < DateTime.Now.AddMinutes(-5))
+                    if (feInfo.CreationTime < DateTime.Now.AddMinutes(-2))
                         feInfo.Delete();
                 }
                 foreach (DirectoryInfo dir in dyInfo.GetDirectories())
                 {
-                    if (dir.CreationTime < DateTime.Now.AddMinutes(-5))
+                    if (dir.CreationTime < DateTime.Now.AddMinutes(-2))
                         dir.Delete(true);
                 }
                 //导出文件模板所在位置
@@ -301,9 +302,11 @@ namespace MSYS.Web
                                 if (set != null)
                                 {
                                     DataTable dt = set.Tables[0];
-                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
+                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));                               
+                                    if(merge)
+                                        openXMLExcel.WriteDataRerange(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                    else
                                     openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
-
                                 }
 
                             }
@@ -339,11 +342,11 @@ namespace MSYS.Web
             }
         }
 
-        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style,DateTime date)
+        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style,DateTime date,bool merge)
         {
             try
             {
-                CreateExcel(filename, brand, startDate, endDate, team, style,date);
+                CreateExcel(filename, brand, startDate, endDate, team, style,date,merge);
                 String filepath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"TEMP\" + filename + date.ToString("HHmmss") + style;
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
@@ -376,7 +379,7 @@ namespace MSYS.Web
         private int getColumn(string Col)
         {
             int ColNum;
-            switch (Col)
+            switch (Col.Trim())
             {
                 case "A": ColNum = 0; break;
                 case "B": ColNum = 1; break;

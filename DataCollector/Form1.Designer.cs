@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-       
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.QuaTime = new System.Windows.Forms.DateTimePicker();
             this.Qua_show = new System.Windows.Forms.Button();
@@ -40,7 +39,9 @@
             // 
             // groupBox1
             // 
-        
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.QuaTime);
             this.groupBox1.Controls.Add(this.Qua_show);
@@ -52,10 +53,11 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "质量报告";
             // 
-        
-       
             // dataGridView1
             // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(0, 49);
             this.dataGridView1.Name = "dataGridView1";
@@ -90,21 +92,20 @@
             this.Qua_Start.UseVisualStyleBackColor = true;
             this.Qua_Start.Click += new System.EventHandler(this.Qua_Start_Click);
             // 
-            // 数采服务程序
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 333);
             this.Controls.Add(this.groupBox1);
-            this.Name = "数采服务程序";
+            this.Name = "Form1";
             this.Text = "数采服务程序";
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
-
+     
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;

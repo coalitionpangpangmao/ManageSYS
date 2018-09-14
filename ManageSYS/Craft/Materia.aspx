@@ -27,7 +27,7 @@
                     <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
                         Text="保存" />
                     &nbsp; &nbsp;
-                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" />      &nbsp; &nbsp;         
+                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>      &nbsp; &nbsp;         
                 <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                 <asp:Button ID="btnUpdate" runat="server" OnClick="btnUpdate_Click" CssClass="btnhide" />
                 <asp:HiddenField ID="hdcode" runat="server" />
@@ -86,7 +86,7 @@
                         <Columns>
                          <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button  ID="btnGridDel" runat="server" Text="删除" CssClass = "btn1" Width = "90px"  OnClick = "btnGridDel_Click"/>
+                                    <asp:Button  ID="btnGridDel" runat="server" Text="删除" CssClass = "btn1" Width = "90px"  OnClick = "btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>

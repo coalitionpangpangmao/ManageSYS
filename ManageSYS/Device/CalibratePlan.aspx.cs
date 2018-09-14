@@ -101,7 +101,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                     string query = "update HT_EQ_MCLBR_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除校准计划成功" : "删除校准计划失败";
-                    log_message += "标识:" + order_sn;
+                    log_message += "--标识:" + order_sn;
                     InsertTlog(log_message);
                 }
             }
@@ -129,7 +129,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
-        string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
+        string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未 通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
@@ -146,7 +146,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             string[] subvalue = { GridView1.Rows[index].Cells[1].Text, "14", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-            log_message += "业务数据ID：" + id;
+            log_message += ",业务数据ID：" + id;
             InsertTlog(log_message);
 
 
@@ -256,7 +256,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                     string query = "update HT_EQ_MCLBR_PLAN_detail set IS_DEL = '1'  where ID = '" + ID + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除校准计划明细成功" : "删除校准计划明细失败";
-                    log_message += "标识:" + ID;
+                    log_message += "--标识:" + ID;
                     InsertTlog(log_message);
                 }
             }
@@ -486,7 +486,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                 string[] value = { row["section"].ToString(), row["equipment_id"].ToString(), row["point"].ToString(), System.DateTime.Now.AddMonths(1).ToString("yyyy-MM") + "-01", row["remark"].ToString(), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtCode.Text };
 
                 string log_message = opt.InsertData(seg, value, "HT_EQ_MCLBR_PLAN_detail") == "Success" ? "新建校准计划明细成功" : "新建校准计划明细失败";
-                log_message += "详情:" + string.Join(",", value);
+                log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
        
             }

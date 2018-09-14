@@ -171,7 +171,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             string[] subvalue = { "产品:" + GridView1.Rows[index].Cells[4].Text, "02", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-            log_message += "业务数据ID：" + id;
+            log_message += ",业务数据ID：" + id;
             InsertTlog(log_message);
 
             bindGrid();
@@ -218,7 +218,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK","CREATE_TIME" };
         string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text ,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")};
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
-        log_message += "产品信息：" + string.Join(" ", value);
+        log_message += ",产品信息：" + string.Join(",", value);
         InsertTlog(log_message);
         bindGrid();
 
@@ -228,7 +228,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         string query = "update HT_PUB_PROD_DESIGN set IS_DEL = '1'  where PROD_CODE = '" + txtCode.Text + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.UpDateOra(query) == "Success" ? "删除产品信息成功" : "删除产品信息失败";
-        log_message += "产品编码:" + txtCode.Text;
+        log_message += ",产品编码:" + txtCode.Text;
         InsertTlog(log_message);       
         bindGrid();
     }

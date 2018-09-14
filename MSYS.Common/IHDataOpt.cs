@@ -324,10 +324,13 @@ namespace MSYS.Common
                     gaptime = GetGapTime(tailBtime, tailEtime, tagname, tailRst, gap_hdelay, gap_tdelay, timegap);
                     int orderno = 1;
                     string[] gapseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "GAPTIME ", "GAP_BTIME", "GAP_ETIME", "TYPE"};
-                    foreach (Gaptime time in gaptime)
+                    if (gaptime != null)
                     {
-                        string[] gapvalue = { (orderno++).ToString(), seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), time.gaptime.ToString(), time.starttime, time.endtime,"1" };
-                        opt.MergeInto(gapseg, gapvalue, 5, "HT_QLT_GAP_COLLECTION");
+                        foreach (Gaptime time in gaptime)
+                        {
+                            string[] gapvalue = { (orderno++).ToString(), seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), time.gaptime.ToString(), time.starttime, time.endtime, "1" };
+                            opt.MergeInto(gapseg, gapvalue, 5, "HT_QLT_GAP_COLLECTION");
+                        }
                     }
                 }
                  else 
@@ -336,26 +339,29 @@ namespace MSYS.Common
             else
             {
                 string ctrlpoint = row["ctrl_point"].ToString();
-                DataSet gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '1' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
-                if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
+                if (ctrlpoint != "")
                 {
-                    foreach(DataRow grow in gapdata.Tables[0].Rows)
+                    DataSet gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '1' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
+                    if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
                     {
-                    Gaptime time = new Gaptime();
-                    time.gaptime = Convert.ToInt32(grow["gaptime"].ToString());
-                    time.starttime =Convert.ToDateTime( grow["startime"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                    time.endtime = Convert.ToDateTime(grow["endtime"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                    gaptime.Add(time);
+                        foreach (DataRow grow in gapdata.Tables[0].Rows)
+                        {
+                            Gaptime time = new Gaptime();
+                            time.gaptime = Convert.ToInt32(grow["gaptime"].ToString());
+                            time.starttime = Convert.ToDateTime(grow["startime"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            time.endtime = Convert.ToDateTime(grow["endtime"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            gaptime.Add(time);
+                        }
                     }
-                }
-                gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '0' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
-                if(gapdata != null && gapdata.Tables[0].Rows.Count > 0)
-                {
-                    DataRow brow = gapdata.Tables[0].Rows[0];
-                    batchBtime = brow["BATCH_BTIME"].ToString();
-                    batchEtime = brow["BATCH_ETIME"].ToString();
-                     tailBtime = brow["GAP_BTIME"].ToString();
-                    tailEtime = brow["GAP_ETIME"].ToString();              
+                    gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '0' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
+                    if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow brow = gapdata.Tables[0].Rows[0];
+                        batchBtime = brow["BATCH_BTIME"].ToString();
+                        batchEtime = brow["BATCH_ETIME"].ToString();
+                        tailBtime = brow["GAP_BTIME"].ToString();
+                        tailEtime = brow["GAP_ETIME"].ToString();
+                    }
                 }
             }
 #endregion
@@ -387,12 +393,15 @@ namespace MSYS.Common
                     else
                     {
                         Res["状态"] = "过程值";
-                        int h = 0;
-                        while (h < gaptime.Count)
+                        if (gaptime != null)
                         {
-                            if (string.Compare(tempstr, ((Gaptime)gaptime[h]).starttime) > 0 && string.Compare(tempstr, ((Gaptime)gaptime[h]).endtime) < 0)
-                                Res["状态"] = "断流值";
-                            h++;
+                            int h = 0;
+                            while (h < gaptime.Count)
+                            {
+                                if (string.Compare(tempstr, ((Gaptime)gaptime[h]).starttime) > 0 && string.Compare(tempstr, ((Gaptime)gaptime[h]).endtime) < 0)
+                                    Res["状态"] = "断流值";
+                                h++;
+                            }
                         }
                     }
                 }

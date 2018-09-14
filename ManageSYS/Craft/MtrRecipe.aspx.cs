@@ -144,7 +144,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
                 commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_mater_formula"));
                 commandlist.Add("update ht_pub_prod_design set mater_formula_code = '" + txtCode.Text + "' where prod_code = '" + listPro.SelectedValue + "'"); 
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "原料配方保存成功，":"原料配方保存失败，";
-            log_message += "保存信息：" + string.Join(" ", value);
+                log_message += "--详情：" + string.Join(",", value);
             InsertTlog(log_message);
       
         bindGrid();
@@ -160,7 +160,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
             string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query)=="Success"?"删除配方详情成功，":"删除配方详情失败,";
-            log_message += "物料编码：" + mtr_code;
+            log_message += ",物料编码：" + mtr_code;
             InsertTlog(log_message);
             bindGrid();
         }

@@ -67,7 +67,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                 startdate = startdate.AddDays(1);
             }
             string log_message =  opt.TransactionCommand(commandlist) == "Success" ? "排班成功" : "排班失败";
-            log_message += "排班时间：" + txtStartDate.Text + "~" + txtEndDate.Text;
+            log_message += ",排班时间：" + txtStartDate.Text + "~" + txtEndDate.Text;
             InsertTlog(log_message);       
            
         }
@@ -175,7 +175,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                        string query = "update ht_prod_schedule set work_staus = '" + ((DropDownList)GridView2.Rows[i].FindControl("listStatus2")).SelectedValue + "'  where ID = '" + id + "'";
                       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                       string log_message = opt.UpDateOra(query) == "Success" ? "更新排班状态成功" : "更新排班状态失败";
-                      log_message += "标识:" + id;
+                      log_message += "--标识:" + id;
                       InsertTlog(log_message);
                    }
                }              
@@ -197,7 +197,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                           string query = "update ht_prod_schedule set IS_DEL = '1'  where ID = '" + id + "'";
                          MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                          string log_message = opt.UpDateOra(query) == "Success" ? "删除排班成功" : "删除排班失败";
-                         log_message += "标识:" + id;
+                         log_message += "--标识:" + id;
                          InsertTlog(log_message);
                       }
                   }

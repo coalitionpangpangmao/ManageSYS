@@ -75,7 +75,10 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string[] seg = { "PARA_CODE", "PARA_TYPE", "WEIGHT", "PERIODIC", "RST_VALUE", "HEAD_DELAY", "TAIL_DELAY", "BATCH_HEAD_DELAY", "BATCH_TAIL_DELAY", "IS_GAP_JUDGE", "DESCRIPT", "SYNCHRO_TIME", "CTRL_POINT", "GAP_HDELAY", "GAP_TDELAY","GAP_TIME" };
         string[] value = { txtID.Text, listStyle.SelectedValue, txtWeight.Text, txtPeriodic.Text, txtRstValue.Text, txtHeadDelay.Text, txtTailDelay.Text, txtBatchHDelay.Text, txtBatchTDelay.Text, Convert.ToInt16(rdYes.Checked).ToString(), txtDescript.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listGappoint.SelectedValue, txtGapHeadDelay.Text, txtGapTailDelay.Text,txtGapTime.Text };
-        opt.MergeInto(seg, value, 1, "ht_qlt_collection");      
+
+        string log_message = opt.MergeInto(seg, value, 1, "ht_qlt_collection") == "Success" ? "保存质量采集条件成功" : "保存质量采集条件失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
 
     }
     protected void Delete_Click(object sender, EventArgs e)
@@ -83,8 +86,9 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string query = "delete from ht_qlt_collection where para_code = '" + txtID.Text + "'";
         string log_message = opt.UpDateOra(query) == "Success" ? "删除数采条件成功" : "删除数采条件失败";
-        log_message += "标识:" + txtID.Text;
+        log_message += "--标识:" + txtID.Text;
         InsertTlog(log_message);
+        setBlank();
     }
     protected void btnView_Click(object sender, EventArgs e)
     {

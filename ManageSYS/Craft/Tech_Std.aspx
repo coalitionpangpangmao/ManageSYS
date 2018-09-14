@@ -54,7 +54,7 @@
                                         &nbsp;&nbsp;           
                                   <asp:Button ID="btnAdd" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnAdd_Click" />
                                         <asp:Button ID="btnModify" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnModify_Click" />
-                                        <asp:Button ID="btnDelete" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelete_Click" />
+                                        <asp:Button ID="btnDelete" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelete_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                         <asp:Button ID="btnUpdate" runat="server" CssClass="btnhide" OnClick="btnUpdate_Click" />
                                     </span>
                                 </div>
@@ -179,7 +179,7 @@
                                     <span style="position: relative; float: right">
                                         <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
                                         <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave2_Click" />
-                                        <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" />
+                                        <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </span>
                                 </div>
                                 <div style="overflow: scroll; height: 300px">
@@ -259,7 +259,7 @@
                                     <span style="position: relative; float: right">
                                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave_Click" />
-                                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                         <asp:HiddenField ID="hideprc" runat="server" Value="70301" />
                                         <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />
                                     </span>

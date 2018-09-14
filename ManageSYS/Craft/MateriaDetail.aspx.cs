@@ -44,7 +44,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
        string[] value = { txtCode.Text, txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         string log_message = opt.MergeInto(seg, value,1, "HT_PUB_MATERIEL")=="Success" ? "物料添加成功":"物料添加失败";
-        log_message += ",物料信息:" + string.Join(" ", value);
+        log_message += ",物料信息:" + string.Join(",", value);
         InsertTlog(log_message);
         
     }
@@ -55,7 +55,7 @@ public partial class Craft_MateriaDetail : MSYS.Web.BasePage
         string[] value = { txtCode.Text, txtName.Text, txtCtgr.Text, listType.SelectedValue, txtUint.Text, txtPkmtr.Text, txtLevel.Text, txtVrt.Text, txtWeight.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp.Text };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_MATERIEL") == "Success" ? "物料添加成功" : "物料添加失败";
-        log_message += ",物料信息:" + string.Join(" ", value);
+        log_message += ",物料信息:" + string.Join(",", value);
         InsertTlog(log_message);
     }
     protected void btnDel_Click(object sender, EventArgs e)

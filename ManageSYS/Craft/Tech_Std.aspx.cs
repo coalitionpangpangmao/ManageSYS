@@ -69,7 +69,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 string[] seg = { "PARA_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "TECH_CODE" };
                 string[] value = { row["PARA_CODE"].ToString(), row["VALUE"].ToString(), row["UPPER_LIMIT"].ToString(), row["LOWER_LIMIT"].ToString(), row["EER_DEV"].ToString(), row["UNIT"].ToString(), listtechC.SelectedValue };
                 string log_message = opt.InsertData(seg, value, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "复制标准成功" : "复制标准失败";
-                log_message += ",复制数据：" + string.Join(" ", value);
+                log_message += ",复制数据：" + string.Join(",", value);
                 InsertTlog(log_message);
 
             }
@@ -91,7 +91,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             string[] seg = { "TECH_CODE", "TECH_NAME", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
             string[] value = { txtCode.Text, txtName.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, listStatus.SelectedValue, listCreator.SelectedValue, txtCrtDate.Text, listCrtApt.SelectedValue, txtDscpt.Text };
             string log_message = opt.MergeInto(seg, value, 1, "HT_TECH_STDD_CODE") == "Success" ? "保存标准成功" : "保存标准失败";
-            log_message += ",保存数据：" + string.Join(" ", value);
+            log_message += ",保存数据：" + string.Join(",", value);
             InsertTlog(log_message);
         }
         bindGrid(txtCode.Text, hideprc.Value);
@@ -340,7 +340,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "IS_DEL" };
                 string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
                 string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
-                log_message += ", 保存数据：" + string.Join(" ", value);
+                log_message += ", 保存数据：" + string.Join(",", value);
                 InsertTlog(log_message);
             }
         }
@@ -360,7 +360,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                 string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT","IS_DEL" };
                 string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
                 string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
-                log_message += ", 保存数据：" + string.Join(" ", value);
+                log_message += ", 保存数据：" + string.Join(",", value);
                 InsertTlog(log_message);
             }
         }
@@ -412,7 +412,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (MSYS.Common.AprvFlow.createApproval(subvalue))
         {
-            string log_message = "工艺标准:" + txtName.Text + "提交审批成功";
+            string log_message = ",工艺标准:" + txtName.Text + "提交审批成功";
             listAprv.SelectedValue = "0";
             InsertTlog(log_message);
             btnSubmit.Enabled = false;

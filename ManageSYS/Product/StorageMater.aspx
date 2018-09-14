@@ -86,7 +86,7 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     原料领退表<span style="position: relative; float: right">
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" />
+                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         <asp:Button ID="btnGridNew" runat="server" Text="新建" class="btnadd  auth" OnClick="btnGridNew_Click" />
                     </span>
                 </div>
@@ -284,7 +284,7 @@
                             OnClick="btnCreate_Click" Width="160px" />
                         <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" />
+                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                     </span>
                 </div>
                 <div>

@@ -78,7 +78,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     protected void bindGrid(string qlt_code, string section)
     {
 
-        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 where g1.is_del = '0'  and g1.qlt_code = '" + qlt_code + "' and substr(g1.para_code,1,5) = '" + section + "'";
+        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_para g2 on g2.para_code = g1.para_code where g1.is_del = '0' and  g2.para_type like '______1%'  and g1.qlt_code = '" + qlt_code + "' and substr(g1.para_code,1,5) = '" + section + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
@@ -115,6 +115,16 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
+        if (listVersion.SelectedValue == "")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请选择质量考核标准后，再增加明细！！')", true);
+            return;
+        }
+        if (hideprc.Value == "")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请所属工艺段后，再增加明细！！')", true);
+            return;
+        }
         string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
@@ -157,12 +167,21 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
 
          string[] seg = { "QLT_CODE", "QLT_NAME", "STANDARD_VOL", "B_DATE", "E_DATE", "CREATE_ID", "CREATE_DATE", "REMARK" };
          string[] value = { txtCode.Text, txtName.Text, txtVersion.Text, txtExeDate.Text, txtEndDate.Text, ((MSYS.Data.SysUser)Session["User"]).id, txtCrtDate.Text, txtDscpt.Text, };
-            opt.MergeInto(seg, value, 1, "HT_QLT_STDD_CODE");           
-       
-        opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
-        opt.bindDropDownList(listtech, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
-        opt.bindDropDownList(listtechC, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
-           listAprv.SelectedValue = "-1";
+           
+            string log_message;
+            if ( opt.MergeInto(seg, value, 1, "HT_QLT_STDD_CODE") == "Success")
+            {
+                log_message = "保存质量考核标准成功";
+                opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
+                opt.bindDropDownList(listtech, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
+                opt.bindDropDownList(listtechC, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
+                listAprv.SelectedValue = "-1";
+            }
+            else
+                log_message = "保存质量考核标准失败";
+            log_message += "--数据详情:" + string.Join(",", value);
+            InsertTlog(log_message);
+      
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
@@ -187,12 +206,15 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
         try
         {
             Button btn = (Button)sender;
-            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
-            string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
-            string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int Rowindex = row.RowIndex;//获得行号  
+            string mtr_code = ((DropDownList)row.FindControl("listParaName")).SelectedValue;
+            string type = ((DropDownList)row.FindControl("listtype")).SelectedValue;
+
+            string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "' and QLT_TYPE = '" + type + "'" ;
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            string log_message = opt.UpDateOra(query) == "Success" ? "删除质量标准明细成功" : "删除质量标准明细失败";
-           log_message += "标识:" + txtCode.Text + ":" + mtr_code;
+           log_message += "--标识:" + txtCode.Text + ":" + mtr_code;
            InsertTlog(log_message);
             bindGrid(txtCode.Text, hideprc.Value);
         }
@@ -223,13 +245,17 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
         {
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
-                if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
-                {
-                    string mtr_code = ((DropDownList)GridView1.Rows[i].FindControl("listParaName")).SelectedValue;
-                    string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "'";
+                GridViewRow row = GridView1.Rows[i];
+                if (((CheckBox)row.FindControl("chk")).Checked)
+                {                
+                  
+                    string mtr_code = ((DropDownList)row.FindControl("listParaName")).SelectedValue;
+                    string type = ((DropDownList)row.FindControl("listtype")).SelectedValue;
+
+                    string query = "update HT_QLT_STDD_CODE_DETAIL set IS_DEL = '1'  where QLT_CODE = '" + txtCode.Text + "' and PARA_CODE = '" + mtr_code + "' and QLT_TYPE = '" + type + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
                    string log_message = opt.UpDateOra(query) == "Success" ? "删除质量标准明细成功" : "删除质量标准明细失败";
-                   log_message += "标识:" + txtCode.Text + ":" + mtr_code;
+                   log_message += "--标识:" + txtCode.Text + ":" + mtr_code;
                    InsertTlog(log_message);
                 }
             }
@@ -251,9 +277,11 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             {
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-                string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE" };
-                string[] value = { txtCode.Text, ((DropDownList)row.FindControl("listParaName")).SelectedValue, ((DropDownList)row.FindControl("listtype")).SelectedValue, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtDscrptM")).Text, ((TextBox)row.FindControl("txtScore")).Text };
-                opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL");
+                string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE","IS_DEL" };
+                string[] value = { txtCode.Text, ((DropDownList)row.FindControl("listParaName")).SelectedValue, ((DropDownList)row.FindControl("listtype")).SelectedValue, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtDscrptM")).Text, ((TextBox)row.FindControl("txtScore")).Text,"0" };
+                string log_message = opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL") == "Success" ? "保存质量考核详情成功" : "保存质量考核详情失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
                     bindGrid(txtCode.Text, hideprc.Value);
             }
         }
@@ -278,8 +306,10 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             {
                 string[] seg = { "QLT_CODE", "PARA_CODE", "QLT_TYPE", "LOWER", "UPPER", "REMARK", "MINUS_SCORE" };
                 string[] value = { listtechC.SelectedValue, row["PARA_CODE"].ToString(), row["QLT_TYPE"].ToString(), row["LOWER"].ToString(), row["UPPER"].ToString(), row["REMARK"].ToString(), row["MINUS_SCORE"].ToString() };
-                opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL");
-
+             
+                string log_message = opt.MergeInto(seg, value, 3, "HT_QLT_STDD_CODE_DETAIL") == "Success" ? "保存质量考核详情成功" : "保存质量考核详情失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
             }
 
         }
