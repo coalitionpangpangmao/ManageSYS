@@ -60,7 +60,7 @@
             <div class="framelist">
                 <div class="listtitle">
                     查询条件<span style="position: relative; float: right">
-                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" />
+                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview"  OnClick ="btnSearch_Click"/>
                     </span>
                 </div>
                 <table class="tablelist">
@@ -73,7 +73,7 @@
                                 <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
                                 <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:CheckBox ID="ckDone" runat="server" Text="未执行" />
+                                <asp:CheckBox ID="ckDone" runat="server" Text="己执行" />
                             </td>
                         </tr>
                     </tbody>
@@ -116,12 +116,18 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-                <div class="listtitle" style="margin-top: 10px">
-                    润滑计划明细表
-                </div>
-                <div>
+                 <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
+                <div class="listtitle" style="margin-top: 10px">
+                    润滑计划明细表<span style="position: relative; float: right">
+                         <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btnmodify" Width="75"
+                                            OnClick="btnGrid2Save_Click" />
+                        <asp:HiddenField ID ="txtCode" runat ="server" />
+                            
+                        </span>
+                </div>
+               
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID" AutoGenerateColumns="False">
                                 <Columns>
                                     <asp:TemplateField HeaderText="序号">
@@ -188,13 +194,7 @@
                                             <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
-                                        <ItemTemplate>
-                                           <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
-                                            OnClick="btnGrid2Save_Click" />
-                                        </ItemTemplate>
-                                        <ItemStyle Width="80px" />
-                                    </asp:TemplateField>
+                                  
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />

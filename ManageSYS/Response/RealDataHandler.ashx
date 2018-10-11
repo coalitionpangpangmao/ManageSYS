@@ -75,7 +75,7 @@ public class RealDataHandler : IHttpHandler
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet pointinfo;
         if (prodcode != "NoRecord")
-            pointinfo = opt.CreateDataSetOra("select t.para_name,s.upper_limit,s.lower_limit,s.value,s.eer_dev,t.value_tag from  ht_tech_stdd_code r left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code  left join ht_pub_tech_para t on s.para_code = t.para_code where r.prod_code = '" + prodcode + "' and t.para_code = '" + point + "'");
+            pointinfo = opt.CreateDataSetOra("select t.para_name,s.upper_limit,s.lower_limit,s.value,s.eer_dev,t.value_tag from ht_pub_prod_design q left join ht_tech_stdd_code r on q.tech_stdd_code = r.tech_code   left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code  left join ht_pub_tech_para t on s.para_code = t.para_code where q.prod_code = '" + prodcode + "' and t.para_code = '" + point + "'");
         else
             pointinfo = opt.CreateDataSetOra("select t.para_name,t.value_tag from    ht_pub_tech_para t where t.para_code = '" + point + "'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)

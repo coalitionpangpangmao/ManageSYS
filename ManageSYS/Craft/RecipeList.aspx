@@ -83,7 +83,7 @@
                                     <asp:BoundField DataField="编辑人员" HeaderText="编辑人员" />
                                     <asp:TemplateField HeaderText="审批状态">
                                     <ItemTemplate>
-                                        <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="50" />
+                                        <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="60px" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 </Columns>

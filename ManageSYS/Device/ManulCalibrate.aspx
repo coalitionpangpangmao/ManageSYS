@@ -57,12 +57,14 @@
                     <div>
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
+                                 
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False">
                                     <Columns>                                     
                                         <asp:BoundField DataField="校准计划" HeaderText="校准计划" />
                                         <asp:BoundField DataField="计划号" HeaderText="计划号" />
                                           <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
                                         <asp:BoundField DataField="申请人" HeaderText="申请人" />
+                                         <asp:BoundField DataField="状态" HeaderText="状态" />
                                         <asp:BoundField DataField="备注" HeaderText="备注" />
 
                                         <asp:TemplateField ItemStyle-Width="80">
@@ -90,7 +92,11 @@
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
-                                校准记录 <asp:HiddenField ID ="txtCode" runat ="server" />
+                                校准记录<span style="position: relative; float: right">
+                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btnview auth" 
+                                                OnClick="btnGrid2Save_Click" />
+                                    <asp:HiddenField ID ="txtCode" runat ="server" />
+                        </span> 
                             </div>
 
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
@@ -147,12 +153,7 @@
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
-                                        <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
-                                                OnClick="btnGrid2Save_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                   
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />

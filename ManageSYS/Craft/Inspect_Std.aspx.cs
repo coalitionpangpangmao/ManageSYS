@@ -12,7 +12,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
     {
         base.PageLoad(sender, e);
         if (!IsPostBack)
-        {           
+        {
             bindGrid();
             initView();
         }
@@ -56,14 +56,14 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select r.inspect_type as 检查类型,r.inspect_group as 分组, r.inspect_code as 检查项目编码,j.upper_value as 上限 ,j.lower_value as 下限,j.minus_score as 单次扣分,j.REMARK as 备注 from ht_qlt_inspect_proj r left join ht_QLT_inspect_stdd j on j.inspect_code = r.inspect_code  where r.is_del = '0' and r.is_valid = '1' ";   
+        string query = "select r.inspect_type as 检查类型,r.inspect_group as 分组, r.inspect_code as 检查项目编码,j.upper_value as 上限 ,j.lower_value as 下限,j.minus_score as 单次扣分,j.REMARK as 备注 from ht_qlt_inspect_proj r left join ht_QLT_inspect_stdd j on j.inspect_code = r.inspect_code  where r.is_del = '0' and r.is_valid = '1' ";
         if (listtype.SelectedValue != "")
             query += " and r.inspect_type = '" + listtype.SelectedValue + "'";
-        
-            if(listSection.SelectedValue != "")
-                query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
-            query += " order by r.inspect_code";
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+
+        if (listSection.SelectedValue != "")
+            query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
+        query += " order by r.inspect_code";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -86,7 +86,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
                 }
                 list.SelectedValue = mydrv["分组"].ToString();
                 DropDownList list2 = (DropDownList)row.FindControl("listInspect");
-                opt.bindDropDownList(list2, "select inspect_code,inspect_name from ht_qlt_inspect_proj where  inspect_group = '"+ list.SelectedValue + "' and is_del = '0'", "inspect_name", "inspect_code");
+                opt.bindDropDownList(list2, "select inspect_code,inspect_name from ht_qlt_inspect_proj where  inspect_group = '" + list.SelectedValue + "' and is_del = '0'", "inspect_name", "inspect_code");
                 ((DropDownList)row.FindControl("listInspect")).SelectedValue = mydrv["检查项目编码"].ToString();
                 ((TextBox)row.FindControl("txtUpper")).Text = mydrv["上限"].ToString();
                 ((TextBox)row.FindControl("txtLower")).Text = mydrv["下限"].ToString();
@@ -103,11 +103,11 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
         return opt.CreateDataSetOra("select ID,INSPECT_TYPE from HT_INNER_BOOL_DISPLAY");
     }
     protected void initView()
-    {        
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       opt.bindDropDownList(listtype, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
-   
-        
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(listtype, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
+
+
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -115,22 +115,21 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
         bindGrid();
     }
 
-    
+
     protected void btnSave_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
-        int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string code = GridView1.DataKeys[rowindex].Value.ToString();
-      
-       List<String> commandlist = new List<String>();
-       commandlist.Add("delete from HT_QLT_INSPECT_STDD where INSPECT_CODE = '" + code + "'");
-       string[] seg = { "INSPECT_CODE", "UPPER_VALUE", "LOWER_VALUE", "MINUS_SCORE", "REMARK", "CREATE_ID", "CREATE_TIME" };
-       GridViewRow row = GridView1.Rows[rowindex];
-       string[] value = { ((DropDownList)row.FindControl("listInspect")).SelectedValue, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtScore")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-       MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-       commandlist.Add(opt.InsertDatastr(seg, value, "HT_QLT_INSPECT_STDD"));
-            opt.TransactionCommand(commandlist);
-            bindGrid();
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+        int rowindex = row.RowIndex;
+
+        string[] seg = { "INSPECT_CODE", "UPPER_VALUE", "LOWER_VALUE", "MINUS_SCORE", "REMARK", "CREATE_ID", "CREATE_TIME" };
+
+        string[] value = { ((DropDownList)row.FindControl("listInspect")).SelectedValue, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtScore")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_STDD") == "Success" ? "保存工艺检查项目标准成功" : "保存工艺检查项目标准失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+        bindGrid();
     }
 
     protected void btnGrid1CkAll_Click(object sender, EventArgs e)//全选
@@ -151,24 +150,24 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
 
     protected void btnGrid1DelSel_Click(object sender, EventArgs e)//删除选中记录
     {
-       
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+
+        for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+        {
+            if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
             {
-                if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
-                {
-                    string projcode = GridView1.DataKeys[i].Value.ToString();
-                    string query = "delete from  HT_QLT_INSPECT_STDD   where INSPECT_CODE = '" + projcode + "'";
-                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                   string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查标准成功" : "删除工艺检查标准失败";
-                   log_message += "--标识:" + projcode;
-                   InsertTlog(log_message);
-                }
-            }           
-            bindGrid();
-  
+                string projcode = GridView1.DataKeys[i].Value.ToString();
+                string query = "delete from  HT_QLT_INSPECT_STDD   where INSPECT_CODE = '" + projcode + "'";
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查标准成功" : "删除工艺检查标准失败";
+                log_message += "--标识:" + projcode;
+                InsertTlog(log_message);
+            }
+        }
+        bindGrid();
+
     }
 
- 
+
 
     protected void listtype_SelectedIndexChanged(object sender, EventArgs e)
     {

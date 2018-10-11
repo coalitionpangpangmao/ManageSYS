@@ -64,20 +64,21 @@
                   <table class="tablelist">
                       <tr>
                         
-                          <td  > <asp:Label ID="lab2" runat ="server" Text ="开始时间"  Width ="60px" CssClass="labinfo"/> <asp:TextBox ID="txtStartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
-                          <td><asp:Label ID="lab3" runat ="server" Text ="结束时间" Width ="60px" CssClass="labinfo"/> <asp:TextBox ID="txtEndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
+                          <td  > <asp:Label ID="lab2" runat ="server" Text ="开始时间"  Width ="70px" CssClass="labinfo"/> <asp:TextBox ID="txtStartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
+                          <td><asp:Label ID="lab3" runat ="server" Text ="结束时间" Width ="70px" CssClass="labinfo"/> <asp:TextBox ID="txtEndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
                           <td>
-                              <asp:Label ID="lab1" runat ="server" Text ="产品" Width ="50px" CssClass="labinfo"/><asp:DropDownList ID="listProd" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                              <asp:Label ID="lab1" runat ="server" Text ="产品" Width ="50px" CssClass="labinfo"/><asp:DropDownList ID="listProd" runat="server" CssClass ="drpdwnlist" AutoPostBack ="true"></asp:DropDownList>
                           </td>   
                           <td>
-                              <asp:Label ID="lab4" runat ="server" Text ="班组" Width ="50px" CssClass="labinfo"/><asp:DropDownList ID="listTeam" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                              <asp:Label ID="lab4" runat ="server" Text ="班组" Width ="50px" CssClass="labinfo"/><asp:DropDownList ID="listTeam" runat="server" CssClass ="drpdwnlist" AutoPostBack ="true"></asp:DropDownList>
                           </td>
                       </tr>
                       </table>
                           </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />   
-                        <asp:AsyncPostBackTrigger ControlID ="btnSearch" />             
+                        <asp:AsyncPostBackTrigger ControlID="btnUpdate" />    
+                            <asp:AsyncPostBackTrigger ControlID="listProd" />      
+                          <asp:AsyncPostBackTrigger ControlID="listTeam" />                       
                     </Triggers>
                 </asp:UpdatePanel>
                 </div>
@@ -85,10 +86,10 @@
                       <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                     <iframe  id="Frame1" name="Frame1"  height="400" 
-                        style="width: 100%; position: relative;"></iframe>
+                        style="width: 100%; position: relative;" ></iframe>
                            </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnSearch" />                  
+                        <asp:PostBackTrigger ControlID="btnSearch" />                  
                     </Triggers>
                 </asp:UpdatePanel>
                 </div>

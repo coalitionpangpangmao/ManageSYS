@@ -13,6 +13,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
         if (!IsPostBack)
         {
             bindGrid();
+            bindGrid3();
             initView();
         }
 
@@ -20,7 +21,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
     protected void initView()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtRecordtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
+       
         opt.bindDropDownList(listProd, "select prod_code,prod_name from ht_pub_prod_design where is_del = '0' and is_valid = '1' order by prod_code", "prod_name", "prod_code");
         opt.bindDropDownList(listProd2, "select prod_code,prod_name from ht_pub_prod_design where is_del = '0' and is_valid = '1' order by prod_code", "prod_name", "prod_code");
         opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team where is_del = '0' and is_valid = '1' order by team_code", "team_name", "team_code");
@@ -49,6 +50,20 @@ public partial class Product_DataInput : MSYS.Web.BasePage
         GridView1.DataSource = data;
         GridView1.DataBind();       
 
+    }
+
+    protected void bindGrid3()
+    {
+        string query = "select s.planno as 计划号, t.prod_name as 产品,r.seg_info as 记录项目,s.seg_value as 记录值 from ht_inner_report_contrast r left join hv_prod_report s on r.section_code = s.section_code and r.seg_name = s.seg left join ht_pub_prod_design t on t.prod_code = substr(s.planno,9,7) where s.seg_value is not null";       
+        
+            if(listProd.SelectedValue != "" )
+                query += " and substr(s.planno,9,7) = '" + listProd.SelectedValue + "'";
+       
+      
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView3.DataSource = data;
+        GridView3.DataBind();       
     }
 
     protected void bindGrid2()
@@ -119,10 +134,47 @@ public partial class Product_DataInput : MSYS.Web.BasePage
 
         bindGrid();
     }
+
+    protected void GridView3_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定       
+        bindGrid3();
+    }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         bindGrid();
-
+        bindGrid3();
     }
 
 
@@ -147,23 +199,20 @@ public partial class Product_DataInput : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listPlanno, "select distinct planno from ht_prod_report  where prod_code = '" + listProd2.SelectedValue + "'", "planno", "planno"); 
     }
-    protected void initgrid2()
+
+    protected void rd1_CheckedChanged(object sender, EventArgs e)
     {
-        if (rd1.Checked)
-        {
-          //  if (listProd2.SelectedValue != "" && listPlanno.SelectedValue != "" && listTeam.SelectedValue != "" && txtDate.Text != "")
-                bindGrid2();
-        }
-        else
-        {
-          //  if (listProd2.SelectedValue != "" && listPlanno.SelectedValue != "")
-                bindGrid2();
-        }      
+        bindGrid2();
     }
-  
+
+    protected void rd2_CheckedChanged(object sender, EventArgs e)
+    {
+        bindGrid2();
+    }
+
     protected void btnView_Click(object sender, EventArgs e)
     {
-        initgrid2();
+        bindGrid2();
     }
   
     protected void btnModify_Click(object sender, EventArgs e)
@@ -175,6 +224,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
             if (listProd2.SelectedValue == ""||  listPlanno.SelectedValue == "" || listTeam2.SelectedValue == "" || txtDate.Text == "")
             {
                 ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "message", "alert('请录入完整的数据信息')", true);
+            
                 return;
             }
             else
@@ -198,6 +248,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
             if (listProd2.SelectedValue == "" || listPlanno.SelectedValue == "")
             {
                 ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "message", "alert('请录入完整的数据信息')", true);
+              
                 return;
             }
             else
@@ -218,6 +269,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
             InsertTlog(log_message);
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
             bindGrid();
+            bindGrid3();
      
       
           
@@ -256,6 +308,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
                 }
             }
             bindGrid();
+            bindGrid3();
         }
         catch (Exception ee)
         {

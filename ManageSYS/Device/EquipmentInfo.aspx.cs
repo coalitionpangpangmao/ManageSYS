@@ -46,7 +46,7 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
             foreach (DataRow row in rows)
             {
                 tvHtml += "<li ><span class='folder'  onclick = \"treeClick(" + row["section_code"].ToString() + ")\">" + row["section_name"].ToString() + "</span>";              
-                tvHtml += InitTreeEquip(row["section_code"].ToString());
+               // tvHtml += InitTreeEquip(row["section_code"].ToString());
                 tvHtml += "</li>";
             }
             tvHtml += "</ul>";
@@ -94,8 +94,8 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
     {
         
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select g.IDKEY as 设备编号,g.EQ_NAME as 设备名称,g.EQ_TYPE as 企业设备分类,g.EQ_STATUS as 设备状态,g.ZG_DATE as 转固日期,g.EQ_MODEL as 设备型号,g.USED_DATE as 投入使用日期,g.RATED_POWER as 额定生产能力,g.POWER_UNIT as 能力单位,g1.f_name as 设备管理部门, g2.f_name as 设备使用部门 from ht_eq_eqp_tbl g left join ht_svr_org_group g1 on g1.f_code = g.mgt_dept_code left join ht_svr_org_group g2 on g2.f_code = g.use_dept_code where g.is_del = '0' and g.is_valid = '1'";
-
+      //  string query = "select g.IDKEY as 设备编号,g.EQ_NAME as 设备名称,g.EQ_TYPE as 企业设备分类,g.EQ_STATUS as 设备状态,g.ZG_DATE as 转固日期,g.EQ_MODEL as 设备型号,g.USED_DATE as 投入使用日期,g.RATED_POWER as 额定生产能力,g.POWER_UNIT as 能力单位,g1.f_name as 设备管理部门, g2.f_name as 设备使用部门 from ht_eq_eqp_tbl g left join ht_svr_org_group g1 on g1.f_code = g.mgt_dept_code left join ht_svr_org_group g2 on g2.f_code = g.use_dept_code where g.is_del = '0' and g.is_valid = '1'";
+        string query = "select g.IDKEY as 设备编号,g.EQ_NAME as 设备名称,g.EQ_TYPE as 企业设备分类,g.EQ_STATUS as 设备状态,g.EQ_MODEL as 设备型号,g.USED_DATE as 投入使用日期,g.RATED_POWER as 额定生产能力,g.POWER_UNIT as 能力单位  from ht_eq_eqp_tbl g  where g.is_del = '0' and g.is_valid = '1'";
         if (listSectionM.SelectedValue != "")
         {
             query += " and g.section_code =  '" + listSectionM.SelectedValue + "'";           
@@ -221,7 +221,9 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
                     string id = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_EQP_TBL set IS_DEL = '1'  where IDKEY = '" + id + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除设备成功" : "删除设备失败";
+                   log_message += "--标识:" + id;
+                   InsertTlog(log_message);
                 }
             }
             bindGrid();
@@ -318,14 +320,19 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
 
     protected void btnModify_Click(object sender, EventArgs e)
     {       
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       List<String> commandlist = new List<String>();
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();      
       
-       string[] seg = { "IDKEY", "CLS_CODE", "EQ_NAME", "SGS_CODE", "NC_CODE", "FINANCE_EQ_NAME", "EQ_TYPE", "EQ_STATUS", "ZG_DATE", "EQ_MODEL", "ORI_WORTH", "NET_WORTH", " USED_DATE", "RATED_POWER", "REAL_POWER", "POWER_UNIT", "OWNER_NAME", "EQP_FROM", "ORI_OWNER_NAME", "MANUFACTURER", "SERIAL_NUMBER", "SUPPLIER", "IS_SPEC_EQP", "IS_MADEINCHINA", "MGT_DEPT_CODE", "MGT_DEPT_NAME", "USE_DEPT_CODE", "USE_DEPT_NAME", "DUTY_NAME", "EQP_IP", " EQP_MAC", "EQP_SN", "EQP_SYS", "REMARK", "CREATOR", "CREATE_TIME", "SECTION_CODE" };
-        string[] value = { txtIDKey.Text, txtCLS.Text, txtEqname.Text, txtSGSCode.Text, txtNCCode.Text, txtFncName.Text, txtEQType.Text, listEQStatus.SelectedValue, txtZGDate.Text, txtEQModel.Text, txtOriWorth.Text, txtNetWorth.Text, txtUsedDate.Text, txtRatedPower.Text, txtRealPower.Text, txtPowerUnit.Text, txtOwner.Text, txtEQSource.Text, txtOriOwner.Text, txtManufct.Text, txtSerialNo.Text, txtSupplier.Text, Convert.ToInt16(rdSpecEQ.Checked).ToString(), Convert.ToInt16(rdMadeChina.Checked).ToString(), listMGdept.SelectedValue, listMGdept.SelectedItem.Text, listUseDept.SelectedValue, listUseDept.SelectedItem.Text, txtDutier.Text, txtIp.Text, txtMAC.Text, txtSN.Text, txtOpSYS.Text, txtDscpt.Text, "", System.DateTime.Now.ToString("yyyy-MM-hh"), listSection.SelectedValue };
-        opt.MergeInto(seg, value,1, "HT_EQ_EQP_TBL");
-    
+       string[] seg = { "IDKEY", "CLS_CODE", "EQ_NAME", "SGS_CODE", "NC_CODE", "FINANCE_EQ_NAME", "EQ_TYPE", "EQ_STATUS", "ZG_DATE", "EQ_MODEL", "ORI_WORTH", "NET_WORTH", " USED_DATE", "RATED_POWER", "REAL_POWER", "POWER_UNIT", "OWNER_NAME", "EQP_FROM", "ORI_OWNER_NAME", "MANUFACTURER", "SERIAL_NUMBER", "SUPPLIER", "IS_SPEC_EQP", "IS_MADEINCHINA", "MGT_DEPT_CODE", "USE_DEPT_CODE", "DUTY_NAME", "EQP_IP", " EQP_MAC", "EQP_SN", "EQP_SYS", "REMARK", "CREATOR", "CREATE_TIME", "SECTION_CODE" };
+        string[] value = { txtIDKey.Text, txtCLS.Text, txtEqname.Text, txtSGSCode.Text, txtNCCode.Text, txtFncName.Text, txtEQType.Text, listEQStatus.SelectedValue, txtZGDate.Text, txtEQModel.Text, txtOriWorth.Text, txtNetWorth.Text, txtUsedDate.Text, txtRatedPower.Text, txtRealPower.Text, txtPowerUnit.Text, txtOwner.Text, txtEQSource.Text, txtOriOwner.Text, txtManufct.Text, txtSerialNo.Text, txtSupplier.Text, Convert.ToInt16(rdSpecEQ.Checked).ToString(), Convert.ToInt16(rdMadeChina.Checked).ToString(), listMGdept.SelectedValue, listUseDept.SelectedValue, txtDutier.Text, txtIp.Text, txtMAC.Text, txtSN.Text, txtOpSYS.Text, txtDscpt.Text, "", System.DateTime.Now.ToString("yyyy-MM-hh"), listSection.SelectedValue };
+
+
+        string log_message = opt.MergeInto(seg, value, 1, "HT_EQ_EQP_TBL") == "Success" ? "保存设备信息成功" : "保存设备信息失败";
+        log_message += "--详情：" + string.Join(",", value);
+        InsertTlog(log_message);
+
         bindGrid();
+
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "close", "$('.shade').fadeOut(100)", true);
 
     }
  

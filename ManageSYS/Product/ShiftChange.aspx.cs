@@ -174,7 +174,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     }
     protected void btnExport_Click(object sender, EventArgs e)
     {
-        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xlsx",DateTime.Now,false);
+        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xls",DateTime.Now,false);
      
     }
     protected DataSet gridTypebind()
@@ -249,7 +249,9 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
                     string mtr_code = ((DropDownList)GridView2.Rows[i].FindControl("listMater")).SelectedValue;
                     string query = "update ht_prod_shiftchg_detail set IS_DEL = '1'  where mater_code = '" + mtr_code + "' and SHIFT_MAIN_ID = '" + hdID.Value + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除生产交接班明细成功" : "删除生产交接班明细失败";
+                   log_message += "--标识:" + ID;
+                   InsertTlog(log_message);
                 }
             }
             bindGrid2();

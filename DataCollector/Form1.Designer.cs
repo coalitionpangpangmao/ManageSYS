@@ -33,6 +33,7 @@
             this.QuaTime = new System.Windows.Forms.DateTimePicker();
             this.Qua_show = new System.Windows.Forms.Button();
             this.Qua_Start = new System.Windows.Forms.Button();
+            this.Qua_Stop = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -42,6 +43,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.Qua_Stop);
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.QuaTime);
             this.groupBox1.Controls.Add(this.Qua_show);
@@ -67,14 +69,14 @@
             // 
             // QuaTime
             // 
-            this.QuaTime.Location = new System.Drawing.Point(113, 20);
+            this.QuaTime.Location = new System.Drawing.Point(244, 20);
             this.QuaTime.Name = "QuaTime";
             this.QuaTime.Size = new System.Drawing.Size(113, 21);
             this.QuaTime.TabIndex = 3;
             // 
             // Qua_show
             // 
-            this.Qua_show.Location = new System.Drawing.Point(228, 18);
+            this.Qua_show.Location = new System.Drawing.Point(363, 18);
             this.Qua_show.Name = "Qua_show";
             this.Qua_show.Size = new System.Drawing.Size(75, 23);
             this.Qua_show.TabIndex = 2;
@@ -84,13 +86,23 @@
             // 
             // Qua_Start
             // 
-            this.Qua_Start.Location = new System.Drawing.Point(34, 20);
+            this.Qua_Start.Location = new System.Drawing.Point(26, 18);
             this.Qua_Start.Name = "Qua_Start";
             this.Qua_Start.Size = new System.Drawing.Size(75, 23);
             this.Qua_Start.TabIndex = 0;
             this.Qua_Start.Text = "开始";
             this.Qua_Start.UseVisualStyleBackColor = true;
             this.Qua_Start.Click += new System.EventHandler(this.Qua_Start_Click);
+            // 
+            // Qua_Stop
+            // 
+            this.Qua_Stop.Location = new System.Drawing.Point(124, 18);
+            this.Qua_Stop.Name = "Qua_Stop";
+            this.Qua_Stop.Size = new System.Drawing.Size(75, 23);
+            this.Qua_Stop.TabIndex = 5;
+            this.Qua_Stop.Text = "停止";
+            this.Qua_Stop.UseVisualStyleBackColor = true;
+            this.Qua_Stop.Click += new System.EventHandler(this.Qua_Stop_Click);
             // 
             // Form1
             // 
@@ -113,6 +125,7 @@
         private System.Windows.Forms.DateTimePicker QuaTime;
         private System.Windows.Forms.Button Qua_show;
         private System.Windows.Forms.Button Qua_Start;
+        private System.Windows.Forms.Button Qua_Stop;
   
     }
 }

@@ -8,7 +8,8 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-  
+        <link href="../css/falutsearchbox.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/msys/falutSearch.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#case").hide();
@@ -51,6 +52,13 @@
                             <table class="tablelist" style="margin-bottom: 10px">
                                 <tbody>
                                     <tr>
+                                          <td width="100">
+                                            区域
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="listArea" runat="server" CssClass = "drpdwnlist" OnSelectedIndexChanged="listArea_SelectedIndexChanged"  AutoPostBack="true">    
+                                        </asp:DropDownList>                                          
+                                        </td>       
                                         <td width="100">
                                             维修设备
                                         </td>
@@ -73,16 +81,7 @@
                                             </asp:DropDownList>
                                         </td>
                                    
-                                        <td width="100">
-                                            区域
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="listArea" runat="server" CssClass = "drpdwnlist" >    <asp:ListItem></asp:ListItem>
-                                            <asp:ListItem >A区</asp:ListItem>
-                                            <asp:ListItem> B区</asp:ListItem>
-                                            <asp:ListItem >C区</asp:ListItem>
-                                        </asp:DropDownList>                                          
-                                        </td>                                       
+                                                                      
                                     </tr>                                  
                                     <tr><td>维修原因
                                     </td>
@@ -99,6 +98,7 @@
                         <Triggers>                    
                         <asp:AsyncPostBackTrigger ControlID = "btnSave" />   
                         <asp:AsyncPostBackTrigger ControlID = "btnSumit" />   
+                            <asp:AsyncPostBackTrigger ControlID ="listArea" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -111,9 +111,16 @@
                                 <td width="100">
                                     故障名
                                 </td>
-                                <td>
-                                    <asp:TextBox ID="txtName" runat="server" CssClass = "dfinput1"></asp:TextBox>
-                                </td>
+                               <td>
+                                           
+                                            <asp:TextBox ID="txtFtID" runat="server" CssClass="btnhide"></asp:TextBox>
+                                             <asp:Button ID="btnShow" runat="server" CssClass="btnhide" OnClick="btnShow_Click" />
+                                            <div class="search"   >                                              
+                                                 <asp:TextBox ID="txtName" runat="server" CssClass="dfinput1" onkeyup="keySelectHistory2()" onchange="keySelectHistory2()"   onclick="keySelectHistory()" onblur ="keyhide()"></asp:TextBox>
+                                                <div class="text" id="keytext" style="display: none">
+                                                </div>
+                                            </div>
+                                        </td>
                                 <td width="100">
                                     故障类型
                                 </td>

@@ -128,7 +128,7 @@
                                  <AlternatingRowStyle CssClass="gridalterrow" />
                                                   <PagerStyle CssClass="gridpager" />
                                 <PagerTemplate>
-                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
                                     <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
                                     <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
                                     <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
@@ -232,7 +232,7 @@
                                 <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                 <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                 <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
-                                <input id="btnDispatch" type="button" value="派工"  class = "btnpatch" onclick = "patchClick()"; />
+                                <asp:Button ID="btnDispatch" runat="server" CssClass="btnpatch auth" Text="派工"  OnClientClick="patchClick()"/>
                                             <asp:Button ID="btnTrack" runat="server" CssClass="btnview auth" Text="跟踪" OnClick="btnTrack_Click" />
                                    <asp:Button ID="btnDone" runat="server" CssClass="btndone auth" Text="完成" OnClick="btnDone_Click" />
                             </span>
@@ -248,17 +248,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="区域">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" Width="80px">
-                                          <asp:ListItem></asp:ListItem>
-                                            <asp:ListItem >A区</asp:ListItem>
-                                            <asp:ListItem> B区</asp:ListItem>
-                                            <asp:ListItem >C区</asp:ListItem>
-                                        </asp:DropDownList>
+                                          <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist"   DataSource = "<%# sectionbind() %>"  DataTextField = "Section_NAME"  DataValueField = "Section_CODE"  OnSelectedIndexChanged = "listGridarea_SelectedIndexChanged" AutoPostBack="True" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="设备名称">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" DataSource = "<%# eqbind() %>"  DataTextField = "EQ_NAME"  DataValueField = "IDKEY">
+                                        <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" >
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>

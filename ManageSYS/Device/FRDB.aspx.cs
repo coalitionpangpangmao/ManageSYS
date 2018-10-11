@@ -12,6 +12,9 @@ public partial class Device_FRDB : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList(listSection, "select section_code,section_name  from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code ", "section_name", "section_code");
+            opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'", "EQ_NAME", "IDKEY");
             bindGrid();
         }
 
@@ -56,19 +59,20 @@ public partial class Device_FRDB : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select t.error_name as 故障名,t.specific_location as 故障位置,t.editor_id as 编制人,t.ID   from ht_eq_fault_db t where t.is_del = '0'";
+        string query = "select t1.eq_name as 故障设备, t.error_name as 故障名,t.specific_location as 故障位置,t.editor as 编制人,t.CREATE_TIME as 记录时间,t.ID   from ht_eq_fault_db t left join ht_eq_eqp_tbl t1 on t1.idkey = t.equip_code  where t.is_del = '0'";
         if (listType1.SelectedValue != "")
-            query += " and FAULT_TYPE1 = '" + listType1.SelectedValue + "'";
+            query += " and t.FAULT_TYPE1 = '" + listType1.SelectedValue + "'";
         if (listType2.SelectedValue != "")
-            query += " and FAULT_TYPE2 = '" + listType2.SelectedValue + "'";
+            query += " and t.FAULT_TYPE2 = '" + listType2.SelectedValue + "'";
         if (listType3.SelectedValue != "")
-            query += " and FAULT_TYPE3 = '" + listType3.SelectedValue + "'";
+            query += " and t.FAULT_TYPE3 = '" + listType3.SelectedValue + "'";
         if (listType4.SelectedValue != "")
-            query += " and FAULT_TYPE4 = '" + listType4.SelectedValue + "'";
+            query += " and t.FAULT_TYPE4 = '" + listType4.SelectedValue + "'";
         if (listType5.SelectedValue != "")
-            query += " and FAULT_TYPE5 = '" + listType5.SelectedValue + "'";
+            query += " and t.FAULT_TYPE5 = '" + listType5.SelectedValue + "'";
         if (listType6.SelectedValue != "")
-            query += " and FAULT_TYPE6 = '" + listType6.SelectedValue + "'";
+            query += " and t.FAULT_TYPE6 = '" + listType6.SelectedValue + "'";
+        query += " order by t.CREATE_TIME";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -105,6 +109,7 @@ public partial class Device_FRDB : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         setBlank();
+        txtEditor.Text = ((MSYS.Data.SysUser)Session["User"]).text;
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "treeClick();", true);
     }
 
@@ -119,7 +124,9 @@ public partial class Device_FRDB : MSYS.Web.BasePage
                     string id = GridView1.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_FAULT_DB set IS_DEL = '1'  where ID = '" + id + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除故障信息成功" : "删除故障信息失败";
+                    log_message += "--标识:" + id;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid();
@@ -155,7 +162,9 @@ public partial class Device_FRDB : MSYS.Web.BasePage
             string id = GridView1.DataKeys[Rowindex].Value.ToString();
             string query = "update HT_EQ_FAULT_DB set IS_DEL = '1'  where ID = '" + id + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.UpDateOra(query);
+            string log_message = opt.UpDateOra(query) == "Success" ? "删除故障信息成功" : "删除故障信息失败";
+            log_message += "--标识:" + id;
+            InsertTlog(log_message);
             bindGrid();
         }
         catch (Exception ee)
@@ -176,8 +185,9 @@ public partial class Device_FRDB : MSYS.Web.BasePage
         {
             DataRow row = data.Tables[0].Rows[0];
             txtName.Text = row["ERROR_NAME"].ToString();
+            listEq.SelectedValue = row["EQUIP_CODE"].ToString();
             listEqType.SelectedValue = row["EQP_TYPE"].ToString();
-            txtEditor.Text = row["EDITOR_ID"].ToString();
+            txtEditor.Text = row["EDITOR"].ToString();
             txtLocation.Text = row["SPECIFIC_LOCATION"].ToString();
             listSection.SelectedValue = row["SECTION_CODE"].ToString();
             listStyle1.SelectedValue = row["FAULT_TYPE1"].ToString();
@@ -199,17 +209,26 @@ public partial class Device_FRDB : MSYS.Web.BasePage
         try
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            if (hdcode.Value != "")
-                opt.UpDateOra("delete from HT_EQ_FAULT_DB  where id = '" + hdcode.Value.ToString() + "'");
+            string ftID = "";
+            string query = "select * from HT_EQ_FAULT_DB where Error_name = '" + txtName.Text + "' and eqp_TYpe = '" + listEqType.SelectedValue + "' and SPECIFIC_LOCATION = '" + txtLocation.Text + "' and SECTION_CODE = '" + listSection.SelectedValue + "' and FAULT_TYPE1 = '" + listStyle1.SelectedValue + "' and FAULT_TYPE2 = '" + listStyle2.SelectedValue + "' and FAULT_TYPE3 = '" + listStyle3.SelectedValue + "' and FAULT_TYPE4 = '" + listStyle4.SelectedValue + "' and FAULT_TYPE5 = '" + listStyle5.SelectedValue + "' and FAULT_TYPE6 = '" + listStyle6.SelectedValue + "' and SCEAN = '" + txtScean.Text + "' and ERROR_DESCRIPTION = '" + txtDescpt.Text + "' and FAILURE_CAUSE = '" + txtReason.Text + "' and SOLUTION = '" + txtSolution.Text + "' and EQUIP_CODE = '" + listEq.SelectedValue + "'";
+            query = query.Replace("= ''", "is null");
+            DataSet data = opt.CreateDataSetOra(query);
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                ftID = data.Tables[0].Rows[0]["ID"].ToString();
+            }
+            else
+            {
+                ftID = opt.GetSegValue("select fault_id_seq.nextval from dual", "nextval");
 
-            string[] seg = { "ERROR_NAME", "EQP_TYPE", "EDITOR_ID", "SPECIFIC_LOCATION", "SECTION_CODE", "FAULT_TYPE1", "FAULT_TYPE2", "FAULT_TYPE3", "FAULT_TYPE4", "FAULT_TYPE5", "FAULT_TYPE6", "SCEAN", "ERROR_DESCRIPTION", "FAILURE_CAUSE", "SOLUTION" };
-            string[] value = { txtName.Text, listEqType.SelectedValue, txtEditor.Text, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text };
+                string[] seg = { "ID", "ERROR_NAME", "EQP_TYPE", "SPECIFIC_LOCATION", "SECTION_CODE", "FAULT_TYPE1", "FAULT_TYPE2", "FAULT_TYPE3", "FAULT_TYPE4", "FAULT_TYPE5", "FAULT_TYPE6", "SCEAN", "ERROR_DESCRIPTION", "FAILURE_CAUSE", "SOLUTION", "CREATE_TIME", "EQUIP_CODE","EDITOR" };
+                string[] value = { ftID, txtName.Text, listEqType.SelectedValue, txtLocation.Text, listSection.SelectedValue, listStyle1.SelectedValue, listStyle2.SelectedValue, listStyle3.SelectedValue, listStyle4.SelectedValue, listStyle5.SelectedValue, listStyle6.SelectedValue, txtScean.Text, txtDescpt.Text, txtReason.Text, txtSolution.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEq.SelectedValue, ((MSYS.Data.SysUser)Session["User"]).text };
 
-            string log_message = opt.InsertData(seg, value, "HT_EQ_FAULT_DB") == "Success" ? "故障信息入库成功" : "故障信息入库失败";
-            log_message += "--详情:" + string.Join(",", value);
-            InsertTlog(log_message);
-       
-            bindGrid();
+                string log_message = opt.InsertData(seg, value, "HT_EQ_FAULT_DB") == "Success" ? "故障信息入库成功" : "故障信息入库失败";
+                log_message += "--详情:" + string.Join(",", value);
+                InsertTlog(log_message);
+                bindGrid();
+            }
         }
         catch (Exception ee)
         {

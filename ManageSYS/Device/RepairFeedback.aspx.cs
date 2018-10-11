@@ -23,7 +23,10 @@ public partial class Device_RepairFeedback : MSYS.Web.BasePage
     {
 
         string query = "select distinct t.mt_name as 维修计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,t.remark as 备注,t.pz_code from ht_eq_rp_plan t left join ht_svr_user t1 on t1.id = t.create_id  left join ht_eq_rp_plan_detail t2 on t2.main_id = t.pz_code where t2.status >= '3' and  t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'";
-
+        if (ckDone.Checked)
+            query += " and t.TASK_STATUS >= '3'";
+        else
+            query += " and t.TASK_STATUS = '3' ";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -171,7 +174,7 @@ public partial class Device_RepairFeedback : MSYS.Web.BasePage
 
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select * from ht_eq_mclbr_plan_detail where ID = '" + txtID.Text + "'");
+        DataSet data = opt.CreateDataSetOra("select * from HT_EQ_RP_PLAN_detail where ID = '" + txtID.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             DataRow drow = data.Tables[0].Rows[0];
@@ -188,14 +191,30 @@ public partial class Device_RepairFeedback : MSYS.Web.BasePage
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
 
     }
+
+    protected DataSet sectionbind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code");
+    }
     protected void btnModify_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         string[] seg = { "ID", "STATUS", "FEEDBACK", "REMARKPLUS" };
         string[] value = { txtID.Text, "4", txtScean.Text, txtPlus.Text };
-        opt.MergeInto(seg, value, 1, "ht_eq_mclbr_plan_detail");
+        
+        string log_message =opt.MergeInto(seg, value, 1, "HT_EQ_RP_PLAN_detail") == "Success" ? "维修反馈成功" : "维修反馈失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
         bindGrid2(txtCode.Value);
+
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_RP_PLAN_detail t left join HT_EQ_RP_PLAN_detail t1 on t1.id = t.id and t1.status = '4' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+        if (alter == "1")
+        {
+            opt.UpDateOra("update HT_EQ_RP_PLAN set TASK_STATUS = '4' where PZ_CODE = '" + txtCode.Value + "'");
+            bindGrid1();
+        }
 
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
     }

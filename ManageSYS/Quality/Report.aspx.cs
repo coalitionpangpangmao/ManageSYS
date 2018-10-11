@@ -12,12 +12,8 @@ public partial class Quality_Report : MSYS.Web.BasePage
     protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
-        if (!IsPostBack)
-        {
+        //if(!IsPostBack)
             tvHtml = InitTree("质量");
-            
-        }
-
     }
 
 
@@ -51,7 +47,7 @@ public partial class Quality_Report : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
         if (filename != "NoRecord")
-        {
+        {           
             DateTime time = DateTime.Now;
             CreateExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".htm", time, hideMerge.Value == "0");
             string path = "../TEMP/" + filename + time.ToString("HHmmss") + ".htm";
@@ -64,7 +60,7 @@ public partial class Quality_Report : MSYS.Web.BasePage
     {
          MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
-        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xlsx", DateTime.Now, hideMerge.Value == "0");
+        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xls", DateTime.Now, hideMerge.Value == "0");
         //ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02", ".xlsx");
     }
 

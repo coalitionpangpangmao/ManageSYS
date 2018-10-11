@@ -12,7 +12,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     {
         base.PageLoad(sender, e);
         if (!IsPostBack)
-        {           
+        {
             bindGrid();
             initView();
         }
@@ -56,7 +56,7 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "";     
+        string query = "";
         if (listtype.SelectedValue == "")
             query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0' union select h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
         else
@@ -65,25 +65,25 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                 query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0'";
             else
                 query = "select distinct h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
-            if(listSection.SelectedValue != "")
+            if (listSection.SelectedValue != "")
                 query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
         }
-     
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
-            
+
 
 
     }
     protected void initView()
-    {        
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       opt.bindDropDownList(listtype, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
-       opt.bindDropDownList(listType2, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
-       opt.bindDropDownList(listCreator, "select distinct ID,Name from ht_svr_user where is_DEL = '0'", "Name", "ID");
-        
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(listtype, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
+        opt.bindDropDownList(listType2, "select distinct ID,inspect_type from ht_inner_bool_display t", "inspect_type", "ID");
+        opt.bindDropDownList(listCreator, "select distinct ID,Name from ht_svr_user where is_DEL = '0'", "Name", "ID");
+
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -119,15 +119,15 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       List<String> commandlist = new List<String>();
-       commandlist.Add("delete from ht_qlt_inspect_proj where INSPECT_CODE = '" + txtCode.Text + "'");
-       string[] seg = { "INSPECT_GROUP", "INSPECT_CODE", "INSPECT_NAME", "INSPECT_TYPE", "REMARK", "CREATE_ID", "CREATE_TIME", "UNIT" };
-            string[] value = {listSection2.SelectedValue, txtCode.Text,txtName.Text,listType2.SelectedValue,txtRemark.Text,listCreator.SelectedValue,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtUnit.Text};
-            commandlist.Add(opt.InsertDatastr(seg, value, "ht_qlt_inspect_proj"));
-            opt.TransactionCommand(commandlist);
-            bindGrid();
-            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string[] seg = { "INSPECT_CODE", "INSPECT_GROUP", "INSPECT_NAME", "INSPECT_TYPE", "REMARK", "CREATE_ID", "CREATE_TIME", "UNIT" };
+        string[] value = { txtCode.Text, listSection2.SelectedValue, txtName.Text, listType2.SelectedValue, txtRemark.Text, listCreator.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtUnit.Text };
+
+        string log_message = opt.MergeInto(seg, value, 1, "ht_qlt_inspect_proj") == "Success" ? "保存工艺检查项目成功" : "保存工艺检查项目失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+        bindGrid();
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
     }
 
     protected void btnGrid1CkAll_Click(object sender, EventArgs e)//全选
@@ -155,14 +155,14 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
                 {
-                    string projcode = GridView1.DataKeys[i].Value.ToString();                   
+                    string projcode = GridView1.DataKeys[i].Value.ToString();
                     string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where INSPECT_CODE = '" + projcode + "'";
-                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                   string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查项目成功" : "删除工艺检查项目失败";
-                   log_message += "--标识:" + projcode;
-                   InsertTlog(log_message);
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                    string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查项目成功" : "删除工艺检查项目失败";
+                    log_message += "--标识:" + projcode;
+                    InsertTlog(log_message);
                 }
-            }           
+            }
             bindGrid();
         }
         catch (Exception ee)
@@ -173,34 +173,34 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
 
     protected void btnEdit_Click(object sender, EventArgs e)//
     {
-       
-            Button btn = (Button)sender;
-            int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
-            string projcode = GridView1.DataKeys[rowIndex].Value.ToString();
-            string query = "select * from ht_qlt_inspect_proj where INSPECT_CODE = '" + projcode + "' and  is_del = '0'";
-           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra(query);
-            if (data != null && data.Tables[0].Rows.Count > 0)
-            {
-                txtCode.Text = data.Tables[0].Rows[0]["INSPECT_CODE"].ToString();
-                txtName.Text = data.Tables[0].Rows[0]["INSPECT_NAME"].ToString();              
-                listType2.SelectedValue = data.Tables[0].Rows[0]["INSPECT_TYPE"].ToString();
-                if (listType2.SelectedValue == "0")
-                {
-                    opt.bindDropDownList(listSection2, "select Section_code,Section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "Section_name", "Section_code");
 
-                }
-                else
-                {
-                    opt.bindDropDownList(listSection2, "select ID,Name from ht_inner_inspect_group t", "Name", "ID");
-                }
-                listSection2.SelectedValue = data.Tables[0].Rows[0]["INSPECT_GROUP"].ToString();
-                txtRemark.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
-                listCreator.SelectedValue = data.Tables[0].Rows[0]["CREATE_ID"].ToString();
-                txtUnit.Text = data.Tables[0].Rows[0]["UNIT"].ToString();
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string projcode = GridView1.DataKeys[rowIndex].Value.ToString();
+        string query = "select * from ht_qlt_inspect_proj where INSPECT_CODE = '" + projcode + "' and  is_del = '0'";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            txtCode.Text = data.Tables[0].Rows[0]["INSPECT_CODE"].ToString();
+            txtName.Text = data.Tables[0].Rows[0]["INSPECT_NAME"].ToString();
+            listType2.SelectedValue = data.Tables[0].Rows[0]["INSPECT_TYPE"].ToString();
+            if (listType2.SelectedValue == "0")
+            {
+                opt.bindDropDownList(listSection2, "select Section_code,Section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "Section_name", "Section_code");
+
             }
-            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
-      
+            else
+            {
+                opt.bindDropDownList(listSection2, "select ID,Name from ht_inner_inspect_group t", "Name", "ID");
+            }
+            listSection2.SelectedValue = data.Tables[0].Rows[0]["INSPECT_GROUP"].ToString();
+            txtRemark.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
+            listCreator.SelectedValue = data.Tables[0].Rows[0]["CREATE_ID"].ToString();
+            txtUnit.Text = data.Tables[0].Rows[0]["UNIT"].ToString();
+        }
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
+
     }
 
     protected void listtype_SelectedIndexChanged(object sender, EventArgs e)

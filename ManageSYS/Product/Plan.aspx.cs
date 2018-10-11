@@ -68,7 +68,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
-        SetEnable(true);
+        SetEnable(true,"0");
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
     }
 
@@ -140,16 +140,18 @@ public partial class Product_Plan : MSYS.Web.BasePage
         int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
         string id = GridView1.DataKeys[Rowindex].Value.ToString();
         List<String> commandlist = new List<String>();
-        commandlist.Add("update ht_prod_month_plan set IS_DEL = '1'  where ID = '" + id + "'");
-        commandlist.Add("update ht_prod_month_plan_detail set is_del = '1' where month_plan_id = '" + id + "'");
+        commandlist.Add("delete from  ht_prod_month_plan  where ID = '" + id + "'");
+        
         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + id + "'");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.TransactionCommand(commandlist);
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除月度生产计划成功" : "删除月度生产计划失败";
+        log_message += "--标识:" + id;
+        InsertTlog(log_message);
 
         bindGrid1();
 
     }
-    protected void SetEnable(bool status)
+    protected void SetEnable(bool status,string adjust)
     {
         btnAdd.Visible = status;
         btnDelSel.Visible = status;
@@ -159,6 +161,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             GridView2.Columns[7].Visible = status;
             GridView2.Columns[8].Visible = status;
         }
+        hideAdjust.Value = adjust;
     }
     protected void btnGridEdit_Click(object sender, EventArgs e)//编制计划
     {
@@ -172,9 +175,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
             bindGrid2(id);
             if (aprvstatus == "未提交")
-                SetEnable(true);
+                SetEnable(true,"0");
             else
-                SetEnable(false);
+                SetEnable(false,"0");
 
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
             //   string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
@@ -187,7 +190,30 @@ public partial class Product_Plan : MSYS.Web.BasePage
             Response.Write(ee.Message);
         }
     }
-    //查看审批单
+
+
+    protected void btnGridAlter_Click(object sender, EventArgs e)//调整计划
+    {
+        try
+        {
+            Button btn = (Button)sender;
+            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
+            string id = GridView1.DataKeys[Rowindex].Value.ToString();
+            txtYear.Text = GridView1.Rows[Rowindex].Cells[2].Text.Substring(0, 4);
+            listMonth.SelectedValue = GridView1.Rows[Rowindex].Cells[2].Text.Substring(5, 2);
+            string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
+            bindGrid2(id);
+                SetEnable(true,"1");
+           
+
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+          
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
     protected void btnFLow_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
@@ -318,19 +344,28 @@ public partial class Product_Plan : MSYS.Web.BasePage
     {
         try
         {
+            List<string> commandlist = new List<string>();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string planlist = "";
             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
                 {
                     string mtr_code = ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text;
-                    string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
-                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    string log_message = opt.UpDateOra(query) == "Success" ? "删除生产计划明细成功" : "删除生产计划明细失败";
-                    log_message += "--标识:" + mtr_code;
-                    InsertTlog(log_message);
+                    commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'");
+                    planlist += mtr_code + ",";
                 }
             }
-            bindGrid2(hidePlanID.Value);
+            if (commandlist.Count > 0)
+            {
+                if (hideAdjust.Value == "1")
+                    commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+                string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除生产计划明细成功" : "删除生产计划明细失败";
+                log_message += "--标识:" + planlist;
+                InsertTlog(log_message);
+                bindGrid2(hidePlanID.Value);
+                bindGrid1();
+            }
         }
         catch (Exception ee)
         {
@@ -344,12 +379,16 @@ public partial class Product_Plan : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string mtr_code = ((TextBox)GridView2.Rows[Rowindex].FindControl("txtPlanNo")).Text;
-            string query = "update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string log_message = opt.UpDateOra(query) == "Success" ? "删除月度生产计划明细成功" : "删除月度生产计划明细失败";
+            List<string> commandlist = new List<string>();
+            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'");
+            if (hideAdjust.Value == "1")
+                commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除月度生产计划明细成功" : "删除月度生产计划明细失败";
             log_message += "--标识:" + mtr_code;
             InsertTlog(log_message);
             bindGrid2(hidePlanID.Value);
+            bindGrid1();
         }
         catch (Exception ee)
         {
@@ -379,11 +418,14 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 mtr_code = "PD" + txtYear.Text + listMonth.SelectedValue + prod_code + planno.PadLeft(2, '0');
               
             }
+            List<string> commandlist = new List<string>();
             string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output", "path_code","is_del" };
             string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code ,"0"};
-          
+            commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL"));
+            if (hideAdjust.Value == "1")
+                commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
 
-            string log_message = opt.MergeInto(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL") == "Success" ? "保存生产计划详情成功" : "生产计划详情失败";
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "保存生产计划详情成功" : "生产计划详情失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
 
@@ -392,6 +434,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 insertSectionPath(path_code, mtr_code);
             }
             bindGrid2(hidePlanID.Value);
+            bindGrid1();
         }
         catch (Exception ee)
         {
@@ -435,7 +478,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 }
             }
         }
-        opt.TransactionCommand(commandlist);
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "配置生产任务路径成功" : "配置生产任务路径失败";
+        log_message += "--标识:" + planno;
+        InsertTlog(log_message);
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -573,7 +618,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 }
 
             }
-            opt.TransactionCommand(commandlist);
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "配置生产任务路径成功" : "配置生产任务路径失败";
+            log_message += "--标识:" + planno;
+            InsertTlog(log_message);
         }
 
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "close", "$('.shade').fadeOut(100);", true);

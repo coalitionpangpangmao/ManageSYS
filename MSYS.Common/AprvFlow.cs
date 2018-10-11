@@ -38,7 +38,7 @@ namespace MSYS.Common
             //插入审批流程
             //1、插入审批流程第一步提交流程 顺序号为0
             string[] subseg0 = { "GONGWEN_ID", "ROLENAME", "POS", "WORKITEMID", "ISENABLE", "USERID", "USERNAME", "OPINIONTIME", "COMMENTS", "STATUS" };
-            string[] subvalue0 = { ID, user.UserRole, "0", "提交审批", "1", user.id, user.text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "提交", "2" };
+            string[] subvalue0 = { ID, user.UserRole, "0", "操作员提交审批", "1", user.id, user.text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "提交", "2" };
             commandlist.Add(opt.InsertDatastr(subseg0, subvalue0, "HT_PUB_APRV_OPINION"));
 
             //2、根据审批模版中定义的顺序将审批业务分解为顺序流程

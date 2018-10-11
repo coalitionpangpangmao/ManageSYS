@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Report.aspx.cs" Inherits="Quality_Report" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Report.aspx.cs" Inherits="Quality_Report"  %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -34,11 +34,11 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">生产管理</a></li>
-                <li><a href="#">生产报表</a></li>
+                <li><a href="#">质量统计表</a></li>
             </ul>
         </div>
     
-        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" >
         </asp:ScriptManager>
         <div class="mainbox">
             <div class="mainleft">
@@ -63,8 +63,8 @@
                   <table class="tablelist">
                       <tr>
                         
-                          <td  > <asp:Label ID="lab2" runat ="server" Text ="开始时间"  Width ="60px" CssClass="labinfo"/> <asp:TextBox ID="txtStartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
-                          <td><asp:Label ID="lab3" runat ="server" Text ="结束时间" Width ="60px" CssClass="labinfo"/> <asp:TextBox ID="txtEndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
+                          <td  > <asp:Label ID="lab2" runat ="server" Text ="开始时间"  Width ="70px" CssClass="labinfo"/> <asp:TextBox ID="txtStartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
+                          <td><asp:Label ID="lab3" runat ="server" Text ="结束时间" Width ="70px" CssClass="labinfo"/> <asp:TextBox ID="txtEndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
                           <td>
                               <asp:Label ID="lab1" runat ="server" Text ="产品" Width ="50px" CssClass="labinfo"/><asp:DropDownList ID="listProd" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
                           </td>   
@@ -86,7 +86,7 @@
                         style="width: 100%; position: relative;"></iframe>
                            </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnSearch" />                  
+                        <asp:PostBackTrigger ControlID="btnSearch" />  
                     </Triggers>
                 </asp:UpdatePanel>
                 </div>

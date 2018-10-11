@@ -22,7 +22,7 @@ public partial class Authority_LoginRecord : MSYS.Web.BasePage
     protected void bindGrid()
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string query = "select F_USER as 用户,F_COMPUTER as 操作站,F_TIME as 时间,F_DESCRIPT as 描述  from HT_SVR_LOGIN_RECORD  where F_TIME between '" + StartTime.Text + "' and  '" + EndTime.Text + "'";
+        string query = "select F_USER as 用户,F_COMPUTER as 操作站,F_TIME as 时间,F_DESCRIPT as 描述  from HT_SVR_LOGIN_RECORD  where F_TIME between '" + StartTime.Text + "' and  '" + EndTime.Text + "' order by F_TIME";
      
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;

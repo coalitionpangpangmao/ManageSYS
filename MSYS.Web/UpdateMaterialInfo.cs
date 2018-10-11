@@ -14,7 +14,7 @@ namespace MSYS.Web
         {
             this.seg = new string[] { "LOGINNAME", "NAME", "ID", "LEVELGROUPID"};
             this.tablename = "HT_SVR_USER";
-            this.rootname = "USERINFO";
+            this.rootname = "MATERIAL";
         }
          public override string GetXmlStr()
          {

@@ -9,20 +9,7 @@
     <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-
-        function GridClick() {
-            $('#tabtop2').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
@@ -56,7 +43,7 @@
                 <table class="tablelist">
                     <tbody>
                         <tr>
-                            <td width="100">
+                            <td width="110px">
                                 时间
                             </td>
                             <td>
@@ -64,7 +51,7 @@
                                 <asp:TextBox ID="txtStopDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td> 
-                                <asp:RadioButton ID="rdElec" runat="server" Text="电气维修" GroupName="mtType" />
+                                <asp:RadioButton ID="rdElec" runat="server" Text="电气维修" GroupName="mtType" Checked="True" />
                                 <asp:RadioButton ID="rdMchnc" runat="server" Text="机械维修" GroupName="mtType"  />
                             </td>
                         </tr>
@@ -77,7 +64,7 @@
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                          <asp:HiddenField ID="hdID" runat="server" />
-                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8"
+                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12"
                                 AutoGenerateColumns="False">
                                 <Columns>                                 
                                     <asp:BoundField DataField="日期" HeaderText="日期" />
@@ -96,7 +83,7 @@
                                  <AlternatingRowStyle CssClass="gridalterrow" />
                                         <PagerStyle CssClass="gridpager" />
                                 <PagerTemplate>
-                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
                                     <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
                                     <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
                                     <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
@@ -130,20 +117,20 @@
                             <table class="tablelist">
                                 <tbody>
                                     <tr>
-                                        <td width="100">
+                                        <td width="110px">
                                             统计日期
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtDate" runat="server" class="dfinput1" Enabled="false"></asp:TextBox>
                                         </td>
-                                        <td width="100">
+                                        <td width="110px">
                                             班时
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="listShift" runat="server" CssClass = "drpdwnlist">
                                             </asp:DropDownList>
                                             </td>
-                                        <td width="100">
+                                        <td width="110px">
                                             班组
                                         </td>
                                         <td>
@@ -153,21 +140,21 @@
                                     </tr>
                                     
                                     <tr>                                       
-                                      <td width="100">
+                                      <td width="110px">
                                             交班人
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="listolder" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
-                                          <td width="100">
+                                          <td width="110px">
                                             接班人
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="listnewer" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
-                                         <td width="100">
+                                         <td width="110px">
                                             车间
                                         </td>
                                         <td>
@@ -177,19 +164,19 @@
                                         </td>
                                     </tr>
                                     <tr>                                       
-                                      <td width="100">
+                                      <td width="110px">
                                             开始时间
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtBtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                                         </td>
-                                          <td width="100">
+                                          <td width="110px">
                                             结束时间
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtEtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                                         </td>
-                                         <td width="100">
+                                         <td width="110px">
                                             维修种类
                                         </td>
                                         <td>
@@ -201,36 +188,28 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="100" height="55">
+                                        <td width="110px" height="55">
                                             下班次注意事项
                                         </td>
                                         <td colspan="5">
                                             <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="500px"></asp:TextBox>
+                                                Width="800px"></asp:TextBox>
                                         </td>
-                                    </tr>                                
-                                    <tr>
-                                        <th colspan="6" height="40px">
-                                            班组交接明细列表
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6">
-                                            <asp:GridView ID="GridView2" runat="server" class="grid"  AllowPaging="False"  DataKeyNames = "ID">                                                
+                                    </tr>   
+                                        </tbody>
+                            </table>
+                                     <div class="listtitle" >
+                    班组交接明细列表
+                </div>       
+                                            <asp:GridView ID="GridView2" runat="server" class="grid"  AllowPaging="False"  DataKeyNames = "ID" HeaderStyle-Wrap="False" >                                                
                                                 <HeaderStyle CssClass="gridheader" />
                                                 <RowStyle CssClass="gridrow" />
                                                  <AlternatingRowStyle CssClass="gridalterrow" />
                                             </asp:GridView>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </ContentTemplate>
                         <Triggers>
                         <asp:AsyncPostBackTrigger ControlID = "btnSave" />
-                        <asp:AsyncPostBackTrigger ControlID = "GridView1" />
-                        
-                       
+                        <asp:AsyncPostBackTrigger ControlID = "GridView1" />   
                          </Triggers>
                     </asp:UpdatePanel>
                 </div>

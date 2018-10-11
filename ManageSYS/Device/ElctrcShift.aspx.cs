@@ -67,7 +67,12 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
     protected void bindGrid1()
     {
       
-            string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.Id,g4.shift_status from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code left join HT_EQ_MT_SHIFT g4 on g1.id = g4.id where g1.work_date between '" + txtStartDate.Text + "' and '" + txtStopDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' order by g1.work_date,g1.id";
+            string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.Id,g4.shift_status from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code left join HT_EQ_MT_SHIFT g4 on g1.id = g4.id";
+            if (rdElec.Checked)
+                query += " and g4.MAINTENANCE_TYPE = '0'";
+            if (rdMchnc.Checked)
+                query += " and g4.MAINTENANCE_TYPE = '1'";
+        query += " where g1.work_date between '" + txtStartDate.Text + "' and '" + txtStopDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' order by g1.work_date,g1.id";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             GridView1.DataSource = data;
@@ -146,7 +151,7 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
 
         }
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#tabtop2').click();", true);
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {

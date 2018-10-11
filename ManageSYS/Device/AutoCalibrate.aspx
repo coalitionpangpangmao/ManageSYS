@@ -63,6 +63,8 @@
                                         <asp:BoundField DataField="计划号" HeaderText="计划号" />
                                           <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
                                         <asp:BoundField DataField="申请人" HeaderText="申请人" />
+                                         <asp:BoundField DataField="状态" HeaderText="状态" />
+                                        
                                         <asp:BoundField DataField="备注" HeaderText="备注" />
 
                                         <asp:TemplateField ItemStyle-Width="80">
@@ -90,9 +92,13 @@
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
-                                校准记录 <asp:HiddenField ID ="txtCode" runat ="server" />
-                            </div>
-
+                              采样批次：<asp:DropDownList ID="drpBatch" runat ="server" CssClass="drpdwnlist"  Width ="220px"/>
+                                  采样时间：   <asp:TextBox ID="txtcalBtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" OnTextChanged ="txtcalBtime_TextChanged" AutoPostBack ="true"></asp:TextBox>至
+                                <asp:TextBox ID="txtcalEtime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" Enabled ="false"></asp:TextBox><span style="position: relative; float: right"><asp:HiddenField ID ="txtCode" runat ="server" />
+                            <asp:Button ID="btnCalbrt" runat="server" Text="自动校准" CssClass="btnmodify" OnClick="btnCalbrt_Click"  Width ="100px"/>
+                                       
+                        </span>
+                            </div>                            
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                 DataKeyNames="ID">
                                 <Columns>
@@ -118,22 +124,22 @@
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="原值">
+                                    <asp:TemplateField HeaderText="设定值">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridOldvalue" runat="server" DataValueField="原值" DataTextField="原值"
-                                                CssClass="tbinput"></asp:TextBox>
+                                                CssClass="tbinput" Enabled="false"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="校准值">
+                                    <asp:TemplateField HeaderText="测量值">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridNewvalue" runat="server" DataValueField="校准值" DataTextField="校准值"
-                                                CssClass="tbinput"></asp:TextBox>
+                                                CssClass="tbinput" Enabled="false"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="校准时间">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridClbrtime" runat="server" DataValueField="校准时间" DataTextField="校准时间" CssClass="tbinput" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                            <asp:TextBox ID="txtGridClbrtime" runat="server" DataValueField="校准时间" DataTextField="校准时间" CssClass="tbinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" Enabled="false"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="状态">
@@ -147,12 +153,7 @@
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
-                                        <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
-                                                OnClick="btnGrid2Save_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                   
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
@@ -161,7 +162,8 @@
                         </ContentTemplate>
                         <Triggers>                          
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                            <asp:AsyncPostBackTrigger ControlID="GridView2" />                          
+                            <asp:AsyncPostBackTrigger ControlID="GridView2" />    
+                            <asp:AsyncPostBackTrigger ControlID ="txtcalBtime" />                      
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

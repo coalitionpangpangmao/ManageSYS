@@ -110,7 +110,9 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         List<String> commandlist = new List<string>();
         commandlist.Add("delete HT_TECH_STDD_CODE  where TECH_CODE = '" + txtCode.Text + "'");
         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + txtCode.Text + "'");
-        opt.TransactionCommand(commandlist);
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除工艺标准成功" : "删除工艺标准失败";
+        log_message += "--标识:" + txtCode.Text;
+        InsertTlog(log_message);
         initView();
     }
     protected void bindData(string rcpcode)

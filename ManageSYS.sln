@@ -1,6 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.DAL", "MSYS.DAL\MSYS.DAL.csproj", "{A941B43C-5C79-45DD-917C-30586267DEE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Web", "MSYS.Web\MSYS.Web.csproj", "{99E06C26-C6BC-4B58-BEAD-903BF1629D95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Data", "MSYS.Data\MSYS.Data.csproj", "{459B092F-96C5-4FC2-BF1B-44EB40B96B2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Common", "MSYS.Common\MSYS.Common.csproj", "{64998E34-2770-41C6-8046-9976ABBD5B90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Security", "MSYS.Security\MSYS.Security.csproj", "{D88AD759-6B4E-44DE-84D3-8504653DC11D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector", "DataCollector\DataCollector.csproj", "{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}"
+EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ManageSYS", "ManageSYS\", "{C8523636-97AF-437C-8CD9-95C47EF16BB9}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -23,18 +35,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ManageSYS", "ManageSYS\", "
 		VWDVirtualPath = "/ManageSYS"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.DAL", "MSYS.DAL\MSYS.DAL.csproj", "{A941B43C-5C79-45DD-917C-30586267DEE7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Web", "MSYS.Web\MSYS.Web.csproj", "{99E06C26-C6BC-4B58-BEAD-903BF1629D95}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Data", "MSYS.Data\MSYS.Data.csproj", "{459B092F-96C5-4FC2-BF1B-44EB40B96B2A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Common", "MSYS.Common\MSYS.Common.csproj", "{64998E34-2770-41C6-8046-9976ABBD5B90}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSYS.Security", "MSYS.Security\MSYS.Security.csproj", "{D88AD759-6B4E-44DE-84D3-8504653DC11D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector", "DataCollector\DataCollector.csproj", "{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +43,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Release|x64.ActiveCfg = Debug|Any CPU
 		{A941B43C-5C79-45DD-917C-30586267DEE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A941B43C-5C79-45DD-917C-30586267DEE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A941B43C-5C79-45DD-917C-30586267DEE7}.Debug|x64.ActiveCfg = Debug|x64
@@ -97,6 +91,12 @@ Global
 		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Release|x64.ActiveCfg = Release|x64
 		{A9774C1A-C54A-4A3F-8343-3B986AF0FA69}.Release|x64.Build.0 = Release|x64
+		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{C8523636-97AF-437C-8CD9-95C47EF16BB9}.Release|x64.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

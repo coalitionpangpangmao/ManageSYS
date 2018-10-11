@@ -121,7 +121,7 @@
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="7">
+                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
                                 <Columns>
                                     <asp:TemplateField>
                                         <ItemTemplate>
@@ -134,9 +134,11 @@
                                                 Width="90px" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                     <asp:BoundField DataField="故障设备" HeaderText="故障设备" />
                                     <asp:BoundField DataField="故障名" HeaderText="故障名" />
                                     <asp:BoundField DataField="故障位置" HeaderText="故障位置" />
                                     <asp:BoundField DataField="编制人" HeaderText="编制人" />
+                                     <asp:BoundField DataField="记录时间" HeaderText="记录时间" />
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
@@ -148,7 +150,7 @@
                                 <AlternatingRowStyle CssClass="gridalterrow" />
                                         <PagerStyle CssClass="gridpager" />
                                 <PagerTemplate>
-                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
                                     <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
                                     <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
                                     <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
@@ -216,6 +218,12 @@
                                         <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist">
                                         </asp:DropDownList>
                                     </td>
+                                     <td width="100">维保设备
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listEq" runat="server" CssClass="drpdwnlist" >
+                                                </asp:DropDownList>
+                                            </td>
                                 </tr>
                                 <tr>
                                     <td width="100">

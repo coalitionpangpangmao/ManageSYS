@@ -1,0 +1,10 @@
+﻿@charset "utf-8";
+
+ .search{float: left;height: 22px;width: 165px;}
+
+.label{color:#ccc;position:absolute;left:12px;top:0px;display:block;height:22px;line-height:22px;font-size:12px;}
+span.submit{cursor:pointer;position:absolute;left:138px;top:0px;width:20px;height:20px;text-indent:-999em;}
+.text{width:154px; HEIGHT: 200px;margin:5px 0px;padding: 0px;  background-color:#fff; overflow:hidden; position:fixed;   border:1px solid #404040;}
+.text ul {margin: 0px;padding: 0px;text-align: left;clear: left;height: auto;width: 153px;}
+.text li{height: auto;width: 153px;margin: 0px;padding: 0px;background-color:#fff;position:relative;text-indent: 5px;}
+.text p{line-height: 20px;font-size: 10px;font-family: Verdana, Arial, Helvetica, sans-serif;margin: 0px;padding: 0px;text-align: justify;font-weight: normal;color: #000000;text-indent: 10px;height: 20px;}

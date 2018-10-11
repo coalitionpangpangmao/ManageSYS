@@ -132,8 +132,8 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                
                 string[] seg = { "ID", "NAME", "PID", "MENULEVEL" };
                 string[] value = { prtID, txtMenu.Text, listPrt.SelectedValue, listLevel.SelectedValue };
-                opt.MergeInto(seg, value, 1,"HT_SVR_PRT_MENU");
-                string log_message = opt.MergeInto(seg, value, 1, "ht_svr_sys_menu") == "Success" ? "保存父级菜单成功" : "保存父级菜单失败";
+                
+                string log_message = opt.MergeInto(seg, value, 1,"HT_SVR_PRT_MENU") == "Success" ? "保存父级菜单成功" : "保存父级菜单失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
                 BindList(RightTree.Nodes, "");

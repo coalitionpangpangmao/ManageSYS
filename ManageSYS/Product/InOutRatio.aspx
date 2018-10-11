@@ -8,93 +8,15 @@
     <title>投入产出比</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            DrawPic();
-        });
-
-        function DrawPic() {
-            if ($("#hdcode1").val() == "")
-                $("#hdcode1").val([216.4, 194.1, 95.6, 54.4, 29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5]);
-            if ($("#hdcode2").val() == "")
-                $("#hdcode2").val([116.4, 294.1, 195.6, 154.4, 129.9, 91.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5]);
-            if ($("#hdcode3").val() == "")
-                $("#hdcode3").val([99, 56, 95.6, 80, 29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 90]);
-            if ($("#hdXaxis").val() == "")
-                $("#hdXaxis").val(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-            Highcharts.chart('container', {
-                chart: {
-                    events: {
-                        addSeries: function () {
-                            var label = this.renderer.label('A series was added, about to redraw chart', 100, 120).attr({ fill: Highcharts.getOptions().colors[0],
-                                padding: 10,
-                                r: 5,
-                                zIndex: 8
-                            }).css({
-                                color: '#FFFFFF'
-                            }).add();
-                            setTimeout(function () {
-                                label.fadeOut();
-                            }, 1000);
-                        }
-                    },
-                    zoomType: 'xy'
-                },
-                title: { text: '投入产出比' },
-                xAxis: [{
-                    categories: $("#hdXaxis").val().split(','),
-                    crosshair: true
-                }],
-                yAxis: [{ labels: {
-                    format: '{value} Kg',
-                    style: { color: Highcharts.getOptions().colors[1] }
-                }, title: {
-                    text: '投入/产量',
-                    style: { color: Highcharts.getOptions().colors[1] }
-                }
-                }, { // Secondary yAxis
-                    title: {
-                        text: '投入产出比',
-                        style: { color: Highcharts.getOptions().colors[0] }
-                    },
-                    labels: {
-                        format: '{value} %',
-                        style: { color: Highcharts.getOptions().colors[0] }
-                    },
-                    opposite: true
-                }],
-
-
-                tooltip: {
-                    shared: true
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'left',
-                    x: 120,
-                    verticalAlign: 'top',
-                    y: 100,
-                    floating: true,
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-                },
-                credits: { enabled: false },
-                series: [{ name: '投入', type: 'column', yAxis: 0, data:$("#hdcode1").val().split(',').map(function(data){  return +data;   }), tooltip: { valueSuffix: ' Kg'} },
-               { name: '产出', type: 'column', yAxis: 0, data: $("#hdcode2").val().split(',').map(function (data) { return +data; }), tooltip: { valueSuffix: ' Kg'} },
-               { name: '投入产出比', type: 'spline', yAxis: 1, data: $("#hdcode3").val().split(',').map(function (data) { return +data; }), tooltip: { valueSuffix: ' %'} }
-               ]
-               
-            });
-
-        }
-		</script>	
+    	
 
 
 </head>
 <body>
     <script type="text/javascript" src="../js/code/highcharts.js"></script>
-    <script type="text/javascript" src="../../modules/series-label.js"></script>
-    <script type="text/javascript" src="../../modules/exporting.js"></script>
+    <script type="text/javascript" src="../js/code/modules/series-label.js"></script>
+    <script type="text/javascript" src="../js/code/modules/exporting.js"></script>
+      <script src="../js/msys/InoutRatio.js" type="text/javascript"></script>
       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <form id="Form1" runat="server">
     <div class="place">
@@ -114,45 +36,37 @@
                     <table class="tablelist">
                         <tr>
                             <th>
-                                产品：<asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist" 
-                                    onselectedindexchanged="listProd_SelectedIndexChanged">
+                                产品：<asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist" >
                                 </asp:DropDownList>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:RadioButton ID="rdSort1" runat="server" GroupName="Sort" Text="按月" 
-                                    oncheckedchanged="rdSort1_CheckedChanged" />
-                                <asp:RadioButton ID="rdSort2" runat="server" GroupName="Sort" Text="按季" 
-                                    oncheckedchanged="rdSort2_CheckedChanged" />
-                                <asp:RadioButton ID="rdSort3" runat="server" GroupName="Sort" Text="按年" 
-                                    oncheckedchanged="rdSort3_CheckedChanged" />
+                                   <asp:RadioButton ID="rdSort1" runat="server" GroupName="Sort" Text="按天"  oncheckedchanged="rdSort1_CheckedChanged" AutoPostBack="True" />
+                                <asp:RadioButton ID="rdSort2" runat="server" GroupName="Sort" Text="按月"  AutoPostBack="True"  oncheckedchanged="rdSort2_CheckedChanged" />
+                                <asp:RadioButton ID="rdSort3" runat="server" GroupName="Sort" Text="按季"  AutoPostBack="True"  oncheckedchanged="rdSort3_CheckedChanged" />
+                                <asp:RadioButton ID="rdSort4" runat="server" GroupName="Sort" Text="按年"  AutoPostBack="True" oncheckedchanged="rdSort4_CheckedChanged" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1" 
-                                    onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" 
-                                    ontextchanged="txtBtime_TextChanged"></asp:TextBox>
-                                至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1" 
-                                    onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" 
-                                    ontextchanged="txtEtime_TextChanged"></asp:TextBox>
+                                <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"   ></asp:TextBox>
+                                至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1" ></asp:TextBox>
 
                                 &nbsp;
                                 
-                                  <input id="btnCompare" type="button" value="查询" class="btnview" onclick = "DrawPic()"/>
+                                  <input id="btnCompare" type="button" value="查询" class="btnview" onclick = "showPointPlot();"/>
                             </th>
                         </tr>
                       
                     </table>
-              
-        <div >
-            <asp:HiddenField ID="hdcode1" runat="server" />
-             <asp:HiddenField ID="hdcode2" runat="server" />
-              <asp:HiddenField ID="hdcode3" runat="server" />
-                <asp:HiddenField ID="hdXaxis" runat="server" />
-        </div>
-        <div id="container" style="height: 400px; max-width: 800px; margin: 0 auto">
-        </div>
-          </ContentTemplate>
+               </ContentTemplate>
                 <Triggers>
                   
                 </Triggers>
             </asp:UpdatePanel>
+        <div >
+          
+        </div>
+        <div id="container" style="height: 400px; max-width: 800px; margin: 0 auto">
+        </div>
+                      <div id="statics" >
+                        </div>   
+         
         </div>
     </div>
     </form>

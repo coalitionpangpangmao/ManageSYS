@@ -251,7 +251,7 @@ namespace MSYS.Web
                         dir.Delete(true);
                 }
                 //导出文件模板所在位置
-                String sourcePath = basedir + @"templates\" + booktype + @"\" + filename + ".xlsx";
+                String sourcePath = basedir + @"templates\" + booktype + @"\" + filename + ".xls";
 
                 String filepath = basedir + @"TEMP\" + filename + date.ToString("HHmmss") + style;
                 //bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
@@ -280,13 +280,13 @@ namespace MSYS.Web
                         if (sqlstr != "")
                         {
                             //将选择的数据写入Excel
-                            if (sqlstr.Substring(0, 3) == "STR")
+                            if (sqlstr.Length > 4 && sqlstr.Substring(0, 3) == "STR")
                             {
                                 sqlstr = sqlstr.Substring(4);
                                 Response.Write(openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString())));
                                 Response.Write(openXMLExcel.WriteData(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, sqlstr));
                             }
-                            if (sqlstr.Substring(0, 3) == "SQL")
+                            if (sqlstr.Length > 20 && sqlstr.Substring(0, 3) == "SQL")
                             {
                                 sqlstr = sqlstr.Substring(4).Trim();
                                 DataSet set = new DataSet();
@@ -320,7 +320,7 @@ namespace MSYS.Web
                 {
                     fi.Delete();
                 }
-                if (style == ".xlsx")
+                if (style == ".xlsx" || style == ".xls")
                     openXMLExcel.SaveAs(filepath);
                 else
                     openXMLExcel.SaveAsHtm(filepath);
@@ -348,9 +348,25 @@ namespace MSYS.Web
             {
                 CreateExcel(filename, brand, startDate, endDate, team, style,date,merge);
                 String filepath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"TEMP\" + filename + date.ToString("HHmmss") + style;
-                Response.ContentType = "application/octet-stream";
+
+                //Response.ContentType = "application/octet-stream";
+                //Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
+                //Response.TransmitFile(filepath);
+
+
+                Response.Clear();
+
+                Response.Buffer = true;
+
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename + style, System.Text.Encoding.UTF8));
+                if(style == ".xls")
+                  Response.ContentType = "application/vnd.ms-excel";
+                else
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
                 Response.TransmitFile(filepath);
+
+                Response.End();
             }
             catch
             {

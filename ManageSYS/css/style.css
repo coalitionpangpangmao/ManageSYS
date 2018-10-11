@@ -97,6 +97,12 @@ h2{font-weight:normal;}
 .dfinput1{width:150px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .tbinput{width:70px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .tbinput1{width:100px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
+.disableinput
+{
+    background: none repeat-x;
+    text-indent: 10px;
+    background-color: #C0C0C0;
+}
 .labinfo{ height:25px;display:block; float:left;}
 .drpdwnlist
 {

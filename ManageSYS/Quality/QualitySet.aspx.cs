@@ -125,7 +125,8 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请所属工艺段后，再增加明细！！')", true);
             return;
         }
-        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
+        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_para g3 on g3.para_code = g1.para_code  left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code =  '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "' and g3.para_type like '______1%' and g3.is_del = '0'";
+       
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
@@ -191,7 +192,9 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
               List<String> commandlist = new List<string>();
         commandlist.Add("delete from HT_QLT_STDD_CODE where QLT_CODE = '" + txtCode.Text + "'");
         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + txtCode.Text + "'");
-        opt.TransactionCommand(commandlist);
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除质量考核标准成功" : "删除质量考核标准失败";
+        log_message += "--标识:" + txtCode.Text;
+        InsertTlog(log_message);
              opt.bindDropDownList(listVersion, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
         opt.bindDropDownList(listtech, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");
         opt.bindDropDownList(listtechC, "select QLT_CODE,QLT_NAME from ht_qlt_STDD_CODE where is_valid = '1' and is_del= '0'", "QLT_NAME", "QLT_CODE");   
@@ -318,8 +321,8 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     }
     protected void UpdateGrid_Click(object sender, EventArgs e)
     {
+        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_para g3 on g3.para_code = g1.para_code  left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "' and g3.para_type like '______1%' and g3.is_del = '0'";
        
-        string query = "select g1.PARA_CODE as 参数编码,g1.lower as 下限,g1.upper as 上限,g1.QLT_TYPE as 考核类型,g1.MINUS_SCORE as 超限扣分,g1.REMARK as 备注 from ht_QLT_stdd_code_detail g1 left join ht_pub_tech_section g2 on substr(g1.para_code ,1,5) = g2.section_code where g1.is_del = '0'  and g1.qlt_code = '" + txtCode.Text + "' and g2.section_code = '" + hideprc.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];

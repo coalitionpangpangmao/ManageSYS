@@ -28,6 +28,10 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
     protected void bindGrid1()
     {
         string query = "select distinct t.mt_name as 校准计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,case t.clbrt_type when '0' then '人工校准' else  '自动校准' end  as 校准类型,t.remark as 备注,t.pz_code from HT_EQ_MCLBR_PLAN t left join ht_svr_user t1 on t1.id = t.create_id  left join ht_eq_mclbr_plan_detail t2 on t2.main_id = t.pz_code where t2.status >= '3' and t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' ";
+        if (ckDone.Checked)
+            query += " and t.TASK_STATUS >= '3'";
+        else
+            query += " and t.TASK_STATUS = '3' ";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query); ;
         GridView1.DataBind();
@@ -146,8 +150,19 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
 
         string[] seg = { "ID",  "STATUS", "FEEDBACK", "REMARKPLUS" };
         string[] value = {txtID.Text, "4", txtScean.Text, txtPlus.Text };
-        opt.MergeInto(seg, value, 1, "ht_eq_mclbr_plan_detail");
+
+        string log_message = opt.MergeInto(seg, value, 1, "ht_eq_mclbr_plan_detail") == "Success" ? "校准反馈成功" : "校准反馈失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+
         bindGrid2(txtCode.Value);
+
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status = '4' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+        if (alter == "1")
+        {
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '4' where PZ_CODE = '" + txtCode.Value + "'");
+            bindGrid1();
+        }
 
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);
     }

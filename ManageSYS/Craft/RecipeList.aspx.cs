@@ -13,10 +13,10 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            
-           
+
+
         }
- 
+
     }
     protected void btnCkAll_Click(object sender, EventArgs e)
     {
@@ -43,27 +43,29 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
             {
                 string recipeno = GridView1.Rows[i].Cells[4].Text;
                 List<String> commandlist = new List<String>();
-                switch (recipeno.Substring(0,5))
+                switch (recipeno.Substring(0, 5))
                 {
                     case "70306":
                         commandlist.Add("update ht_qa_mater_formula set is_del = '1' where formula_code = '" + recipeno + "'");
                         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
-                        opt.TransactionCommand(commandlist);
+
                         break;
                     case "70307":
                         commandlist.Add("update ht_qa_aux_formula set is_del = '1' where formula_code = '" + recipeno + "'");
                         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
-                        opt.TransactionCommand(commandlist);
+
                         break;
                     default:
                         commandlist.Add("update ht_qa_coat_formula set is_del = '1' where formula_code = '" + recipeno + "'");
                         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
-                        opt.TransactionCommand(commandlist);
+
                         break;
                 }
-
+                string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除配方成功" : "删除配方失败";
+                log_message += "--标识:" + recipeno;
+                InsertTlog(log_message);
             }
-           
+
         }
         bindGrid();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " window.parent.update();", true);
@@ -71,9 +73,9 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
     protected void bindGrid()
     {
         string query = "select r.formula_code as 配方编码，r.formula_name as 配方名称,r.b_date as 启用时间,r.CREATE_ID as 编辑人员,s.name as 审批状态  from ht_qa_mater_formula r left join ht_inner_aprv_status s on s.id = r.flow_status  where r.prod_code ='" + hdcode.Value + "' and r.is_del ='0' union select r.formula_code as 配方编码，r.formula_name as 配方名称,r.b_date as 启用时间,r.CREATE_ID as 编辑人员,s.name as 审批状态   from ht_qa_aux_formula r left join ht_inner_aprv_status s on s.id = r.flow_status  where r.prod_code = '" + hdcode.Value + "' and r.is_del ='0'  union select r.formula_code as 配方编码，r.formula_name as 配方名称,r.b_date as 启用时间,r.CREATE_ID as 编辑人员,s.name as 审批状态  from ht_qa_coat_formula r left join ht_inner_aprv_status s on s.id = r.flow_status   where r.prod_code = '" + hdcode.Value + "'  and r.is_del ='0'";
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        DataSet data =  opt.CreateDataSetOra(query);
-        GridView1.DataSource =data;
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView1.DataSource = data;
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -97,7 +99,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
                 }
             }
         }
-            
+
     }
     protected void btnGridDetail_Click(object sender, EventArgs e)
     {
@@ -106,7 +108,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
         string formula_code = GridView1.DataKeys[rowIndex].Value.ToString();
         if (formula_code.Substring(0, 5) == "70306")
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab2Click("+ formula_code + ");", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab2Click(" + formula_code + ");", true);
         }
         else if (formula_code.Substring(0, 5) == "70307")
         {
@@ -130,7 +132,7 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();
         string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
@@ -152,10 +154,10 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
             /*启动审批TB_ZT标题,MODULENAME审批类型编码,BUSIN_ID业务数据id,URL 单独登录url*/
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "配方:" + GridView1.Rows[index].Cells[4].Text, mode, id, Page.Request.UserHostName.ToString() };
-           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-           string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
-           log_message += ",业务数据ID：" + id;
-           InsertTlog(log_message);
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+            log_message += ",业务数据ID：" + id;
+            InsertTlog(log_message);
 
             bindGrid();
 

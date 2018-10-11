@@ -52,14 +52,21 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
     {
         try
         {
+            List<string> commandlist = new List<string>();
+              MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {
+                    commandlist.Clear();
                     string id = GridView1.DataKeys[i].Value.ToString();
-                    string query = "update HT_EQ_STG_PICKUP set IS_DEL = '1'  where PZ_CODE = '" + id + "'";
-                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+
+                    commandlist.Add( "update HT_EQ_STG_PICKUP set IS_DEL = '1'  where PZ_CODE = '" + id + "'");
+                    commandlist.Add("delete from HT_PUB_APRV_FLOWINFO where BUSIN_ID = '" + id + "'");
+
+                    string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除备品备件领退计划成功" : "删除备品备件领退计划失败";
+                    log_message += "--标识:" + id;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid1();
@@ -123,7 +130,13 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
             int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Value.ToString();
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.UpDateOra("update HT_EQ_STG_PICKUP set IS_PICKUP = '1'  where PZ_CODE = '" + id + "'");
+           List<string> commandlist = new List<string>();
+           
+            commandlist.Add("update HT_EQ_STG_PICKUP set IS_PICKUP = '1'  where PZ_CODE = '" + id + "'");
+            commandlist.Add("delete from HT_PUB_APRV_FLOWINFO where BUSIN_ID = '" + id + "'");
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除备品备件领退计划成功" : "删除备品备件领退计划失败";
+            log_message += "--标识:" + id;
+            InsertTlog(log_message);
             bindGrid1();
         }
         catch (Exception ee)
@@ -217,7 +230,10 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
              //生成领用主表记录
          string[] seg = { "PZ_CODE", "CREATE_DEPT_ID", "CREATE_ID", "PICKUP_DATE", "REMARK"};
          string[] value = { txtPzcode.Text, listApt.SelectedValue, listEditor.SelectedValue, txtTime.Text, txtRemark.Text};
-         opt.MergeInto(seg, value,1, "HT_EQ_STG_PICKUP");
+
+         string log_message = opt.MergeInto(seg, value, 1, "HT_EQ_STG_PICKUP") == "Success" ? "生成备品备件领用主表记录成功" : "生成备品备件领用主表记录失败";
+         log_message += "--详情:" + string.Join(",", value);
+         InsertTlog(log_message);
          bindGrid1();
          bindGrid2();
 
@@ -301,7 +317,9 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_STG_PICKUP_DETAIL set IS_DEL = '1'  where ID = '" + ID + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query) == "Success" ? "删除备品备件明细成功" : "删除备品备件明细失败";
+                   log_message += "--标识:" + ID ;
+                   InsertTlog(log_message);
                 }
             }
             bindGrid2();
@@ -322,17 +340,15 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string ID = GridView2.DataKeys[Rowindex].Value.ToString();
-           
-            string[] seg = {"MAIN_CODE", "STORAGE", "Sp_Code", "sp_name", "sp_standard", "sp_model", "sp_unit", "pickup_num", "own_section", "remark" };
-            string[] value = { txtPzcode.Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridstrg")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridCode")).Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridName")).SelectedItem.Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridSpec")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridModel")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridUnit")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridAmount")).Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridSection")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridDscprt")).Text };
-            if (ID == "0")
+           if (ID == "0")
             {
-                opt.InsertData(seg, value, "HT_EQ_STG_PICKUP_DETAIL");
+                ID = opt.GetSegValue("select sub_pickup_id_seq.nextval as id from dual", "ID");               
             }
-            else
-            {
-                opt.UpDateData(seg, value, "HT_EQ_STG_PICKUP_DETAIL", " where ID = '" + ID + "'");
-            }
+            string[] seg = {"ID","MAIN_CODE", "STORAGE", "Sp_Code", "sp_name", "sp_standard", "sp_model", "sp_unit", "pickup_num", "own_section", "remark" };
+            string[] value = { ID,txtPzcode.Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridstrg")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridCode")).Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridName")).SelectedItem.Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridSpec")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridModel")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridUnit")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridAmount")).Text, ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridSection")).SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridDscprt")).Text };
+             string log_message = opt.MergeInto(seg, value, 1, "HT_EQ_STG_PICKUP_DETAIL") == "Success" ? "保存备品备件领退明细成功" : "保存备品备件领退明细失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);   
            
             bindGrid2();
         }

@@ -29,7 +29,8 @@ namespace DataCollect
             //aTimer.Enabled = true; //是否执行System.Timers.Timer.Elapsed事件；
             //Qua_Start.Enabled = false;        
            
-            InitialTray();           
+            InitialTray();
+            startCollect();
         }
 
          ~Form1()
@@ -132,10 +133,24 @@ namespace DataCollect
 
         #region 点击响应
         public void Qua_Start_Click(object sender, EventArgs e)
-        {   
-             InsertQuaReport(new Object());
+        {
+            insertQuaReport();
+            InsertProdReport();
         }
+        private void Qua_Stop_Click(object sender, EventArgs e)
+        {
+            if (QualityTimer != null)
+            {
+                QualityTimer.Dispose();
+                QualityTimer = null;
+            }
+            if (ReportTimer != null)
+            {
+                ReportTimer.Dispose();
+                ReportTimer = null;
+            }
 
+        }
         public void Qua_show_Click(object sender, EventArgs e)
         {
             string endtime = Convert.ToDateTime(QuaTime.Text).AddDays(1).ToString("yyyy-MM-dd") + " 00:00:00";
@@ -143,6 +158,7 @@ namespace DataCollect
             string query = "select * from HT_QLT_DATA_RECORD where B_TIME >= '" + starttime + "' and  E_TIME <= '" + endtime + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
+            if (data != null)
             dataGridView1.DataSource = data.Tables[0];
 
         }
@@ -153,7 +169,7 @@ namespace DataCollect
         {
                 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where substr(date_begin,1,10) = '2018-09-11' union select date_end  as time  from ht_prod_schedule where substr(date_end,1,10) = '2018-09-11'");
+            DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where substr(date_begin,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select date_end  as time  from ht_prod_schedule where substr(date_end,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "'");
             if (times != null && times.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow time in times.Tables[0].Rows)
@@ -161,24 +177,27 @@ namespace DataCollect
                     if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) > new TimeSpan(3,50, 0) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) < new TimeSpan(4, 40, 0))
                     {
                         //对每一班组的生产过程数据进行统计分析计算     
-                        string datetime = System.DateTime.Now.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
-                        DataSet data = opt.CreateDataSetOra("select * from ht_prod_schedule t  where date_begin <='" + datetime + "' and date_end >= '" + datetime + "'");
-                        if (data != null && data.Tables[0].Rows.Count > 0)
-                        {
-                            DataRow row = data.Tables[0].Rows[0];
-                            string starttime = row["date_begin"].ToString();
-                            string midtime = Convert.ToDateTime(starttime).AddHours(4).ToString("yyyy-MM-dd HH:mm:ss");
-                            string endtime = row["date_end"].ToString();
-                            InsertSectionQuaReport(starttime, midtime);
-                            InsertSectionQuaReport(midtime, endtime);
-                        }
+                        insertQuaReport();
                     }
                 }
-            }
-
-          
+            }          
         }
-
+        private void insertQuaReport()
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string datetime = System.DateTime.Now.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
+            //  string datetime = "2018-09-13 09:30:00";
+            DataSet data = opt.CreateDataSetOra("select * from ht_prod_schedule t  where date_begin <='" + datetime + "' and date_end >= '" + datetime + "'");
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = data.Tables[0].Rows[0];
+                string starttime = row["date_begin"].ToString();
+                string midtime = Convert.ToDateTime(starttime).AddHours(4).ToString("yyyy-MM-dd HH:mm:ss");
+                string endtime = row["date_end"].ToString();
+                InsertSectionQuaReport(starttime, midtime);
+                InsertSectionQuaReport(midtime, endtime);
+            }
+        }
         private void InsertQuaReport(object source, System.Timers.ElapsedEventArgs e)
         {
             //对每一班组的生产过程数据进行统计分析计算
@@ -235,8 +254,8 @@ namespace DataCollect
             
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             int recordnum = Convert.ToInt16( opt.GetSegValue("select count(rowid) as count  from ht_qlt_data_record  where plan_id = '" + seg.planno + "' and para_code = '" + seg.nodecode + "'  and b_time = '" + seg.starttime + "' and e_time = '" + seg.endtime + "'", "count"));
-            if (recordnum > 0)
-                return;
+            //if (recordnum > 0)
+            //    return;
 
             string teamcode = opt.GetSegValue("select team_code  from ht_prod_schedule where date_begin <='" + seg.starttime + "' and date_end >='" + seg.endtime + "' and work_staus = '1'", "team_code");
 
@@ -304,19 +323,26 @@ namespace DataCollect
         protected void InsertProdReport(object o)
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where substr(date_begin,1,10) = '2018-09-11' union select date_end  as time  from ht_prod_schedule where substr(date_end,1,10) = '2018-09-11' union select starttime  as time  from ht_prod_report where substr(starttime,1,10) = '2018-09-11' union select endtime  as time  from ht_prod_report where substr(starttime,1,10) = '2018-09-11'");
+            DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where substr(date_begin,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select date_end  as time  from ht_prod_schedule where substr(date_end,1,10) ='" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select starttime  as time  from ht_prod_report where substr(starttime,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select endtime  as time  from ht_prod_report where substr(starttime,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "'");
              if (times != null && times.Tables[0].Rows.Count > 0)
             {
                 FixRW fix = new FixRW();
                 foreach (DataRow time in times.Tables[0].Rows)
                 {
-                    if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0,0, -20) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1,20))           
-                     fix.FixRecord();
+                    if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, 0, -20) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1, 20))
+                        fix.FixRecord();
                 }
              }
         }
+        protected void InsertProdReport()
+        {
+            FixRW fix = new FixRW();
+            fix.FixRecord();
+        }
 
         #endregion
+
+     
 
 
 

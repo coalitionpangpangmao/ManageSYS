@@ -48,19 +48,21 @@
                                 <ItemStyle Width="60px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="操作站" HeaderText="操作站">
-                                <ItemStyle Width="100px" />
+                                <ItemStyle Width="150px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="时间" HeaderText="时间">
                                 <ItemStyle Width="150px" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="描述" HeaderText="描述" />
+                                <asp:BoundField DataField="描述" HeaderText="描述" >
+                                      <ItemStyle Width="650px" />
+                                </asp:BoundField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
                             <AlternatingRowStyle CssClass="gridalterrow" />                        
                             <PagerStyle CssClass="gridpager" />
                             <PagerTemplate>
-                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
                                 <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
                                 <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
                                 <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>

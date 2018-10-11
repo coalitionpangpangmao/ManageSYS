@@ -348,8 +348,10 @@ namespace MSYS.Common
                         {
                             Gaptime time = new Gaptime();
                             time.gaptime = Convert.ToInt32(grow["gaptime"].ToString());
-                            time.starttime = Convert.ToDateTime(grow["startime"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                            time.endtime = Convert.ToDateTime(grow["endtime"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            time.starttime = Convert.ToDateTime(grow["STARTTIME"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            time.endtime = Convert.ToDateTime(grow["ENDTIME"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            if (gaptime == null)
+                                gaptime = new List<Gaptime>();
                             gaptime.Add(time);
                         }
                     }

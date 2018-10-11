@@ -94,9 +94,8 @@
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                 </span>
                             </div>
-                            <div style="width: 100%; height: 350px; overflow: scroll">
-                              
-                                        <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="设备编号" AllowPaging="True" HeaderStyle-Wrap="False" RowStyle-Wrap="False" OnPageIndexChanging="GridView1_PageIndexChanging">
+                            <div >                              
+                                        <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="设备编号" AllowPaging="True" HeaderStyle-Wrap="False" RowStyle-Wrap="False" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize ="12">
                                             <Columns>
                                                   <asp:TemplateField>
                                                     <ItemTemplate>
@@ -125,7 +124,7 @@
                                             <AlternatingRowStyle CssClass="gridalterrow" />
                                                   <PagerStyle CssClass="gridpager" />
                             <PagerTemplate>
-                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="100px"></asp:Label>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
                                 <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
                                 <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
                                 <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
@@ -153,7 +152,7 @@
           
         </div>
          <div class="shade">
-                <div  style="width:1050px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                <div  style="width:1200px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
                     <div class="tiphead">
                         <span>设备详情</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>

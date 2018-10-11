@@ -5,25 +5,12 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>维修计划处理</title>
-    <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />  
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-      
-        function GridClick() {
-            $('#tabtop2').click();
-           
-        }
-
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+          <link href="../css/falutsearchbox.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/msys/falutSearch.js"></script>
+    
 </head>
 <body>
       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
@@ -65,7 +52,7 @@
 
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                <asp:CheckBox ID="ckDone" runat="server" Text="未执行" />
+                                <asp:CheckBox ID="ckDone" runat="server" Text="己执行" />
                             </td>
                         </tr>
                     </tbody>
@@ -76,7 +63,8 @@
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AutoGenerateColumns="False">
+                              <asp:HiddenField ID="hideMainid" runat="server" />
+                                <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID,MAIN_ID" AutoGenerateColumns="False">
                                 <Columns>
                                     <asp:TemplateField HeaderText="序号">
                                         <ItemTemplate>
@@ -86,13 +74,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="区域">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" Width="80px"
-                                                Enabled="False">
-                                                <asp:ListItem></asp:ListItem>
-                                                <asp:ListItem>A区</asp:ListItem>
-                                                <asp:ListItem> B区</asp:ListItem>
-                                                <asp:ListItem>C区</asp:ListItem>
-                                            </asp:DropDownList>
+                                            <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField DataField="设备名称" HeaderText="设备名称" />
@@ -141,20 +123,21 @@
                                         <td>
                                             <asp:TextBox ID="txtCode" runat="server" class="dfinput1"   Enabled="false"></asp:TextBox>
                                         </td>
+                                          <td width="100">
+                                            区域
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="listArea" runat="server" CssClass = "drpdwnlist" OnSelectedIndexChanged="listArea_SelectedIndexChanged" >    
+                                        </asp:DropDownList>  
+                                             </td>
                                         <td width="100">
                                             维修设备
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="listEq" runat="server" CssClass = "drpdwnlist">
                                             </asp:DropDownList>
-                                        </td>
-                                  
-                                        <td width="100">
-                                            操作时间
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtOpttime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" ></asp:TextBox>
-                                        </td>
+                                        </td>                                 
+                                      
                                           </tr>
                                     <tr>
                                         <td width="100">
@@ -164,18 +147,12 @@
                                             <asp:DropDownList ID="listOptor" runat="server" CssClass = "drpdwnlist" >
                                             </asp:DropDownList>
                                         </td>
-                                   
-                                        <td width="100">
-                                            区域
+                                     <td width="100">
+                                            操作时间
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listArea" runat="server" CssClass = "drpdwnlist" >    <asp:ListItem></asp:ListItem>
-                                            <asp:ListItem >A区</asp:ListItem>
-                                            <asp:ListItem> B区</asp:ListItem>
-                                            <asp:ListItem >C区</asp:ListItem>
-                                        </asp:DropDownList>                                          
-                                        </td>
-                                        </td>
+                                            <asp:TextBox ID="txtOpttime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" ></asp:TextBox>
+                                        </td>   
                                            <td>操作时长</td>
                                         <td>
                                          <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1" ></asp:TextBox>
@@ -190,9 +167,16 @@
                                 <td width="100">
                                     故障名
                                 </td>
-                                <td>
-                                    <asp:TextBox ID="txtName" runat="server" CssClass = "dfinput1"></asp:TextBox>
-                                </td>
+                              <td>
+                                           
+                                            <asp:TextBox ID="txtFtID" runat="server" CssClass="btnhide"></asp:TextBox>
+                                             <asp:Button ID="btnShow" runat="server" CssClass="btnhide" OnClick="btnShow_Click" />
+                                            <div class="search"   >                                              
+                                                 <asp:TextBox ID="txtName" runat="server" CssClass="dfinput1" onkeyup="keySelectHistory2()" onchange="keySelectHistory2()"   onclick="keySelectHistory()" onblur ="keyhide()"></asp:TextBox>
+                                                <div class="text" id="keytext" style="display: none">
+                                                </div>
+                                            </div>
+                                        </td>
                                 <td width="100">
                                     故障类型
                                 </td>

@@ -136,7 +136,9 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         commandlist.Add("update ht_prod_season_plan_detail set is_del = '1' where QUARTER_PLAN_ID =  '" + id + "'");
         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + id + "'");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.TransactionCommand(commandlist);
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除季度生产任务成功" : "删除季度生产任务失败";
+        log_message += "--标识:" + id;
+        InsertTlog(log_message);
         bindGrid1();
     }
     protected void SetEnable(bool status)
@@ -320,7 +322,11 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
             string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.UpDateOra(query);
+
+
+            string log_message = opt.UpDateOra(query) == "Success" ? "删除季度生产计划明细成功" : "删除季度生产计划明细失败";
+            log_message += "--标识:" + ID;
+            InsertTlog(log_message);
             bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)

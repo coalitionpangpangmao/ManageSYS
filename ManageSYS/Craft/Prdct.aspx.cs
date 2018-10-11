@@ -113,7 +113,9 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         List<String> commandlist = new List<string>();
         commandlist.Add("update ht_pub_prod_design set is_del = '1' where PROD_CODE = '" + prod_code + "'");
         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + prod_code + "'");
-        opt.TransactionCommand(commandlist);
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除产品成功" : "删除产品失败";
+        log_message += "--标识:" + prod_code;
+        InsertTlog(log_message);
         bindGrid();
     }
     protected void btnGridDetail_Click(object sender, EventArgs e)

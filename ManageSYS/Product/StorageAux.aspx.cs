@@ -190,15 +190,22 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
      protected void btnModify_Click(object sender, EventArgs e)
      {
         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+        List<string> commandlist = new List<string>();
+        string log_message;
          if (rdOut.Checked)
          {
              //生成领用主表记录
              string[] seg = { "OUT_DATE", "ORDER_SN", "EXPIRED_DATE", "MODIFY_TIME", "AUDIT_MARK", "WARE_HOUSE", "WARE_HOUSE_ID", "DEPT_NAME", "DEPT_ID", "CREATOR", "CREATOR_ID", "MONTHPLANNO", "STRG_TYPE" };
              string[] value = { txtPrdctdate.Text, txtCode.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStatus.SelectedValue, listStorage.SelectedItem.Text, listStorage.SelectedValue, listApt.SelectedItem.Text, listApt.SelectedValue, "cookieName", "cookieID", listPrdctPlan.SelectedValue, "0" };
-             opt.InsertData(seg, value, "HT_STRG_AUX");
+             commandlist.Add(opt.InsertDatastr(seg, value, "HT_STRG_AUX"));
+            
              //根据生产计划对应的配方明细生成原料领用明细
              string query = "insert into HT_STRG_AUX_SUB  select distinct '' as ID, g3.mater_code ,g4.material_name ,g4.data_origin_flag as STORAGE,'' as Remark,g4.unit_code , '0' as IS_DEL,'" + txtCode.Text + "' as MAIN_CODE, 0 as NUM from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_Aux_formula_detail g3 on g3.formula_code = g2.mater_formula_code left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '''" + listPrdctPlan.SelectedValue + "' and g4.data_origin_flag = '" + listStorage.SelectedValue + "'";
-             opt.UpDateOra(query);
+             commandlist.Add(query);
+
+             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成辅料领用计划成功" : "生成辅料领用计划失败";
+             log_message += "--详情:" + string.Join(",", value);
+             InsertTlog(log_message);
              
          }
          if (rdIn.Checked)
@@ -206,7 +213,10 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
              //生成入库主表记录
              string[] seg = { "OUT_DATE", "ORDER_SN", "EXPIRED_DATE", "MODIFY_TIME", "AUDIT_MARK", "WARE_HOUSE", "WARE_HOUSE_ID", "DEPT_NAME", "DEPT_ID", "CREATOR", "CREATOR_ID", "STRG_TYPE" };
              string[] value = { txtPrdctdate.Text, txtCode.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStatus.SelectedValue, listStorage.SelectedItem.Text, listStorage.SelectedValue, listApt.SelectedItem.Text, listApt.SelectedValue, "cookieName", "cookieID", "1" };
-             opt.InsertData(seg, value, "HT_STRG_AUX");
+
+             log_message = opt.InsertData(seg, value, "HT_STRG_AUX") == "Success" ? "生成入库主表记录成功" : "生成入库主表记录失败";
+             log_message += "--详情:" + string.Join(",", value);
+             InsertTlog(log_message);
          }
          bindGrid1();
          bindGrid2();
@@ -306,17 +316,16 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string ID = GridView2.DataKeys[Rowindex].Value.ToString();
-    
-            string[] seg = { "MATER_CODE", "MATER_NAME", "STORAGE", "UNIT_CODE", "NUM", "MAIN_CODE" };
-            string[] value = { ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridcode")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridName")).Text, listStorage.SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridUnit")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtNum")).Text, txtCode.Text };
             if (ID == "0")
             {
-                opt.InsertData(seg, value, "HT_STRG_AUX_SUB");
+                ID = opt.GetSegValue("select STRGAUX_ID_SEQ.nextval as id from dual", "ID");      
             }
-            else
-            {
-                opt.UpDateData(seg, value, "HT_STRG_AUX_SUB", " where ID = '" + ID + "'");
-            }
+            string[] seg = {"ID", "MATER_CODE", "MATER_NAME", "STORAGE", "UNIT_CODE", "NUM", "MAIN_CODE" };
+            string[] value = {ID, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridcode")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridName")).Text, listStorage.SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtGridUnit")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtNum")).Text, txtCode.Text };
+           
+            string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_AUX_SUB") == "Success" ? "保存辅料领退明细成功" : "保存辅料领退明细失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message); 
            
             bindGrid2();
         }

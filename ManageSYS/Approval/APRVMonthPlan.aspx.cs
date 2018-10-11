@@ -62,7 +62,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
     protected void bindGrid1()
     {
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["user"];
-       // string query = "select g1.tb_zt as 业务名,g1.tbr_name as 申请人,g1.tb_bm_name as 申请部门 ,g1.state as 主业务审批状态,g2.STATUS as 当前流程状态,g2.gongwen_id,g2.id ,g1.BUSIN_ID from HT_PUB_APRV_FLOWINFO g1 left join ht_pub_aprv_opinion g2 on g1.id = g2.gongwen_id  and g2.rolename = '" + user.UserRole + "'  where g1.TB_DATE between '" + txtStarttime.Text + "' and '" + txtEndtime.Text + "' and ISENABLE = '1'";
+        //string query = "select g1.tb_zt as 业务名,g1.tbr_name as 申请人,g1.tb_bm_name as 申请部门 ,g1.state as 主业务审批状态,g2.STATUS as 当前流程状态,g2.gongwen_id,g2.id ,g1.BUSIN_ID from HT_PUB_APRV_FLOWINFO g1 left join ht_pub_aprv_opinion g2 on g1.id = g2.gongwen_id  and g2.rolename = '" + user.UserRole + "'  where g1.TB_DATE between '" + txtStarttime.Text + "' and '" + txtEndtime.Text + "' and ISENABLE = '1'";
         //调试期间用下面SQL，正式运行用上面
         string query = "select g1.tb_zt as 业务名,g1.tbr_name as 申请人,g1.tb_bm_name as 申请部门 ,g1.state as 主业务审批状态,g2.STATUS as 当前流程状态,g2.gongwen_id,g2.id ,g1.BUSIN_ID from HT_PUB_APRV_FLOWINFO g1 left join ht_pub_aprv_opinion g2 on g1.id = g2.gongwen_id    where g1.TB_DATE between '" + txtStarttime.Text + "' and '" + txtEndtime.Text + "' and ISENABLE = '1'";
         if (ckDone.Checked)
@@ -162,7 +162,12 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
     protected void btnDetail_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
-        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+        if (((Label)row.FindControl("labStatus2")).Text != "未审批")
+            btnSure.Visible = false;
+        else
+            btnSure.Visible = true;
+        int rowIndex = row.RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Values[2].ToString();//审批业务ID
         string gong_ID = GridView1.DataKeys[rowIndex].Values[1].ToString();//主审批流程ID
         hideAprvid.Value = GridView1.DataKeys[rowIndex].Values[0].ToString();//子审批流程ID        
@@ -222,7 +227,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
             foreach (DataRow row in data.Tables[0].Rows)
             {
                 str.Append("<tr><td>");
-                str.Append(row["rolename"].ToString() + "意见");
+                str.Append(row["workitemid"].ToString() + "意见");
                 str.Append("</td><td colspan='3'>");
                 str.Append(row["comments"].ToString() + "(" + row["username"].ToString() + row["opiniontime"].ToString() + ")");
                 str.Append("</td></tr>");

@@ -66,12 +66,15 @@ public partial class SysConfig_ApprovalMode : MSYS.Web.BasePage
     
     protected void bindData(string rcpcode)
     {
+        txtName.Text = "";
         string query = "select g1.pz_type,g1.pz_type_name as 审批类型,g2.index_no as 顺序号,g2.role as 角色,g2.flow_name as 发送环节名 from ht_pub_aprv_type g1  left join ht_pub_aprv_model g2 on g2.pz_type = g1.pz_type where g1.pz_type = '" + rcpcode + "' and g2.index_no is not null";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         if (set != null )
         {
             DataTable data = set.Tables[0];
+            if(data.Rows.Count > 0)
+            txtName.Text = data.Rows[0]["审批类型"].ToString();
           bindGrid(data);
         }      
     }

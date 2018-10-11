@@ -18,8 +18,8 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEditor, "select ID,name  from ht_svr_user t where is_del='0'", "name", "ID");
             opt.bindDropDownList(listApt, "select f_code,f_name  from ht_svr_org_group ", "f_name", "f_code");
-            opt.bindDropDownList(listModel, "select pz_code,mt_name from ht_eq_mt_plan where is_model = '1' and is_del = '0'", "mt_name", "pz_code");
-            opt.bindDropDownList(listdspcth, "select ID,name  from ht_svr_user ", "name", "ID");
+            opt.bindDropDownList(listModel, "select pz_code,mt_name from ht_eq_mt_plan where is_model = '1' and is_del = '0' and FLOW_STATUS = '2'", "mt_name", "pz_code");
+            opt.bindDropDownList(listdspcth, "select ID,name  from ht_svr_user t where is_del ='0' and  t.levelgroupid = '00700800' union select '' as ID,'' as Name from dual ", "name", "ID");
             bindGrid1();
            
         }
@@ -27,7 +27,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select t.mt_name as 维保计划,t1.f_name as 部门, t2.name as 审批状态,t3.name as 执行状态,t.remark as 备注,t.pz_code from ht_eq_mt_plan t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   left join ht_inner_aprv_status t2 on t2.id = t.flow_status left join ht_inner_eqexe_status t3 on t3.id = t.task_status  where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'";
+        string query = "select t.mt_name as 维保计划,t1.f_name as 部门, t2.name as 审批状态,t3.name as 执行状态,t.remark as 备注,t.pz_code from ht_eq_mt_plan t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   left join ht_inner_aprv_status t2 on t2.id = t.flow_status left join ht_inner_eqexe_status t3 on t3.id = t.task_status  where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' ";
           
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            DataSet data = opt.CreateDataSetOra(query);
@@ -39,8 +39,21 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                foreach (DataRow row in data.Tables[0].Rows)
                {
                    ((Label)GridView1.Rows[i].FindControl("labAprv")).Text = row["审批状态"].ToString();
+                   ((Label)GridView1.Rows[i].FindControl("labexe")).Text = row["执行状态"].ToString();
+                   if (!(row["审批状态"].ToString() == "未提交" || row["审批状态"].ToString() == "未通过"))
+                   {
+                       ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
+                       ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
+                       ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "查看计划";
+                   }
+                   else
+                   {
+                       ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
+                       ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
+                       ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "编制计划";
+                   }
 
-                   ((Label)GridView1.Rows[i++].FindControl("labexe")).Text = row["执行状态"].ToString();
+                   i++;
                }
            }   
 
@@ -92,14 +105,20 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
     {
         try
         {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            List<string> commandlist = new List<string>();
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {
+                    commandlist.Clear();
                     string order_sn = GridView1.DataKeys[i].Value.ToString();
-                    string query = "update HT_EQ_MT_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'";
-                   MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                    commandlist.Add("update HT_EQ_MT_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'");
+                    commandlist.Add("delete from HT_PUB_APRV_FLOWINFO where BUSIN_ID = '" + order_sn + "'");
+
+                    string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除维保计划成功" : "删除维保计划失败";
+                    log_message += "--标识:" + order_sn;
+                    InsertTlog(log_message);
                 }
             }
             bindGrid1();
@@ -112,12 +131,13 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
     protected void btnGridNew_Click(object sender, EventArgs e)
     {
          setBlank();
+         SetEnable("未提交");
          MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
           txtCode.Text = "MT" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select nvl( max(substr(pz_code,11,3)),0) as ordernum from ht_eq_mt_plan where substr(pz_code,1,10) ='MT" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
           MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
           listEditor.SelectedValue = user.id;
           listApt.SelectedValue = user.OwningBusinessUnitId;
-          bindGrid2(txtCode.Text);
+          bindGrid2("");
           ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
         // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
     }
@@ -145,8 +165,9 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
            log_message += ",业务数据ID：" + id;
-           InsertTlog(log_message);
+           InsertTlog(log_message);        
 
+           bindGrid1();
             
         }
         catch (Exception ee)
@@ -173,10 +194,44 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
              txtdscrpt.Text = row["REMARK"].ToString();
              ckModel.Checked = ("1" == row["IS_MODEL"].ToString());
               bindGrid2(txtCode.Text);
+              string aprvstatus = ((Label)GridView1.Rows[rowIndex].FindControl("labAprv")).Text;
+            SetEnable(aprvstatus);
          }
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);     
+    }   
+
+    protected void SetEnable(string aprvstatus)
+    {
+        btnDispatch.Visible = false;
+        btnTrack.Visible = false;
+        btnDone.Visible = false;
+        if (aprvstatus == "未提交")
+        {
+            btnSave.Visible = true;
+            btnAdd.Visible = true;
+            btnDelSel.Visible = true;
+            if (GridView2.Columns.Count == 9)
+            {
+                GridView2.Columns[8].Visible = true;
+            }
+        }
+        else
+        {
+            btnSave.Visible = false;
+            btnAdd.Visible = false;
+            btnDelSel.Visible = false;
+            if (GridView2.Columns.Count == 9)
+            {
+                GridView2.Columns[8].Visible = false;
+            }
+            if (aprvstatus == "己通过")
+            {
+                btnDispatch.Visible = true;
+                btnTrack.Visible = true;
+                btnDone.Visible = true;
+            }
+        }
     }
-  
 /// <summary>
 /// /tab2
 /// </summary>
@@ -204,13 +259,17 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
              for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
              {
                  DataRowView mydrv = data.Tables[0].DefaultView[i];
-                 ((DropDownList)GridView2.Rows[i].FindControl("listGridarea")).SelectedValue = mydrv["区域"].ToString();
-                 ((DropDownList)GridView2.Rows[i].FindControl("listGridEq")).SelectedValue = mydrv["设备名称"].ToString();
-                 ((TextBox)GridView2.Rows[i].FindControl("txtGridReason")).Text = mydrv["维保原因"].ToString();
-                 ((TextBox)GridView2.Rows[i].FindControl("txtGridcntnt")).Text = mydrv["维保内容"].ToString();
-                 ((TextBox)GridView2.Rows[i].FindControl("txtGridExptime")).Text = mydrv["期望完成时间"].ToString();
-                 ((DropDownList)GridView2.Rows[i].FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
-                 ((TextBox)GridView2.Rows[i].FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
+                 GridViewRow row = GridView2.Rows[i];
+                 DropDownList list1 = (DropDownList)row.FindControl("listGridarea");
+                 DropDownList list2 = (DropDownList)row.FindControl("listGridEq");
+                 list1.SelectedValue = mydrv["区域"].ToString();
+                 opt.bindDropDownList(list2, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t  where t.is_del = '0' and t.is_valid = '1'  and t.section_code = '" + list1.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
+                 list2.SelectedValue = mydrv["设备名称"].ToString();
+                 ((TextBox)row.FindControl("txtGridReason")).Text = mydrv["维保原因"].ToString();
+                 ((TextBox)row.FindControl("txtGridcntnt")).Text = mydrv["维保内容"].ToString();
+                 ((TextBox)row.FindControl("txtGridExptime")).Text = mydrv["期望完成时间"].ToString();
+                 ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
+                 ((TextBox)row.FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
 
              }
 
@@ -253,7 +312,9 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                     string ID = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_EQ_MT_PLAN_detail set IS_DEL = '1'  where ID = '" + ID + "'";
                    MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                    opt.UpDateOra(query);
+                   string log_message = opt.UpDateOra(query)== "Success" ? "删除维保计划明细成功" : "删除维保计划明细失败";
+                   log_message += "--标识:" + ID;
+                   InsertTlog(log_message);
                 }
             }
             bindGrid2(txtCode.Text);
@@ -284,7 +345,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             }
             else
                 data = set.Tables[0];
-            object[] value = { "", "", "","","","", "",0 };
+            object[] value = { "", "", "","",txtExptime.Text,"", "",0 };
             data.Rows.Add(value);
             GridView2.DataSource = data;
             GridView2.DataBind();
@@ -293,13 +354,18 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                 for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
                 {
                     DataRowView mydrv = data.DefaultView[i];
-                    ((DropDownList)GridView2.Rows[i].FindControl("listGridarea")).SelectedValue = mydrv["区域"].ToString();
-                    ((DropDownList)GridView2.Rows[i].FindControl("listGridEq")).SelectedValue = mydrv["设备名称"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtGridReason")).Text = mydrv["维保原因"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtGridcntnt")).Text = mydrv["维保内容"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtGridExptime")).Text = mydrv["期望完成时间"].ToString();
-                    ((DropDownList)GridView2.Rows[i].FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
+                    GridViewRow row = GridView2.Rows[i];
+                    DropDownList list1 = (DropDownList)row.FindControl("listGridarea");
+                    DropDownList list2 = (DropDownList)row.FindControl("listGridEq");
+                    list1.SelectedValue = mydrv["区域"].ToString();
+                    opt.bindDropDownList(list2, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t  where t.is_del = '0' and t.is_valid = '1'  and t.section_code = '" + list1.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
+                    list2.SelectedValue = mydrv["设备名称"].ToString();
+
+                    ((TextBox)row.FindControl("txtGridReason")).Text = mydrv["维保原因"].ToString();
+                    ((TextBox)row.FindControl("txtGridcntnt")).Text = mydrv["维保内容"].ToString();
+                    ((TextBox)row.FindControl("txtGridExptime")).Text = mydrv["期望完成时间"].ToString();
+                    ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
+                    ((TextBox)row.FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
                  
                 }
             }
@@ -322,10 +388,12 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                 string ID = GridView2.DataKeys[i].Value.ToString();
                 string query = "update ht_eq_mt_plan_detail set STATUS = '5'  where ID = '" + ID + "' and status = '4'";
 
-                opt.UpDateOra(query);
+                string log_message = opt.UpDateOra(query) == "Success" ? "确认完成维保计划成功" : "确认完成维保计划失败";
+                log_message += "--标识:" + ID;
+                InsertTlog(log_message);
             }
         }
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '5' where t.main_id = '" + txtCode.Text + "')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '5' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
             opt.UpDateOra("update ht_eq_mt_plan set TASK_STATUS = '5' where PZ_CODE = '" + txtCode.Text + "'");
@@ -353,7 +421,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                 opt.UpDateOra(query);
             }
         }
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '3' where t.main_id = '" + txtCode.Text + "')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '3' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
             opt.UpDateOra("update ht_eq_mt_plan set TASK_STATUS = '3' where PZ_CODE = '" + txtCode.Text + "'");
@@ -380,10 +448,12 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
                 string ID = GridView2.DataKeys[i].Value.ToString();
                 string query = "update ht_eq_mt_plan_detail set STATUS = '1' ,RESPONER = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "' and status = '0'";
 
-                opt.UpDateOra(query);
+                string log_message = opt.UpDateOra(query) == "Success" ? "下发维保计划成功" : "下发维保计划失败";
+                log_message += "--标识:" + ID;
+                InsertTlog(log_message);
             }
         }
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '1' where t.main_id = '" + txtCode.Text + "'  and t1.is_del = '0')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '1' and t1.is_del = '0'  where t.main_id = '" + txtCode.Text + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
             opt.UpDateOra("update ht_eq_mt_plan set TASK_STATUS = '1' where PZ_CODE = '" + txtCode.Text + "'");
@@ -407,7 +477,13 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
 
            string[] seg = { "PZ_CODE", "MT_NAME", "CREATE_ID", "CREATE_DEPT_ID", "EXPIRED_DATE", "REMARK", "IS_MODEL", "CREATE_TIME" };
            string[] value = { txtCode.Text, txtName.Text, listEditor.SelectedValue, listApt.SelectedValue, txtExptime.Text, txtdscrpt.Text, Convert.ToInt16(ckModel.Checked).ToString(), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-            opt.MergeInto(seg, value,1, "HT_EQ_MT_PLAN");
+           
+
+            string log_message =  opt.MergeInto(seg, value,1, "HT_EQ_MT_PLAN") == "Success" ? "新增维保计划成功" : "新增维保计划失败";
+            log_message += "--详情：" + string.Join(",", value);
+            InsertTlog(log_message);
+            bindGrid1();
+           
         }
         catch (Exception ee)
         {
@@ -423,13 +499,16 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
             string id = GridView2.DataKeys[rowIndex].Value.ToString();
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.UpDateOra("delete from ht_eq_mt_plan_detail where ID = '" + id + "'");
-            string[] seg = { "mech_area", "equipment_id", "reason", "content", "exp_finish_time", "remark",  "CREATE_TIME","MAIN_ID" };
-            string[] value = { ((DropDownList)GridView2.Rows[rowIndex].FindControl("listGridarea")).SelectedValue, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listGridEq")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridReason")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridcntnt")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridExptime")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridremark")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtCode.Text };
+           if (id == "0")
+               id = opt.GetSegValue("select MTDETAIL_ID_SEQ.nextval as id  from dual", "id");   
+            string[] seg = {"ID", "mech_area", "equipment_id", "reason", "content", "exp_finish_time", "remark",  "CREATE_TIME","MAIN_ID" };
+            string[] value = { id,((DropDownList)GridView2.Rows[rowIndex].FindControl("listGridarea")).SelectedValue, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listGridEq")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridReason")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridcntnt")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridExptime")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtGridremark")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtCode.Text };
 
-            string log_message = opt.InsertData(seg, value, "ht_eq_mt_plan_detail") == "Success" ? "新建维修明细成功" : "新建维修明细失败";
+            string log_message = opt.InsertData(seg, value, "ht_eq_mt_plan_detail") == "Success" ? "新建维保明细成功" : "新建维保明细失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
+
+            bindGrid2(txtCode.Text);
        
         }
         catch (Exception ee)
@@ -459,5 +538,20 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
         InsertTlog(log_message);      
         bindGrid2(txtCode.Text);
     }
-    
+
+    protected DataSet sectionbind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code");
+    }
+
+    protected void listGridarea_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DropDownList list = (DropDownList)sender;
+        GridViewRow row = (GridViewRow)list.NamingContainer;
+        int rowindex = row.RowIndex;
+        DropDownList list1 = (DropDownList)row.FindControl("listGridEq");
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(list1, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t  where t.is_del = '0' and t.is_valid = '1'   and t.section_code = '" + list.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
+    }
 }

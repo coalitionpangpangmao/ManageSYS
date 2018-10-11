@@ -23,11 +23,32 @@ public partial class Device_ManulCalibrate : MSYS.Web.BasePage
     protected void bindGrid1()
     {
 
-        string query = "select t.mt_name as 校准计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,t.remark as 备注,t.pz_code from HT_EQ_MCLBR_PLAN t left join ht_svr_user t1 on t1.id = t.create_id   where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' and t.CLBRT_TYPE = '0'";
+        string query = "select t.mt_name as 校准计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,t2.name as 状态,t.remark as 备注,t.pz_code,t.task_status from HT_EQ_MCLBR_PLAN t left join ht_svr_user t1 on t1.id = t.create_id left join ht_inner_eqexe_status t2 on t2.id = t.task_status   where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' and t.CLBRT_TYPE = '0' and t.FLOW_STATUS = '2'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        GridView1.DataSource = opt.CreateDataSetOra(query); ;
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView1.DataSource = data;
         GridView1.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+            {
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                Button btn = (Button)GridView1.Rows[i].FindControl("btnGridview");
+                if (Convert.ToInt16(mydrv["task_status"].ToString()) >= 2)
+                {
+                    btn.Text = "查看";
+                    btn.CssClass = "btnred";
+                }
+                else
+                {
+                    btn.Text = "编辑";
+                    btn.CssClass = "btn1 auth";
+                }
+
+            }
+        }
+
 
 
     }//绑定gridview1数据源
@@ -45,6 +66,10 @@ public partial class Device_ManulCalibrate : MSYS.Web.BasePage
         txtCode.Value = GridView1.DataKeys[rowIndex].Value.ToString();
         bindGrid2(txtCode.Value);
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+        if (btn.Text == "查看")
+            btnGrid2Save.Visible = false;
+        else
+            btnGrid2Save.Visible = true;
     }
 
     /// <summary>
@@ -89,6 +114,13 @@ public partial class Device_ManulCalibrate : MSYS.Web.BasePage
                 ((TextBox)row.FindControl("txtGridClbrtime")).Text = mydrv["校准时间"].ToString();
                 ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
                 ((TextBox)row.FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
+                if (Convert.ToInt16( mydrv["状态"].ToString()) >= 3)
+                {
+                    ((TextBox)row.FindControl("txtGridOldvalue")).Enabled = false;
+                    ((TextBox)row.FindControl("txtGridNewvalue")).Enabled = false;
+                    ((TextBox)row.FindControl("txtGridClbrtime")).Enabled = false;
+                    ((TextBox)row.FindControl("txtGridremark")).Enabled = false;
+                }
 
             }
         }
@@ -100,17 +132,34 @@ public partial class Device_ManulCalibrate : MSYS.Web.BasePage
 
     protected void btnGrid2Save_Click(object sender, EventArgs e)//
     {
-        Button btn = (Button)sender;
-        GridViewRow row = (GridViewRow)btn.NamingContainer;
-        int rowIndex = row.RowIndex;
-        string id = GridView2.DataKeys[rowIndex].Value.ToString();
+        List<string> commandlist = new List<string>();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        foreach (GridViewRow row in GridView2.Rows)
+        {           
+            int rowIndex = row.RowIndex;
+            string id = GridView2.DataKeys[rowIndex].Value.ToString();
+            string status = ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue;
+            if ((status == "1" || status == "2") && ((TextBox)row.FindControl("txtGridNewvalue")).Text != "")
+            {
+                string[] seg = { "ID", "OLDVALUE", "POINTVALUE", "SAMPLE_TIME", "remark", "STATUS" };
 
-        string[] seg = { "ID", "OLDVALUE", "POINTVALUE", "SAMPLE_TIME", "remark", "STATUS" };
+                string[] value = { id, ((TextBox)row.FindControl("txtGridOldvalue")).Text, ((TextBox)row.FindControl("txtGridNewvalue")).Text, ((TextBox)row.FindControl("txtGridClbrtime")).Text, ((TextBox)row.FindControl("txtGridremark")).Text, "2" };
+                commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_EQ_MCLBR_PLAN_detail"));
+            }            
+        }
+        if (commandlist.Count > 0)
+        {
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "人工校准录入成功" : "人工校准录入失败";
+            InsertTlog(log_message);
+            bindGrid2(txtCode.Value);
 
-        string[] value = { id, ((TextBox)row.FindControl("txtGridOldvalue")).Text, ((TextBox)row.FindControl("txtGridNewvalue")).Text, ((TextBox)row.FindControl("txtGridClbrtime")).Text, ((TextBox)row.FindControl("txtGridremark")).Text, "2" };
-        opt.MergeInto(seg, value, 1, "HT_EQ_MCLBR_PLAN_detail");
-        bindGrid2(txtCode.Value);
+            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status = '2' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+            if (alter == "1")
+            {
+                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "'");
+                bindGrid1();
+            }
+        }
 
     }
 
