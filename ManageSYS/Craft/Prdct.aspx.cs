@@ -172,7 +172,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = { "产品:" + GridView1.Rows[index].Cells[4].Text, "02", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string log_message = MSYS.Common.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+            string log_message = MSYS.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
             log_message += ",业务数据ID：" + id;
             InsertTlog(log_message);
 

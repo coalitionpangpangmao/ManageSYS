@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{64998E34-2770-41C6-8046-9976ABBD5B90}</ProjectGuid>
+    <ProjectGuid>{76853D79-F3A9-4D0A-A949-049EFF990E39}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MSYS.Common</RootNamespace>
     <AssemblyName>MSYS.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,7 +54,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,22 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AprvFlow.cs" />
     <Compile Include="ExcelExport.cs" />
-    <Compile Include="GridViewTemplate.cs" />
-    <Compile Include="IHDataOpt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPCFunctions.cs" />
     <Compile Include="XSPCFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSYS.DAL\MSYS.DAL.csproj">
-      <Project>{A941B43C-5C79-45DD-917C-30586267DEE7}</Project>
+      <Project>{a941b43c-5c79-45dd-917c-30586267dee7}</Project>
       <Name>MSYS.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSYS.Data\MSYS.Data.csproj">
-      <Project>{459b092f-96c5-4fc2-bf1b-44eb40b96b2a}</Project>
-      <Name>MSYS.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

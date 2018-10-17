@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text;
+using MSYS;
 public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
 {
     protected string AprvtableHtml;
@@ -150,7 +151,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
                 if (((CheckBox)GridView1.Rows[i].FindControl("ckBox")).Checked)
                 {                   
                     string[] value = {"","2"};
-                    string log_message = MSYS.Common.AprvFlow.authorize(GridView1.DataKeys[i].Values[0].ToString(), value) ? "审批成功" : "审批失败";
+                    string log_message = MSYS.AprvFlow.authorize(GridView1.DataKeys[i].Values[0].ToString(), value) ? "审批成功" : "审批失败";
                     log_message += GridView1.DataKeys[i].Values[0].ToString();
                     InsertTlog(log_message);                  
                 }
@@ -250,7 +251,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
          else
              status = "1";
          string[] seg = {txtComments.Text,status};
-         string log_message = MSYS.Common.AprvFlow.authorize(hideAprvid.Value, seg) ? "审批成功" : "审批失败";
+         string log_message = MSYS.AprvFlow.authorize(hideAprvid.Value, seg) ? "审批成功" : "审批失败";
          log_message += hideAprvid.Value + string.Join(",",seg);
          InsertTlog(log_message);  
          bindGrid1();

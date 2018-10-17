@@ -264,12 +264,22 @@ public partial class Device_EquipmentInfo :MSYS.Web.BasePage
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string code = GridView1.DataKeys[rowIndex].Value.ToString();
+        Response.Redirect("LbrctQRecord.aspx?Equip='" + code + "'", true); 
     }
     protected void btnGridwb_Click(object sender, EventArgs e)//查看维保记录
     {
         Button btn = (Button)sender;
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string code = GridView1.DataKeys[rowIndex].Value.ToString();
+        Response.Redirect("MtncExeRecord.aspx?Equip='" + code + "'", true); 
+    }
+
+    protected void btnGridwx_Click(object sender, EventArgs e)//
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string code = GridView1.DataKeys[rowIndex].Value.ToString();
+        Response.Redirect("RepairRecord.aspx?Equip='" + code + "'", true); 
     }
     /// <summary>
     /// /tab2操作

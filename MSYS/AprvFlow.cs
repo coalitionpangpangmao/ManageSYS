@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Data;
 using System.Collections;
-namespace MSYS.Common
+namespace MSYS
 {
     /// <summary>
     /// 将审批业务转化为事务操作

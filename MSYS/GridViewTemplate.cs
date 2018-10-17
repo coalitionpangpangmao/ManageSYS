@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
-namespace MSYS.Common
+namespace MSYS
 {
     /// <summary>
     ///GridViewTemplate 的摘要说明

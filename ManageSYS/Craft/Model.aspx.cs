@@ -464,6 +464,19 @@ public partial class Craft_Model : MSYS.Web.BasePage
             ckQuality.Enabled = true;
         }
     }
+    protected void ckManul_CheckedChanged(object sender, EventArgs e)
+    {
+        if (ckManul.Checked)
+        {
+            ckCenterCtrl.Checked = true;          
+            ckCenterCtrl.Enabled = false;          
+        }
+        else
+        {
+            ckCenterCtrl.Enabled = true;            
+        }
+    }
+    
     #endregion
 
 }

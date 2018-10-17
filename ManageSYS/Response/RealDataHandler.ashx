@@ -93,7 +93,7 @@ public class RealDataHandler : IHttpHandler
             if(tag != "")
             {
                  //get rawdata from IHistorian 
-                 MSYS.Common.IHDataOpt ihopt = new MSYS.Common.IHDataOpt();
+                 MSYS.IHDataOpt ihopt = new MSYS.IHDataOpt();
                  DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
                  if (Rows != null)
                  {

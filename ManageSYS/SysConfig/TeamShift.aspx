@@ -38,13 +38,15 @@
                 </ul>
             </div>
         </div>
-        <div id="tab1" class="tabson">
-            <div class="framelist">
+        <div id="tab1" class="tabson">          
                 <div class="listtitle">
                     编辑<span style="position: relative; float: right">
                         <asp:Button ID="btnSaveT" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSaveT_Click" />
                     </span>
                 </div>
+                  <div>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
                 <table class="tablelist">
                     <tbody>
                         <tr>
@@ -79,14 +81,17 @@
                 <div class="listtitle">
                     列表
                 </div>
-                <div>
-                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                        <ContentTemplate>
+              
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="班组编码" AllowPaging="True">
                                 <Columns>
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnGrid1Del_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="编辑" CssClass="btn1  auth" OnClick="btnGrid1Edit_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -101,15 +106,18 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-            </div>
+           
         </div>
         <div id="tab2" class="tabson">
-            <div class="framelist">
+          
                 <div class="listtitle">
                     编辑<span style="position: relative; float: right">
                         <asp:Button ID="btnSaveS" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSaveS_Click" />
                     </span>
                 </div>
+                  <div>
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
                 <table class="tablelist">
                     <tbody>
                         <tr>
@@ -160,14 +168,17 @@
                 <div class="listtitle">
                     列表
                 </div>
-                <div>
-                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
-                        <ContentTemplate>
+              
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="班时编码" AllowPaging="True">
                                 <Columns>
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnGrid2Del_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                      <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGrid2Edit" runat="server" Text="编辑" CssClass="btn1  auth" OnClick="btnGrid2Edit_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -182,7 +193,7 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-            </div>
+          
         </div>
     </div>
     <script type="text/javascript">

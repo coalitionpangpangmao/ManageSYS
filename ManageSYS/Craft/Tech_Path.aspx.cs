@@ -233,22 +233,22 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             ////增加当前选择列
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "选择", "");
-            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "sel", "CheckBox");
+            customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "选择", "");
+            customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "sel", "CheckBox");
             ViewState["ck_sel"] = true;
             GridView1.Columns.Add(customField);
             /////增加路径名列
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "路径名称", "");
-            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "Pathname", "TextBox");
+            customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "路径名称", "");
+            customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "Pathname", "TextBox");
             ViewState["txt_Pathname"] = true;
             GridView1.Columns.Add(customField);
             /////增加路径编码
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "路径编码", "");
-            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "Pathcode", "TextBox");
+            customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "路径编码", "");
+            customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "Pathcode", "TextBox");
             ViewState["txt_Pathcode"] = true;
             GridView1.Columns.Add(customField);
             //增加节点列
@@ -256,16 +256,16 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             {
                 customField = new TemplateField();
                 customField.ShowHeader = true;
-                customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, data.Tables[0].Columns[j].ColumnName, "");
-                customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, j.ToString(), "CheckBox");
+                customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, data.Tables[0].Columns[j].ColumnName, "");
+                customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, j.ToString(), "CheckBox");
                 ViewState["ck_" + j.ToString()] = true;
                 GridView1.Columns.Add(customField);
             }
             //增加保存按钮
             customField = new TemplateField();
             customField.ShowHeader = true;
-            customField.HeaderTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.Header, "操作", "");
-            customField.ItemTemplate = new MSYS.Common.GridViewTemplate(DataControlRowType.DataRow, "Grid1Save", "Button");
+            customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "操作", "");
+            customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "Grid1Save", "Button");
             ViewState["btn_Grid1Save"] = true;
             GridView1.Columns.Add(customField);
 

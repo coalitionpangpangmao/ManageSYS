@@ -77,7 +77,16 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
        InsertTlog(log_message);
         bindGrid1();
     }
+    protected void btnGrid1Edit_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
 
+        txtCodeT.Text = row.Cells[2].Text;
+        txtNameT.Text = row.Cells[3].Text;
+        listLineT.SelectedValue = row.Cells[4].Text;
+    }
+   
     protected void btnGrid2Del_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
@@ -88,5 +97,19 @@ public partial class SysConfig_TeamShift : MSYS.Web.BasePage
        log_message += "--标识:" + GridView2.Rows[rowIndex].Cells[1].Text;
        InsertTlog(log_message);
         bindGrid2();
+    }
+
+    protected void btnGrid2Edit_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+      
+         txtCodeS.Text= row.Cells[2].Text;
+         txtNameS.Text = row.Cells[3].Text;
+         listLineS.SelectedValue = row.Cells[4].Text;
+         txtStarttime.Text = row.Cells[5].Text;
+         txtEndtime.Text = row.Cells[6].Text;
+        ckInter.Checked =( row.Cells[7].Text=="1");
     }
 }

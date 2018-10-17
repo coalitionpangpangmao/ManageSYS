@@ -109,7 +109,50 @@ namespace MSYS.DAL
             }
 
         }
+        public string ExecProcedures(string procedure, string[] seg, object[] value)
+        {
 
+            DbCommand sqlcom = null;
+            DbConnection myConn = null;
+            IFactoryDbPool pool = SQLConnectionSingletion.CreateInstance();
+            try
+            {
+                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["OracleConnectionString"];
+                SQLConnectionSingletion.ConnectionString = settings.ConnectionString;
+                //Borrow the SqlConnection object from the pool
+                myConn = pool.BorrowDBConnection();
+                sqlcom = myConn.CreateCommand(); ;
+
+                sqlcom.CommandType = CommandType.StoredProcedure;
+                sqlcom.CommandText = procedure;
+                if (seg.Length == value.Length)
+                {
+                    for (int i = 0; i < seg.Length; i++)
+                    {
+                        SqlParameter p = new SqlParameter(seg[i], value[i]);
+                        p.Direction = ParameterDirection.Input;
+
+                        sqlcom.Parameters.Add(p);
+
+                    }
+                }
+                sqlcom.ExecuteNonQuery();
+                return "Success";
+
+            }
+            catch (Exception)
+            {
+                if (sqlcom != null)
+                    sqlcom.Dispose();
+                return null;
+            }
+            finally
+            {
+                pool.ReturnDBConnection(myConn);
+            }
+
+
+        }
     
     }
 }

@@ -16,8 +16,7 @@ span.submit{cursor:pointer;position:absolute;left:138px;top:0px;width:20px;heigh
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("body").click = function () {
-            debugger;
+        $("body").click = function () {            
             var event = e || window.event;
             var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
             var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
@@ -43,13 +42,17 @@ span.submit{cursor:pointer;position:absolute;left:138px;top:0px;width:20px;heigh
         var y = event.pageY || event.clientY + scrollY;
         $("#keytext").css({ "position": "fix", "top": y + "px", "left": x + "px" });
         $('#keytext').show();
+        $('#keyword').blur(function () {
+            $("#keytext").hide();
+        });
+
     }
     function keySelectHistory2() {
         var key = document.getElementById('keyword').value;
         var sendData = "key=" + key + "";      
       // $.post("demo_ajax_gethint.html",{suggest:txt},function(result){
       //  $("span").html(result);
-        var result = $.post("Chooserealm.aspx", sendData, function (result) { receive_CallBack(result) });
+        var result = $.post("../Response/faultDbHandler.ashx", sendData, function (result) { receive_CallBack(result) });
         
     }
     function receive_CallBack(result) {        
@@ -58,7 +61,8 @@ span.submit{cursor:pointer;position:absolute;left:138px;top:0px;width:20px;heigh
         document.getElementById('keytext').innerHTML = result;
     }
 
-    function clickkey() {       
+    function clickkey() {
+        debugger;
         $("#keyword").val(arguments[0]);
         $("#keytext").hide();
     } 
@@ -68,15 +72,13 @@ span.submit{cursor:pointer;position:absolute;left:138px;top:0px;width:20px;heigh
 
 
 	<body>
-<div class="inputdiv" style="top:215px;">
+
 <div class="search">
-<input name="keyword" type="text" class="input2" id="keyword" value=""  style="float:left;" onkeyup="keySelectHistory2()" onchange ="keySelectHistory2()"  onclick="keySelectHistory()"  />//文本输入框
-<input name="drpservicearea" id="drpservicearea" type="hidden" />//选择后的数字值
-<span  class="submit" onclick="return keySelectHistory();"></span></div>//下拉框的点击
+<input name="keyword" type="text" class="" id="keyword"   style="float:left;" onkeyup="keySelectHistory2()" onchange ="keySelectHistory2()"  onclick="keySelectHistory()"  />
+<div class="text" id = "keytext" style="display:none">
+</div>
 </div> 
 
-<div class="text" id = "keytext" style="display:none">
-</div>//下拉框效果    
 
 	</body>
 </html>

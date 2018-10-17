@@ -34,8 +34,19 @@ namespace DataCollect
                 {
                     if (uniqFixRW == null)
                     {
-                        System.Type oType = System.Type.GetTypeFromProgID("FixDataSystems.Intellution FD Data System Control");
-                        uniqFixRW = (FixDataSystems.IFixDataSystem)System.Activator.CreateInstance(oType);
+                        try
+                        {
+                            System.Type oType = System.Type.GetTypeFromProgID("FixDataSystems.Intellution FD Data System Control");
+                            uniqFixRW = (FixDataSystems.IFixDataSystem)System.Activator.CreateInstance(oType);
+                        }
+                        catch (Exception e)
+                        {
+                            uniqFixRW = null;
+                            group = null;
+                            throw (e);
+                        }
+
+
                         if (group == null)
                         {
                             uniqFixRW.Groups.Add("DataGroup1");
@@ -55,13 +66,14 @@ namespace DataCollect
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
                     System.Diagnostics.Debug.Write("IFIX中未标签不存在");
-                    System.Environment.Exit(0);
+                    group = null;
+                    throw (e);
                 }
                 finally
-                {  }
+                { }
 
             }
 
@@ -100,7 +112,8 @@ namespace DataCollect
                         uniqFixRW.Groups.Add("DataGroup1");
                         group = uniqFixRW.Groups.Item("DataGroup1");
                     }
-                    var items = group.DataItems;
+                    var items = uniqFixRW.Groups.Item("DataGroup1").DataItems;
+                    
                     if (items.Count != readlist.Count)
                     {
                         items.Clear();
@@ -108,35 +121,42 @@ namespace DataCollect
                         {
                             items.Add(p.tag);
                         }
+
                     }
                     //Read all the items in the group 
                     group.Read();
-                    int i = 1;
-                    string[] seg = { "SECTION_CODE", "PLANNO", "TIME", "PARA_CODE", "PROD_CODE","TEAM","VALUE" };
-                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    string teamcode = opt.GetSegValue("select team_code  from ht_prod_schedule where date_begin <='" + System.DateTime.Now.AddMinutes(-5).ToString("yyyy-MM-dd HH:mm:ss") + "' and date_end >='" + System.DateTime.Now.AddMinutes(-5).ToString("yyyy-MM-dd HH:mm:ss") + "' and work_staus = '1'", "team_code");
-                    foreach (PointProperty p in readlist)
-                    {
-                        string planno = opt.GetSegValue("select planno  from ht_prod_report where section_code = '" + p.para_code.Substring(0, 5) + "' and starttime < '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and endtime  > '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "planno");
-                        if (planno != "NoRecord")
-                        {
-                            var Y = items.Item(i++).Value ;
-                            
-                            Y =( Y==null? 0:Y);
-                            string[] value = { p.para_code.Substring(0, 5), planno, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), p.para_code, planno.Substring(8, 7),teamcode, Y.ToString("0.00") };
-                            opt.InsertData(seg, value, "HT_PROD_REPORT_DETAIL");
-                        }
+                }
+            }
+            catch (Exception e)
+            {
+
+                System.Diagnostics.Debug.Write("录入数据失败！！");
+                uniqFixRW = null;
+                group = null;
+                throw (e);
+            }
+            var Items = uniqFixRW.Groups.Item("DataGroup1").DataItems;
+            var itemcount = Items.Count;
+            if (itemcount == readlist.Count)
+            {
+                int i = 1;
+                string[] seg = { "SECTION_CODE", "PLANNO", "TIME", "PARA_CODE", "PROD_CODE", "TEAM", "VALUE" };
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string teamcode = opt.GetSegValue("select team_code  from ht_prod_schedule where date_begin <='" + System.DateTime.Now.AddMinutes(-5).ToString("yyyy-MM-dd HH:mm:ss") + "' and date_end >='" + System.DateTime.Now.AddMinutes(-5).ToString("yyyy-MM-dd HH:mm:ss") + "' and work_staus = '1'", "team_code");
+                foreach (PointProperty p in readlist)
+                {
+                    string planno = opt.GetSegValue("select planno  from ht_prod_report where section_code = '" + p.para_code.Substring(0, 5) + "' and starttime < '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and endtime  > '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "planno");
+                    if (planno != "NoRecord")
+                    {    var Y = Items.Item(i++).Value;
+
+                        Y = (Y == null ? 0 : Y);
+                        string[] value = { p.para_code.Substring(0, 5), planno, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), p.para_code, planno.Substring(8, 7), teamcode, Y.ToString("0.00") };
+                        opt.InsertData(seg, value, "HT_PROD_REPORT_DETAIL");
                     }
                 }
+            }
 
-            }
-            catch
-            {
-                System.Diagnostics.Debug.Write("录入数据失败！！");
-                System.Environment.Exit(0);
-            }
-            finally
-            {  }
+
         }
 
 

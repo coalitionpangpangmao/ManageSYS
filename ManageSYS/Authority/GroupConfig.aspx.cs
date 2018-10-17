@@ -216,37 +216,17 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
             else
             {
                MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                string query = "select * from HT_SVR_SYS_Role where F_ROLE = '" + Role.Text.Trim() + "'";
-                DataSet data = opt.CreateDataSetOra(query);
-                if (data != null && data.Tables[0].Select().GetLength(0) > 0)
-                {
-                    query = "update HT_SVR_SYS_Role set F_Right = '"
-                        + Right.Text + "',F_TIME = '"
-                        + DateTime.Now.ToString("yyyy-MM-dd") + "' where F_ROLE = '"
-                        + Role.Text.Trim() + "'";
-
-                    string log_message = opt.UpDateOra(query) == "Success" ? "更新角色权限成功" : "更新角色权限失败";
+               string id = opt.GetSegValue("select * from HT_SVR_SYS_Role where F_ROLE = '" + Role.Text.Trim() + "'", "F_ID");
+                if(id == "NoRecord")
+                    id = opt.GetSegValue("select role_id_seq.nextval as code from dual", "CODE").PadLeft(3, '0');
+                string[] seg = { "F_ID", "F_ROLE", "F_RIGHT", "F_TIME" };
+                string[] value = { id, Role.Text, Right.Text, DateTime.Now.ToString("yyyy-MM-dd") };
+              
+                    string log_message = opt.MergeInto(seg,value,1,"HT_SVR_SYS_Role") == "Success" ? "保存角色权限成功" : "保存角色权限失败";
                     log_message += "--标识:" + Role.Text;
                     InsertTlog(log_message);
                     BindList();
-                }
-                else
-                {
-                    string code = opt.GetSegValue("select role_id_seq.nextval as code from dual", "CODE").PadLeft(3, '0');
-                    query = "insert into HT_SVR_SYS_Role(F_ROLE,F_RIGHT,F_ID,F_TIME)values('"
-                        + Role.Text + "','"
-                        + Right.Text + "','"
-                        + code + "','"
-                        + DateTime.Now.ToString("yyyy-MM-dd") + "')";
-                    string log_message = opt.UpDateOra(query) == "Success" ? "新建角色权限成功" : "新建角色权限失败";
-                    log_message += "--标识:" + Role.Text;
-                    InsertTlog(log_message);
-                    BindList();
-                  
-                }
             }
-      
-       
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {

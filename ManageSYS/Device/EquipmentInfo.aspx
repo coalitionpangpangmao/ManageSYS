@@ -118,6 +118,11 @@
                                                         <asp:Button ID="btnGridwb" runat="server" Text="查看" CssClass="btnred" OnClick="btnGridwb_Click" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
+                                                 <asp:TemplateField HeaderText="维修记录">
+                                                    <ItemTemplate>
+                                                        <asp:Button ID="btnGridwx" runat="server" Text="查看" CssClass="btnred" OnClick="btnGridwx_Click" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                             </Columns>
                                             <HeaderStyle CssClass="gridheader" />
                                             <RowStyle CssClass="gridrow" />

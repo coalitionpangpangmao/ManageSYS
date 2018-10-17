@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Qua_Stop = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.QuaTime = new System.Windows.Forms.DateTimePicker();
             this.Qua_show = new System.Windows.Forms.Button();
             this.Qua_Start = new System.Windows.Forms.Button();
-            this.Qua_Stop = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -55,6 +55,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "质量报告";
             // 
+            // Qua_Stop
+            // 
+            this.Qua_Stop.Location = new System.Drawing.Point(124, 18);
+            this.Qua_Stop.Name = "Qua_Stop";
+            this.Qua_Stop.Size = new System.Drawing.Size(75, 23);
+            this.Qua_Stop.TabIndex = 5;
+            this.Qua_Stop.Text = "停止";
+            this.Qua_Stop.UseVisualStyleBackColor = true;
+            this.Qua_Stop.Click += new System.EventHandler(this.Qua_Stop_Click);
+            // 
             // dataGridView1
             // 
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -69,14 +79,16 @@
             // 
             // QuaTime
             // 
+            this.QuaTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.QuaTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.QuaTime.Location = new System.Drawing.Point(244, 20);
             this.QuaTime.Name = "QuaTime";
-            this.QuaTime.Size = new System.Drawing.Size(113, 21);
+            this.QuaTime.Size = new System.Drawing.Size(160, 21);
             this.QuaTime.TabIndex = 3;
             // 
             // Qua_show
             // 
-            this.Qua_show.Location = new System.Drawing.Point(363, 18);
+            this.Qua_show.Location = new System.Drawing.Point(447, 18);
             this.Qua_show.Name = "Qua_show";
             this.Qua_show.Size = new System.Drawing.Size(75, 23);
             this.Qua_show.TabIndex = 2;
@@ -93,16 +105,6 @@
             this.Qua_Start.Text = "开始";
             this.Qua_Start.UseVisualStyleBackColor = true;
             this.Qua_Start.Click += new System.EventHandler(this.Qua_Start_Click);
-            // 
-            // Qua_Stop
-            // 
-            this.Qua_Stop.Location = new System.Drawing.Point(124, 18);
-            this.Qua_Stop.Name = "Qua_Stop";
-            this.Qua_Stop.Size = new System.Drawing.Size(75, 23);
-            this.Qua_Stop.TabIndex = 5;
-            this.Qua_Stop.Text = "停止";
-            this.Qua_Stop.UseVisualStyleBackColor = true;
-            this.Qua_Stop.Click += new System.EventHandler(this.Qua_Stop_Click);
             // 
             // Form1
             // 

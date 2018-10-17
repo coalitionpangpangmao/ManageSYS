@@ -351,7 +351,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
             string[] subvalue = {  txtName.Text, "07", txtCode.Text, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            if (MSYS.Common.AprvFlow.createApproval(subvalue))
+            if (MSYS.AprvFlow.createApproval(subvalue))
             {
                 string log_message = "质量考核标准提交审批成功,业务数据ID：" + txtCode.Text;
                 InsertTlog(log_message);

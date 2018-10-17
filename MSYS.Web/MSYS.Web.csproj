@@ -88,24 +88,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MSYS.Common\MSYS.Common.csproj">
-      <Project>{64998E34-2770-41C6-8046-9976ABBD5B90}</Project>
-      <Name>MSYS.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSYS.DAL\MSYS.DAL.csproj">
-      <Project>{A941B43C-5C79-45DD-917C-30586267DEE7}</Project>
-      <Name>MSYS.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSYS.Data\MSYS.Data.csproj">
-      <Project>{459B092F-96C5-4FC2-BF1B-44EB40B96B2A}</Project>
-      <Name>MSYS.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSYS.Security\MSYS.Security.csproj">
-      <Project>{D88AD759-6B4E-44DE-84D3-8504653DC11D}</Project>
-      <Name>MSYS.Security</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +117,24 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_MasterService_MisMasterDataServiceInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSYS.Common\MSYS.Common.csproj">
+      <Project>{76853d79-f3a9-4d0a-a949-049eff990e39}</Project>
+      <Name>MSYS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.DAL\MSYS.DAL.csproj">
+      <Project>{a941b43c-5c79-45dd-917c-30586267dee7}</Project>
+      <Name>MSYS.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.Data\MSYS.Data.csproj">
+      <Project>{459b092f-96c5-4fc2-bf1b-44eb40b96b2a}</Project>
+      <Name>MSYS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSYS.Security\MSYS.Security.csproj">
+      <Project>{d88ad759-6b4e-44de-84d3-8504653dc11d}</Project>
+      <Name>MSYS.Security</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

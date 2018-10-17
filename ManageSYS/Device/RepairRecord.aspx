@@ -39,7 +39,7 @@
                             <td>
                                 <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
                                 <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-
+ <asp:HiddenField ID="hideequip" runat="server" />
                                
                             </td>
                         </tr>

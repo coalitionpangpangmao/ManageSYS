@@ -25,6 +25,59 @@ a img {
 	border:none;
 }
 </style>
+<script type="text/javascript">
+   function foreach()
+{
+  var strCookie=document.cookie;
+  var arrCookie=strCookie.split("; ");
+  for(var i=0;i<arrCookie.length;i++)
+ {
+    var arr=arrCookie[i].split("=");
+    if(arr.length>0)
+    DelCookie(arr[0]);
+ }
+}
+function GetCookieVal(offset)
+{
+var endstr = document.cookie.indexOf (";", offset);
+if (endstr == -1)
+endstr = document.cookie.length;
+return decodeURIComponent(document.cookie.substring(offset, endstr));
+}
+function DelCookie(name)
+{
+var exp = new Date();
+exp.setTime (exp.getTime() - 1);
+var cval = GetCookie (name);
+document.cookie = name + "=" + cval + "; expires="+ exp.toGMTString();
+}
+function GetCookie(name)
+{
+var arg = name + "=";
+var alen = arg.length;
+var clen = document.cookie.length;
+var i = 0;
+while (i < clen)
+{
+var j = i + alen;
+if (document.cookie.substring(i, j) == arg)
+return GetCookieVal (j);
+i = document.cookie.indexOf(" ", i) + 1;
+if (i == 0) break;
+}
+return null;
+}
+function clearCookie(){
+    var date=new Date();
+    date.setTime(date.getTime()-10000);
+    var keys=document.cookie.match(/[^ =;]+(?=\=)/g);
+    if (keys) {
+        for (var i =  keys.length; i--;)
+          document.cookie=keys[i]+"=0; expire="+date.toGMTString()+"; path=/";
+    }
+}
+clearCookie();
+</script>
 
 </head>
 <body>
@@ -42,7 +95,7 @@ a img {
               <tr>
                 <td height="17"><div align="right"><a href="ChgPsd.aspx" target="rightFrame"><img src="images/pass.gif" width="69" height="17" /></a></div></td>
                 <td><div align="right"><a href="Authority/UserInfo.aspx" target="rightFrame"><img src="images/user.gif" width="69" height="17" /></a></div></td>
-                <td><div align="right"><a href="Login.aspx" target="_parent"><img src="images/quit.gif" alt=" " width="69" height="17" /></a></div></td>
+                <td><div align="right"><a href="Login.aspx" target="_parent"><img src="images/quit.gif" alt=" " width="69" height="17"  onclick ="clearCookie()"/></a></div></td>
               </tr>
             </table></td>
           </tr>
@@ -57,7 +110,7 @@ a img {
         <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="21"><img src="images/main_13.gif" width="19" height="14" /></td>
-            <td width="35" class="STYLE7"><div align="center"><a href="default.html" target="rightFrame">首页</a></div></td>
+            <td width="35" class="STYLE7"><div align="center"><a href="default.aspx" target="rightFrame">首页</a></div></td>
             <td width="21" class="STYLE7"><img src="images/main_15.gif" width="19" height="14" /></td>
             <td width="35" class="STYLE7"><div align="center"><a href="javascript:history.go(-1);">后退</a></div></td>
             <td width="21" class="STYLE7"><img src="images/main_17.gif" width="19" height="14" /></td>

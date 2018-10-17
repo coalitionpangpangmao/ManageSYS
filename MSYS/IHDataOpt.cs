@@ -1,5 +1,5 @@
 ﻿
-namespace MSYS.Common
+namespace MSYS
 {
     using MSYS.DAL;
     using System.Collections.Generic;

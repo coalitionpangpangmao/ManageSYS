@@ -9,5 +9,6 @@ namespace MSYS.DAL
         string UpDate(string query);      
         DataSet CreateDataSet(string query);  
         string TransactionCommand(List<String> commandStringList);
+        string ExecProcedures(string procedure, string[] seg, object[] value);
     }
 }

@@ -104,29 +104,37 @@ public partial class Login : MSYS.Web.BasePage
     //判断本地是否有Cookies 如果有直接登陆跳转入主页面
     private void RemoteCheck(HttpCookie cookie)
     {
-        string userID = cookie["uID"].ToString();
-        string userPwd = cookie["uPwd"].ToString();
-
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
-        if (userTable != null && userTable.Rows.Count > 0)
+        try
         {
-            if (userID == userTable.Rows[0]["ID"].ToString() && userPwd == userTable.Rows[0]["Password"].ToString())
+            string userID = cookie["uID"].ToString();
+            string userPwd = cookie["uPwd"].ToString();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
+            if (userTable != null && userTable.Rows.Count > 0)
             {
-               
-                Session["User"] = new SysUser(userID);
-               InsertTlog( "登入");
-                string returnUrl = Request["ReturnUrl"];
-                if (string.IsNullOrEmpty(returnUrl))
-                    returnUrl = "main.aspx";
-                Response.Redirect(returnUrl);
-            }
-            else
-            {
-                user.Text = userID;
-                pwd.Text = userPwd;
+                if (userID == userTable.Rows[0]["ID"].ToString() && userPwd == userTable.Rows[0]["Password"].ToString())
+                {
+
+                    Session["User"] = new SysUser(userID);
+                    InsertTlog("登入");
+                    string returnUrl = Request["ReturnUrl"];
+                    if (string.IsNullOrEmpty(returnUrl))
+                        returnUrl = "main.aspx";
+                    Response.Redirect(returnUrl);
+                }
+                else
+                {
+                    user.Text = userID;
+                    pwd.Text = userPwd;
+                }
             }
         }
+        catch (Exception e)
+        {
+            return;
+        }
+
+        
     }
 
     static void DelCookies(string domain)     //domain是cookies所属域,此方法是通过所属域过滤清除cookies

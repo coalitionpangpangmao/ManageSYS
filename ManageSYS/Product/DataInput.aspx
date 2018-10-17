@@ -194,8 +194,8 @@
                                  
                                                 </td>
                                                 <td width="100">
-                                                    <asp:RadioButton ID="rd1" runat="server" Text="过程记录" GroupName="RecordStyle" onclick="$('#listTeam2').attr('disabled',false);$('#listTeam2').removeClass('disableinput');$('#txtDate').removeClass('disableinput');$('#txtDate').attr('disabled',false);" OnCheckedChanged ="rd1_CheckedChanged"/>
-                                                    <asp:RadioButton ID="rd2" runat="server" Text="产品总记录" GroupName="RecordStyle"  onclick="$('#listTeam2').attr('disabled',true);$('#listTeam2').addClass('disableinput');$('#txtDate').addClass('disableinput');$('#txtDate').attr('disabled',true);"  OnCheckedChanged ="rd2_CheckedChanged"/>
+                                                    <asp:RadioButton ID="rd1" runat="server" Text="过程记录" GroupName="RecordStyle" onclick="$('#listTeam2').attr('disabled',false);$('#listTeam2').removeClass('disableinput');$('#txtDate').removeClass('disableinput');$('#txtDate').attr('disabled',false);" OnCheckedChanged ="rd1_CheckedChanged" AutoPostBack="true"/>
+                                                    <asp:RadioButton ID="rd2" runat="server" Text="产品总记录" GroupName="RecordStyle"  onclick="$('#listTeam2').attr('disabled',true);$('#listTeam2').addClass('disableinput');$('#txtDate').addClass('disableinput');$('#txtDate').attr('disabled',true);"  OnCheckedChanged ="rd2_CheckedChanged" AutoPostBack="true"/>
                                                 </td>
                                                 <td width="100">日期
                                                 </td>
@@ -237,6 +237,8 @@
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                                     <asp:AsyncPostBackTrigger ControlID="btnView" />
+                                    <asp:AsyncPostBackTrigger ControlID ="rd2" />
+                                    <asp:AsyncPostBackTrigger ControlID ="rd1" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>

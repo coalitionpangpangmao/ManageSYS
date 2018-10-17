@@ -1,4 +1,5 @@
-﻿
+﻿namespace MSYS.Common
+{
     using System;
     using System.Reflection;
     using Microsoft.Office.Interop.Excel;
@@ -6,8 +7,7 @@
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
-namespace MSYS.Common
-{
+   
     public class ExcelExport
     {
         [DllImport("User32.dll", CharSet = CharSet.Auto)]

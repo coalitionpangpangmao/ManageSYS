@@ -412,7 +412,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         //"TB_ZT", "MODULENAME", "BUSIN_ID",  "URL"
         string[] subvalue = { "工艺标准:" + txtName.Text, "04", txtCode.Text, Page.Request.UserHostName.ToString() };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        if (MSYS.Common.AprvFlow.createApproval(subvalue))
+        if (MSYS.AprvFlow.createApproval(subvalue))
         {
             string log_message = ",工艺标准:" + txtName.Text + "提交审批成功";
             listAprv.SelectedValue = "0";

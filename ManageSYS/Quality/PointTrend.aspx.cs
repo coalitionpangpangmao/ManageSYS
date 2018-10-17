@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-using MSYS.Common;
+using MSYS;
 public partial class Quality_PointTrend : MSYS.Web.BasePage
 {
     protected string tvHtml;

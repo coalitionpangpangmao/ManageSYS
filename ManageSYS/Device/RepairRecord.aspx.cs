@@ -20,7 +20,16 @@ public partial class Device_RepairRecord : MSYS.Web.BasePage
             opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t ", "name", "ID");
            
             opt.bindDropDownList(listArea, "select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code", "section_name", "section_code");
-            bindGrid();
+            try
+            {
+                string equip = Request.QueryString["Equip"];
+                if (equip != null)
+                    hideequip.Value = equip;
+                bindGrid();
+            }
+            catch
+            {
+            }
 
         }
 
@@ -29,6 +38,8 @@ public partial class Device_RepairRecord : MSYS.Web.BasePage
     {
        
         string query = "select t2.mt_name as 维保计划名,t2.pz_code as 凭证号, t3.section_name as 区域,t1.eq_name as 设备名称,t.reason as 维修原因,t.content as 维修内容,t.exp_finish_time as 期望完成时间,t4.name as 状态,t.remark as 备注 ,t.ID  from HT_EQ_RP_PLAN_detail t left join Ht_Eq_Eqp_Tbl t1 on t1.idkey = t.equipment_id left join HT_EQ_RP_PLAN t2 on t.main_id = t2.pz_code  left join ht_pub_tech_section t3 on t3.section_code = t.mech_area left join ht_inner_eqexe_status t4 on t4.id = t.status  where  t.is_del = '0'   and t.exp_finish_time between '" + txtStart.Text + "' and '" + txtStop.Text + "'   and t2.FLOW_STATUS = '2'  and t.STATUS  = '5' ";
+        if (hideequip.Value != "")
+            query += " and t.equipment_id = " + hideequip.Value;
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;

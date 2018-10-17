@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web.UI;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Data;
@@ -11,6 +12,8 @@ using MSYS.Data;
 using System.Linq;
 using System.IO;
 using System.Diagnostics;
+using MSYS;
+using System.Text.RegularExpressions;
 
 namespace MSYS.Web
 {
@@ -68,7 +71,11 @@ namespace MSYS.Web
                 if (!string.IsNullOrEmpty(str))
                 {
                     DbOperator opt = new DbOperator();
-                    this.m_mappingId = opt.GetSegValue("select * from ht_inner_map t where t.url = '" + str.Substring(11) + "'", "MAPID");
+                    if (str.Contains("ManageSYS"))
+                        str = str.Substring(11);
+                    else
+                        str = str.Substring(1);
+                    this.m_mappingId = opt.GetSegValue("select * from ht_inner_map t where t.url = '" + str + "'", "MAPID");
                     SysRightCollection rightCol = ((SysUser)Session["User"]).UserRights;
                     var query = from SysRight right in rightCol
                                 where right.mapID == this.m_mappingId && right.eType == SysRight.RightType.Button
@@ -212,14 +219,15 @@ namespace MSYS.Web
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string query = "insert into HT_SVR_LOGIN_RECORD(F_USER,F_COMPUTER,F_TIME,F_DESCRIPT)values('"
                   + user.text + "','"
-                  + Page.Request.UserHostName.ToString() + Page.Request.UserHostAddress.ToString() + "','"
+                  + Page.Request.UserHostName.ToString()  + "','"
                   + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','"
                   + record + "')";
             opt.UpDateOra(query);
+         
         
         }
   //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览   
-
+        
         public string CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date,bool merge)
         {           
             MSYS.Common.ExcelExport openXMLExcel = null;
@@ -256,7 +264,7 @@ namespace MSYS.Web
                 String filepath = basedir + @"TEMP\" + filename + date.ToString("HHmmss") + style;
                 //bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
                 //System.IO.File.Copy(sourcePath, filepath, isrewrite);
-                string query = "select * from ht_sys_excel_seg where F_BOOK_ID = '" + bookid + "'";
+                string query = "select * from ht_sys_excel_seg where F_BOOK_ID = '" + bookid + "' order by  F_DES";
                 DataSet data = opt.CreateDataSetOra(query);
 
                 //申明一个ExcelSaveAs对象，该对象完成将数据写入Excel的操作           
@@ -280,15 +288,45 @@ namespace MSYS.Web
                         if (sqlstr != "")
                         {
                             //将选择的数据写入Excel
+                            
                             if (sqlstr.Length > 4 && sqlstr.Substring(0, 3) == "STR")
                             {
                                 sqlstr = sqlstr.Substring(4);
                                 Response.Write(openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString())));
                                 Response.Write(openXMLExcel.WriteData(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, sqlstr));
                             }
+                            if (sqlstr.Length > 5 && sqlstr.Substring(0, 4) == "Proc")
+                            {
+                                int pos = sqlstr.IndexOf('@');
+                                int pos2 = sqlstr.IndexOf('#');
+                                string proc = sqlstr.Substring(5,pos -5);  
+                                int paracount = Regex.Matches(sqlstr,@"@").Count;
+                                List<string> seglist = new List<string>();
+                                List<string> paralist = new List<string>();
+                                for (int i = 0; i < paracount; i++)
+                                {                                  
+                                    seglist.Add(sqlstr.Substring(pos+1, pos2 - pos-1));
+                                    pos = sqlstr.IndexOf('@',pos2);
+                                    if (pos > 0)
+                                    {
+                                        paralist.Add(sqlstr.Substring(pos2 + 1, pos - pos2 - 1));
+                                        pos2 = sqlstr.IndexOf('#', pos);
+                                    }
+                                    else
+                                        paralist.Add(sqlstr.Substring(pos2 + 1));
+                                    
+                                }
+                                opt.ExecProcedures(proc, seglist.ToArray(), paralist.ToArray());  
+                            }
                             if (sqlstr.Length > 20 && sqlstr.Substring(0, 3) == "SQL")
                             {
                                 sqlstr = sqlstr.Substring(4).Trim();
+                                bool hasCaption = false;
+                                if (sqlstr.Substring(0, 1) == "$")
+                                {
+                                    hasCaption = true;
+                                    sqlstr = sqlstr.Substring(1);
+                                }
                                 DataSet set = new DataSet();
                                 if (sqlstr.Substring(0, 5) == "SHIFT")
                                 {
@@ -302,11 +340,16 @@ namespace MSYS.Web
                                 if (set != null)
                                 {
                                     DataTable dt = set.Tables[0];
-                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));                               
-                                    if(merge)
+                                    openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
+                                    if (merge)
                                         openXMLExcel.WriteDataRerange(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
                                     else
-                                    openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                    {
+                                        if(hasCaption)
+                                            openXMLExcel.WriteDataIntoWorksheetWithCaption(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                        else
+                                        openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                    }
                                 }
 
                             }

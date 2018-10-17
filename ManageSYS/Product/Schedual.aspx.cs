@@ -59,10 +59,10 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                     string endtime = startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
                     if(((CheckBox)GridView1.Rows[i].FindControl("ckInter")).Checked)
                         endtime = startdate.AddDays(1).ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
-                    string[] seg = { "WORK_DATE", "WORK_SHOP_CODE", "SHIFT_CODE", "TEAM_CODE", "WORK_STAUS", "CREATE_TIME", "MODIFY_TIME", "DATE_BEGIN", "DATE_END" };
-                    string[] value = { startdate.ToString("yyyy-MM-dd"), listPrdline.SelectedValue, GridView1.DataKeys[i].Value.ToString(), ((DropDownList)GridView1.Rows[i].FindControl("listTeam")).SelectedValue, ((DropDownList)GridView1.Rows[i].FindControl("listStatus")).SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text, endtime };
+                    string[] seg = { "WORK_DATE", "WORK_SHOP_CODE", "SHIFT_CODE", "TEAM_CODE", "WORK_STAUS", "CREATE_TIME", "MODIFY_TIME", "DATE_BEGIN", "DATE_END","is_del" };
+                    string[] value = { startdate.ToString("yyyy-MM-dd"), listPrdline.SelectedValue, GridView1.DataKeys[i].Value.ToString(), ((DropDownList)GridView1.Rows[i].FindControl("listTeam")).SelectedValue, ((DropDownList)GridView1.Rows[i].FindControl("listStatus")).SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text, endtime,"0" };
                    
-                    commandlist.Add( opt.InsertDatastr(seg, value, "HT_PROD_SCHEDULE"));
+                    commandlist.Add( opt.MergeInto(seg, value,3, "HT_PROD_SCHEDULE"));
                 }
                 startdate = startdate.AddDays(1);
             }
@@ -189,19 +189,23 @@ public partial class Product_Schedual : MSYS.Web.BasePage
           {
               try
               {
+                  List<string> commandlist = new List<string>();
+                  MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                   for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
                   {
                       if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
                       {
                           string id = GridView2.DataKeys[i].Value.ToString();
-                          string query = "update ht_prod_schedule set IS_DEL = '1'  where ID = '" + id + "'";
-                         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-                         string log_message = opt.UpDateOra(query) == "Success" ? "删除排班成功" : "删除排班失败";
-                         log_message += "--标识:" + id;
-                         InsertTlog(log_message);
+                          commandlist.Add("delete from ht_prod_schedule  where ID = '" + id + "'");                      
+                       
                       }
                   }
-                  bindGrid2();
+                  if (commandlist.Count > 0)
+                  {
+                      string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除排班成功" : "删除排班失败";                     
+                      InsertTlog(log_message);
+                      bindGrid2();
+                  }
               }
               catch (Exception ee)
               {
