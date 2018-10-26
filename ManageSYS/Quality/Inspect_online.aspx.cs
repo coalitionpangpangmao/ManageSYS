@@ -21,7 +21,7 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
     {
         txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listProd, "select t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,7) = '" + txtBtime.Text + "' or substr(t.endtime,1,7) = '" + txtBtime.Text + "'", "prod_name", "prod_code");
+        opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,7) = '" + txtBtime.Text + "' or substr(t.endtime,1,7) = '" + txtBtime.Text + "'", "prod_name", "prod_code");
         opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section  where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
         opt.bindDropDownList(listPoint, "select para_code,para_name from ht_pub_tech_para t where  para_type like '___1%' and is_del = '0'", "para_name", "para_code");
         bindgrid();

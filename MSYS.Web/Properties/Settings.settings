@@ -5,5 +5,11 @@
     <Setting Name="MSYS_Web_MasterService_MisMasterDataServiceInterfaceService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://10.43.171.22:8081/xymis/services/MisMasterDataService</Value>
     </Setting>
+    <Setting Name="MSYS_Web_EquipService_EquipServiceInterfaceService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.43.171.22:8081/xymis/services/EquipService</Value>
+    </Setting>
+    <Setting Name="MSYS_Web_MateriaService_WsBaseDataInterfaceService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.43.171.22:8081/xymis/services/baseDataService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

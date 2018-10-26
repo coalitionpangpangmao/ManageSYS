@@ -255,8 +255,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="物料名称">
                                                         <ItemTemplate>
-                                                            <asp:DropDownList ID="listMater" runat="server" CssClass="drpdwnlist" Width="120px"
-                                                                DataSource="<%#gridTypebind()%>" DataTextField="material_name" DataValueField="material_code">
+                                                            <asp:DropDownList ID="listMater" runat="server" CssClass="drpdwnlist"   DataSource ="<%#bindpara() %>" DataTextField="para_name" DataValueField="para_code" Width="200px">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>

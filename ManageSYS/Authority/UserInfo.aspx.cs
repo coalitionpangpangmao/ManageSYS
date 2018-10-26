@@ -62,8 +62,8 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
 
         string log_message = opt.UpDateData(seg, value, "ht_svr_user", " where ID = '" + txtID.Text + "'") == "Success" ? "修改用户成功" : "修改用户失败";
         log_message += "--详情:" + string.Join(",", value);
-        InsertTlog(log_message);      
-
+        InsertTlog(log_message);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
     }
 
 }

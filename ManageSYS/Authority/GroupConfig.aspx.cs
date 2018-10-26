@@ -178,6 +178,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
             bindData();
+            
     }
     protected void btnDelete_Click(object sender, EventArgs e)
     {
@@ -226,6 +227,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
                     log_message += "--标识:" + Role.Text;
                     InsertTlog(log_message);
                     BindList();
+                    ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
             }
     }
     protected void btnDel_Click(object sender, EventArgs e)

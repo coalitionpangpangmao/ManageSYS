@@ -39,7 +39,7 @@
                       Text="删除" CssClass="btn auth" OnClick="btnDelete_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
             </div>
             <div>
-                <asp:UpdatePanel ID="updtpanel" runat="server">
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" Width="95%" CssClass="grid" border="0"
                             CellPadding="2" CellSpacing="1" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="14" HeaderStyle-Wrap="False" AutoGenerateColumns ="false">

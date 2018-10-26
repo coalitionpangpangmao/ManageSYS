@@ -33,7 +33,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
           foreach (DataRow row in rows)
             {  
-                tvHtml += "<li ><span class='folder'  onclick = \"treeClick('" + row["section_code"].ToString() + "')\">" + row["section_name"].ToString() + "</span>";
+               // tvHtml += "<li ><span class='folder'  onclick = \"treeClick('" + row["section_code"].ToString() + "')\">" + row["section_name"].ToString() + "</span>";
+                tvHtml += "<li ><span class='folder'  value = '" + row["section_code"].ToString() + "'>" + row["section_name"].ToString() + "</span>";
                 tvHtml += InitTreeSectionPara(row["section_code"].ToString());
                 tvHtml += InitTreeEquip(row["section_code"].ToString());
                 tvHtml += "</li>";
@@ -55,8 +56,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                tvHtml += "<li ><span class='folder'  onclick = \"treeClick('" + row["IDKEY"].ToString() + "')\">" + row["EQ_NAME"].ToString() + "</span>";
-
+              //  tvHtml += "<li ><span class='folder'  onclick = \"treeClick('" + row["IDKEY"].ToString() + "')\">" + row["EQ_NAME"].ToString() + "</span>";
+                tvHtml += "<li ><span class='folder'  value = '" + row["IDKEY"].ToString() + "'>" + row["EQ_NAME"].ToString() + "</span>";
                 tvHtml += InitTreePara(row["IDKEY"].ToString());
                 tvHtml += "</li>";
             }
@@ -76,7 +77,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                tvHtml += "<li ><span class='file'  onclick = \"treeClick('" + row["para_code"].ToString() + "')\">" + row["para_name"].ToString() + "</span>";
+            //    tvHtml += "<li ><span class='file'  onclick = \"treeClick('" + row["para_code"].ToString() + "')\">" + row["para_name"].ToString() + "</span>";
+                tvHtml += "<li ><span class='file'  value = '" + row["para_code"].ToString() + "'>" + row["para_name"].ToString() + "</span>";
                 tvHtml += "</li>";
             }
             tvHtml += "</ul>";
@@ -95,7 +97,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                tvHtml += "<li ><span class='file'  onclick = \"treeClick('" + row["para_code"].ToString() + "')\">" + row["para_name"].ToString() + "</span>";
+              //  tvHtml += "<li ><span class='file'  onclick = \"treeClick('" + row["para_code"].ToString() + "')\">" + row["para_name"].ToString() + "</span>";
+                tvHtml += "<li ><span class='file'  value = '" + row["para_code"].ToString() + "'>" + row["para_name"].ToString() + "</span>";
                 tvHtml += "</li>";
             }
             tvHtml += "</ul>";

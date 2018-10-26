@@ -155,11 +155,16 @@
                                                 <asp:CheckBox ID="chk" runat="server" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="物料分类">
+                                            <ItemTemplate>
+                                                <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged"
+                                                    AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_name"    DataTextField="mattree_name">
+                                                </asp:DropDownList>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="物料名称" SortExpression="物料名称">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName_SelectedIndexChanged"
-                                                    AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="material_code"
-                                                    DataTextField="material_name">
+                                                <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName_SelectedIndexChanged"  AutoPostBack="True" Width ="230px" >
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -181,15 +186,7 @@
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="物料分类">
-                                            <ItemTemplate>
-                                                <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px">
-                                                    <asp:ListItem></asp:ListItem>
-                                                    <asp:ListItem Value="YG">烟梗类</asp:ListItem>
-                                                    <asp:ListItem Value="SP">碎片类</asp:ListItem>
-                                                </asp:DropDownList>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
+                                        
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />

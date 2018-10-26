@@ -135,7 +135,7 @@ namespace DataCollect
         public void Qua_Start_Click(object sender, EventArgs e)
         {
             insertQuaReport(Convert.ToDateTime(QuaTime.Text));
-            InsertProdReport();
+           InsertProdReport();
         }
         private void Qua_Stop_Click(object sender, EventArgs e)
         {
@@ -326,7 +326,7 @@ namespace DataCollect
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where substr(date_begin,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select date_end  as time  from ht_prod_schedule where substr(date_end,1,10) ='" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select starttime  as time  from ht_prod_report where substr(starttime,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select endtime  as time  from ht_prod_report where substr(starttime,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "'");
-             if (times != null && times.Tables[0].Rows.Count > 0)
+            if (times != null && times.Tables[0].Rows.Count > 0)
             {
                 try
                 {
@@ -336,7 +336,7 @@ namespace DataCollect
                         if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, 0, -20) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1, 20))
                             fix.FixRecord();
                     }
-                  
+
                 }
                 catch
                 {
@@ -345,11 +345,11 @@ namespace DataCollect
                         ReportTimer.Dispose();
                         ReportTimer = null;
                     }
-                    
+
 
                 }
 
-             }
+            }
         }
         protected void InsertProdReport()
         {

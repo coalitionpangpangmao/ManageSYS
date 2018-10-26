@@ -23,8 +23,10 @@ namespace MSYS.Web
         private static HttpSessionState _session;
         private string m_sessionId;
         private string m_mappingId;
+        private string m_mappingUrl;
         private string m_uniqId;
         private bool m_isHasRight;
+        private string m_rightID;
         /* 用户是否具有当前页面的操作权限
       系统有两种操作权限：菜单与按钮，两种权限均与页面有关。在数据库中建立内部库，存储每个页面的URL以及ID值
       在权限操作中指定该权限对应的页面ID，在页面初始化时通过比较页面URL获取当前操作页面的权限值
@@ -75,13 +77,17 @@ namespace MSYS.Web
                         str = str.Substring(11);
                     else
                         str = str.Substring(1);
+                    m_mappingUrl = str;
                     this.m_mappingId = opt.GetSegValue("select * from ht_inner_map t where t.url = '" + str + "'", "MAPID");
                     SysRightCollection rightCol = ((SysUser)Session["User"]).UserRights;
                     var query = from SysRight right in rightCol
                                 where right.mapID == this.m_mappingId && right.eType == SysRight.RightType.Button
                                 select right;
                     foreach (SysRight s in query)
+                    {
                         this.m_isHasRight = true;
+                        this.m_rightID = s.id;
+                    }
                 }             
             
             ////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +158,21 @@ namespace MSYS.Web
             }
         }
 
+        public virtual string RightId
+        {
+            get
+            {
+                return this.m_rightID;
+                    
+            }
+        }
+        public virtual string MappingUrl
+        {
+            get
+            {
+                return this.m_mappingUrl;
+            }
+        }
 
         //方法
         //对Session键值操作

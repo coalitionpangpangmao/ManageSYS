@@ -12,6 +12,8 @@ public partial class Product_DataInput : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
+            txtRecordtime.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+            txtEndtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
             bindGrid();
             bindGrid3();
             initView();
@@ -42,8 +44,10 @@ public partial class Product_DataInput : MSYS.Web.BasePage
                 query += " and r.prod_code = '" + listProd.SelectedValue + "'";
         if(listTeam.SelectedValue != "")
             query += " and r.team = '" + listTeam.SelectedValue + "'";
-        if(txtRecordtime.Text != "")
-            query += " and r.time = '" + txtRecordtime.Text + "'";
+        if(txtRecordtime.Text != "" && txtEndtime.Text != "")
+            query += " and substr(r.time,0,10) between '" + txtRecordtime.Text + "' and '" + txtEndtime.Text + "'";
+       
+        query += " order by r.time";
       
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -54,7 +58,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
 
     protected void bindGrid3()
     {
-        string query = "select s.planno as 计划号, t.prod_name as 产品,r.seg_info as 记录项目,s.seg_value as 记录值 from ht_inner_report_contrast r left join hv_prod_report s on r.section_code = s.section_code and r.seg_name = s.seg left join ht_pub_prod_design t on t.prod_code = substr(s.planno,9,7) where s.seg_value is not null";       
+        string query = "select s.planno as 计划号, t.prod_name as 产品,r.seg_info as 记录项目,s.seg_value as 记录值 from ht_inner_report_contrast r left join hv_prod_report s on r.section_code = s.section_code and r.seg_name = s.seg left join ht_pub_prod_design t on t.prod_code = substr(s.planno,9,7) where s.seg_value is not null order by s.planno";       
         
             if(listProd.SelectedValue != "" )
                 query += " and substr(s.planno,9,7) = '" + listProd.SelectedValue + "'";
@@ -83,17 +87,10 @@ public partial class Product_DataInput : MSYS.Web.BasePage
             GridView2.DataBind();
             int i = 0;
             foreach (DataRow row in data.Tables[0].Rows)
-            {
-                try
-                {
+            {               
                     ((DropDownList)GridView2.Rows[i].FindControl("listPara")).SelectedValue = row["para_code"].ToString();
                     ((TextBox)GridView2.Rows[i].FindControl("txtParavalue")).Text = row["seg_value"].ToString();
-                    i++;
-                }
-                catch (Exception error)
-                {
-
-                }
+                    i++;               
             }
         }
     }

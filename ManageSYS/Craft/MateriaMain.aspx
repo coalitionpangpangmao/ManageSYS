@@ -2,85 +2,252 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head  runat="server" >
+<head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>物料管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
-	<link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
-	<script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
-	<script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
+    <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
+    <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
 
-	<script type="text/javascript">
-	$(document).ready(function(){
-		$("#browser").treeview({
-			toggle: function() {
-				console.log("%s was toggled.", $(this).find(">span").text());
-			}
-		});
-});
-function tab1Click(code) {
-    $('#tabtop1').click();
-    debugger;
-    $("#Frame1").contents().find("'*[id$=hdcode]'").attr('value', code);
-    $("#Frame1").contents().find("'*[id$=btnUpdate]'").click();
-}
-function tab2Click(code) {
-    debugger;
-    $('#tabtop2').click();
-    $("#Frame2").contents().find("'*[id$=hdcode]'").attr('value', code);
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initTree();
+            $(".folder").bind("click", function () {
+                $('#hdcode').val($(this).attr('value'));
+                $('#btnUpdate1').click();
+            });
+                
+        });
+        function initTree() {
+            $("#browser").treeview({
+                toggle: function () {
+                    console.log("%s was toggled.", $(this).find(">span").text());
+                },
+                persist: "cookie",
+                collapsed: true
+            });
+            $("#gridPanel").scrollTop($("#hideY").val());
+        }
+        function saveScroll() {
+            var y = $("#gridPanel").scrollTop();
+            $("#hideY").val(y);
+        }
 
-    $("#Frame2").contents().find("'*[id$=btnUpdate]'").click();
-}
+      
+           
+        
+       
     </script>
 </head>
 <body>
     <form id="Form1" runat="server">
-    <div class="place">
-        <span>位置：</span>
-        <ul class="placeul">
-            <li><a href="#">工艺管理</a></li>
-            <li><a href="#">物料管理</a></li>
-        </ul>
-    </div>
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>
-    <div class="mainbox">
-        <div class="mainleft">
-             <div class="leftinfo">
-     <div class="listtitle">物料分类</div>
-    <% = tvHtml %>
-    </div>
+        <div class="place">
+            <span>位置：</span>
+            <ul class="placeul">
+                <li><a href="#">工艺管理</a></li>
+                <li><a href="#">物料管理</a></li>
+            </ul>
         </div>
-        <!--mainleft end-->
-        <div class="mainright">        
-            <div id="usual1" class="usual">
-                <div class="itab">
-                    <ul>
-                        <li ><a href="#tab1" class="selected" id = "tabtop1">物料分类</a></li>
-                        <li ><a href="#tab2" id = "tabtop2">物料信息维护</a></li>                      
-                    </ul>
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <div class="mainbox">
+            <div class="mainleft">
+                <asp:HiddenField ID="hdcode" runat="server" />
+                <asp:UpdatePanel runat="server" ID="UpdatePanel4" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:HiddenField ID="hideY" runat="server" />
+                        <div class="leftinfo" id="gridPanel" style="overflow: scroll" onscroll="saveScroll()">
+                            <div class="listtitle">物料分类</div>
+                            <% = tvHtml %>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+            <!--mainleft end-->
+            <div class="mainright">
+                <div class="listtitle">
+                    类型查询与维护<span style="position: relative; float: right">
+                        <asp:Button ID="btnAdd1" CssClass="btnadd auth" runat="server" OnClick="btnAdd1_Click"
+                            Text="新增"  Visible ="false"/>
+                        &nbsp; &nbsp;
+                    <asp:Button ID="btnModify1" CssClass="btnmodify auth" runat="server" OnClick="btnModify1_Click"
+                        Text="保存" Visible ="false" />
+                        &nbsp; &nbsp;
+                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');"  Visible ="false"/>
+                        &nbsp; &nbsp;    
+                          <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>     
+                <asp:Button ID="btnSearch1" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch1_Click" />
+                        <asp:Button ID="btnUpdate1" runat="server" OnClick="btnUpdate1_Click" CssClass="btnhide" />
+                       
+                    </span>
                 </div>
-                <div id="tab1" class="tabson">
-                    <iframe id = "Frame1" name="Frame1" src="Materia.aspx" height="400" scrolling="no" style="width: 80%; position: absolute">
-                    </iframe>
+                <div>
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <table class="tablelist">
+                                <tbody>
+                                    <tr>
+                                        <td width="100">分类名称
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtName1" runat="server" class="dfinput1"></asp:TextBox>
+                                        </td>
+                                        <td width="100">分类编码
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtCode1" runat="server" class="dfinput1" Enabled="False"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100">父级分类
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="listPrt1" runat="server" CssClass="drpdwnlist">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td width="100">是否有效
+                                        </td>
+                                        <td>
+                                            <asp:CheckBox ID="ckValid1" runat="server" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
+                            <asp:AsyncPostBackTrigger ControlID="btnAdd1" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnUpdate" />
+                        </Triggers>
+                    </asp:UpdatePanel>
                 </div>
-                <div id="tab2" class="tabson">
-                    <iframe id = "Frame2" name= "Frame2" src="MateriaDetail.aspx" height="400" scrolling="no" style="width: 80%; position: absolute">
-                    </iframe>
+                <div class="listtitle" style="margin-top: 10px">
+                    物料列表
                 </div>
-            </div>        
+                <div>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="物料编码" AllowPaging="True"  OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize ="12">
+                                <Columns>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGridDel1" runat="server" Text="删除" CssClass="btn1" Width="90px" OnClick="btnGridDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnDetail1" runat="server" Text="物料详情" CssClass="btn1" Width="90px" OnClick="btnDetail1_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <HeaderStyle CssClass="gridheader" />
+                                <RowStyle CssClass="gridrow" />
+                                <AlternatingRowStyle CssClass="gridalterrow" />
+                                    <PagerStyle CssClass="gridpager" />
+                            <PagerTemplate>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+
+                            </PagerTemplate>
+                            </asp:GridView>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnAdd1" />
+                            <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                            <asp:AsyncPostBackTrigger ControlID="btnDel1" />
+                            <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
+                            <asp:AsyncPostBackTrigger ControlID="btnSearch1" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
+
+                <div class="shade">
+                    <div style="width: 800px; height: 300px; position: absolute; top: 6%; left: 12%; background: #fcfdfd; box-shadow: 1px 8px 10px 1px #9b9b9b; border-radius: 1px; behavior: url(js/pie.htc);">
+                        <div class="tiphead">
+                            <span>物料信息</span><a onclick="$('.shade').fadeOut(100);"></a>
+                        </div>
+                        <div class="gridinfo">
+                            
+                            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                <ContentTemplate>
+                                    <table class="tablelist">
+                                        <tbody>
+                                            <tr>
+                                                <td width="100">物料编码</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtCode2" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox></td>
+                                                <td width="100">物料名称</td>
+                                                <!-- code name-->
+                                                <td>
+                                                    <asp:TextBox ID="txtName2" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox></td>
+                                                <td width="100">父级类别</td>
+                                                <td>
+                                                    <asp:DropDownList ID="listType2" runat="server" CssClass="drpdwnlist" Enabled ="false"></asp:DropDownList></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">物料类型</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtCtgr2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                <td width="100">单位</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtUint2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                <td width="100">用友编码</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtPkmtr2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">等级</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtLevel2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                <td width="100">种类</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtVrt2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                <td width="100">单重</td>
+                                                <td>
+                                                    <asp:TextBox ID="txtWeight2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="100">是否有效</td>
+                                                <td>
+                                                    <asp:CheckBox ID="ckValid2" runat="server" /></td>
+                                                <td width="100">备注</td>
+                                                <td colspan="3">
+                                                    <asp:TextBox ID="txtDscrp2" runat="server" class="dfinput1"></asp:TextBox></td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                         <div class="shadebtn" align="center">
+                                <asp:HiddenField ID="hdScrollY" runat="server" />
+                                <asp:Button ID="btnModify2" class="sure" runat="server" Text="保存" OnClick="btnModify2_Click" />
+                                <input name="" type="button" class="cancel" value="关闭" onclick="$('.shade').fadeOut(100);" />
+                            </div>
+                                </ContentTemplate>
+                                <Triggers>                                  
+                                    <asp:AsyncPostBackTrigger ControlID="btnModify2" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--mainright end-->
-        	<script type="text/javascript">
-        	    $("#usual1 ul").idTabs(); 
-    </script>
-   
-    </div>
+    
     </form>
 </body>
 </html>

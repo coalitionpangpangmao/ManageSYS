@@ -10,23 +10,7 @@
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
        <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
     <script type="text/javascript">
-        $(document).ready(function () {
-
-            $(".click2").click(function () {
-                $("#mdftip").fadeIn(200);
-            });
-            $(".tiptop a").click(function () {
-                $(".tip").fadeOut(200);
-            });
-            $(".sure").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-            $(".cancel").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-        });
+    
         function GridClick() {
             $('#tabtop2').click();
 
@@ -86,8 +70,10 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     辅料领退表<span style="position: relative; float: right">
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                      
                         <asp:Button ID="btnGridNew" runat="server" Text="新建" class="btnadd  auth" OnClick="btnGridNew_Click" />
+                          <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                          <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                     </span>
                 </div>
                 <div>
@@ -101,37 +87,51 @@
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="领退日期" HeaderText="领退日期" />
-                                <asp:BoundField DataField="出入库类型" HeaderText="出入库类型" />
-                                <asp:BoundField DataField="单据号" HeaderText="单据号" />  
-                                <asp:BoundField DataField="仓库" HeaderText="仓库" />
-                                <asp:BoundField DataField="状态" HeaderText="状态" />
-                                <asp:BoundField DataField="编制人" HeaderText="编制人" />
-                                <asp:BoundField DataField="收发人" HeaderText="收发人" />
-                                <asp:TemplateField ItemStyle-Width="80">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
-                                            OnClick="btnSubmit_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField ItemStyle-Width="80">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
-                                            OnClick="btnGridIssue_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField ItemStyle-Width="80">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnGridopt" runat="server" Text="出入库" CssClass="btn1 auth" Width="75"
-                                            OnClick="btnGridopt_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField ItemStyle-Width="80">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75"
-                                            OnClick="btnGridview_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                  <asp:TemplateField HeaderText="出入库类型">
+                                        <ItemTemplate>
+                                            <asp:Label ID="labStrg" runat="server" CssClass="labstatu" Width="45px" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="审批状态">
+                                        <ItemTemplate>
+                                            <asp:Label ID="labAudit" runat="server" CssClass="labstatu" Width="55px" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="下发状态">
+                                        <ItemTemplate>
+                                            <asp:Label ID="labIssue" runat="server" CssClass="labstatu" Width="55px" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                      <asp:BoundField DataField="领退日期" HeaderText="领退日期" />
+                                    <asp:BoundField DataField="单据号" HeaderText="单据号" />
+                                    <asp:BoundField DataField="出入库类型" HeaderText="出入库类型" /> 
+                                                       
+                                    <asp:BoundField DataField="编制人" HeaderText="编制人" />
+                                    <asp:BoundField DataField="收发人" HeaderText="收发人" />
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
+                                                OnClick="btnSubmit_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1" Width="75"
+                                                OnClick="btnGridIssue_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGridopt" runat="server" Text="出入库" CssClass="btn1 auth" Width="75"
+                                                OnClick="btnGridopt_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField >
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75"
+                                                OnClick="btnGridview_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                              <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
@@ -141,6 +141,7 @@
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="btnModify" />
                         <asp:AsyncPostBackTrigger ControlID = "btnGridDel" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnCkAll1" />
                     </Triggers>
                 </asp:UpdatePanel>
                 </div>
@@ -154,7 +155,8 @@
                         <asp:RadioButton ID="rdIn" runat="server" Text="退库" GroupName="Storage" />
                            <asp:Button ID="btnReset" runat="server" Text="重置" CssClass= "btnset"
                                             OnClick="btnReset_Click" />
-                        <input id="Button2" type="button" value="保存" class="btnmodify auth" />
+                         <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />
+                       
                     </span>
                 </div>
                 <div>
@@ -185,8 +187,9 @@
                                 领用部门
                             </td>
                             <td>
-                                <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist">
-                                </asp:DropDownList>
+                                 <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist" 
+                                                Enabled="False">
+                                            </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>
@@ -215,16 +218,12 @@
                                     <asp:ListItem Value="1">己下发</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
-                           <td width="100">
+                           <td width="100" class ="btnhide">
                                 仓库
                             </td>
-                            <td>
-                                <asp:DropDownList ID="listStorage" runat="server" CssClass="drpdwnlist">
-                                    <asp:ListItem Value="0"> </asp:ListItem>
-                                    <asp:ListItem Value="1">辅料库</asp:ListItem>
-                                    <asp:ListItem Value="2">化学品库</asp:ListItem>
-                                  
-                                </asp:DropDownList>
+                            <td class ="btnhide">
+                                  <asp:DropDownList ID="listStorage" runat="server" CssClass="drpdwnlist">
+                                            </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>
@@ -234,7 +233,9 @@
                                 创建人
                             </td>
                             <td>
-                                <asp:TextBox ID="txtCreator" runat="server" class="dfinput1"></asp:TextBox>
+                                 <asp:DropDownList ID="listCreator" runat="server" CssClass="drpdwnlist" 
+                                                Enabled="False">
+                                            </asp:DropDownList>
                             </td>
                         </tr>
                     </tbody>
@@ -267,19 +268,18 @@
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>                             
-                                
-                                <asp:TemplateField HeaderText="辅料编码" SortExpression="辅料编码">
-                                    <ItemTemplate>
-                                        <asp:TextBox ID="txtGridcode" runat="server" DataValueField="辅料编码" DataTextField="辅料编码"
-                                            CssClass="tbinput"></asp:TextBox>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="辅料名称" SortExpression="辅料名称">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridName" runat="server" DataValueField="辅料名称" DataTextField="辅料名称"
-                                            CssClass="tbinput"></asp:TextBox>
+                                          <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" AutoPostBack="true"  OnSelectedIndexChanged="listGridName_SelectedIndexChanged"   DataSource='<%# gridNamebind()%>' DataTextField ="material_name" DataValueField ="material_code" >
+                                                </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="辅料编码" SortExpression="辅料编码">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtGridcode" runat="server" DataValueField="辅料编码" DataTextField="辅料编码" Enabled ="false"  CssClass="tbinput"></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                
                                   <asp:TemplateField HeaderText="件数" SortExpression="件数">
                                     <ItemTemplate>
                                          <asp:TextBox ID="txtNum" runat="server" DataValueField="件数" DataTextField="件数"
@@ -312,7 +312,8 @@
                                 </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
-                             <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
+                             <RowStyle CssClass="gridrow" /> 
+                            <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>
@@ -326,23 +327,7 @@
                 </asp:UpdatePanel>
                 </div>
             </div>
-            <div class="tip" id="mdftip">
-                <div class="tiptop">
-                    <span>提示信息</span><a></a></div>
-                <div class="tipinfo">
-                    <span>
-                        <img src="../images/ticon.png" /></span>
-                    <div class="tipright">
-                        <p>
-                            确认保存此条记录 ？</p>
-                        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-                    </div>
-                </div>
-                <div class="tipbtn">
-                    <asp:Button ID="btnModify" class="sure" runat="server" Text="确定" OnClick="btnModify_Click" />&nbsp;
-                    <input name="" type="button" class="cancel" value="取消" />
-                </div>
-            </div>
+            
         </div>
         <div class="aprvinfo" id="flowinfo">
             <div class="tiptop">

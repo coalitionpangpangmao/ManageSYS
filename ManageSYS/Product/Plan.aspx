@@ -64,12 +64,12 @@
                             <Columns>
                                   <asp:TemplateField HeaderText="审批状态">
                                     <ItemTemplate>
-                                        <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="50" />
+                                        <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="60" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="下发状态">
                                     <ItemTemplate>
-                                        <asp:Label ID="labIssue" runat="server"  CssClass="labstatu"  Width="50" />
+                                        <asp:Label ID="labIssue" runat="server"  CssClass="labstatu"  Width="60" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 

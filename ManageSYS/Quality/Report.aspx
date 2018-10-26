@@ -83,7 +83,9 @@
                             </table>
                         </ContentTemplate>
                         <Triggers>
-                            <asp:PostBackTrigger ControlID="btnUpdate" />
+                             <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                              <asp:AsyncPostBackTrigger ControlID="listProd" />
+                            <asp:AsyncPostBackTrigger ControlID="listTeam" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -95,7 +97,7 @@
                         </ContentTemplate>
                         <Triggers>
                             <asp:PostBackTrigger ControlID="btnSearch" />
-                            <asp:PostBackTrigger ControlID="btnUpdate" />
+                            <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

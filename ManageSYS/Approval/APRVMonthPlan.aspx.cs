@@ -255,6 +255,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
          log_message += hideAprvid.Value + string.Join(",",seg);
          InsertTlog(log_message);  
          bindGrid1();
+         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
     }
 
      protected void rdAprv1_CheckedChanged(object sender, EventArgs e)

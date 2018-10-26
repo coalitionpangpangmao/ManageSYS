@@ -17,7 +17,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
             opt.bindDropDownList(listPro, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
             opt.bindDropDownList(listStatus, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
             opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
-            opt.bindDropDownList(listCreator, "select ID,NAME from ht_svr_user t where IS_DEL = '0'", "NAME", "ID");
+            opt.bindDropDownList(listCreator, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "Name", "ID");
         }
     }
     protected void bindData()
@@ -53,28 +53,40 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
       {
           for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
           {
+              GridViewRow row = GridView1.Rows[i];
               DataRowView mydrv = data.Tables[0].DefaultView[i];
-              ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text = mydrv["物料编码"].ToString();
-              ((DropDownList)GridView1.Rows[i].FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
-              ((TextBox)GridView1.Rows[i].FindControl("txtAmountM")).Text = mydrv["批投料量"].ToString();
-              ((TextBox)GridView1.Rows[i].FindControl("txtGroupM")).Text = mydrv["优先组"].ToString();
-              ((DropDownList)GridView1.Rows[i].FindControl("listGridType")).SelectedValue = mydrv["物料分类"].ToString();
-            
+              DropDownList list = (DropDownList)row.FindControl("listGridType");
+              list.SelectedValue = mydrv["物料分类"].ToString();
+              opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
+              ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["物料编码"].ToString();
+              ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
+              ((TextBox)row.FindControl("txtAmountM")).Text = mydrv["批投料量"].ToString();
+              ((TextBox)row.FindControl("txtGroupM")).Text = mydrv["优先组"].ToString();
           }
-
       }
   }
 
     protected DataSet gridTypebind()
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where is_valid = '1'  and is_del = '0' and TYPE_FLAG = 'YL'");      
+       return opt.CreateDataSetOra("select mattree_name,mattree_code from ht_pub_mattree t where length(mattree_code) = 4 and parent_code = '02' and mattree_code <>'0299' union select '' as mattree_name,'' as mattree_code from dual  order by mattree_code desc");
+     //  return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料'");      
     }
     protected void listGirdName_SelectedIndexChanged(object sender, EventArgs e)
     {
         DropDownList list = (DropDownList)sender;
         int rowIndex = ((GridViewRow)list.NamingContainer).RowIndex;
         ((TextBox)GridView1.Rows[rowIndex].FindControl("txtCodeM")).Text = list.SelectedValue;      
+    }
+    protected void listGridType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DropDownList list = (DropDownList)sender;
+        GridViewRow row = (GridViewRow)list.NamingContainer;
+        if (list.SelectedValue != "")
+        {
+             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
+        }
     }
     
     protected void btnAdd_Click(object sender, EventArgs e)
@@ -97,34 +109,21 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
         GridView1.DataSource = data;
         GridView1.DataBind();
         if (data != null && data.Rows.Count > 0)
-        {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                DataRowView mydrv = data.DefaultView[i];
-                ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text = mydrv["物料编码"].ToString();
-                ((DropDownList)GridView1.Rows[i].FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtAmountM")).Text = mydrv["批投料量"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtGroupM")).Text = mydrv["优先组"].ToString();
-                ((DropDownList)GridView1.Rows[i].FindControl("listGridType")).SelectedValue = mydrv["物料分类"].ToString();
-              /*  if (i < GridView1.Rows.Count - 1)
-                {
-                    ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtNameM")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtAmountM")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtGroupM")).Enabled = false;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtSortM")).Enabled = false;
-                }
-                else
-                {
-                    ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Enabled = true;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtNameM")).Enabled = true;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtAmountM")).Enabled = true;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtGroupM")).Enabled = true;
-                    ((TextBox)GridView1.Rows[i].FindControl("txtSortM")).Enabled = true;
-                }*/
-            }
-
-        }
+      {
+          for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+          {
+              GridViewRow row = GridView1.Rows[i];
+              DataRowView mydrv = data.DefaultView[i];
+              DropDownList list = (DropDownList)row.FindControl("listGridType");
+              list.SelectedValue = mydrv["物料分类"].ToString();
+              opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
+              ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["物料编码"].ToString();
+              ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
+              ((TextBox)row.FindControl("txtAmountM")).Text = mydrv["批投料量"].ToString();
+              ((TextBox)row.FindControl("txtGroupM")).Text = mydrv["优先组"].ToString();
+          }
+      }
+       
     }
 
     protected void btnUpdate_Click(object sender, EventArgs e)

@@ -21,8 +21,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             opt.bindDropDownList(listShift, "select t.shift_code,t.shift_name  from ht_sys_shift t where t.is_valid = '1' and t.is_del = '0' order by t.shift_code", "shift_name", "shift_code");
             opt.bindDropDownList(listTeam, "select t.team_code,t.team_name  from ht_sys_team t where t.is_valid = '1' and t.is_del = '0' order by t.team_code", "team_name", "team_code");
             opt.bindDropDownList(listProd, "select t.prod_code,t.prod_name  from ht_pub_prod_design t where t.is_valid = '1' and t.is_del = '0' order by t.prod_code", "prod_name", "prod_code");
-            opt.bindDropDownList(listOlder,"select ID,NAME from ht_svr_user where levelgroupid = '00700700' and is_del = '0'","NAME","ID");
-            opt.bindDropDownList(listNewer, "select ID,NAME from ht_svr_user where levelgroupid = '00700700' and is_del = '0'", "NAME", "ID");
+            opt.bindDropDownList(listOlder, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "NAME", "ID");
+            opt.bindDropDownList(listNewer, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "NAME", "ID");
             bindGrid1();
          
            
@@ -148,6 +148,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             listProd.SelectedValue = row["牌号"].ToString();
             txtPlanNo.Text = row["计划号"].ToString();
             txtEditor.Text = row["create_id"].ToString();
+            if (txtEditor.Text == "")
+                txtEditor.Text = ((MSYS.Data.SysUser)Session["User"]).text; 
             txtOutput.Text = row["output_vl"].ToString();
             listOlder.SelectedValue = row["shift_id"].ToString();
            listNewer.SelectedValue = row["succ_id"].ToString();
@@ -177,10 +179,10 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xls",DateTime.Now,false);
      
     }
-    protected DataSet gridTypebind()
+    public DataSet bindpara()
     {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where is_valid = '1'  and is_del = '0' and TYPE_FLAG = 'YL'");
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select para_code,para_name  from ht_pub_tech_para where is_del = '0' and is_valid = '1' and para_type like '____1%' order by para_code");
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
@@ -265,17 +267,27 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     protected void btnGrid2Save_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
-        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;        
+        GridViewRow row = (GridViewRow)btn.NamingContainer;       
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
     
         string[] seg = { "SHIFT_MAIN_ID", "mater_code", "mater_vl", "bz_unit", "remark" };
-        string[] value = { hdID.Value, ((DropDownList)GridView2.Rows[rowIndex].FindControl("listMater")).SelectedValue, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtAmount")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtUnit")).Text, ((TextBox)GridView2.Rows[rowIndex].FindControl("txtDescpt")).Text };
+        string[] value = { hdID.Value, ((DropDownList)row.FindControl("listMater")).SelectedValue, ((TextBox)row.FindControl("txtAmount")).Text, ((TextBox)row.FindControl("txtUnit")).Text, ((TextBox)row.FindControl("txtDescpt")).Text };
 
         string log_message = opt.MergeInto(seg, value, 2, "HT_PROD_SHIFTCHG_DETAIL") == "Success" ? "保存生产交接班信息成功" : "保存生产交接班信息失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
-    }
+
+
+        
+        string[] seg1 = { "PLANNO", "PROD_CODE", "SECTION_CODE", "TEAM", "TIME", "PARA_CODE", "CREATOR", "VALUE", };
        
- 
+            string paravalue = ((DropDownList)row.FindControl("listMater")).SelectedValue;
+            string paracode = ((DropDownList)row.FindControl("listMater")).SelectedValue;
+            if (((TextBox)row.FindControl("txtParavalue")).Text != "")
+            {
+                string[] value1 = { txtPlanNo.Text, txtPlanNo.Text.Substring(8,7), paracode.Substring(0, 5), listTeam.SelectedValue, txtDate.Text, paracode, txtEditor.Text, paravalue };
+               opt.MergeInto(seg1, value1, 6, "HT_PROD_REPORT_DETAIL");
+            }
+        }
   
 }

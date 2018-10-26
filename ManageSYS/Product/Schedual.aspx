@@ -48,7 +48,9 @@
             <div class="framelist">
                 <div class="listtitle">
                     排班管理<span style="position: relative; float: right">
-                        <asp:Button ID="btnAdd" runat="server" Text="自动排班" CssClass="btnview auth" OnClick="btnAdd_Click" Width="100" />
+                        <asp:Button ID="btnAdd" runat="server" Text="自动排班" CssClass="btnmodify auth" OnClick="btnAdd_Click" Width="100" />
+                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview auth" OnClick="btnSearch_Click"  />
+                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btndel auth" OnClick="btnDel_Click"  />
                     </span>
                 </div>
                 <table class="tablelist">
@@ -58,8 +60,7 @@
                             </td>
                             <td>
                                 <asp:DropDownList ID="listPrdline" runat="server"
-                                    CssClass="drpdwnlist">
-                                    <asp:ListItem></asp:ListItem>
+                                    CssClass="drpdwnlist">                                   
                                     <asp:ListItem Value="703">再造梗丝生产线</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
@@ -176,6 +177,8 @@
                             <asp:AsyncPostBackTrigger ControlID="btnGridEdit" />
                             <asp:AsyncPostBackTrigger ControlID="btnGridDel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnSearch" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnDel" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

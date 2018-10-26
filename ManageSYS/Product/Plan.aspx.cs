@@ -124,13 +124,14 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string log_message = opt.UpDateOra(query) == "Success" ? "下发计划成功" : "下发计划失败";
             log_message += "--标识:" + id;
             InsertTlog(log_message);
+            bindGrid1();
         }
         else
         {
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('请通过审批后再下发');", true);
         }
 
-        bindGrid1();
+       
 
     }
     protected void btnGridDel_Click(object sender, EventArgs e)//计划删除

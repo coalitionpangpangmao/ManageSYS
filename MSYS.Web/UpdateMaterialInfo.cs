@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MSYS.Web.MasterService;
+using MSYS.Web.MateriaService;
 using System.Data;
 using System.Xml;
 using System.Collections;
@@ -12,50 +12,39 @@ namespace MSYS.Web
     {
         public UpdateMaterialInfo()
         {
-            this.seg = new string[] { "LOGINNAME", "NAME", "ID", "LEVELGROUPID"};
-            this.tablename = "HT_SVR_USER";
-            this.rootname = "MATERIAL";
+          
         }
          public override string GetXmlStr()
          {
-             StringBuilder buffer = new StringBuilder();
-             buffer.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-             buffer.Append("<request>");
-             buffer.Append("</request>");
-             MisMasterDataServiceInterfaceService service = new MisMasterDataServiceInterfaceService();
-             string str = service.getMaterialInfo(buffer.ToString());
-             return str;
+            
+             return "";
          }
          public override string InsertLocalFromMaster()
          {
-             string Xmlstr = GetXmlStr();
-             XmlDocument xx = new XmlDocument();
-             xx.LoadXml(Xmlstr);//加载xml
-             XmlNodeList xxList = xx.GetElementsByTagName(this.rootname); //取得节点名为DEPTINFO的XmlNode集合
-
+            
              try
              {
+                 MSYS.Web.MateriaService.WsBaseDataInterfaceService service = new MSYS.Web.MateriaService.WsBaseDataInterfaceService();
                  MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                 foreach (XmlNode xxNode in xxList)
+                 
+                 List<string> commandlist = new List<string>();
+                 string[] seg = { "ID", "MATTREE_CODE", "MATTREE_NAME", "IS_DEL", "PK_CLASS", "PK_PARENT_CLASS" };
+                 
+                 tPubMateriel[] mat = service.getAllMaterialtList();
+                 commandlist.Clear();
+                 string[] matseg ={ "ID","MATERIAL_CODE","MATERIAL_NAME","TYPE_CODE","SPEC_VAL","MODEL_VAL","IS_VALID","IS_DEL",
+                             "TYPE_FLAG","UNIT_CODE","DATA_ORIGIN_FLAG","PK_MATERIAL","FACTORY","MAT_YEAR","MAT_CATEGORY","MAT_TYPE",
+                             "MAT_LEVEL","MAT_VARIETY","MAT_PACK","MAT_PLACE","REMARK","MAT_TYPE2","MAT_PLACE_NAME","MAT_PROVINCE",
+                             "MAT_CITY","PK_MARBASCLASS","LAST_UPDATE_TIME","COSTPRICE","XY_MATERIAL_CODE","PK_MATTAXES","PIECE_WEIGHT"};
+                 foreach (tPubMateriel materia in mat)
                  {
-                     XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合
-                     int count = childList.Count;
-                     if (count == seg.Length)
-                     {
-                         string[] segvalue = new string[count];
-                         for (int i = 0; i < count ; i++)
-                         {
-                             segvalue[i] = childList[i].InnerText;
-                         }
-                         segvalue[3] = opt.GetSegValue("select F_CODE  from Ht_Svr_Org_Group where F_KEY = '" + segvalue[3] + "'", "F_CODE");
-                         opt.InsertData(this.seg, segvalue, this.tablename);
-                     }
-                     else
-                     {
-                         return "字段与值个数不匹配";
-                     }
+                     string[] value = {materia.id.ToString(),materia.materialCode,materia.materialName,materia.typeCode,materia.specVal,materia.modelVal,materia.isValid,materia.isDel,
+                                 materia.typeFlag,materia.unitCode,materia.dataOriginFlag, materia.pkMaterial,materia.factory,materia.matYear,materia.matCategory,materia.matType,
+                                 materia.matLevel,materia.matVariety,materia.matPack,materia.matPlace,materia.remark,materia.matType2,materia.matPlaceName,materia.matProvince,
+                                 materia.matCity, materia.pkMarbasclass,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),materia.costprice.ToString(),materia.xyMaterialCode,materia.pkMattaxes, materia.pieceWeight};
+                     commandlist.Add(opt.getMergeStr(matseg, value, 2, "HT_PUB_MATERIEL"));
                  }
-                 return "Success";
+                return opt.TransactionCommand(commandlist);
 
              }
              catch (Exception error)

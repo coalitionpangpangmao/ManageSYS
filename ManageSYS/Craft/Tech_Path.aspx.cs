@@ -106,16 +106,18 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     }
     protected void btnGrid2CkAll_Click(object sender, EventArgs e)//全选
     {
-        try
+       
+        int ckno = 0;
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = true;
-            }
+            if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView2.Rows.Count);
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnGrid2DelSel_Click(object sender, EventArgs e)//删除选中记录
@@ -299,16 +301,18 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     }
     protected void btnGrid1CkAll_Click(object sender, EventArgs e)//全选
     {
-        try
+       
+        int ckno = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView1.Rows[i].FindControl("ck_sel")).Checked = true;
-            }
+            if (((CheckBox)GridView1.Rows[i].FindControl("ck_sel")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView1.Rows.Count);
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView1.Rows[i].FindControl("ck_sel")).Checked = check;
+
         }
     }
     protected void btnGrid1DelSel_Click(object sender, EventArgs e)//删除选中记录

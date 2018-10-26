@@ -34,20 +34,21 @@
                 <table class="tablelist">
                     <tbody>
                         <tr>
-                            <td width="100">产品名称
+                            <td >产品名称
                             </td>
                             <td>
                                 <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                             </td>
-                            <td width="100">班组
+                            <td >班组
                             </td>
                             <td>
                                 <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                             </td>
-                            <td width="100">记录时间
+                            <td >记录时间
                             </td>
-                            <td width="100">
-                                <asp:TextBox ID="txtRecordtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            <td>
+                                <asp:TextBox ID="txtRecordtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
+                                   <asp:TextBox ID="txtEndtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                         </tr>
                     </tbody>

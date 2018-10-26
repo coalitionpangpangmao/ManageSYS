@@ -16,7 +16,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             initTree();
+            
+
         });
+
         function initTree() {
             $("#browser").treeview({
                 toggle: function () {
@@ -26,31 +29,30 @@
                 collapsed: true
             });
             $("#gridPanel").scrollTop($("#hideY").val());
+            $(".folder").bind("click", function () {
+                var code = $(this).attr('value');
+                $('#hdcode').val(code);
+                if (code.length == 5) {
+                    $('#tabtop1').click();
+                    $('#btnUpdate1').click();
+                }
+                else {
+                    $('#tabtop2').click();
+                    $('#btnUpdate2').click();
+                }
+            });
+            $(".file").bind("click", function () {
+                var code = $(this).attr('value');
+                $('#hdcode').val(code);
+                $('#tabtop3').click();
+                $('#btnUpdate3').click();
+            });
         }
         function saveScroll() {
             var y = $("#gridPanel").scrollTop();
             $("#hideY").val(y);
-        }
+        }       
 
-        function treeClick(code) {           
-            $('#hdcode').val(code);
-            if (code.length == 5) {
-                $('#tabtop1').click();
-                $('#btnUpdate1').click();
-            }
-            else if (code.length == 10) {
-                $('#tabtop3').click();
-                $('#btnUpdate3').click();
-            }
-            else {
-                $('#tabtop2').click();
-                $('#btnUpdate2').click();
-            }
-            }
-        function update() {
-            $('#btnUpdate').click();
-
-        }
     </script>
 </head>
 <body>
@@ -105,7 +107,7 @@
                     <asp:Button ID="btnModify1" CssClass="btnview  auth" runat="server" OnClick="btnModify1_Click"
                         Text="保存" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                             <asp:Button ID="btnUpdate1" runat="server" CssClass="btnhide" OnClick="btnUpdate1_Click" />
                         </div>
                         <div class="framelist">
@@ -137,7 +139,7 @@
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnAdd1" />
                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
-                                    
+
 
                                 </Triggers>
                             </asp:UpdatePanel>
@@ -151,7 +153,7 @@
                     <asp:Button ID="btnModify2" CssClass="btnview  auth" runat="server" OnClick="btnModify2_Click"
                         Text="保存" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnDel2" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                    <asp:Button ID="btnDel2" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                             <asp:Button ID="btnUpdate2" runat="server" CssClass="btnhide" OnClick="btnUpdate2_Click" />
                         </div>
                         <div class="framelist">
@@ -209,7 +211,7 @@
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate2" />
                                     <asp:AsyncPostBackTrigger ControlID="btnAdd2" />
-                                     <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnModify1" />
                                 </Triggers>
                             </asp:UpdatePanel>
 
@@ -223,7 +225,7 @@
                     <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
                         Text="保存" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
 
                             <asp:Button ID="btnUpdate3" runat="server" CssClass="btnhide" OnClick="btnUpdate3_Click" />
                         </div>
@@ -309,8 +311,8 @@
                                     <asp:AsyncPostBackTrigger ControlID="listSection" />
                                     <asp:AsyncPostBackTrigger ControlID="ckQuality" />
                                     <asp:AsyncPostBackTrigger ControlID="ckQuaAnalyze" />
-                                     <asp:AsyncPostBackTrigger ControlID="btnModify1" />
-                                    <asp:AsyncPostBackTrigger ControlID ="ckManul" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                                    <asp:AsyncPostBackTrigger ControlID="ckManul" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
@@ -321,8 +323,7 @@
             <!--mainright end-->
             <script type="text/javascript">
                 $("#usual1 ul").idTabs();
-            </script>
-            <script type="text/javascript">
+
                 $('.tablelist tbody tr:odd').addClass('odd');
             </script>
         </div>

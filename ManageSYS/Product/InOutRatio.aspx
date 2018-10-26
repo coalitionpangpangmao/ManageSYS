@@ -44,8 +44,8 @@
                                 <asp:RadioButton ID="rdSort3" runat="server" GroupName="Sort" Text="按季"  AutoPostBack="True"  oncheckedchanged="rdSort3_CheckedChanged" />
                                 <asp:RadioButton ID="rdSort4" runat="server" GroupName="Sort" Text="按年"  AutoPostBack="True" oncheckedchanged="rdSort4_CheckedChanged" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"   ></asp:TextBox>
-                                至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1" ></asp:TextBox>
+                                <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" ></asp:TextBox>
+                                至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
 
                                 &nbsp;
                                 

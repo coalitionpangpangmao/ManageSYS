@@ -1,0 +1,5 @@
+D:\project\ManageSYS\MSYS.Security\bin\Debug\MSYS.Security.dll
+D:\project\ManageSYS\MSYS.Security\bin\Debug\MSYS.Security.pdb
+D:\project\ManageSYS\MSYS.Security\obj\Debug\MSYS.Security.csprojResolveAssemblyReference.cache
+D:\project\ManageSYS\MSYS.Security\obj\Debug\MSYS.Security.dll
+D:\project\ManageSYS\MSYS.Security\obj\Debug\MSYS.Security.pdb

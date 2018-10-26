@@ -16,18 +16,25 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             txtStart.Text = System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd");
             txtStop.Text = System.DateTime.Now.AddDays(45).ToString("yyyy-MM-dd");
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listEditor, "select ID,name  from ht_svr_user t where is_del='0'", "name", "ID");
+           opt.bindDropDownList(listEditor, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
             opt.bindDropDownList(listApt, "select f_code,f_name  from ht_svr_org_group ", "f_name", "f_code");
             opt.bindDropDownList(listModel, "select pz_code,mt_name from ht_eq_mt_plan where is_model = '1' and is_del = '0' and FLOW_STATUS = '2'", "mt_name", "pz_code");
-            opt.bindDropDownList(listdspcth, "select ID,name  from ht_svr_user t where is_del ='0' and  t.levelgroupid = '00700800' union select '' as ID,'' as Name from dual ", "name", "ID");
+            opt.bindDropDownList(listdspcth, "select ID,name  from ht_svr_user t where is_del ='0' and  t.levelgroupid = '00700700' union select '' as ID,'' as Name from dual ", "name", "ID");
             bindGrid1();
+            bindGrid4();
            
         }
  
     }
+    #region
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        bindGrid1();
+    }
+
     protected void bindGrid1()
     {
-        string query = "select t.mt_name as 维保计划,t1.f_name as 部门, t2.name as 审批状态,t3.name as 执行状态,t.remark as 备注,t.pz_code from ht_eq_mt_plan t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   left join ht_inner_aprv_status t2 on t2.id = t.flow_status left join ht_inner_eqexe_status t3 on t3.id = t.task_status  where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' ";
+        string query = "select t.mt_name as 维保计划,t1.f_name as 部门, t2.name as 审批状态,t3.name as 执行状态,t.remark as 备注,t.pz_code from ht_eq_mt_plan t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   left join ht_inner_aprv_status t2 on t2.id = t.flow_status left join ht_inner_eqexe_status t3 on t3.id = t.task_status  where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' and t.is_model = '0' ";
           
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
            DataSet data = opt.CreateDataSetOra(query);
@@ -96,10 +103,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
 
         bindGrid1();
     }
-    protected void btnSearch_Click(object sender, EventArgs e)
-    {
-        bindGrid1();
-    }
+   
 
     protected void btnGridDel_Click(object sender, EventArgs e)//删除选中记录
     {
@@ -138,7 +142,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
           listEditor.SelectedValue = user.id;
           listApt.SelectedValue = user.OwningBusinessUnitId;
           bindGrid2("");
-          ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
+          ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#tabtop2').click();", true);
         // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
     }
 
@@ -151,7 +155,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#flowinfo').fadeIn(200);", true);
     }
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
     {
@@ -197,7 +201,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
               string aprvstatus = ((Label)GridView1.Rows[rowIndex].FindControl("labAprv")).Text;
             SetEnable(aprvstatus);
          }
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);     
+         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#tabtop2').click();", true);     
     }   
 
     protected void SetEnable(string aprvstatus)
@@ -232,10 +236,182 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             }
         }
     }
-/// <summary>
-/// /tab2
-/// </summary>
-     protected void setBlank()
+
+    protected void bindGrid4()
+    {
+        string query = "select t.mt_name as 维保计划,t1.f_name as 部门, t2.name as 审批状态,t.remark as 备注,t.pz_code from ht_eq_mt_plan t left join ht_svr_org_group t1 on t1.f_code = t.create_dept_id   left join ht_inner_aprv_status t2 on t2.id = t.flow_status  where t.is_model = '1'  and t.IS_DEL = '0'";
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView4.DataSource = data;
+        GridView4.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            int i = 0;
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                GridViewRow grow = GridView4.Rows[i];
+                ((Label)grow.FindControl("labAprv")).Text = row["审批状态"].ToString();             
+                if (!(row["审批状态"].ToString() == "未提交" || row["审批状态"].ToString() == "未通过"))
+                {
+                    ((Button)grow.FindControl("btnSubmit4")).Enabled = false;
+                    ((Button)grow.FindControl("btnSubmit4")).CssClass = "btngrey";
+                    ((Button)grow.FindControl("btnGridview4")).Text = "查看计划";
+                }
+                else
+                {
+                    ((Button)grow.FindControl("btnSubmit4")).Enabled = true;
+                    ((Button)grow.FindControl("btnSubmit4")).CssClass = "btn1 auth";
+                    ((Button)grow.FindControl("btnGridview4")).Text = "编制计划";
+                }
+
+                i++;
+            }
+        }
+
+    }//绑定gridview1数据源
+
+    protected void GridView4_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid4();
+    }
+
+
+    protected void btnGrid4Del_Click(object sender, EventArgs e)//删除选中记录
+    {
+        try
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            List<string> commandlist = new List<string>();
+            for (int i = 0; i <= GridView4.Rows.Count - 1; i++)
+            {
+                if (((CheckBox)GridView4.Rows[i].FindControl("chk")).Checked)
+                {
+                    commandlist.Clear();
+                    string order_sn = GridView4.DataKeys[i].Value.ToString();
+                    commandlist.Add("update HT_EQ_MT_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'");
+                    commandlist.Add("delete from HT_PUB_APRV_FLOWINFO where BUSIN_ID = '" + order_sn + "'");
+
+                    string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除维保计划模版成功" : "删除维保计划模版失败";
+                    log_message += "--标识:" + order_sn;
+                    InsertTlog(log_message);
+                }
+            }
+            bindGrid4();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+    protected void btnGrid4New_Click(object sender, EventArgs e)
+    {
+        setBlank();
+        SetEnable("未提交");
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        txtCode.Text = "MT" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select nvl( max(substr(pz_code,11,3)),0) as ordernum from ht_eq_mt_plan where substr(pz_code,1,10) ='MT" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+        listEditor.SelectedValue = user.id;
+        listApt.SelectedValue = user.OwningBusinessUnitId;
+        bindGrid2("");
+        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+      
+    }
+
+    protected void btnGridIssue4_Click(object sender, EventArgs e)//查看审批流程
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string ID = GridView4.DataKeys[rowIndex].Value.ToString();
+        string query = "select pos as 顺序号, workitemid as 审批环节,username as 负责人,comments as 意见,opiniontime 审批时间,(case status when '0' then '未审批'  when '1' then '未通过' else '己通过' end)  as 审批状态  from ht_pub_aprv_opinion r left join ht_pub_aprv_flowinfo s on r.gongwen_id = s.id where s.busin_id  = '" + ID + "' order by pos";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        GridView3.DataSource = opt.CreateDataSetOra(query);
+        GridView3.DataBind();
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#flowinfo').fadeIn(200);", true);
+    }
+    protected void btnSubmit4_Click(object sender, EventArgs e)//提交审批
+    {
+        try
+        {
+            Button btn = (Button)sender;
+            int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
+            string id = GridView4.DataKeys[index].Value.ToString();
+            /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
+            string[] subvalue = { GridView4.Rows[index].Cells[1].Text, "14", id, Page.Request.UserHostName.ToString() };
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = MSYS.AprvFlow.createApproval(subvalue) ? "提交审批成功," : "提交审批失败，";
+            log_message += ",业务数据ID：" + id;
+            InsertTlog(log_message);
+
+            bindGrid4();
+
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+
+    protected void btnGridview4_Click(object sender, EventArgs e)//查看明细
+    {
+        Button btn = (Button)sender;
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        txtCode.Text = GridView4.DataKeys[rowIndex].Value.ToString();
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select * from HT_EQ_MT_PLAN  where PZ_CODE =  '" + txtCode.Text + "'");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            DataRow row = data.Tables[0].Rows[0];
+            txtName.Text = row["MT_NAME"].ToString();
+            listEditor.SelectedValue = row["CREATE_ID"].ToString();
+            listApt.SelectedValue = row["CREATE_DEPT_ID"].ToString();
+            txtExptime.Text = row["EXPIRED_DATE"].ToString();
+            txtdscrpt.Text = row["REMARK"].ToString();
+            ckModel.Checked = ("1" == row["IS_MODEL"].ToString());
+            bindGrid2(txtCode.Text);
+            string aprvstatus = ((Label)GridView4.Rows[rowIndex].FindControl("labAprv")).Text;
+            SetEnable(aprvstatus);
+        }
+        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+    }   
+    #endregion
+
+    #region tab2
+    protected void setBlank()
      {
          txtName.Text = "";
          txtCode.Text = "";
@@ -482,7 +658,10 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             string log_message =  opt.MergeInto(seg, value,1, "HT_EQ_MT_PLAN") == "Success" ? "新增维保计划成功" : "新增维保计划失败";
             log_message += "--详情：" + string.Join(",", value);
             InsertTlog(log_message);
-            bindGrid1();
+            if (ckModel.Checked)
+                bindGrid4();
+            else
+               bindGrid1();
            
         }
         catch (Exception ee)
@@ -554,4 +733,6 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(list1, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t  where t.is_del = '0' and t.is_valid = '1'   and t.section_code = '" + list.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
     }
+
+    #endregion
 }

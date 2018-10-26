@@ -164,12 +164,18 @@
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="种类">
+                                <asp:TemplateField HeaderText="香料种类">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtCodeM" runat="server" DataValueField="种类" DataTextField="种类"
-                                            CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                         <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist"   DataSource='<%# gridXJXLbind()%>' DataValueField="material_code"    DataTextField="material_name" AutoPostBack="true"  OnSelectedIndexChanged="listGirdName_SelectedIndexChanged"></asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                   <asp:TemplateField HeaderText="香料编码" SortExpression="物料编码">
+                                            <ItemTemplate>
+                                                <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
+                                                    CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                            </ItemTemplate>
+                                       </asp:TemplateField>
+                                
                                 <asp:TemplateField HeaderText="比例%">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例"
@@ -227,12 +233,17 @@
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="种类">
+                                    <asp:TemplateField HeaderText="回填液种类">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtCodeM2" runat="server" DataValueField="种类" DataTextField="种类"
-                                            CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                         <asp:DropDownList ID="listGridName2" runat="server" CssClass="drpdwnlist"   DataSource='<%# gridHTYbind()%>' DataValueField="material_code"    DataTextField="material_name" AutoPostBack="true"  OnSelectedIndexChanged="listGirdName2_SelectedIndexChanged"></asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                   <asp:TemplateField HeaderText="回填液编码" SortExpression="物料编码">
+                                            <ItemTemplate>
+                                                <asp:TextBox ID="txtCodeM" runat="server"                                       CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                            </ItemTemplate>
+                                       </asp:TemplateField>
+                                
                                 <asp:TemplateField HeaderText="比例%">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtScale2" runat="server" DataValueField="比例" DataTextField="比例"
@@ -247,12 +258,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
+                                        <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave2_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                                        <asp:Button ID="btnDel2" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

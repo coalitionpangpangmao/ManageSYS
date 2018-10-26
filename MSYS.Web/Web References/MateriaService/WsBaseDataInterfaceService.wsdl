@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.dhcc.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="WsBaseDataInterfaceService" targetNamespace="http://webservice.dhcc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="getAllMaterialtList" type="tns:getAllMaterialtList" />
+      <xs:element name="getAllMaterialtListResponse" type="tns:getAllMaterialtListResponse" />
+      <xs:element name="getUnitList" type="tns:getUnitList" />
+      <xs:element name="getUnitListResponse" type="tns:getUnitListResponse" />
+      <xs:element name="materialTree" type="tns:materialTree" />
+      <xs:element name="materialTreeResponse" type="tns:materialTreeResponse" />
+      <xs:complexType name="materialTree">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="materialTreeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:treeVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="treeVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="classCode" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element name="parent" type="xs:boolean" />
+          <xs:element minOccurs="0" name="totalSum" type="xs:string" />
+          <xs:element minOccurs="0" name="pId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getAllMaterialtList">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="getAllMaterialtListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tPubMateriel" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tPubMateriel">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="clocationid" type="xs:string" />
+              <xs:element minOccurs="0" name="costprice" type="xs:double" />
+              <xs:element minOccurs="0" name="cwarehouseID" type="xs:string" />
+              <xs:element minOccurs="0" name="dataOriginFlag" type="xs:string" />
+              <xs:element minOccurs="0" name="factory" type="xs:string" />
+              <xs:element minOccurs="0" name="flag" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:long" />
+              <xs:element minOccurs="0" name="isDel" type="xs:string" />
+              <xs:element minOccurs="0" name="isValid" type="xs:string" />
+              <xs:element minOccurs="0" name="levelCode" type="xs:string" />
+              <xs:element minOccurs="0" name="matCategory" type="xs:string" />
+              <xs:element minOccurs="0" name="matCity" type="xs:string" />
+              <xs:element minOccurs="0" name="matLevel" type="xs:string" />
+              <xs:element minOccurs="0" name="matPack" type="xs:string" />
+              <xs:element minOccurs="0" name="matPlace" type="xs:string" />
+              <xs:element minOccurs="0" name="matPlaceName" type="xs:string" />
+              <xs:element minOccurs="0" name="matProvince" type="xs:string" />
+              <xs:element minOccurs="0" name="matType" type="xs:string" />
+              <xs:element minOccurs="0" name="matType2" type="xs:string" />
+              <xs:element minOccurs="0" name="matTypeCode" type="xs:string" />
+              <xs:element minOccurs="0" name="matVariety" type="xs:string" />
+              <xs:element minOccurs="0" name="matYear" type="xs:string" />
+              <xs:element minOccurs="0" name="materLocation" type="xs:string" />
+              <xs:element minOccurs="0" name="materialCode" type="xs:string" />
+              <xs:element minOccurs="0" name="materialName" type="xs:string" />
+              <xs:element minOccurs="0" name="modelVal" type="xs:string" />
+              <xs:element minOccurs="0" name="onhand" type="xs:double" />
+              <xs:element minOccurs="0" name="pieceWeight" type="xs:string" />
+              <xs:element minOccurs="0" name="pkMarbasclass" type="xs:string" />
+              <xs:element minOccurs="0" name="pkMaterial" type="xs:string" />
+              <xs:element minOccurs="0" name="pkMattaxes" type="xs:string" />
+              <xs:element minOccurs="0" name="pkmatCategory" type="xs:string" />
+              <xs:element minOccurs="0" name="pkmatType" type="xs:string" />
+              <xs:element minOccurs="0" name="placeCode" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="spcontract" type="xs:string" />
+              <xs:element minOccurs="0" name="specVal" type="xs:string" />
+              <xs:element minOccurs="0" name="storedocName" type="xs:string" />
+              <xs:element minOccurs="0" name="supplier" type="xs:string" />
+              <xs:element minOccurs="0" name="typeCode" type="xs:string" />
+              <xs:element minOccurs="0" name="typeFlag" type="xs:string" />
+              <xs:element minOccurs="0" name="unitCode" type="xs:string" />
+              <xs:element minOccurs="0" name="unitName" type="xs:string" />
+              <xs:element minOccurs="0" name="varietyCode" type="xs:string" />
+              <xs:element minOccurs="0" name="warehouseCode" type="xs:string" />
+              <xs:element minOccurs="0" name="warehouseName" type="xs:string" />
+              <xs:element minOccurs="0" name="xyMaterialCode" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getUnitList">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="getUnitListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tPubUnit" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tPubUnit">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="dataOriginFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="isValid" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="originCode" type="xs:string" />
+          <xs:element minOccurs="0" name="unitCode" type="xs:string" />
+          <xs:element minOccurs="0" name="unitGroupCode" type="xs:string" />
+          <xs:element minOccurs="0" name="unitGroupName" type="xs:string" />
+          <xs:element minOccurs="0" name="unitGroupType" type="xs:string" />
+          <xs:element minOccurs="0" name="unitName" type="xs:string" />
+          <xs:element minOccurs="0" name="xyUnitCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getAllMaterialtListResponse">
+    <wsdl:part name="parameters" element="tns:getAllMaterialtListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAllMaterialtList">
+    <wsdl:part name="parameters" element="tns:getAllMaterialtList" />
+  </wsdl:message>
+  <wsdl:message name="materialTreeResponse">
+    <wsdl:part name="parameters" element="tns:materialTreeResponse" />
+  </wsdl:message>
+  <wsdl:message name="materialTree">
+    <wsdl:part name="parameters" element="tns:materialTree" />
+  </wsdl:message>
+  <wsdl:message name="getUnitListResponse">
+    <wsdl:part name="parameters" element="tns:getUnitListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getUnitList">
+    <wsdl:part name="parameters" element="tns:getUnitList" />
+  </wsdl:message>
+  <wsdl:portType name="WsBaseDataInterface">
+    <wsdl:operation name="materialTree">
+      <wsdl:input name="materialTree" message="tns:materialTree" />
+      <wsdl:output name="materialTreeResponse" message="tns:materialTreeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllMaterialtList">
+      <wsdl:input name="getAllMaterialtList" message="tns:getAllMaterialtList" />
+      <wsdl:output name="getAllMaterialtListResponse" message="tns:getAllMaterialtListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getUnitList">
+      <wsdl:input name="getUnitList" message="tns:getUnitList" />
+      <wsdl:output name="getUnitListResponse" message="tns:getUnitListResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsBaseDataInterfaceServiceSoapBinding" type="tns:WsBaseDataInterface">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getAllMaterialtList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllMaterialtList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllMaterialtListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="materialTree">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="materialTree">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="materialTreeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUnitList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getUnitList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getUnitListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsBaseDataInterfaceService">
+    <wsdl:port name="WsBaseDataInterfacePort" binding="tns:WsBaseDataInterfaceServiceSoapBinding">
+      <soap:address location="http://10.43.171.22:8081/xymis/services/baseDataService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

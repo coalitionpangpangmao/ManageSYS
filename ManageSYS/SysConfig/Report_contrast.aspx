@@ -65,7 +65,7 @@
                                 </asp:TemplateField>
                                  <asp:TemplateField HeaderText = "参数">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listPara" runat="server" CssClass = 'drpdwnlist' >
+                                        <asp:DropDownList ID="listPara" runat="server" CssClass = 'drpdwnlist'  Width = '200px'>
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField> 
@@ -77,7 +77,7 @@
                                
                                 <asp:TemplateField HeaderText = "字段别称">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtname" runat="server" CssClass = 'tbinput'></asp:TextBox>  
+                                        <asp:TextBox ID="txtname" runat="server" CssClass = 'tbinput' Width = '200px'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText = "单位">

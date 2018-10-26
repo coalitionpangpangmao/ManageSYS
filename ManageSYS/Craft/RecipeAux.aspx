@@ -157,15 +157,13 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="类别">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist">
+                                                <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist"  OnSelectedIndexChanged="listGridType_SelectedIndexChanged"   AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_name"    DataTextField="mattree_name">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="物料名称" SortExpression="物料名称">
+                                        <asp:TemplateField HeaderText="物料名称" >
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName_SelectedIndexChanged"
-                                                    AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="material_code"
-                                                    DataTextField="material_name">
+                                                <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" AutoPostBack="true"  OnSelectedIndexChanged="listGridName_SelectedIndexChanged">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -181,7 +179,7 @@
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="占原料比例">
+                                        <asp:TemplateField HeaderText="占原料比例%">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtPercent" runat="server" DataValueField="占原料比例" DataTextField="占原料比例"
                                                     CssClass="tbinput"></asp:TextBox>

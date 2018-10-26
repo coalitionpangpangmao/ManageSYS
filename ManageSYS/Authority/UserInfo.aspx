@@ -27,7 +27,7 @@
         </ul>
     </div>
     <div class="rightinfo">
-                    <asp:UpdatePanel ID="updtpanel1" runat="server">
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
                             <table class="tablelist">
                                 <tbody>

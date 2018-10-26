@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MSYS.Web.MasterService;
+using MSYS.Web.MateriaService;
 using System.Xml;
 using System.Collections;
 namespace MSYS.Web
@@ -15,48 +15,28 @@ namespace MSYS.Web
             this.tablename = "HT_PUB_MATTREE";
             this.rootname = "MARBASCLASS";
         }
-         public override string GetXmlStr()
+        public override string GetXmlStr()
          {
-             StringBuilder buffer = new StringBuilder();
-             buffer.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-             buffer.Append("<request>");
-             buffer.Append("</request>");
-             MisMasterDataServiceInterfaceService service = new MisMasterDataServiceInterfaceService();
-             string str = service.getMarbasclassInfo(buffer.ToString());
-             return str;
+             return "";
          }
          public override string InsertLocalFromMaster()
          {
-             string Xmlstr = GetXmlStr();
-             XmlDocument xx = new XmlDocument();
-             xx.LoadXml(Xmlstr);//加载xml
-             XmlNodeList xxList = xx.GetElementsByTagName(this.rootname); 
-
              try
              {
+                 MSYS.Web.MateriaService.WsBaseDataInterfaceService service = new MSYS.Web.MateriaService.WsBaseDataInterfaceService();
                  MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                 foreach (XmlNode xxNode in xxList)
+                 treeVO[] mattree = service.materialTree();
+                 List<string> commandlist = new List<string>();
+                 string[] seg = { "ID", "MATTREE_CODE", "MATTREE_NAME", "IS_DEL", "PK_CLASS", "PK_PARENT_CLASS" };
+                 foreach (treeVO leaf in mattree)
                  {
-                     XmlNodeList childList = xxNode.ChildNodes; 
-                     int count = childList.Count;
-                     if (count == seg.Length)
-                     {
-                         string[] segvalue = new string[count];
-                         for (int i = 0; i < count - 1; i++)
-                         {
-                             segvalue[i] = childList[i].InnerText;
-                         }
-                         if (segvalue[2] == "null")
-                             segvalue[2] = "";                       
-                           
-                         opt.MergeInto(this.seg, segvalue,1, this.tablename);
-                     }
-                     else
-                     {
-                         return "字段与值个数不匹配";
-                     }
+                     string[] value = { leaf.id, leaf.classCode, leaf.name, "0", leaf.classCode, leaf.pId };
+                     commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_PUB_MATTREE"));
+
                  }
-                 return "Success";
+                 if (opt.TransactionCommand(commandlist) == "Success" && opt.UpDateOra("update ht_pub_mattree t set t.parent_code = (select mattree_code from ht_pub_mattree r where r.id = t.pk_parent_class)") == "Success")
+                     return "Success";
+                 else return "failed";
 
              }
              catch (Exception error)

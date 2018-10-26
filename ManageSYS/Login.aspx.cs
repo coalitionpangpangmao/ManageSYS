@@ -16,7 +16,7 @@ public partial class Login : MSYS.Web.BasePage
     {        
         if (!IsPostBack)
         {
-            HttpCookie cookie = HttpContext.Current.Request.Cookies["#$LoginUser$#"];
+            HttpCookie cookie = HttpContext.Current.Request.Cookies["#$MsysUser$#"];
             if (cookie != null) 
              RemoteCheck(cookie);
         }
@@ -45,40 +45,24 @@ public partial class Login : MSYS.Web.BasePage
          
         string userPwd =  MSYS.Security.Encrypt.GetMD5String(pwd.Text);
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataTable userTable = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'").Tables[0];
+        DataSet data = opt.CreateDataSetOra("select * from ht_svr_user t where t.id = '" + userID + "'");
+        
          
         bool isError = false;
-        if (userTable != null && userTable.Rows.Count > 0)
+        if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            if (userID == userTable.Rows[0]["ID"].ToString() && userPwd == userTable.Rows[0]["PASSWORD"].ToString())
+            if (userID == data.Tables[0].Rows[0]["ID"].ToString() && userPwd == data.Tables[0].Rows[0]["PASSWORD"].ToString())
             {
                 //记住密码
                 if (CheckBox1.Checked)
                 {                    
-                    this.Response.Cookies.Remove("#$LoginUser$#");
-                    HttpCookie hc = new HttpCookie("#$LoginUser$#");                 
-                    hc.Expires = DateTime.MaxValue;
+                    this.Response.Cookies.Remove("#$MsysUser$#");
+                    HttpCookie hc = new HttpCookie("#$MsysUser$#");
+                    hc.Expires = System.DateTime.Now.AddDays(7);
                     hc.Values.Add("uID", userID);
                     hc.Values.Add("uPwd", userPwd);
-                    this.Response.Cookies.Add(hc);
-                }
-              //  else
-              //  {
-              //      DelCookies("127.0.0.1");
-              //      DelCookies("nlocalhost");
-              ////      HttpContext.Current.Request.Cookies["#$LoginUser$#"];
-              //      HttpCookie hc = new HttpCookie(userID, "");
-              //      hc.Expires = DateTime.MinValue;
-              //      this.Response.Cookies.Add(hc);
-              //  }
-
-                //记住最后一次登录用户
-                //string cName = "#$LastLoginUser$#";
-                //this.Response.Cookies.Remove(cName);
-                //HttpCookie Lhc = new HttpCookie(cName);
-                //Lhc.Values.Add("uID", userID);
-                //Lhc.Expires = DateTime.MaxValue;
-                //this.Response.Cookies.Add(Lhc);
+                    this.Response.Cookies.Add(hc);                    
+                }             
 
                 //设置Session 并跳转
                 FormsAuthentication.RedirectFromLoginPage(userID, false);
@@ -106,6 +90,8 @@ public partial class Login : MSYS.Web.BasePage
     {
         try
         {
+         //   if (cookie.Expires < System.DateTime.Now)
+         //       return;
             string userID = cookie["uID"].ToString();
             string userPwd = cookie["uPwd"].ToString();
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -129,7 +115,7 @@ public partial class Login : MSYS.Web.BasePage
                 }
             }
         }
-        catch (Exception e)
+        catch 
         {
             return;
         }
