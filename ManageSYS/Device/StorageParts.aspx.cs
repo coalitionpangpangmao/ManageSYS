@@ -62,6 +62,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
                     string id = GridView1.DataKeys[i].Value.ToString();
 
                     commandlist.Add( "update HT_EQ_STG_PICKUP set IS_DEL = '1'  where PZ_CODE = '" + id + "'");
+                    commandlist.Add("update HT_EQ_STG_PICKUP_detail set IS_DEL = '1'  where MAIN_ID = '" + id + "'");
                     commandlist.Add("delete from HT_PUB_APRV_FLOWINFO where BUSIN_ID = '" + id + "'");
 
                     string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除备品备件领退计划成功" : "删除备品备件领退计划失败";

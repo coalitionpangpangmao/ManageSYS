@@ -1,8 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Statistics.aspx.cs" Inherits="Energy_Statistics" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Statistics.aspx.cs" Inherits="Statistics" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>能源统计数据</title>
@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>  
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
+
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -30,7 +31,6 @@
             debugger;
             $('#tabtop2').click();
             $("#Frame2").contents().find("'*[id$=hdcode]'").attr('value', code.substr(4));
-
             $("#Frame2").contents().find("'*[id$=btnUpdate]'").click();
         }
     </script>
@@ -47,73 +47,90 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     <div class="mainbox">
-        <div class="mainleft">
-            <div class="leftinfo">
-                <div class="listtitle">
-                    设施分类</div>
-                <% = tvHtml %>
-            </div>
-        </div>
         <!--mainleft end-->
-        <div class="mainright">
-            
-         
+        <div class=" ">        
                 <div class="framelist">
-                    <div class="listtitle">
-                        类型查询与维护<span style="position: relative; float: right">
-                            <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview"  />
-                            <asp:Button ID="btnUpdate" runat="server" CssClass="btnhide" />
-                            <asp:HiddenField ID="hdcode" runat="server" />
-                        </span>
-                    </div>
                     <div>
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <table class="tablelist">
                                     <tbody>
                                         <tr>
-                                            <td width="100">
-                                                分类名称
+                                             <td width="100">
+                                                 能耗项目
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtName" runat="server" class="dfinput1"></asp:TextBox>
+                                                <asp:DropDownList ID="ENG_NAME" runat="server" CssClass="drpdwnlist"></asp:DropDownList>  
                                             </td>
-                                            <td width="100">
-                                                分类编码
+                                             <td width="100">
+                                                能耗工艺段
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtCode" runat="server" class="dfinput1"></asp:TextBox>
+                                              <asp:DropDownList ID="PROCESS_NAME" runat="server" CssClass="drpdwnlist"></asp:DropDownList>   
+        
+                                            </td>
+                                             <td width="100">
+                                                能耗类型
+                                            </td>
+                                            <td>
+                                                 <asp:DropDownList ID="UNIT_NAME" runat="server" CssClass="drpdwnlist"></asp:DropDownList>   
+        
                                             </td>
                                         </tr>
                                         <tr>
                                             <td width="100">
-                                                父级分类
+                                                开始时间
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist">
-                                                </asp:DropDownList>
+                                             <asp:TextBox ID="StartTime" runat="server" class="dfinput1"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>   
+        
                                             </td>
                                             <td width="100">
-                                                是否有效
+                                                结束时间
                                             </td>
                                             <td>
-                                                <asp:CheckBox ID="ckValid" runat="server" />
+                                                 <asp:TextBox ID="EndTime" class="dfinput1" runat="server"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100">
+                                                 消耗量
+                                            </td>
+                                            <td>
+                                               <asp:TextBox ID="COUNT" class="dfinput1" runat="server" ReadOnly="true"></asp:TextBox>
+                                            </td>
+                                            <td width="100">
+                                              <asp:Button ID="Button1" runat="server" Text="查询" OnClick="QueryData" CssClass="btnview"  />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+ <asp:GridView ID="GridView1" runat="server" class="grid" 
+                        AllowPaging="True" AutoGenerateColumns="False"  >
+                     <Columns>
+                     <asp:TemplateField >
+                        <ItemTemplate>                                                  
+                            <asp:CheckBox ID="ck" runat="server" />            
+                        </ItemTemplate>
+                            
+                        </asp:TemplateField>  
+                        <asp:BoundField DataField="记录ID" HeaderText="记录ID" />
+                         <asp:BoundField DataField="能耗点" HeaderText="能耗点" />
+                          <asp:BoundField DataField="工序编码" HeaderText="工序编码" />
+                           <asp:BoundField DataField="日期" HeaderText="日期" />
+                             <asp:BoundField DataField="能耗总量" HeaderText="能耗总量" />
+                              <asp:BoundField DataField="单位" HeaderText="单位" />
+                  </Columns>
+                     <HeaderStyle CssClass="gridheader" />
+                <RowStyle CssClass="gridrow" />
+            </asp:GridView>
+        </td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <div>
-                                    <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
-                                        <Columns>
-                                            <asp:TemplateField HeaderText="选择">
-                                                <ItemTemplate>
-                                                    <asp:CheckBox ID="chk" runat="server" />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                        <HeaderStyle CssClass="gridheader" />
-                                         <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
-                                    </asp:GridView>
+                                    <div id="container" style="margin-left:10%; width:400px;height:400px; display:inline-block"></div>
+                                    <div id ="container3" style=" margin-right:10%; margin-left:10%;width:400px; height:400px; display:inline-block"></div>
                                 </div>
                             </ContentTemplate>
                             <Triggers>
@@ -125,9 +142,14 @@
         </div>
     <!--mainright end-->
     <script type="text/javascript">
-        $("#usual1 ul").idTabs(); 
+        //$("#usual1 ul").idTabs();
     </script>
     </div>
     </form>
+    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script> 
+    <script type="text/javascript" src="../js/EnergyStatistics.js"></script>
+    <script type="text/javascript" src="../js/highcharts.js"></script>
+    <script type="text/javascript" src="../js/exporting.js"></script>
+    <script type="text/javascript" src="../js/highcharts-zh_CN.js"></script>
 </body>
 </html>

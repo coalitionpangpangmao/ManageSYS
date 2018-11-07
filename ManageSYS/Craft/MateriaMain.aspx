@@ -218,7 +218,7 @@
                                                     <asp:TextBox ID="txtVrt2" runat="server" class="dfinput1"></asp:TextBox></td>
                                                 <td width="100">单重</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtWeight2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtWeight2" runat="server"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  class="dfinput1"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td width="100">是否有效</td>

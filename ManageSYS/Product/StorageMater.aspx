@@ -288,7 +288,7 @@
 
                                         <asp:TemplateField HeaderText="领料量" SortExpression="领料量">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领料量" DataTextField="领料量"
+                                                <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领料量" DataTextField="领料量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>

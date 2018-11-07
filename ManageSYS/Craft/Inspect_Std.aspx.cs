@@ -109,7 +109,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
 
 
     }
-
+  
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         bindGrid();

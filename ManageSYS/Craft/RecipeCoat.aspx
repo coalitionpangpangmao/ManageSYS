@@ -178,13 +178,13 @@
                                 
                                 <asp:TemplateField HeaderText="比例%">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例"
+                                        <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="每罐调配所需">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需"
+                                        <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -246,13 +246,13 @@
                                 
                                 <asp:TemplateField HeaderText="比例%">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtScale2" runat="server" DataValueField="比例" DataTextField="比例"
+                                        <asp:TextBox ID="txtScale2" runat="server" DataValueField="比例" DataTextField="比例"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="备注">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtRemark" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需"
+                                        <asp:TextBox ID="txtRemark" runat="server" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>

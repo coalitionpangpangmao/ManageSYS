@@ -30,7 +30,7 @@ public struct DataInfo
     public ProductInfo[] productinfo;
     public ProductSeries[] productseries;    
 }
-public struct ResponseData
+public struct ResponseProductData
 {
     public List<DataInfo> info;
     public string statics {get;set;}
@@ -44,7 +44,7 @@ public class ProductInfoHandler : IHttpHandler
         var data = context.Request["date"];
         try
         {
-            ResponseData datainfo = getResponseData(data);
+            ResponseProductData datainfo = getResponseData(data);
             var javaScriptSerializer = new JavaScriptSerializer();
                var responseData = javaScriptSerializer.Serialize(datainfo);
                context.Response.ContentType = "text/plain";
@@ -55,9 +55,9 @@ public class ProductInfoHandler : IHttpHandler
             var e = ee.Message;
         }
     }
-    protected ResponseData getResponseData(string date)
+    protected ResponseProductData getResponseData(string date)
     {
-        ResponseData data = new ResponseData();
+        ResponseProductData data = new ResponseProductData();
         data.info = new List<DataInfo>();
         data.info.Add(getPlanDoneInfo(date));
         data.info.Add(getInoutInfo(date));

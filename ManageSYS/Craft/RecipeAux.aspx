@@ -175,13 +175,13 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="比例%">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例"
+                                                <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="占原料比例%">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="txtPercent" runat="server" DataValueField="占原料比例" DataTextField="占原料比例"
+                                                <asp:TextBox ID="txtPercent" runat="server" DataValueField="占原料比例" DataTextField="占原料比例"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>

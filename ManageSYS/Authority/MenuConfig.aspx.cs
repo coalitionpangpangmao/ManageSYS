@@ -201,7 +201,7 @@ public partial class Authority_GroupConfig : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         List<string> commandlist = new List<string>();
         commandlist.Add("update  ht_inner_map  set is_del = '1' where MAPID = '" + id + "'");
-        commandlist.Add("update ht_svr_sys_menu set IS_DEL = '1' where F_MENU = '" + ((TextBox)GridView1.Rows[rowIndex].FindControl("txtMenu")).Text + "'");
+        commandlist.Add("update ht_svr_sys_menu set IS_DEL = '1' where F_MAPID = '" + id + "'");
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除Map表映射成功" : "删除Map表映射失败";
         log_message += "--标识:" + id;
         InsertTlog(log_message);

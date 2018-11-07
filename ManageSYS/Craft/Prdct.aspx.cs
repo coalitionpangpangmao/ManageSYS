@@ -227,9 +227,13 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     }
     protected void btnDel_Click(object sender, EventArgs e)
     {
-        string query = "update HT_PUB_PROD_DESIGN set IS_DEL = '1'  where PROD_CODE = '" + txtCode.Text + "'";
+        List<string> commandlist = new List<string>();
+
+        commandlist.Add("update HT_PUB_PROD_DESIGN set IS_DEL = '1'  where PROD_CODE = '" + txtCode.Text + "'");
+
+        commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + txtCode.Text + "'");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.UpDateOra(query) == "Success" ? "删除产品信息成功" : "删除产品信息失败";
+        string log_message = opt.TransactionCommand(commandlist)== "Success" ? "删除产品信息成功" : "删除产品信息失败";
         log_message += ",产品编码:" + txtCode.Text;
         InsertTlog(log_message);       
         bindGrid();

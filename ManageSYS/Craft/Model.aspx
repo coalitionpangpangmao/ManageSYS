@@ -296,10 +296,14 @@
                                                         Width="200px"></asp:TextBox></td>
                                             </tr>
                                             <tr>
+                                                <td>维护部门</td>
+                                                <td>
+                                                    <asp:DropDownList ID="listApt" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                                </td>
                                                 <td width="100">备注</td>
-                                                <td colspan="3">
+                                                <td >
                                                     <asp:TextBox ID="txtDscrp" runat="server" class="dfinput1"
-                                                        Width="500px"></asp:TextBox></td>
+                                                        Width="200px"></asp:TextBox></td>
                                             </tr>
                                         </tbody>
                                     </table>

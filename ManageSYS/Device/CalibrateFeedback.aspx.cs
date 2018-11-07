@@ -29,7 +29,7 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
     {
         string query = "select distinct t.mt_name as 校准计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,case t.clbrt_type when '0' then '人工校准' else  '自动校准' end  as 校准类型,t.remark as 备注,t.pz_code from HT_EQ_MCLBR_PLAN t left join ht_svr_user t1 on t1.id = t.create_id  left join ht_eq_mclbr_plan_detail t2 on t2.main_id = t.pz_code where t2.status >= '3' and t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' ";
         if (ckDone.Checked)
-            query += " and t.TASK_STATUS >= '3'";
+            query += " and t.TASK_STATUS > '3'";
         else
             query += " and t.TASK_STATUS = '3' ";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -89,7 +89,7 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
     {
       
             string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.OLDVALUE as 原值,t.POINTVALUE as 校准值,t.SAMPLE_TIME as 校准时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail  t where t.main_id = '" + code + "' and t.is_del = '0' ";
-
+       //     query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             GridView2.DataSource = data;
@@ -124,8 +124,12 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
        
         txtID.Text = GridView2.DataKeys[row.RowIndex].Value.ToString();
         txtCodeZ.Text = txtCode.Value;
-        
-        
+
+        string status = ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue;
+        if (status == "5")
+            btnModify.Visible = false;
+        else
+            btnModify.Visible = true;
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra("select * from ht_eq_mclbr_plan_detail where ID = '" + txtID.Text +  "'");
             if (data != null && data.Tables[0].Rows.Count > 0)
@@ -157,10 +161,10 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
 
         bindGrid2(txtCode.Value);
 
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status = '4' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status >= '4' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
-            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '4' where PZ_CODE = '" + txtCode.Value + "'");
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '4' where PZ_CODE = '" + txtCode.Value + "'  and TASK_STATUS = '3'");
             bindGrid1();
         }
 

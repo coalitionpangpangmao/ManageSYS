@@ -22,7 +22,11 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     }
     protected void bindData()
     {
-        string query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_aux_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
+        string query;
+        if(hdcode.Value.Length == 8)
+         query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_aux_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
+        else
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_aux_formula where is_del = '0' and prod_code = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -44,7 +48,11 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code  where r.is_del = '0'  and FORMULA_CODE = '" + hdcode.Value + "'";
+        string query;
+        if(hdcode.Value.Length == 8)
+         query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code  where r.is_del = '0'  and r.FORMULA_CODE = '" + hdcode.Value + "'";
+        else
+            query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_aux_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0'  and t.PROD_CODE = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -94,7 +102,11 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        string query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code  where r.is_del = '0'  and FORMULA_CODE = '" + hdcode.Value + "'";
+        string query;
+        if (hdcode.Value.Length == 8)
+            query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code  where r.is_del = '0'  and r.FORMULA_CODE = '" + hdcode.Value + "'";
+        else
+            query = "select r.mater_type as 类别, r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.aux_scale  as 比例,r.aux_percent   as 占原料比例 from ht_qa_aux_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_aux_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0'  and t.PROD_CODE = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];

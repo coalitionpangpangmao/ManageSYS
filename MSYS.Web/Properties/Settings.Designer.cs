@@ -52,5 +52,15 @@ namespace MSYS.Web.Properties {
                 return ((string)(this["MSYS_Web_MateriaService_WsBaseDataInterfaceService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.22:8081/xymis/services/StoreService")]
+        public string MSYS_Web_StoreService_StoreServiceInterfaceService {
+            get {
+                return ((string)(this["MSYS_Web_StoreService_StoreServiceInterfaceService"]));
+            }
+        }
     }
 }

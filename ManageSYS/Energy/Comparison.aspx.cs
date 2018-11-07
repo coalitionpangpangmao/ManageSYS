@@ -1,12 +1,18 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using MSYS.Common;
+using System.Web.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-public partial class Energy_Comparison : MSYS.Web.BasePage
+
+public partial class Comparison : MSYS.Web.BasePage
 {
     protected string tvHtml;
     protected string JavaHtml;
@@ -15,101 +21,99 @@ public partial class Energy_Comparison : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            txtBtime.Text = System.DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss");
-           MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(listpara, "select para_code,para_name from ht_pub_tech_para where para_Type like '__0%'", "para_name", "Para_CODE");
-            tvHtml = InitTree();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            System.Diagnostics.Debug.WriteLine("正在初始化下拉菜单");
+            opt.bindDropDownList(energyConsumptionPoint,"SELECT DISTINCT ENG_CODE, ENG_NAME FROM HT_ENG_CONSUMPTION_ITEM WHERE IS_DEL!=1 AND IS_VALID =1", "ENG_NAME", "ENG_CODE");
+            System.Diagnostics.Debug.WriteLine("绑定结束");
         }
     }
 
-    public string InitTree()
+    protected void bindProcessList(object sender, EventArgs e) //当能耗点变动时更新工艺段可选内容
     {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(processName, "SELECT DISTINCT PROCESS_CODE, PROCESS_NAME FROM HT_ENG_CONSUMPTION_ITEM WHERE IS_DEL=0 AND ENG_CODE=" + energyConsumptionPoint.SelectedValue.ToString(), "PROCESS_NAME", "PROCESS_CODE");
 
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select g.section_code,g.section_name from ht_pub_tech_section g where g.IS_VALID = '1' and g.IS_DEL = '0' order by g.section_code ");
-        if (data != null && data.Tables[0].Rows.Count > 0)
+    }
+
+    protected void bindUnitList(object senders, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(department, "SELECT DISTINCT UNIT_CODE ,UNIT_NAME FROM HT_ENG_CONSUMPTION_ITEM WHERE IS_DEL =0 AND ENG_CODE = " + energyConsumptionPoint.SelectedValue.ToString() + " AND PROCESS_CODE=" + processName.SelectedValue.ToString(), "UNIT_NAME", "UNIT_CODE");
+    }
+
+    [WebMethod]
+    public static string GetComparisonByTimeData(string btime, string etime)
+    {
+        var json = new JObject();
+        var categories = new JArray();
+        var consumptiondata = new JArray();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string query = "SELECT PROCESS_NAME, SUM(AMOUNT) FROM HT_ENG_MANUAL_DATA WHERE IS_DEL!=1 AND IS_VALID = 1 AND TIME > '"+btime+"' AND TIME < '"+etime+"' GROUP BY PROCESS_NAME";
+        DataSet data = opt.CreateDataSetOra(query);
+        for (int i = 0; i < data.Tables[0].Rows.Count; i++)
         {
-            string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
-            DataRow[] rows = data.Tables[0].Select();
-            foreach (DataRow row in rows)
-            {                
-                tvHtml += "<li ><span class='folder'>" + row["section_name"].ToString() + "</span>";
-                tvHtml += InitTreePara(row["section_code"].ToString());
-                tvHtml += "</li>";
-            }
-            tvHtml += "</ul>";
-            return tvHtml;
+            categories.Add(data.Tables[0].Rows[i][0]);
+            var temp = new JObject { { "name", data.Tables[0].Rows[i][0].ToString() }, {"y", data.Tables[0].Rows[i][1].ToString() } };
+            consumptiondata.Add(temp);
         }
-        else
-            return "";
+        json.Add("categories", categories);
+        json.Add("comparisonData",consumptiondata);
+        return json.ToString(); 
     }
 
-
-    public string InitTreePara(string section_code)
-    {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select para_code,para_name from ht_pub_tech_para where substr(para_code,1,5) =  '" + section_code + "' and IS_VALID = '1' and IS_DEL = '0'   order by para_code");
-        if (data != null && data.Tables[0].Rows.Count > 0)
+    [WebMethod]
+    public static string GetComparisonByProcessName(string btime, string etime, string consumptionPoint, string processName, string unitName) {
+        var json = new JObject();
+        var time = new JArray();
+        var comparisonData = new JArray();
+        System.Diagnostics.Debug.WriteLine("btime内容值："+btime);
+        System.Diagnostics.Debug.WriteLine("etiem内容："+etime);
+        System.Diagnostics.Debug.WriteLine("consumptionPoint 内容值"+consumptionPoint);
+        System.Diagnostics.Debug.WriteLine("processName 内容值" + processName);
+        System.Diagnostics.Debug.WriteLine("unitName 内容值" + unitName);
+        string query = "SELECT TIME, AMOUNT, PROCESS_NAME FROM HT_ENG_MANUAL_DATA WHERE IS_DEL!=1 AND IS_VALID =1 AND TIME >= '" + btime + "' AND TIME <= '" + etime + "'" + " AND ENG_CODE = " + consumptionPoint + " AND PROCESS_CODE=" + processName + " AND UNIT_CODE = " + unitName + "";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        System.Diagnostics.Debug.WriteLine(data.Tables[0].Rows.Count);
+        for (int i = 0; i < data.Tables[0].Rows.Count; i++)
         {
-            string tvHtml = "<ul>";
-            DataRow[] rows = data.Tables[0].Select();
-            foreach (DataRow row in rows)
-            {
-              //  tvHtml += "<li ><input type='checkbox' onselect = \"treeClick(" + row["para_code"].ToString() + ")\"/>" + row["para_name"].ToString();
-                tvHtml += "<li ><input type='checkbox' value = '" + row["para_code"].ToString() +  "' onclick = 'treeClick(this)'/>" + row["para_name"].ToString();
-                tvHtml += "</li>";
-            }
-            tvHtml += "</ul>";
-            return tvHtml;
+            time.Add(data.Tables[0].Rows[i][0]);
+            var temp = new JObject{{"name",data.Tables[0].Rows[i][2].ToString()}, {"y", data.Tables[0].Rows[i][1].ToString()}};
+            comparisonData.Add(temp);
         }
-        else
-            return "";
-    }
-    protected void btnAdd_Click(object sender, EventArgs e)
-    {
-        listpara.SelectedValue = hidecode.Value;
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string paraname = opt.GetSegValue("select * from ht_pub_tech_para where para_code = '" + hidecode.Value + "'","para_name");
-        ListItem item = new ListItem(paraname+ "_" + txtBtime.Text + "~" + txtEtime.Text , hidecode.Value); 
-        cklistPara.Items.Add(item);
-
-    }
-    protected void btnDel_Click(object sender, EventArgs e)
-    {
-        listpara.SelectedValue = hidecode.Value;
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-        string paraname = opt.GetSegValue("select * from ht_pub_tech_para where para_code = '" + hidecode.Value + "'", "para_name");
-        ListItem item = new ListItem(paraname + "_" + txtBtime.Text + "~" + txtEtime.Text, hidecode.Value);
-        cklistPara.Items.Remove(item);
-
+        json.Add("time", time);
+        json.Add("comparisonData", comparisonData);
+        return json.ToString();
     }
 
-
-    protected void btnAddtime_Click(object sender, EventArgs e)
+    [WebMethod]
+    public static string GetStatisticData(string type, string time)
     {
-        if (listpara.SelectedValue != "")
+        var json = new JObject();
+        var units = new JArray();
+        var statisticData = new JArray();
+        string query = "";
+        System.Diagnostics.Debug.WriteLine("postdata: " + type + time);
+        if (type == "0")
         {
-            ListItem item = new ListItem(listpara.SelectedItem.Text + "_" + txtBtime.Text + "~" + txtEtime.Text,listpara.SelectedValue);
-            cklistPara.Items.Add(item);
+            query = "SELECT UNIT_NAME, SUM(AMOUNT), UNIT_CODE FROM HT_ENG_MANUAL_DATA WHERE IS_DEL!=1 AND IS_VALID = 1 AND TIME= '" + time + "' GROUP BY UNIT_CODE, UNIT_NAME";
         }
+        else 
+        {            
+            query = "SELECT UNIT_NAME, SUM(AMOUNT), UNIT_CODE FROM HT_ENG_MANUAL_DATA WHERE IS_DEL!=1 AND IS_VALID = 1 AND TIME LIKE '" + time + "%' GROUP BY UNIT_CODE, UNIT_NAME";
+        }
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+        {
+             units.Add(data.Tables[0].Rows[i][0].ToString());
+            var temp = new JObject { { "name", data.Tables[0].Rows[i][0].ToString() }, { "y", data.Tables[0].Rows[i][1].ToString() } };
+            statisticData.Add(temp);
+        }
+        json.Add("units", units);
+        json.Add("statisticData", statisticData);
+        return json.ToString();
+        
     }
-    protected void btnDeltime_Click(object sender, EventArgs e)
-    {
-       
-            List<ListItem> items = new List<ListItem>();
-            foreach (ListItem item in cklistPara.Items)
-            {
-                items.Add(item);
-            }
-
-            foreach (ListItem item in items)
-            {
-                if (item.Selected)
-                    cklistPara.Items.Remove(item);
-            }
-      
-    }
-    
-
+   
 }

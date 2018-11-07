@@ -89,7 +89,7 @@ public partial class Device_ManulCalibrate : MSYS.Web.BasePage
     {
 
         string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.OLDVALUE as 原值,t.POINTVALUE as 校准值,t.SAMPLE_TIME as 校准时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail  t where t.main_id = '" + code + "' and t.is_del = '0'";
-
+     //   query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
@@ -153,10 +153,10 @@ public partial class Device_ManulCalibrate : MSYS.Web.BasePage
             InsertTlog(log_message);
             bindGrid2(txtCode.Value);
 
-            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status = '2' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status >= '2' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
             if (alter == "1")
             {
-                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "'");
+                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "'  and TASK_STATUS = '1'");
                 bindGrid1();
             }
         }

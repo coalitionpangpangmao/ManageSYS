@@ -31,7 +31,9 @@
                                 <ContentTemplate>
                                     时间     
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
-                        onclick="WdatePicker({dateFmt:'yyyy-MM'})" OnTextChanged="txtBtime_TextChanged" AutoPostBack="true"></asp:TextBox>
+                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtBtime_TextChanged" AutoPostBack="true"></asp:TextBox>至
+                                    <asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"
+                                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
 
                                     产品：<asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                                     工艺段：<asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
@@ -40,7 +42,6 @@
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                                 </ContentTemplate>
                                 <Triggers>
-
                                     <asp:AsyncPostBackTrigger ControlID="txtBtime" />
                                     <asp:AsyncPostBackTrigger ControlID="listSection" />
                                 </Triggers>
@@ -52,24 +53,24 @@
             <div>
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
 
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" BorderStyle="Solid" BorderWidth="1" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
-                                   <PagerStyle CssClass="gridpager" />
-                                <PagerTemplate>
-                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
-                                    <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
-                                    <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
-                                    <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
-                                    <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
-                                    到第
+                            <PagerStyle CssClass="gridpager" />
+                            <PagerTemplate>
+                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                到第
                                 <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
-                                    页  
+                                页  
              <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
                  CommandName="Page" Text="跳转" />
-                                </PagerTemplate>
+                            </PagerTemplate>
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>

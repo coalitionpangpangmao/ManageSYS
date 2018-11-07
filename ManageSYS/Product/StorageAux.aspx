@@ -282,7 +282,7 @@
                                 
                                   <asp:TemplateField HeaderText="件数" SortExpression="件数">
                                     <ItemTemplate>
-                                         <asp:TextBox ID="txtNum" runat="server" DataValueField="件数" DataTextField="件数"
+                                         <asp:TextBox ID="txtNum" runat="server" DataValueField="件数" DataTextField="件数"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -294,7 +294,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="领用量" SortExpression="领用量">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领用量" DataTextField="领用量"
+                                        <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领用量" DataTextField="领用量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>

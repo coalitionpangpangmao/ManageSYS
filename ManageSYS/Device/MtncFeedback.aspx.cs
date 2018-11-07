@@ -23,7 +23,7 @@ public partial class Device_MtncFeedback : MSYS.Web.BasePage
     {
         string query = "select distinct t.mt_name as 维保计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,t.remark as 备注,t.pz_code from ht_eq_mt_plan t left join ht_svr_user t1 on t1.id = t.create_id  left join ht_eq_mt_plan_detail t2 on t2.main_id = t.pz_code where t2.status >= '3' and  t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0' ";
         if (ckDone.Checked)
-            query += " and t.TASK_STATUS >= '3'";
+            query += " and t.TASK_STATUS > '3'";
         else
             query += " and t.TASK_STATUS = '3' ";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
@@ -128,7 +128,7 @@ public partial class Device_MtncFeedback : MSYS.Web.BasePage
      {
 
          string query = "select t1.section_name as 区域,t2.eq_name as 设备名称,t.reason as 维保原因,t.content as 维保内容,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from ht_eq_mt_plan_detail t left join ht_pub_tech_section t1 on t1.section_code = t.mech_area left join ht_eq_eqp_tbl t2 on t2.idkey = t.equipment_id  where t.main_id = '" + code + "' and t.is_del = '0'";
-
+       //  query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
         MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
          DataSet data = opt.CreateDataSetOra(query);
          GridView2.DataSource = data;
@@ -162,7 +162,11 @@ public partial class Device_MtncFeedback : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         txtID.Text = GridView2.DataKeys[row.RowIndex].Value.ToString();
         txtCodeZ.Text = txtCode.Value;
-
+        string status = ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue;
+        if (status == "5")
+            btnModify.Visible = false;
+        else
+            btnModify.Visible = true;
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select * from ht_eq_mt_plan_detail where ID = '" + txtID.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -192,10 +196,10 @@ public partial class Device_MtncFeedback : MSYS.Web.BasePage
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
         bindGrid2(txtCode.Value);
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status = '4' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mt_plan_detail t left join ht_eq_mt_plan_detail t1 on t1.id = t.id and t1.status >= '4' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
-            opt.UpDateOra("update ht_eq_mt_plan set TASK_STATUS = '4' where PZ_CODE = '" + txtCode.Value + "'");
+            opt.UpDateOra("update ht_eq_mt_plan set TASK_STATUS = '4' where PZ_CODE = '" + txtCode.Value + "'  and TASK_STATUS = '3'");
             bindGrid1();
         }
         ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeOut(200);", true);

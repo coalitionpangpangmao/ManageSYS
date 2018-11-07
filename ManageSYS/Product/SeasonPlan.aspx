@@ -202,7 +202,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="计划数量(吨)">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtOutput" runat="server" DataValueField="计划数量" DataTextField="计划数量"
+                                            <asp:TextBox ID="txtOutput" runat="server" DataValueField="计划数量" DataTextField="计划数量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                 CssClass="tbinput1"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -231,15 +231,15 @@
                                             <table width="270px">
                                                 <tr>
                                                     <td width="90px">
-                                                        <asp:TextBox ID="txtAmount1" runat="server" DataValueField="计划数量" DataTextField="计划数量"
+                                                        <asp:TextBox ID="txtAmount1" runat="server" DataValueField="计划数量" DataTextField="计划数量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </td>
                                                     <td width="90px">
-                                                        <asp:TextBox ID="txtAmount2" runat="server" DataValueField="计划数量" DataTextField="计划数量"
+                                                        <asp:TextBox ID="txtAmount2" runat="server" DataValueField="计划数量" DataTextField="计划数量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </td>
                                                     <td width="90px">
-                                                        <asp:TextBox ID="txtAmount3" runat="server" DataValueField="计划数量" DataTextField="计划数量"
+                                                        <asp:TextBox ID="txtAmount3" runat="server" DataValueField="计划数量" DataTextField="计划数量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </td>
                                                 </tr>

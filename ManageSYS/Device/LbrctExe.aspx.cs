@@ -26,7 +26,7 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
             query += " and t.task_status  > '1' ";
         else
             query += " and t.task_status  = '1' ";
-        //    query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
+      
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -75,7 +75,7 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
     protected void bindGrid2(string code)
     {
         string query = "select section as  工段,equipment_id as  设备名称,position as  润滑部位,pointnum as   润滑点数,luboil as   润滑油脂,periodic as   润滑周期 , style as 润滑方式 ,amount as  润滑量 ,EXP_FINISH_TIME as 过期时间, STATUS as 状态,ID from ht_eq_lb_plan_detail  where main_id = '" + code + "' and is_del = '0' and Status  >= '1'";
-
+    //    query += " and RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
@@ -137,10 +137,10 @@ public partial class Device_LbrctExe : MSYS.Web.BasePage
             InsertTlog(log_message);
             bindGrid2(txtCode.Value);
 
-            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_lb_plan_detail t left join ht_eq_lb_plan_detail t1 on t1.id = t.id and t1.status = '2' and t1.is_del = '0' where t.main_id = '" + hdcode.Value + "'  and t.is_del = '0')", "status");
+            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_lb_plan_detail t left join ht_eq_lb_plan_detail t1 on t1.id = t.id and t1.status >= '2' and t1.is_del = '0' where t.main_id = '" + hdcode.Value + "'  and t.is_del = '0')", "status");
             if (alter == "1")
             {
-                opt.UpDateOra("update ht_eq_lb_plan set TASK_STATUS = '2' where PZ_CODE = '" + hdcode.Value + "'");
+                opt.UpDateOra("update ht_eq_lb_plan set TASK_STATUS = '2' where PZ_CODE = '" + hdcode.Value + "'  and TASK_STATUS = '1'");
                 bindGrid1();
             }
         }

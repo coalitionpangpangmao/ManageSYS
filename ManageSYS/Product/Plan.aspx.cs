@@ -181,10 +181,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 SetEnable(false,"0");
 
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
-            //   string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode.Text + "' and MATER_CODE = '" + mtr_code + "'";
-            //  MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-            //   opt.UpDateOra(query);
-            //   bindGrid(txtCode.Text);
+           
         }
         catch (Exception ee)
         {

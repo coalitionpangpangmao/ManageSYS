@@ -94,10 +94,10 @@
                                         <asp:BoundField DataField="状态" HeaderText="状态" />
                                         <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btnred" Width="75"
+                                                <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btnred" Width="75px"
                                                     OnClick="btnGrid1View_Click" />
                                             </ItemTemplate>
-                                            <ItemStyle Width="80px" />
+                                         
                                         </asp:TemplateField>
                                     </Columns>
                                     <HeaderStyle CssClass="gridheader" />

@@ -11,14 +11,14 @@
 
             var result = $.post("../../Response/FlowChartHandler.ashx", 
                                  sendData,
-                                 function (result) {
+                                 function (result) {                                     
                                         $(".mainbox").empty();
                                         $(".mainbox").append(result);
                                 });
         }
 
-        function clickEquip(code) {
-            window.location.href = '../DataAnlz.aspx?Equip_Code=70301002'
+        function clickEquip(code) {           
+            window.location.href = '../DataAnlz.aspx?Equip_Code=' + code;
         }
     </script>
 </head>
@@ -26,15 +26,15 @@
    <div   class ="mainbox"  >
     <div id = "flowchart" class = "mainflow" >
    
-    <div class = "areaZZGS1" onclick = "clickArea('ZZGS1')">
+    <div class = "areaZZGS1 hotArea" onclick = "clickArea('ZZGS1')">
     </div>
-      <div class = "areaZZGS2" onclick = "clickArea('ZZGS2')">
+      <div class = "areaZZGS2 hotArea" onclick = "clickArea('ZZGS2')">
     </div>
-      <div class = "areaZZGS3" onclick = "clickArea('ZZGS3')">
+      <div class = "areaZZGS3 hotArea" onclick = "clickArea('ZZGS3')">
     </div>
-      <div class = "areaZZGS4" onclick = "clickArea('ZZGS4')">
+      <div class = "areaZZGS4 hotArea" onclick = "clickArea('ZZGS4')">
     </div>
-      <div class = "areaZZGS5" onclick = "clickArea('ZZGS5')">
+      <div class = "areaZZGS5 hotArea" onclick = "clickArea('ZZGS5')">
     </div>
     </div>
    </div>

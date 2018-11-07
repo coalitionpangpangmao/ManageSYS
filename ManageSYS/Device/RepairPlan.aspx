@@ -266,6 +266,7 @@
                                        <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                 <asp:BoundField DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />
                                 <asp:TemplateField HeaderText="备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtGridremark" runat="server" DataValueField="备注" DataTextField="备注"
@@ -278,9 +279,17 @@
                                             OnClick="btnGrid2Save_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField ItemStyle-Width="80">
+                                            <ItemTemplate>
+                                                <asp:Button ID="btnGrid2View" runat="server" Text="查看" CssClass="btnred" Width="75"
+                                                    OnClick="btnGrid2View_Click" />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="80px" />
+                                        </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
-                             <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
+                             <RowStyle CssClass="gridrow" /> 
+                            <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>                   
@@ -327,6 +336,97 @@
                       style="width: 80px; height: 30px" onclick="$('#dspcthor').hide()"/>
             </div>
         </div>
+
+        <div class="shade">
+                <div  style="width:900px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                    <div class="tiphead">
+                        <span>维修详情</span><a onclick="$('.shade').fadeOut(100);"></a>
+                    </div>
+                    <div class="gridinfo">                  
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                        <table class="tablelist" style="margin-bottom: 10px">
+                                <tbody>
+                                    <tr>
+                                         
+                                       
+                                        <td width="100">单据编号
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtCodeS" runat="server" class="dfinput1"  Enabled="false"></asp:TextBox>
+                                        </td>
+                                        <td width="100">区域
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="listArea" runat="server" CssClass="drpdwnlist"  >
+                                            </asp:DropDownList>
+                                        </td>
+                                         <td width="100">维保设备
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="listEq" runat="server" CssClass="drpdwnlist" >
+                                            </asp:DropDownList>
+                                        </td>
+                                       
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td width="100">操作员
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="listOptor" runat="server" CssClass="drpdwnlist">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td width="100">操作时间
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtOpttime" runat="server" class="dfinput1"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                        </td>
+                                        <td>操作时长</td>
+                                        <td>
+                                            <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1" ></asp:TextBox>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td width="100" height="50px">操作记录
+                                        </td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtRecord" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
+                                                Width="650px"></asp:TextBox>
+                                        </td>                                       
+
+                                    </tr>
+                                    <tr>
+                                        <td width="100" height="50px">故障情况
+                                        </td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtFalut" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
+                                                Width="650px"></asp:TextBox>
+                                        </td>                                       
+
+                                    </tr>
+                                    <tr>
+                                        <td width="100" height="50px">反馈情况
+                                        </td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtFeedback" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
+                                                Width="650px"></asp:TextBox>
+                                        </td>                                       
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ContentTemplate>
+                        <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID = "GridView2" />
+                       
+                        </Triggers>
+                    </asp:UpdatePanel>
+                    </div>
+                </div>
+            </div>
         <script type="text/javascript">
             $("#usual1 ul").idTabs(); 
         </script>

@@ -90,7 +90,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1" OnClick="btnGrid1Del_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                                        <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid1Del_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

@@ -4,8 +4,10 @@
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="getDeptInfo" type="tns:getDeptInfo" />
       <xs:element name="getDeptInfoResponse" type="tns:getDeptInfoResponse" />
-      <xs:element name="getEquiInfo" type="tns:getEquiInfo" />
-      <xs:element name="getEquiInfoResponse" type="tns:getEquiInfoResponse" />
+      <xs:element name="getEquipCLS" type="tns:getEquipCLS" />
+      <xs:element name="getEquipCLSResponse" type="tns:getEquipCLSResponse" />
+      <xs:element name="getEquipInfo" type="tns:getEquipInfo" />
+      <xs:element name="getEquipInfoResponse" type="tns:getEquipInfoResponse" />
       <xs:element name="getFormulaInfo" type="tns:getFormulaInfo" />
       <xs:element name="getFormulaInfoResponse" type="tns:getFormulaInfoResponse" />
       <xs:element name="getMarbasclassInfo" type="tns:getMarbasclassInfo" />
@@ -16,12 +18,14 @@
       <xs:element name="getProdInfoResponse" type="tns:getProdInfoResponse" />
       <xs:element name="getUserInfo" type="tns:getUserInfo" />
       <xs:element name="getUserInfoResponse" type="tns:getUserInfoResponse" />
-      <xs:complexType name="getEquiInfo">
+      <xs:element name="queryStorage" type="tns:queryStorage" />
+      <xs:element name="queryStorageResponse" type="tns:queryStorageResponse" />
+      <xs:complexType name="getEquipInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="contentXml" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="getEquiInfoResponse">
+      <xs:complexType name="getEquipInfoResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
@@ -66,12 +70,32 @@
           <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="getEquipCLS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEquipCLSResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getProdInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="contentXml" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="getProdInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="queryStorage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="queryStorageResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
@@ -88,14 +112,23 @@
       </xs:complexType>
     </xs:schema>
   </wsdl:types>
+  <wsdl:message name="getEquipInfoResponse">
+    <wsdl:part name="parameters" element="tns:getEquipInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getEquipCLS">
+    <wsdl:part name="parameters" element="tns:getEquipCLS" />
+  </wsdl:message>
   <wsdl:message name="getProdInfo">
     <wsdl:part name="parameters" element="tns:getProdInfo" />
   </wsdl:message>
+  <wsdl:message name="getEquipInfo">
+    <wsdl:part name="parameters" element="tns:getEquipInfo" />
+  </wsdl:message>
+  <wsdl:message name="getEquipCLSResponse">
+    <wsdl:part name="parameters" element="tns:getEquipCLSResponse" />
+  </wsdl:message>
   <wsdl:message name="getFormulaInfo">
     <wsdl:part name="parameters" element="tns:getFormulaInfo" />
-  </wsdl:message>
-  <wsdl:message name="getEquiInfo">
-    <wsdl:part name="parameters" element="tns:getEquiInfo" />
   </wsdl:message>
   <wsdl:message name="getMarbasclassInfoResponse">
     <wsdl:part name="parameters" element="tns:getMarbasclassInfoResponse" />
@@ -103,26 +136,29 @@
   <wsdl:message name="getFormulaInfoResponse">
     <wsdl:part name="parameters" element="tns:getFormulaInfoResponse" />
   </wsdl:message>
-  <wsdl:message name="getMaterialInfo">
-    <wsdl:part name="parameters" element="tns:getMaterialInfo" />
+  <wsdl:message name="queryStorage">
+    <wsdl:part name="parameters" element="tns:queryStorage" />
   </wsdl:message>
   <wsdl:message name="getUserInfo">
     <wsdl:part name="parameters" element="tns:getUserInfo" />
   </wsdl:message>
-  <wsdl:message name="getMaterialInfoResponse">
-    <wsdl:part name="parameters" element="tns:getMaterialInfoResponse" />
+  <wsdl:message name="getMaterialInfo">
+    <wsdl:part name="parameters" element="tns:getMaterialInfo" />
   </wsdl:message>
   <wsdl:message name="getProdInfoResponse">
     <wsdl:part name="parameters" element="tns:getProdInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="getMaterialInfoResponse">
+    <wsdl:part name="parameters" element="tns:getMaterialInfoResponse" />
+  </wsdl:message>
   <wsdl:message name="getDeptInfo">
     <wsdl:part name="parameters" element="tns:getDeptInfo" />
   </wsdl:message>
+  <wsdl:message name="queryStorageResponse">
+    <wsdl:part name="parameters" element="tns:queryStorageResponse" />
+  </wsdl:message>
   <wsdl:message name="getDeptInfoResponse">
     <wsdl:part name="parameters" element="tns:getDeptInfoResponse" />
-  </wsdl:message>
-  <wsdl:message name="getEquiInfoResponse">
-    <wsdl:part name="parameters" element="tns:getEquiInfoResponse" />
   </wsdl:message>
   <wsdl:message name="getMarbasclassInfo">
     <wsdl:part name="parameters" element="tns:getMarbasclassInfo" />
@@ -131,9 +167,9 @@
     <wsdl:part name="parameters" element="tns:getUserInfoResponse" />
   </wsdl:message>
   <wsdl:portType name="MisMasterDataServiceInterface">
-    <wsdl:operation name="getEquiInfo">
-      <wsdl:input name="getEquiInfo" message="tns:getEquiInfo" />
-      <wsdl:output name="getEquiInfoResponse" message="tns:getEquiInfoResponse" />
+    <wsdl:operation name="getEquipInfo">
+      <wsdl:input name="getEquipInfo" message="tns:getEquipInfo" />
+      <wsdl:output name="getEquipInfoResponse" message="tns:getEquipInfoResponse" />
     </wsdl:operation>
     <wsdl:operation name="getMarbasclassInfo">
       <wsdl:input name="getMarbasclassInfo" message="tns:getMarbasclassInfo" />
@@ -151,9 +187,17 @@
       <wsdl:input name="getMaterialInfo" message="tns:getMaterialInfo" />
       <wsdl:output name="getMaterialInfoResponse" message="tns:getMaterialInfoResponse" />
     </wsdl:operation>
+    <wsdl:operation name="getEquipCLS">
+      <wsdl:input name="getEquipCLS" message="tns:getEquipCLS" />
+      <wsdl:output name="getEquipCLSResponse" message="tns:getEquipCLSResponse" />
+    </wsdl:operation>
     <wsdl:operation name="getProdInfo">
       <wsdl:input name="getProdInfo" message="tns:getProdInfo" />
       <wsdl:output name="getProdInfoResponse" message="tns:getProdInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryStorage">
+      <wsdl:input name="queryStorage" message="tns:queryStorage" />
+      <wsdl:output name="queryStorageResponse" message="tns:queryStorageResponse" />
     </wsdl:operation>
     <wsdl:operation name="getUserInfo">
       <wsdl:input name="getUserInfo" message="tns:getUserInfo" />
@@ -162,12 +206,12 @@
   </wsdl:portType>
   <wsdl:binding name="MisMasterDataServiceInterfaceServiceSoapBinding" type="tns:MisMasterDataServiceInterface">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="getEquiInfo">
+    <wsdl:operation name="getEquipInfo">
       <soap:operation soapAction="" style="document" />
-      <wsdl:input name="getEquiInfo">
+      <wsdl:input name="getEquipInfo">
         <soap:body use="literal" />
       </wsdl:input>
-      <wsdl:output name="getEquiInfoResponse">
+      <wsdl:output name="getEquipInfoResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -207,6 +251,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getEquipCLS">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getEquipCLS">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getEquipCLSResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getProdInfo">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getProdInfo">
@@ -222,6 +275,15 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getUserInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryStorage">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="queryStorage">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="queryStorageResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

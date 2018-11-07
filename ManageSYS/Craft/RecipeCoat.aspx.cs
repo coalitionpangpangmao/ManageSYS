@@ -15,13 +15,17 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listPro, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
             opt.bindDropDownList(listStatus, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
-            opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
+            opt.bindDropDownList(listCrtApt, "select F_CODE,F_NAME from ht_svr_org_group order by f_code  ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listCreator, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "Name", "ID");
         }
     }
     protected void bindData()
     {
-        string query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
+        string query;
+        if (hdcode.Value.Length == 8)          
+       query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
+        else
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and PROD_CODE = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -44,7 +48,11 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r where coat_flag = 'XJ' and is_del = '0' and is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+          string query;
+        if (hdcode.Value.Length == 8)
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+        else
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -67,7 +75,11 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
 
     protected void bindGrid2()
     {
-        string query = "select r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r where coat_flag = 'TPY' and is_del = '0' and is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+         string query;
+        if (hdcode.Value.Length == 8)
+         query = "select r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+        else
+            query = " r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
@@ -136,7 +148,11 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)  //没有实现
     {
 
-        string query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r where coat_flag = 'XJ' and is_del = '0' and is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+        string query;
+        if (hdcode.Value.Length == 8)
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+        else
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = set.Tables[0];
@@ -261,7 +277,11 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
 
     protected void btnAdd2_Click(object sender, EventArgs e)
     {
-        string query = "select r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r where coat_flag = 'TPY' and is_del = '0' and is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+        string query;
+        if (hdcode.Value.Length == 8)
+            query = "select r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+        else
+            query = " r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode.Value + "'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);

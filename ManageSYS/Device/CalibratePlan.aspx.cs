@@ -109,14 +109,18 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
     {
         try
         {
+            List<string> commandlist = new List<string>();
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {
+                    commandlist.Clear();
                     string order_sn = GridView1.DataKeys[i].Value.ToString();
-                    string query = "update HT_EQ_MCLBR_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'";
+                    commandlist.Add( "update HT_EQ_MCLBR_PLAN set IS_DEL = '1'  where PZ_CODE = '" + order_sn + "'");
+                    commandlist.Add("update HT_EQ_MCLBR_PLAN_detail set IS_DEL = '1'  where MAIN_ID = '" + order_sn + "'");
+                    commandlist.Add("delete from HT_PUB_APRV_FLOWINFO where BUSIN_ID = '" + order_sn + "'");
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    string log_message = opt.UpDateOra(query) == "Success" ? "删除校准计划成功" : "删除校准计划失败";
+                    string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除校准计划成功" : "删除校准计划失败";
                     log_message += "--标识:" + order_sn;
                     InsertTlog(log_message);
                 }
@@ -211,9 +215,11 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             btnSave.Visible = true;
             btnAdd.Visible = true;
             btnDelSel.Visible = true;
-            if (GridView2.Columns.Count == 8)
+            ckModel.Enabled = true;
+            if (GridView2.Columns.Count == 10)
             {
-                GridView2.Columns[7].Visible = true;
+                GridView2.Columns[8].Visible = true;
+                GridView2.Columns[9].Visible = false;
             }
         }
         else
@@ -221,9 +227,11 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             btnSave.Visible = false;
             btnAdd.Visible = false;
             btnDelSel.Visible = false;
-            if (GridView2.Columns.Count == 8)
+            ckModel.Enabled = false;
+            if (GridView2.Columns.Count == 10)
             {
-                GridView2.Columns[7].Visible = false;
+                GridView2.Columns[8].Visible = false;
+                GridView2.Columns[9].Visible = true;
             }
             if (aprvstatus == "己通过")
             {
@@ -255,7 +263,10 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
     protected DataSet sectionbind()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        if(rdType1.Checked)
         return opt.CreateDataSetOra("select r.section_code,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para t on substr(t.para_code,1,5) = r.section_code and t.para_type like '_______1%' and t.is_valid = '1' and t.is_del = '0' where r.is_del = '0' and r.is_valid = '1' and t.para_code is not null union select '' as section_code,'' as section_name from dual order by section_code");
+        else
+            return opt.CreateDataSetOra("select r.section_code,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para t on substr(t.para_code,1,5) = r.section_code and t.para_type like '___1___1%' and t.is_valid = '1' and t.is_del = '0' where r.is_del = '0' and r.is_valid = '1' and t.para_code is not null union select '' as section_code,'' as section_name from dual order by section_code");
     }
 
     protected void listGridEq_SelectedIndexChanged(object sender, EventArgs e)
@@ -265,7 +276,10 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         int rowindex = row.RowIndex;
         DropDownList list1 = (DropDownList)row.FindControl("listGridPoint");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        if (rdType1.Checked)
         opt.bindDropDownList(list1, "select  para_code,para_name from ht_pub_tech_para where equip_code = '" + list.SelectedValue + "' and para_type like '_______1%' order by para_code ", "para_name", "para_code");
+        else
+            opt.bindDropDownList(list1, "select  para_code,para_name from ht_pub_tech_para where equip_code = '" + list.SelectedValue + "' and para_type like '___1___1%' order by para_code ", "para_name", "para_code");
     }
     protected void listGridsct_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -274,7 +288,10 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         int rowindex = row.RowIndex;
         DropDownList list1 = (DropDownList)row.FindControl("listGridEq");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        if (rdType1.Checked)
         opt.bindDropDownList(list1, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t left join ht_pub_tech_para r on r.equip_code = t.idkey and r.para_type like '_______1%' where t.is_del = '0' and t.is_valid = '1' and r.para_code is not null  and t.section_code = '" + list.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
+        else
+            opt.bindDropDownList(list1, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t left join ht_pub_tech_para r on r.equip_code = t.idkey and r.para_type like '___1___1%' where t.is_del = '0' and t.is_valid = '1' and r.para_code is not null  and t.section_code = '" + list.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
     }
 
     protected DataSet eqbind()
@@ -335,9 +352,15 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                 DropDownList list1 = (DropDownList)row.FindControl("listGridsct");
                 DropDownList list2 = (DropDownList)row.FindControl("listGridEq");
                 DropDownList list3 = (DropDownList)row.FindControl("listGridPoint");
-                list1.SelectedValue = mydrv["工段"].ToString();             
-                opt.bindDropDownList(list2, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t left join ht_pub_tech_para r on r.equip_code = t.idkey and r.para_type like '_______1%' where t.is_del = '0' and t.is_valid = '1' and r.para_code is not null  and t.section_code = '" + list1.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
+                list1.SelectedValue = mydrv["工段"].ToString();
+                if (rdType2.Checked)
+                opt.bindDropDownList(list2, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t left join ht_pub_tech_para r on r.equip_code = t.idkey and r.para_type like '___1___1%' where t.is_del = '0' and t.is_valid = '1' and r.para_code is not null  and t.section_code = '" + list1.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
+                else
+                    opt.bindDropDownList(list2, "select distinct t.IDKEY,t.EQ_NAME  from ht_eq_eqp_tbl t left join ht_pub_tech_para r on r.equip_code = t.idkey and r.para_type like '_______1%' where t.is_del = '0' and t.is_valid = '1' and r.para_code is not null  and t.section_code = '" + list1.SelectedValue + "'  order by t.idkey", "EQ_NAME", "IDKEY");
                 list2.SelectedValue = mydrv["设备名称"].ToString();
+                if (rdType2.Checked)
+                    opt.bindDropDownList(list3, "select para_code,para_name from ht_pub_tech_para where equip_code = '" + list2.SelectedValue + "'   and para_type like '___1___1%' order by para_code ", "para_name", "para_code");
+                else
                 opt.bindDropDownList(list3, "select para_code,para_name from ht_pub_tech_para where equip_code = '" + list2.SelectedValue + "'   and para_type like '_______1%' order by para_code ", "para_name", "para_code");
                 list3.SelectedValue = mydrv["数据点"].ToString();
 
@@ -352,7 +375,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
     protected void bindGrid2(string code)
     {
 
-        string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail  t where t.main_id = '" + code + "' and t.is_del = '0' order by t.point";
+        string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,t.remark as 备注 ,r.name as 执行人,t.ID  from HT_EQ_MCLBR_PLAN_detail  t left join ht_svr_user r on r.id = t.responer where t.main_id = '" + code + "' and t.is_del = '0' order by t.point";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataTable data = opt.CreateDataSetOra(query).Tables[0];
@@ -362,7 +385,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)//
     {
 
-        string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail t  where t.main_id = '" + txtCode.Text + "' and t.is_del = '0'";
+        string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,r.name as 执行人,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail  t left join ht_svr_user r on r.id = t.responer   where t.main_id = '" + txtCode.Text + "' and t.is_del = '0'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = new DataTable();
@@ -373,12 +396,13 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             data.Columns.Add("数据点");
             data.Columns.Add("期望完成时间");
             data.Columns.Add("状态");
+            data.Columns.Add("执行人");
             data.Columns.Add("备注");
             data.Columns.Add("ID");
         }
         else
             data = set.Tables[0];
-        object[] value = { "", "", "", txtExptime.Text, "", "", 0 };
+        object[] value = { "", "", "", txtExptime.Text, "","", "", 0 };
         data.Rows.Add(value);
         bindGrid2Ctrl(data);
     }
@@ -407,7 +431,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '5' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "' and t.is_del = '0')", "status");
             if (alter == "1")
             {
-                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '5' where PZ_CODE = '" + txtCode.Text + "'");
+                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '5' where PZ_CODE = '" + txtCode.Text + "'  and TASK_STATUS = '4'");
                 bindGrid1();
             }
             bindGrid2(txtCode.Text);
@@ -436,10 +460,10 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                 InsertTlog(log_message);
             }
         }
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '3' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "') and t.is_del = '0'", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status >= '3' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "' and t.is_del = '0')", "status");
         if (alter == "1")
         {
-            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '3' where PZ_CODE = '" + txtCode.Text + "'");
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '3' where PZ_CODE = '" + txtCode.Text + "'  and TASK_STATUS = '2'");
             bindGrid1();
         }
         bindGrid2(txtCode.Text);
@@ -461,17 +485,17 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             {
                 ck = true;
                 string ID = GridView2.DataKeys[i].Value.ToString();
-                string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '1' ,RESPONER = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "' and status = '0'";
+                string query = "update HT_EQ_MCLBR_PLAN_detail set STATUS = '1' ,RESPONER = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "' and status <= '1'";
 
                 string log_message = opt.UpDateOra(query) == "Success" ? "分派校准任务成功" : "分派校准任务失败";
                 log_message += "--标识:" + ID;
                 InsertTlog(log_message);
             }
         }
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status = '1' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "'  and t.is_del = '0')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from ht_eq_mclbr_plan_detail t left join ht_eq_mclbr_plan_detail t1 on t1.id = t.id and t1.status >= '1' and t1.is_del = '0' where t.main_id = '" + txtCode.Text + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
-            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '1' where PZ_CODE = '" + txtCode.Text + "'");
+            opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '1' where PZ_CODE = '" + txtCode.Text + "'  and TASK_STATUS = '0'");
             bindGrid1();
         }
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#dspcthor').hide();", true);
@@ -503,7 +527,11 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
     }
     protected void btnSave_Click(object sender, EventArgs e)//
     {
-
+        if (txtName.Text == "" || listEditor.SelectedValue == "" || txtExptime.Text == "")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "alert('请将信息填写完全');", true);
+            return;
+        }
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         string[] seg = { "PZ_CODE", "MT_NAME", "CREATE_ID", "CREATE_DEPT_ID", "EXPIRED_DATE", "REMARK", "IS_MODEL", "CREATE_TIME", "CLBRT_TYPE" };
@@ -517,13 +545,41 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
        
 
     }
+    protected void btngrid2Deal_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
 
+        txtID.Text = GridView2.DataKeys[row.RowIndex].Value.ToString();      
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select * from ht_eq_mclbr_plan_detail where ID = '" + txtID.Text + "'");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {          
+            DataRow drow = data.Tables[0].Rows[0];
+            txtScean.Text = drow["FEEDBACK"].ToString();
+            txtDesp.Text = "原值：" + drow["OLDVALUE"].ToString() + "；校准值：" + drow["POINTVALUE"].ToString() + "；校准时间：" + drow["SAMPLE_TIME"].ToString() ;
+            txtPlus.Text = drow["REMARKPLUS"].ToString();
+        }
+        else
+        {
+            txtScean.Text = "";
+            txtPlus.Text = "";
+        }
+
+        ScriptManager.RegisterStartupScript(updtpanel1, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
+
+    }
     protected void btnGrid2Save_Click(object sender, EventArgs e)//
     {
-        try
-        {
+       
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
+            if (((DropDownList)row.FindControl("listGridsct")).SelectedValue == "" || ((DropDownList)row.FindControl("listGridEq")).SelectedValue == "" || ((DropDownList)row.FindControl("listGridPoint")).SelectedValue == "" || ((TextBox)row.FindControl("txtGridExptime")).Text == "")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "alert('请将信息填写完全后再保存');", true);
+                return;
+            }
             int rowIndex = row.RowIndex;
             string id = GridView2.DataKeys[rowIndex].Value.ToString();
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -537,13 +593,8 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             log_message += "--详情：" + string.Join(",", value);
             InsertTlog(log_message);
             bindGrid2(txtCode.Text);
-
           
-        }
-        catch (Exception ee)
-        {
-            Response.Write(ee.Message);
-        }
+       
     }
     protected void btnCreate_Click(object sender, EventArgs e)
     {

@@ -176,7 +176,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="批投料量" SortExpression="批投料量">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="txtAmountM" runat="server" DataValueField="批投料量" DataTextField="批投料量"
+                                                <asp:TextBox ID="txtAmountM" runat="server" DataValueField="批投料量" DataTextField="批投料量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>

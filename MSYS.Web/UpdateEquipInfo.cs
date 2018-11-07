@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MSYS.Web.MasterService;
+using MSYS.Web.EquipService;
 using System.Data;
 using System.Xml;
 using System.Collections;
@@ -12,56 +12,35 @@ namespace MSYS.Web
     {
         public UpdateEquipInfo()
         {
-            this.seg = new string[] { "LOGINNAME", "NAME", "ID", "LEVELGROUPID"};
-            this.tablename = "HT_SVR_USER";
-            this.rootname = "USERINFO";
+          
         }
-         public override string GetXmlStr()
-         {
+       
+         public override string InsertLocalFromMaster()
+         {            
+             MSYS.Web.EquipService.EquipServiceInterfaceService service = new MSYS.Web.EquipService.EquipServiceInterfaceService();
              StringBuilder buffer = new StringBuilder();
              buffer.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
              buffer.Append("<request>");
              buffer.Append("</request>");
-             MisMasterDataServiceInterfaceService service = new MisMasterDataServiceInterfaceService();
-             string str = service.getEquiInfo(buffer.ToString());
-             return str;
-         }
-         public override string InsertLocalFromMaster()
-         {
-             string Xmlstr = GetXmlStr();
-             XmlDocument xx = new XmlDocument();
-             xx.LoadXml(Xmlstr);//加载xml
-             XmlNodeList xxList = xx.GetElementsByTagName(this.rootname); //取得节点名为DEPTINFO的XmlNode集合
-
-             try
+             tEqEqpTbl[] tbs = service.getEquipList(new tEqEqpTbl());
+             if (tbs.Length > 0)
              {
-                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                 foreach (XmlNode xxNode in xxList)
+                 MSYS.DAL.DbOperator opt = new DAL.DbOperator();
+                 List<string> commandlist = new List<string>();
+                 string[] seg = { "IDKEY", "CLS_CODE",  "CREATE_TIME", "CREATOR", "DUTY_NAME","EQ_MODEL","EQ_NAME","EQP_FROM","EQP_IP","EQP_MAC","EQP_SN","EQP_SYS","EQ_STATUS","EQ_TYPE","FLAG","IS_DEL","IS_MADEINCHINA","IS_SPEC_EQP","MANUFACTURER","MGT_DEPT_CODE","NC_CODE","NET_WORTH","ORI_OWNER_NAME","ORI_WORTH","OWNER_NAME","POWER_UNIT","RATED_POWER","REAL_POWER","REMARK","SERIAL_NUMBER","SGS_CODE","SUPPLIER","USED_DATE","USE_DEPT_CODE","ZG_DATE","FINANCE_EQ_NAME" };
+                 foreach (tEqEqpTbl item in tbs)
                  {
-                     XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合
-                     int count = childList.Count;
-                     if (count == seg.Length)
-                     {
-                         string[] segvalue = new string[count];
-                         for (int i = 0; i < count ; i++)
-                         {
-                             segvalue[i] = childList[i].InnerText;
-                         }
-                         segvalue[3] = opt.GetSegValue("select F_CODE  from Ht_Svr_Org_Group where F_KEY = '" + segvalue[3] + "'", "F_CODE");
-                         opt.InsertData(this.seg, segvalue, this.tablename);
-                     }
-                     else
-                     {
-                         return "字段与值个数不匹配";
-                     }
+                     
+                     string[] value = {item.idkey,item.clsCode,item.createTime,item.creator,item.dutyName,item.eqModel,item.eqName,item.eqpFrom,item.eqpIp,item.eqpMac,item.eqpSn,item.eqpSys,item.eqStatus,item.eqType,item.flag.ToString(),item.isDel,item.isMadeinchina,item.isSpecEqp,item.manufacturer,item.mgtDeptCode,item.ncCode,item.netWorth,item.oriOwnerName,item.oriWorth,item.ownerName,item.powerUnit,item.ratedPower,item.realPower,item.remark,item.serialNumber,item.sgsCode,item.supplier,item.usedDate,item.useDeptCode,item.useDeptName,item.zgDate,item.financeEqName,};
+                     string temp = opt.getMergeStr(seg, value, 1, "HT_EQ_EQP_TBL");
+                     commandlist.Add(temp);
+                     if (opt.UpDateOra(temp) != "Success")
+                         System.Diagnostics.Debug.Write(temp);
                  }
-                 return "Success";
-
+                 return opt.TransactionCommand(commandlist);
              }
-             catch (Exception error)
-             {
-                 return error.Message;
-             }
+             else
+                 return "未获取更新";
 
 
          }

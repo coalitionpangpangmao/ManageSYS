@@ -19,17 +19,18 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
     }
     protected void initView()
     {
-        txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
+        txtBtime.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+        txtEtime.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,7) = '" + txtBtime.Text + "' or substr(t.endtime,1,7) = '" + txtBtime.Text + "'", "prod_name", "prod_code");
+        opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,7) = '" + txtBtime.Text.Substring(0,7) + "' or substr(t.endtime,1,7) = '" + txtBtime.Text.Substring(0,7) + "'", "prod_name", "prod_code");
         opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section  where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
         opt.bindDropDownList(listPoint, "select para_code,para_name from ht_pub_tech_para t where  para_type like '___1%' and is_del = '0'", "para_name", "para_code");
         bindgrid();
     }
     protected string getQuerystr()
     {
-        string query1 = "select distinct h.prod_name as 产品,j.para_name as 工艺点,k.team_name as 班组,round(g.avg,2) as 均值,g.count as 采样点数,round(g.min,2) as 最小值,round(g.max,2) as 最大值,round(g.quarate,2) as 合格率,round(g.uprate,2) as 超上限率,round(g.downrate,2) as 超下限率,round(g.stddev,2) as 标准差,round(g.absdev,2) as 绝对差,round(g.range,2) as 范围,round(g.cpk,2) as cpk,g.b_time as 开始时间,g.e_time as 结束时间  from (select t.prod_code,t.para_code,'' as team,round(sum(t.avg*t.count)/sum(t.count),2) as avg,sum(t.count) as count,min(t.min) as min,max(t.max) as max,round(sum(t.quanum)/sum(t.count),2) as quarate,round(sum(t.upcount)/sum(t.count),2) as uprate,round(sum(t.downcount)/sum(t.count),2) as downrate,round(sqrt(sum(t.stddev*t.stddev*(t.count-1))/(sum(t.count)-1)),2) as stddev,round(sum(t.absdev *(t.count-1))/(sum(t.count)-1),2) as absdev,round((max(t.max) - min(t.min)),2) as range ,null as cpk,min(b_time) as b_time,max(e_time) as e_time  from ht_qlt_data_record t where substr(t.b_time,1,7) = '" + txtBtime.Text + "' ";
-        string query2 = " union select distinct t.prod_code,t.para_code,t.team,t.avg,t.count,t.min,t.max,t.quarate,t.uprate,t.downrate,t.stddev,t.absdev,t.range,t.cpk,t.b_time,t.e_time from ht_qlt_data_record t where substr(t.b_time,1,7) = '" + txtBtime.Text + "' ";
+        string query1 = "select distinct h.prod_name as 产品,j.para_name as 工艺点,k.team_name as 班组,round(g.avg,2) as 均值,g.count as 采样点数,round(g.min,2) as 最小值,round(g.max,2) as 最大值,round(g.quarate,2) as 合格率,round(g.uprate,2) as 超上限率,round(g.downrate,2) as 超下限率,round(g.stddev,2) as 标准差,round(g.absdev,2) as 绝对差,round(g.range,2) as 范围,round(g.cpk,2) as cpk,g.b_time as 开始时间,g.e_time as 结束时间  from (select t.prod_code,t.para_code,'' as team,round(sum(t.avg*t.count)/sum(t.count),2) as avg,sum(t.count) as count,min(t.min) as min,max(t.max) as max,round(sum(t.quanum)/sum(t.count),2) as quarate,round(sum(t.upcount)/sum(t.count),2) as uprate,round(sum(t.downcount)/sum(t.count),2) as downrate,round(sqrt(sum(t.stddev*t.stddev*(t.count-1))/(sum(t.count)-1)),2) as stddev,round(sum(t.absdev *(t.count-1))/(sum(t.count)-1),2) as absdev,round((max(t.max) - min(t.min)),2) as range ,null as cpk,min(b_time) as b_time,max(e_time) as e_time  from ht_qlt_data_record t where substr(t.b_time,1,10) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'";
+        string query2 = " union select distinct t.prod_code,t.para_code,t.team,t.avg,t.count,t.min,t.max,t.quarate,t.uprate,t.downrate,t.stddev,t.absdev,t.range,t.cpk,t.b_time,t.e_time from ht_qlt_data_record t where substr(t.b_time,1,10) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'";
 
         if (listProd.SelectedValue != "")
         {
@@ -186,7 +187,7 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
     protected void txtBtime_TextChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listProd, "select t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and  r.is_del = '0' and substr(t.starttime,1,7) = '" + txtBtime.Text + "' or substr(t.endtime,1,7) = '" + txtBtime.Text + "'", "prod_name", "prod_code");
+        opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,7) = '" + txtBtime.Text.Substring(0, 7) + "' or substr(t.endtime,1,7) = '" + txtBtime.Text.Substring(0, 7) + "'", "prod_name", "prod_code");
     }
 
     protected void listSection_SelectedIndexChanged(object sender, EventArgs e)

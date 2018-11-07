@@ -123,6 +123,7 @@
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                                 <asp:AsyncPostBackTrigger ControlID="btnSave" />
+                                <asp:AsyncPostBackTrigger ControlID="btnSumit" />
                             </Triggers>
                         </asp:UpdatePanel>
                     </div>
@@ -176,7 +177,7 @@
                                         </td>
                                         <td>操作时长</td>
                                         <td>
-                                            <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1" Width="220px"></asp:TextBox>
+                                            <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1" Width="180px"></asp:TextBox>小时
                                         </td>
 
 

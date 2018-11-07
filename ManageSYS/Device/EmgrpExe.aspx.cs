@@ -74,9 +74,9 @@ public partial class Device_EmgrpExe : MSYS.Web.BasePage
             }
          
           
-            string status = "2";
-            string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_EMG", "REASON", "CONTENT", "FAULT_ID", "STATUS" };
-            string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtReasons.Text, txtContent.Text, ftID, status };
+            string status = "5";
+            string[] seg = { "EQUIPMENT_ID", "EXE_TIME", "RESPONER", "MECH_AREA", "IS_EMG", "REASON", "CONTENT", "FAULT_ID", "STATUS", "create_time"};
+            string[] value = { listEq.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listOptor.SelectedValue, listArea.SelectedValue, Convert.ToInt16(ckFault.Checked).ToString(), txtReasons.Text, txtContent.Text, ftID, status, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
             commandlist.Add(opt.InsertDatastr(seg, value, "HT_EQ_RP_PLAN_DETAIL"));
 
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "应急维修记录成功" : "应急维修记录失败";

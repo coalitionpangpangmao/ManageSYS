@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.dhcc.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="StoreServiceInterfaceService" targetNamespace="http://webservice.dhcc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="DOCUMENT" type="tns:materInAndOutVO" />
+      <xs:element name="insertMaterialPurchaseinInfo" type="tns:insertMaterialPurchaseinInfo" />
+      <xs:element name="insertMaterialPurchaseinInfoResponse" type="tns:insertMaterialPurchaseinInfoResponse" />
+      <xs:element name="yuanfuCgrk" type="tns:yuanfuCgrk" />
+      <xs:element name="yuanfuCgrkResponse" type="tns:yuanfuCgrkResponse" />
+      <xs:element name="yuanliaoInAndOut4ws_03" type="tns:yuanliaoInAndOut4ws_03" />
+      <xs:element name="yuanliaoInAndOut4ws_03Response" type="tns:yuanliaoInAndOut4ws_03Response" />
+      <xs:complexType name="yuanfuCgrk">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:poOrderAllVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="poOrderAllVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="bz" type="xs:string" />
+          <xs:element minOccurs="0" name="bzName" type="xs:string" />
+          <xs:element minOccurs="0" name="cgbm" type="xs:string" />
+          <xs:element minOccurs="0" name="cgbmName" type="xs:string" />
+          <xs:element minOccurs="0" name="cgy" type="xs:string" />
+          <xs:element minOccurs="0" name="cgyName" type="xs:string" />
+          <xs:element minOccurs="0" name="cwarehouseName" type="xs:string" />
+          <xs:element minOccurs="0" name="cwarehouseid" type="xs:string" />
+          <xs:element minOccurs="0" name="ddrq" type="xs:string" />
+          <xs:element minOccurs="0" name="gys" type="xs:string" />
+          <xs:element minOccurs="0" name="gysName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="icPurchaseinBVOList" nillable="true" type="tns:icPurchaseinBVO" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="isNc" type="xs:string" />
+          <xs:element minOccurs="0" name="kpgys" type="xs:string" />
+          <xs:element minOccurs="0" name="kpgysName" type="xs:string" />
+          <xs:element minOccurs="0" name="materType" type="xs:string" />
+          <xs:element minOccurs="0" name="status" type="xs:string" />
+          <xs:element name="sumNum" type="xs:double" />
+          <xs:element name="sunPrice" type="xs:double" />
+          <xs:element minOccurs="0" name="zdkslb" type="xs:string" />
+          <xs:element minOccurs="0" name="zdsl" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="icPurchaseinBVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cgeneralbid" type="xs:string" />
+          <xs:element minOccurs="0" name="clocationid" type="xs:string" />
+          <xs:element minOccurs="0" name="crowno" type="xs:string" />
+          <xs:element minOccurs="0" name="cunitid" type="xs:string" />
+          <xs:element minOccurs="0" name="dbizdate" type="xs:string" />
+          <xs:element minOccurs="0" name="localName" type="xs:string" />
+          <xs:element minOccurs="0" name="materialCode" type="xs:string" />
+          <xs:element minOccurs="0" name="materialName" type="xs:string" />
+          <xs:element minOccurs="0" name="materialspec" type="xs:string" />
+          <xs:element minOccurs="0" name="materialtype" type="xs:string" />
+          <xs:element minOccurs="0" name="nmny" type="xs:double" />
+          <xs:element minOccurs="0" name="nnum" type="xs:double" />
+          <xs:element minOccurs="0" name="nshouldnum" type="xs:double" />
+          <xs:element minOccurs="0" name="ntax" type="xs:double" />
+          <xs:element minOccurs="0" name="taxPrice" type="xs:double" />
+          <xs:element minOccurs="0" name="unitCode" type="xs:string" />
+          <xs:element minOccurs="0" name="unitName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="yuanfuCgrkResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="yuanliaoInAndOut4ws_03">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:materInAndOutVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="materInAndOutVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="loginname" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element minOccurs="0" name="vouNo" type="xs:string" />
+          <xs:element minOccurs="0" name="planNo" type="xs:string" />
+          <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+          <xs:element minOccurs="0" name="shiftCode" type="xs:string" />
+          <xs:element minOccurs="0" name="teamCode" type="xs:string" />
+          <xs:element minOccurs="0" name="FDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="shopCode" type="xs:string" />
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="creator" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyMan" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyTime" type="xs:string" />
+          <xs:element minOccurs="0" name="auditMark" type="xs:string" />
+          <xs:element minOccurs="0" name="batchNumber" type="xs:double" />
+          <xs:element minOccurs="0" name="caboSum" type="xs:double" />
+          <xs:element minOccurs="0" name="piecesSum" type="xs:double" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="inoutType" type="xs:string" />
+          <xs:element minOccurs="0" name="bomType" type="xs:string" />
+          <xs:element minOccurs="0" name="cwarehouseid" type="xs:string" />
+          <xs:element minOccurs="0" name="cwarehousename" type="xs:string" />
+          <xs:element minOccurs="0" name="isNc" type="xs:string" />
+          <xs:element minOccurs="0" name="formulaId" type="xs:long" />
+          <xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="shiftName" type="xs:string" />
+          <xs:element minOccurs="0" name="teamName" type="xs:string" />
+          <xs:element minOccurs="0" name="prodName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="subList" type="tns:tShopMaterInoutSub" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tShopMaterInoutSub">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="auditMark" type="xs:string" />
+              <xs:element minOccurs="0" name="batchNumber" type="xs:double" />
+              <xs:element minOccurs="0" name="costprice" type="xs:double" />
+              <xs:element minOccurs="0" name="dataOriginFlag" type="xs:string" />
+              <xs:element minOccurs="0" name="editId" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:long" />
+              <xs:element minOccurs="0" name="localtionId" type="xs:string" />
+              <xs:element minOccurs="0" name="mainId" type="xs:string" />
+              <xs:element minOccurs="0" name="matType" type="xs:string" />
+              <xs:element minOccurs="0" name="materCode" type="xs:string" />
+              <xs:element minOccurs="0" name="materLocation" type="xs:string" />
+              <xs:element minOccurs="0" name="materName" type="xs:string" />
+              <xs:element minOccurs="0" name="materType" type="xs:string" />
+              <xs:element minOccurs="0" name="nonhandnum" type="xs:string" />
+              <xs:element minOccurs="0" name="occurQty" type="xs:string" />
+              <xs:element minOccurs="0" name="oddQty" type="xs:double" />
+              <xs:element minOccurs="0" name="packingNumbers" type="xs:double" />
+              <xs:element minOccurs="0" name="pkMeasdoc" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="substance" type="xs:double" />
+              <xs:element minOccurs="0" name="unitCode" type="xs:string" />
+              <xs:element minOccurs="0" name="unitName" type="xs:string" />
+              <xs:element minOccurs="0" name="warehouseCode" type="xs:string" />
+              <xs:element minOccurs="0" name="warehouseName" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="yuanliaoInAndOut4ws_03Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:wsRespond" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsRespond">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="desc" type="xs:string" />
+          <xs:element minOccurs="0" name="orderNo" type="xs:string" />
+          <xs:element minOccurs="0" name="status" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="insertMaterialPurchaseinInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="insertMaterialPurchaseinInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="yuanliaoInAndOut4ws_03">
+    <wsdl:part name="parameters" element="tns:yuanliaoInAndOut4ws_03" />
+  </wsdl:message>
+  <wsdl:message name="insertMaterialPurchaseinInfo">
+    <wsdl:part name="parameters" element="tns:insertMaterialPurchaseinInfo" />
+  </wsdl:message>
+  <wsdl:message name="insertMaterialPurchaseinInfoResponse">
+    <wsdl:part name="parameters" element="tns:insertMaterialPurchaseinInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="yuanfuCgrkResponse">
+    <wsdl:part name="parameters" element="tns:yuanfuCgrkResponse" />
+  </wsdl:message>
+  <wsdl:message name="yuanfuCgrk">
+    <wsdl:part name="parameters" element="tns:yuanfuCgrk" />
+  </wsdl:message>
+  <wsdl:message name="yuanliaoInAndOut4ws_03Response">
+    <wsdl:part name="parameters" element="tns:yuanliaoInAndOut4ws_03Response" />
+  </wsdl:message>
+  <wsdl:portType name="StoreServiceInterface">
+    <wsdl:operation name="yuanfuCgrk">
+      <wsdl:input name="yuanfuCgrk" message="tns:yuanfuCgrk" />
+      <wsdl:output name="yuanfuCgrkResponse" message="tns:yuanfuCgrkResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="yuanliaoInAndOut4ws_03">
+      <wsdl:input name="yuanliaoInAndOut4ws_03" message="tns:yuanliaoInAndOut4ws_03" />
+      <wsdl:output name="yuanliaoInAndOut4ws_03Response" message="tns:yuanliaoInAndOut4ws_03Response" />
+    </wsdl:operation>
+    <wsdl:operation name="insertMaterialPurchaseinInfo">
+      <wsdl:input name="insertMaterialPurchaseinInfo" message="tns:insertMaterialPurchaseinInfo" />
+      <wsdl:output name="insertMaterialPurchaseinInfoResponse" message="tns:insertMaterialPurchaseinInfoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StoreServiceInterfaceServiceSoapBinding" type="tns:StoreServiceInterface">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="yuanfuCgrk">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="yuanfuCgrk">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="yuanfuCgrkResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertMaterialPurchaseinInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="insertMaterialPurchaseinInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="insertMaterialPurchaseinInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="yuanliaoInAndOut4ws_03">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="yuanliaoInAndOut4ws_03">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="yuanliaoInAndOut4ws_03Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StoreServiceInterfaceService">
+    <wsdl:port name="StoreServiceInterfacePort" binding="tns:StoreServiceInterfaceServiceSoapBinding">
+      <soap:address location="http://10.43.171.22:8081/xymis/services/StoreService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

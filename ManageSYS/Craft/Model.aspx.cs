@@ -18,6 +18,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listSection_2, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
             opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
+            opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group order by f_code  ", "F_NAME", "F_CODE");
         }
     }
 
@@ -294,6 +295,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
                 opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.section_code = '" + txtCode.Text.Substring(0, 5) + "'", "EQ_NAME", "IDKEY");
                 listEquip.SelectedValue = row["EQUIP_CODE"].ToString();
                 listSection.SelectedValue = paracode.Substring(0, 5);
+                listApt.SelectedValue = row["BUSS_ID"].ToString();
 
             }
         }
@@ -390,8 +392,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text.Length == 10 && txtCode.Text.Substring(0, 5) == listSection.SelectedValue)
         {
-            string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" };
-            string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["user"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text };
+            string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" ,"BUSS_ID"};
+            string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text,listApt.SelectedValue };
             
             string log_message;
             if (opt.MergeInto(seg, value, 1, "HT_PUB_TECH_PARA") == "Success")

@@ -17,7 +17,7 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
             txtStop.Text = System.DateTime.Now.AddDays(45).ToString("yyyy-MM-dd");
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1'", "EQ_NAME", "IDKEY");
-            opt.bindDropDownList(listOptor, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
+            opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t where is_del ='0' and  t.levelgroupid = '00700700' union select '' as ID,'' as Name from dual ", "name", "ID");
             opt.bindDropDownList(listSection, "select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code", "section_name", "section_code");
             opt.bindDropDownList(listArea, "select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code", "section_name", "section_code");
             bindGrid();
@@ -32,7 +32,8 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
             query += " and t.STATUS  > '1' ";
         else
             query += " and t.Status  = '1' ";
-        //    query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
+     
+     //      query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -191,10 +192,10 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
         InsertTlog(log_message);       
         bindGrid();
 
-        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_RP_PLAN_DETAIL t left join HT_EQ_RP_PLAN_DETAIL t1 on t1.id = t.id and t1.status = '2' and t1.is_del = '0'  where t.main_id = '" + hideMainid.Value + "'  and t.is_del = '0')", "status");
+        string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_RP_PLAN_DETAIL t left join HT_EQ_RP_PLAN_DETAIL t1 on t1.id = t.id and t1.status >= '2' and t1.is_del = '0'  where t.main_id = '" + hideMainid.Value + "'  and t.is_del = '0')", "status");
         if (alter == "1")
         {
-            opt.UpDateOra("update HT_EQ_RP_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + hideMainid.Value + "'");           
+            opt.UpDateOra("update HT_EQ_RP_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + hideMainid.Value + "'  and TASK_STATUS = '1'");           
         }
 
 

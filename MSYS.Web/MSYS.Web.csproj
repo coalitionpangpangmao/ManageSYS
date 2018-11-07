@@ -87,6 +87,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="IBasePage.cs" />
+    <Compile Include="UpdateEquipCLS.cs" />
     <Compile Include="UpdateFromMaster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -96,6 +97,7 @@
     </Compile>
     <Compile Include="UpdateDeptInfo.cs" />
     <Compile Include="UpdateMarclassInfo.cs" />
+    <Compile Include="UpdateSysUnit.cs" />
     <Compile Include="UpdateUserInfo.cs" />
     <Compile Include="UpdateMaterialInfo.cs" />
     <Compile Include="UpdateEquipInfo.cs" />
@@ -114,6 +116,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\StoreService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="StorageOpt.cs" />
+    <Compile Include="UpdateProduct.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -140,9 +149,24 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Web References\MateriaService\auxFormulaVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\MateriaService\coatFormulaVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\MateriaService\materFormulaVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\MateriaService\productEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\MateriaService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\MateriaService\techStddInfoVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\MateriaService\tPubMateriel.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -154,6 +178,14 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\MateriaService\WsBaseDataInterfaceService.wsdl" />
+    <None Include="Web References\StoreService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\StoreService\StoreServiceInterfaceService.wsdl" />
+    <None Include="Web References\StoreService\wsRespond.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
@@ -191,6 +223,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_MasterService_MisMasterDataServiceInterfaceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\StoreService\</RelPath>
+      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>MSYS_Web_StoreService_StoreServiceInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>

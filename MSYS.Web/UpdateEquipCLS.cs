@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MSYS.Web.MasterService;
+using MSYS.Web.EquipService;
 using System.Data;
 using System.Xml;
 using System.Collections;
@@ -12,59 +12,35 @@ namespace MSYS.Web
     {
         public UpdateEquipCLS()
         {
-            this.seg = new string[] { "LOGINNAME", "NAME", "ID", "LEVELGROUPID"};
-            this.tablename = "HT_SVR_USER";
-            this.rootname = "USERINFO";
+            
         }
-         public override string GetXmlStr()
-         {
-             StringBuilder buffer = new StringBuilder();
-             buffer.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-             buffer.Append("<request>");
-             buffer.Append("</request>");
-             MisMasterDataServiceInterfaceService service = new MisMasterDataServiceInterfaceService();
-             string str = service.getEquipCLS(buffer.ToString());
-             return str;
-         }
-         public override string InsertLocalFromMaster()
-         {
-             string Xmlstr = GetXmlStr();
-             XmlDocument xx = new XmlDocument();
-             xx.LoadXml(Xmlstr);//加载xml
-             XmlNodeList xxList = xx.GetElementsByTagName(this.rootname); //取得节点名为DEPTINFO的XmlNode集合
 
-             try
-             {
-                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                 foreach (XmlNode xxNode in xxList)
-                 {
-                     XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合
-                     int count = childList.Count;
-                     if (count == seg.Length)
-                     {
-                         string[] segvalue = new string[count];
-                         for (int i = 0; i < count ; i++)
-                         {
-                             segvalue[i] = childList[i].InnerText;
-                         }
-                         segvalue[3] = opt.GetSegValue("select F_CODE  from Ht_Svr_Org_Group where F_KEY = '" + segvalue[3] + "'", "F_CODE");
-                         opt.InsertData(this.seg, segvalue, this.tablename);
-                     }
-                     else
-                     {
-                         return "字段与值个数不匹配";
-                     }
-                 }
-                 return "Success";
-
-             }
-             catch (Exception error)
-             {
-                 return error.Message;
-             }
-
-
-         }
+        public override string InsertLocalFromMaster()
+        {
+            MSYS.Web.EquipService.EquipServiceInterfaceService service = new MSYS.Web.EquipService.EquipServiceInterfaceService();
+            StringBuilder buffer = new StringBuilder();
+            buffer.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+            buffer.Append("<request>");
+            buffer.Append("</request>");
+            tEqEqpCls[] cls=  service.getEquipClsList(buffer.ToString());
+            if (cls.Length > 0)
+            {
+                MSYS.DAL.DbOperator opt = new DAL.DbOperator();
+                List<string> commandlist = new List<string>();
+                string[] seg = { "ID_KEY", "NODE_NAME", "NODE_VALUE", "PARENT_ID", "PATH", "TYPE" };
+                foreach (tEqEqpCls item in cls)
+                {
+                    string[] value = { item.idKey, item.nodeName, item.nodeValue, item.parentId, item.path, item.type };
+                    string temp = opt.getMergeStr(seg, value, 1, "HT_EQ_EQP_CLS");
+                    commandlist.Add(temp);
+                    if (opt.UpDateOra(temp) != "Success")
+                        System.Diagnostics.Debug.Write(temp); 
+                }
+                return opt.TransactionCommand(commandlist);
+            }
+            else
+                return "未获取更新";
+        }
     }
 
 

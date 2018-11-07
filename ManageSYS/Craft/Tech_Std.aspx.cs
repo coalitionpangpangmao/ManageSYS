@@ -21,12 +21,21 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listtechC, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
             opt.bindDropDownList(listStatus, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
-            opt.bindDropDownList(listCreator, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "Name", "ID");
+            opt.bindDropDownList(listCreator, "select id,name from  ht_svr_user    order by id ", "Name", "ID");
 
             opt.bindDropDownList(listAprv, "select * from ht_inner_aprv_status ", "NAME", "ID");
         
             subtvHtml = InitTreePrcss();
         }
+    }
+
+    protected void SetEnable(bool enable)
+    {
+        btnAdd.Visible = enable;
+        btnModify.Visible = enable;
+        btnDelete.Visible = enable;
+        btnSave2.Visible = enable;
+        btnDelSel2.Visible = enable;
     }
     protected void initView()
     {
@@ -138,15 +147,18 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             {
                 btnSubmit.Enabled = false;
                 btnSubmit.CssClass = "btngrey";
+                SetEnable(false);
 
             }
             else
             {
                 btnSubmit.Enabled = true;
                 btnSubmit.CssClass = "btn1 auth";
+                SetEnable(true);
             }
         }
         bindGrid(rcpcode, hideprc.Value);
+        bindGrid2(rcpcode, hideprc.Value);
     }
 
     protected void btnUpdate_Click(object sender, EventArgs e)
@@ -165,7 +177,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         if (prccode.Length == 5)
         {
 
-            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位,s.BUSS_ID  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位,BUSS_ID   from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -189,6 +201,24 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                     ((TextBox)GridView1.Rows[i].FindControl("txtUnitM")).Text = mydrv["单位"].ToString();
 
                     list.Enabled = false;
+                    if (mydrv["BUSS_ID"].ToString() == ((MSYS.Data.SysUser)Session["User"]).OwningBusinessUnitId || ((MSYS.Data.SysUser)Session["User"]).UserRole == "系统管理员")
+                    {
+                        ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Enabled = true;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtValueM")).Enabled = true;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtUlimitM")).Enabled = true;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtLlimitM")).Enabled = true;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtDevM")).Enabled = true;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtUnitM")).Enabled = true;
+                    }
+                    else
+                    {
+                        ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtValueM")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtUlimitM")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtLlimitM")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtDevM")).Enabled = false;
+                        ((TextBox)GridView1.Rows[i].FindControl("txtUnitM")).Enabled = false;
+                    }
 
                 }
 
@@ -201,7 +231,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         if (prccode.Length == 5)
         {
 
-            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '_1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '_1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位 ,s.BUSS_ID  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '_1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位 ,BUSS_ID  from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '_1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -223,8 +253,25 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
                     ((TextBox)GridView2.Rows[i].FindControl("txtLlimitM")).Text = mydrv["下限"].ToString();
                     ((TextBox)GridView2.Rows[i].FindControl("txtDevM")).Text = mydrv["允差"].ToString();
                     ((TextBox)GridView2.Rows[i].FindControl("txtUnitM")).Text = mydrv["单位"].ToString();
-
                     list.Enabled = false;
+                    if (mydrv["BUSS_ID"].ToString() == ((MSYS.Data.SysUser)Session["User"]).OwningBusinessUnitId || ((MSYS.Data.SysUser)Session["User"]).UserRole == "系统管理员")
+                    {
+                        ((TextBox)GridView2.Rows[i].FindControl("txtCodeM")).Enabled = true;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtValueM")).Enabled = true;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtUlimitM")).Enabled = true;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtLlimitM")).Enabled = true;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtDevM")).Enabled = true;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtUnitM")).Enabled = true;
+                    }
+                    else
+                    {
+                        ((TextBox)GridView2.Rows[i].FindControl("txtCodeM")).Enabled = false;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtValueM")).Enabled = false;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtUlimitM")).Enabled = false;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtLlimitM")).Enabled = false;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtDevM")).Enabled = false;
+                        ((TextBox)GridView2.Rows[i].FindControl("txtUnitM")).Enabled = false;
+                    }
 
                 }
 
@@ -425,8 +472,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     protected void listVersion_SelectedIndexChanged(object sender, EventArgs e)
     {
         bindData(listVersion.SelectedValue);
-        bindGrid2(listVersion.SelectedValue, hideprc.Value);
-        bindGrid(listVersion.SelectedValue, hideprc.Value);
+       
     }
 
 

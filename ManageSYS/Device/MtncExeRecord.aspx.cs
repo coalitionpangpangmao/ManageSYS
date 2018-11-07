@@ -17,7 +17,7 @@ public partial class Device_MtncExeRecord : MSYS.Web.BasePage
             txtStop.Text = System.DateTime.Now.AddDays(45).ToString("yyyy-MM-dd");
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1' order by IDKEY", "EQ_NAME", "IDKEY");
-            opt.bindDropDownList(listOptor, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
+            opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t where is_del ='0' ", "name", "ID");
             opt.bindDropDownList(listArea, "select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code", "section_name", "section_code");
              
             try
@@ -36,7 +36,7 @@ public partial class Device_MtncExeRecord : MSYS.Web.BasePage
    
     protected void bindGrid()
     {
-        string query = "select t2.mt_name as 维保计划名,t2.pz_code as 凭证号, t3.section_name as 区域,t1.eq_name as 设备名称,t.reason as 维保原因,t.content as 维保内容,t.exp_finish_time as 期望完成时间,t4.name as 状态,t.remark as 备注 ,t.ID  from ht_eq_mt_plan_detail t left join Ht_Eq_Eqp_Tbl t1 on t1.idkey = t.equipment_id left join ht_eq_mt_plan t2 on t.main_id = t2.pz_code  left join ht_pub_tech_section t3 on t3.section_code = t.mech_area left join ht_inner_eqexe_status t4 on t4.id = t.status  where  t.is_del = '0'   and t.exp_finish_time between '" + txtStart.Text + "' and '" + txtStop.Text + "'   and t2.FLOW_STATUS = '2'  and t.STATUS  = '5' ";
+        string query = "select t2.mt_name as 维保计划名,t2.pz_code as 凭证号, t3.section_name as 区域,t1.eq_name as 设备名称,t.reason as 维保原因,t.content as 维保内容,t.exp_finish_time as 期望完成时间,t4.name as 状态,t.remark as 备注 ,t.ID  from ht_eq_mt_plan_detail t left join Ht_Eq_Eqp_Tbl t1 on t1.idkey = t.equipment_id left join ht_eq_mt_plan t2 on t.main_id = t2.pz_code  left join ht_pub_tech_section t3 on t3.section_code = t.mech_area left join ht_inner_eqexe_status t4 on t4.id = t.status  where  t.is_del = '0'   and t.exp_finish_time between '" + txtStart.Text + "' and '" + txtStop.Text + "'   and t2.FLOW_STATUS = '2'  and t.STATUS  = '5' and t2.is_del = '0' ";
         if (hideequip.Value != "")
             query += " and t.equipment_id = " + hideequip.Value ;
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();

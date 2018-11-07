@@ -25,7 +25,7 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
     protected void bindGrid1()
     {
 
-        string query = "select t.mt_name as 校准计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,t2.name as 状态,t.remark as 备注,t.pz_code,t.task_status  from HT_EQ_MCLBR_PLAN t left join ht_svr_user t1 on t1.id = t.create_id left join ht_inner_eqexe_status t2 on t2.id = t.task_status   where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'  and t.CLBRT_TYPE = '1' and t.FLOW_STATUS = '2'";
+        string query = "select t.mt_name as 校准计划,t.pz_code as 计划号,t.expired_date as 过期时间,t1.name as 申请人,t2.name as 状态,t.remark as 备注,t.pz_code,t.task_status  from HT_EQ_MCLBR_PLAN t left join ht_svr_user t1 on t1.id = t.create_id left join ht_inner_eqexe_status t2 on t2.id = t.task_status   where t.expired_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and t.IS_DEL = '0'  and t.CLBRT_TYPE = '1' and t.FLOW_STATUS = '2'";      
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -89,7 +89,7 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
     {
 
         string query = "select t.section as 工段,t.equipment_id as 设备名称,t.point as 数据点,t.OLDVALUE as 原值,t.POINTVALUE as 校准值,t.SAMPLE_TIME as 校准时间,t.STATUS as 状态,t.remark as 备注 ,t.ID  from HT_EQ_MCLBR_PLAN_detail  t where t.main_id = '" + code + "' and t.is_del = '0'";
-
+      //  query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
@@ -141,10 +141,10 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
 
-            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status = '2' and t1.is_del = '0'  where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+            string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status >= '2' and t1.is_del = '0'  where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
             if (alter == "1")
             {
-                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "'");
+                opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "' and TASK_STATUS = '1'");
                 bindGrid1();
             }
 
@@ -157,6 +157,8 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
 
     protected void txtcalBtime_TextChanged(object sender, EventArgs e)
     {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       
         txtcalEtime.Text = Convert.ToDateTime(txtcalBtime.Text).AddHours(4).ToString("yyyy-MM-dd HH:mm:ss");
     }
     protected void btnCalbrt_Click(object sender, EventArgs e)
@@ -177,10 +179,10 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
                 int rowIndex = row.RowIndex;
                 string id = GridView2.DataKeys[rowIndex].Value.ToString();
                 string status = ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue;
-                if ((status == "1" || status == "2") && ((TextBox)row.FindControl("txtGridNewvalue")).Text != "")
+                if (status == "1" || status == "2")
                 {
                     string para_code = ((DropDownList)row.FindControl("listGridPoint")).SelectedValue;
-                    string setval = opt.GetSegValue("select value from ht_tech_stdd_code_detail r left join ht_tech_stdd_code s on s.tech_code = r.tech_code where r.para_code = '" + para_code + "' and s.prod_code = '" + prod_code + "'", "value");
+                    string setval = opt.GetSegValue("select value from ht_tech_stdd_code_detail r  left join ht_pub_prod_design q on q.tech_stdd_code = r.tech_code  where r.para_code = '" + para_code + "' and q.prod_code = '" + prod_code + "'", "value");
                     setval = (setval == "NoRecord" ? "0" : setval);
                     string resval = getResVal(txtcalBtime.Text,txtcalEtime.Text,para_code);
                     string[] seg = { "ID", "OLDVALUE", "POINTVALUE", "SAMPLE_TIME", "remark", "STATUS" };
@@ -195,10 +197,10 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
                 InsertTlog(log_message);
                 bindGrid2(txtCode.Value);
 
-                string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status = '2' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
+                string alter = opt.GetSegValue("select case  when total = done then 1 else 0 end as status from (select  count(distinct t.id) as total,count( distinct t1.id) as done from HT_EQ_MCLBR_PLAN_detail t left join HT_EQ_MCLBR_PLAN_detail t1 on t1.id = t.id and t1.status >= '2' and t1.is_del = '0' where t.main_id = '" + txtCode.Value + "'  and t.is_del = '0')", "status");
                 if (alter == "1")
                 {
-                    opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "'");
+                    opt.UpDateOra("update HT_EQ_MCLBR_PLAN set TASK_STATUS = '2' where PZ_CODE = '" + txtCode.Value + "'  and TASK_STATUS = '1'");
                     bindGrid1();
                 }
             }
@@ -224,8 +226,12 @@ public partial class Device_AutoCalibrate : MSYS.Web.BasePage
             data = ihopt.CreateDataSet(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
-              return  data.Tables[0].Compute("avg(value)", "").ToString();
-               
+                double sum = 0;
+                foreach (DataRow drow in data.Tables[0].Rows)
+                {
+                    sum += Convert.ToDouble(drow["value"].ToString());
+                }
+                return (sum / (double)data.Tables[0].Rows.Count).ToString("0.00");
             }
             else return "";
         }

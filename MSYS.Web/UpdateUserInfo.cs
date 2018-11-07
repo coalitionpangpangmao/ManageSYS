@@ -10,13 +10,16 @@ namespace MSYS.Web
 {
     public class UpdateUserInfo:UpdateFromMaster
     {
+        protected string[] seg = null;
+        protected string rootname;
+        protected string tablename;
         public UpdateUserInfo()
         {
             this.seg = new string[] { "ID", "LOGINNAME", "NAME", "LEVELGROUPID","PASSWORD" };
             this.tablename = "HT_SVR_USER";
             this.rootname = "USERINFO";
         }
-         public override string GetXmlStr()
+         public  string GetXmlStr()
          {
              StringBuilder buffer = new StringBuilder();
              buffer.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
@@ -33,10 +36,10 @@ namespace MSYS.Web
              xx.LoadXml(Xmlstr);//加载xml
              XmlNodeList xxList = xx.GetElementsByTagName(this.rootname); //取得节点名为DEPTINFO的XmlNode集合
 
-             try
-             {
+            
                  MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                 
+                 List<string> commandlist = new List<string>();
+                 string temp;
                  foreach (XmlNode xxNode in xxList)
                  {
                      XmlNodeList childList = xxNode.ChildNodes; //取得DEPTINFO下的子节点集合
@@ -56,7 +59,11 @@ namespace MSYS.Web
                              segvalue[4] = "e10adc3949ba59abbe56e057f20f883e";
                          else
                              segvalue[4] = psd;
-                         opt.MergeInto(this.seg, segvalue, 1, this.tablename);
+                         temp = opt.getMergeStr(this.seg, segvalue, 1, this.tablename);
+                         commandlist.Add(temp);
+                         if (opt.UpDateOra(temp) != "Success")
+                             System.Diagnostics.Debug.Write(temp); 
+                         
                      }
                      else
                      {
@@ -64,14 +71,9 @@ namespace MSYS.Web
                      }
                  }
 
-                 return "Success";
+                 return opt.TransactionCommand(commandlist);
 
-             }
-             catch (Exception error)
-             {
-                 return error.Message;
-             }
-
+         
 
          }
     }

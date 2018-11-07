@@ -165,6 +165,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
         string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue,txtPswd.Text };        
 
         string log_message = opt.MergeInto(seg, value, 1, "ht_svr_user") == "Success" ? "修改用户成功" : "修改用户失败";
+        value[9] = "";
         log_message += "--详情：" + string.Join(",", value);
         InsertTlog(log_message);  
 

@@ -119,7 +119,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="顺序号">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号"
+                                            <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号" onKeyUp="value=value.replace(/\D/g,'')" 
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>

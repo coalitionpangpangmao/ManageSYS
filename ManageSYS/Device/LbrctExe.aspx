@@ -156,7 +156,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="润滑点数">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridnum" runat="server" DataValueField="润滑点数" DataTextField="润滑点数"
+                                        <asp:TextBox ID="txtGridnum" runat="server" DataValueField="润滑点数" DataTextField="润滑点数" onKeyUp="value=value.replace(/\D/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -166,9 +166,9 @@
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                  <asp:TemplateField HeaderText="润滑周期">
+                                  <asp:TemplateField HeaderText="润滑周期(天）">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGriPric" runat="server" DataValueField="润滑周期" DataTextField="润滑周期"
+                                        <asp:TextBox ID="txtGriPric" runat="server" DataValueField="润滑周期" DataTextField="润滑周期" onKeyUp="value=value.replace(/\D/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -180,7 +180,7 @@
                                 </asp:TemplateField>
                                   <asp:TemplateField HeaderText="润滑量">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridamount" runat="server" DataValueField="润滑量" DataTextField="润滑量"
+                                        <asp:TextBox ID="txtGridamount" runat="server" DataValueField="润滑量" DataTextField="润滑量" onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>  

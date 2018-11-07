@@ -27,23 +27,26 @@
             debugger;
             $("#Frame1").contents().find("'*[id$=hdcode]'").attr('value', code);
             $("#Frame1").contents().find("'*[id$=btnUpdate]'").click();
+            $("#Frame2").contents().find("'*[id$=hdcode]'").attr('value', code);
+            $("#Frame2").contents().find("'*[id$=btnUpdate]'").click();
+            $("#Frame3").contents().find("'*[id$=hdcode]'").attr('value', code);
+            $("#Frame3").contents().find("'*[id$=btnUpdate]'").click();
+            $("#Frame4").contents().find("'*[id$=hdcode]'").attr('value', code);
+            $("#Frame4").contents().find("'*[id$=btnUpdate]'").click();
         }
         function tab2Click(code) {
             $('#tabtop2').click();
             $("#Frame2").contents().find("'*[id$=hdcode]'").attr('value', code);
-
             $("#Frame2").contents().find("'*[id$=btnUpdate]'").click();
         }
         function tab3Click(code) {
             $('#tabtop3').click();
             $("#Frame3").contents().find("'*[id$=hdcode]'").attr('value', code);
-
             $("#Frame3").contents().find("'*[id$=btnUpdate]'").click();
         }
         function tab4Click(code) {
             $('#tabtop4').click();
             $("#Frame4").contents().find("'*[id$=hdcode]'").attr('value', code);
-
             $("#Frame4").contents().find("'*[id$=btnUpdate]'").click();
         }
         function update() {

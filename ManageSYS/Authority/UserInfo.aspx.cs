@@ -61,7 +61,7 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
         string[] value = { txtID.Text, txtName.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtEmail.Text, listApt.SelectedValue, txtDscp.Text, listRole.SelectedValue };
 
         string log_message = opt.UpDateData(seg, value, "ht_svr_user", " where ID = '" + txtID.Text + "'") == "Success" ? "修改用户成功" : "修改用户失败";
-        log_message += "--详情:" + string.Join(",", value);
+        log_message += "--用户ID:" + txtID.Text;
         InsertTlog(log_message);
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
     }

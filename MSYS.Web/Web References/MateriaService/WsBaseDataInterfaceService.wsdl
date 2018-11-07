@@ -2,12 +2,250 @@
 <wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.dhcc.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="WsBaseDataInterfaceService" targetNamespace="http://webservice.dhcc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="DOCUMENT" nillable="true" type="xs:anyType" />
       <xs:element name="getAllMaterialtList" type="tns:getAllMaterialtList" />
       <xs:element name="getAllMaterialtListResponse" type="tns:getAllMaterialtListResponse" />
+      <xs:element name="getAllProductList" type="tns:getAllProductList" />
+      <xs:element name="getAllProductListResponse" type="tns:getAllProductListResponse" />
+      <xs:element name="getAuxFormulaById" type="tns:getAuxFormulaById" />
+      <xs:element name="getAuxFormulaByIdResponse" type="tns:getAuxFormulaByIdResponse" />
+      <xs:element name="getCoatFormulaById" type="tns:getCoatFormulaById" />
+      <xs:element name="getCoatFormulaByIdResponse" type="tns:getCoatFormulaByIdResponse" />
+      <xs:element name="getMatFormulaById" type="tns:getMatFormulaById" />
+      <xs:element name="getMatFormulaByIdResponse" type="tns:getMatFormulaByIdResponse" />
+      <xs:element name="getTechStdById" type="tns:getTechStdById" />
+      <xs:element name="getTechStdByIdResponse" type="tns:getTechStdByIdResponse" />
       <xs:element name="getUnitList" type="tns:getUnitList" />
       <xs:element name="getUnitListResponse" type="tns:getUnitListResponse" />
       <xs:element name="materialTree" type="tns:materialTree" />
       <xs:element name="materialTreeResponse" type="tns:materialTreeResponse" />
+      <xs:complexType name="getTechStdById">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getTechStdByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:techStddInfoVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="techStddInfoVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="techStddInfo" type="tns:tQaTechStdd" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="techStdDetails" type="tns:techStddDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tQaTechStdd">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="BDate" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="controlStatus" type="xs:string" />
+              <xs:element minOccurs="0" name="createDate" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="createDept" type="xs:string" />
+              <xs:element minOccurs="0" name="createId" type="xs:string" />
+              <xs:element minOccurs="0" name="creator" type="xs:string" />
+              <xs:element minOccurs="0" name="EDate" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="id" type="xs:long" />
+              <xs:element minOccurs="0" name="isDel" type="xs:string" />
+              <xs:element minOccurs="0" name="isValid" type="xs:string" />
+              <xs:element minOccurs="0" name="issuedStatus" type="xs:string" />
+              <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+              <xs:element minOccurs="0" name="modifyTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="standardCode" type="xs:string" />
+              <xs:element minOccurs="0" name="standardVol" type="xs:string" />
+              <xs:element minOccurs="0" name="techStddName" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="techStddDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="baseDown" type="xs:string" />
+          <xs:element minOccurs="0" name="baseUp" type="xs:string" />
+          <xs:element minOccurs="0" name="bzUnit" type="xs:string" />
+          <xs:element minOccurs="0" name="centerVal" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="paraName" type="xs:string" />
+          <xs:element minOccurs="0" name="paraUnit" type="xs:string" />
+          <xs:element minOccurs="0" name="parmStdd" type="xs:string" />
+          <xs:element minOccurs="0" name="passPercent" type="xs:string" />
+          <xs:element minOccurs="0" name="processName" type="xs:string" />
+          <xs:element minOccurs="0" name="projCode" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="sectionName" type="xs:string" />
+          <xs:element minOccurs="0" name="sort" type="xs:string" />
+          <xs:element minOccurs="0" name="stddValue" type="xs:string" />
+          <xs:element minOccurs="0" name="techParmType" type="xs:string" />
+          <xs:element minOccurs="0" name="techStddId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMatFormulaById">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMatFormulaByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:materFormulaVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="materFormulaVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="formulaCode" type="xs:string" />
+          <xs:element minOccurs="0" name="formulaName" type="xs:string" />
+          <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+          <xs:element minOccurs="0" name="standardVol" type="xs:string" />
+          <xs:element minOccurs="0" name="BDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="controlStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="caboSum" type="xs:double" />
+          <xs:element minOccurs="0" name="piecesSum" type="xs:double" />
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="creator" type="xs:string" />
+          <xs:element minOccurs="0" name="createDate" type="xs:string" />
+          <xs:element minOccurs="0" name="createDept" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyTime" type="xs:string" />
+          <xs:element minOccurs="0" name="isValid" type="xs:string" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="stemNum" type="xs:double" />
+          <xs:element minOccurs="0" name="pieceNum" type="xs:double" />
+          <xs:element minOccurs="0" name="smallsNum" type="xs:double" />
+          <xs:element minOccurs="0" name="sticksNum" type="xs:double" />
+          <xs:element minOccurs="0" name="adjust" type="xs:string" />
+          <xs:element minOccurs="0" name="flowStatus" type="xs:string" />
+          <xs:element name="executeBatch" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="spSubList" type="tns:tQaMaterFormulaDetail" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ygSubList" type="tns:tQaMaterFormulaDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tQaMaterFormulaDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="batchSize" type="xs:double" />
+          <xs:element minOccurs="0" name="frontGroup" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="materCode" type="xs:string" />
+          <xs:element minOccurs="0" name="materFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="materFormulaId" type="xs:long" />
+          <xs:element minOccurs="0" name="materName" type="xs:string" />
+          <xs:element minOccurs="0" name="materSort" type="xs:int" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getCoatFormulaById">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getCoatFormulaByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:coatFormulaVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="coatFormulaVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="formulaCode" type="xs:string" />
+          <xs:element minOccurs="0" name="formulaName" type="xs:string" />
+          <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+          <xs:element minOccurs="0" name="standardVol" type="xs:string" />
+          <xs:element minOccurs="0" name="BDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="controlStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="creator" type="xs:string" />
+          <xs:element minOccurs="0" name="createDate" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyTime" type="xs:string" />
+          <xs:element minOccurs="0" name="createDept" type="xs:string" />
+          <xs:element minOccurs="0" name="isValid" type="xs:string" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="formulaXj" type="xs:double" />
+          <xs:element minOccurs="0" name="WTotal" type="xs:double" />
+          <xs:element minOccurs="0" name="formulaTpy" type="xs:double" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="coatXJSubList" type="tns:tQaCoatFormulaDetail" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="coatTBYSubList" type="tns:tQaCoatFormulaDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tQaCoatFormulaDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="classCode" type="xs:string" />
+          <xs:element minOccurs="0" name="className" type="xs:string" />
+          <xs:element minOccurs="0" name="coatFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="coatFormulaId" type="xs:long" />
+          <xs:element minOccurs="0" name="coatScale" type="xs:string" />
+          <xs:element minOccurs="0" name="coatSort" type="xs:double" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="isValid" type="xs:string" />
+          <xs:element minOccurs="0" name="materialName" type="xs:string" />
+          <xs:element minOccurs="0" name="needSize" type="xs:double" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getAuxFormulaById">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getAuxFormulaByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:auxFormulaVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="auxFormulaVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="formulaCode" type="xs:string" />
+          <xs:element minOccurs="0" name="formulaName" type="xs:string" />
+          <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+          <xs:element minOccurs="0" name="standardVol" type="xs:string" />
+          <xs:element minOccurs="0" name="BDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="controlStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="creator" type="xs:string" />
+          <xs:element minOccurs="0" name="createDate" type="xs:string" />
+          <xs:element minOccurs="0" name="createDept" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyTime" type="xs:string" />
+          <xs:element minOccurs="0" name="isValid" type="xs:string" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="auxSubList" type="tns:tQaAuxFormulaDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tQaAuxFormulaDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="auxFormulaId" type="xs:long" />
+          <xs:element minOccurs="0" name="auxPercent" type="xs:double" />
+          <xs:element minOccurs="0" name="auxScale" type="xs:double" />
+          <xs:element minOccurs="0" name="auxSort" type="xs:double" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="materCode" type="xs:string" />
+          <xs:element minOccurs="0" name="materName" type="xs:string" />
+          <xs:element minOccurs="0" name="materType" type="xs:string" />
+          <xs:element minOccurs="0" name="mattreeName" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="materialTree">
         <xs:sequence />
       </xs:complexType>
@@ -89,15 +327,6 @@
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
-      <xs:complexType name="baseVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="draw" type="xs:int" />
-          <xs:element minOccurs="0" name="length" type="xs:int" />
-          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
-          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
-          <xs:element minOccurs="0" name="start" type="xs:int" />
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="getUnitList">
         <xs:sequence />
       </xs:complexType>
@@ -125,27 +354,114 @@
           <xs:element minOccurs="0" name="xyUnitCode" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="getAllProductList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:productEntity" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="productEntity">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="auxFormulaCode" type="xs:string" />
+              <xs:element minOccurs="0" name="auxFormulaId" type="xs:string" />
+              <xs:element minOccurs="0" name="beltLineType" type="xs:string" />
+              <xs:element minOccurs="0" name="coatFormulaCode" type="xs:string" />
+              <xs:element minOccurs="0" name="coatFormulaId" type="xs:string" />
+              <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="createorId" type="xs:string" />
+              <xs:element minOccurs="0" name="handMode" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:long" />
+              <xs:element minOccurs="0" name="isDel" type="xs:string" />
+              <xs:element minOccurs="0" name="isValid" type="xs:string" />
+              <xs:element minOccurs="0" name="materFormulaCode" type="xs:string" />
+              <xs:element minOccurs="0" name="materFormulaId" type="xs:string" />
+              <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+              <xs:element minOccurs="0" name="modifyTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="packName" type="xs:string" />
+              <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+              <xs:element minOccurs="0" name="prodName" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="standardValue" type="xs:string" />
+              <xs:element minOccurs="0" name="techStddCode" type="xs:string" />
+              <xs:element minOccurs="0" name="techStddId" type="xs:string" />
+              <xs:element minOccurs="0" name="xyProdCode" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="getAllProductListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:productEntity" />
+        </xs:sequence>
+      </xs:complexType>
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="getAllMaterialtListResponse">
     <wsdl:part name="parameters" element="tns:getAllMaterialtListResponse" />
   </wsdl:message>
+  <wsdl:message name="getAllProductList">
+    <wsdl:part name="parameters" element="tns:getAllProductList" />
+  </wsdl:message>
   <wsdl:message name="getAllMaterialtList">
     <wsdl:part name="parameters" element="tns:getAllMaterialtList" />
+  </wsdl:message>
+  <wsdl:message name="getAllProductListResponse">
+    <wsdl:part name="parameters" element="tns:getAllProductListResponse" />
   </wsdl:message>
   <wsdl:message name="materialTreeResponse">
     <wsdl:part name="parameters" element="tns:materialTreeResponse" />
   </wsdl:message>
-  <wsdl:message name="materialTree">
-    <wsdl:part name="parameters" element="tns:materialTree" />
+  <wsdl:message name="getCoatFormulaByIdResponse">
+    <wsdl:part name="parameters" element="tns:getCoatFormulaByIdResponse" />
   </wsdl:message>
   <wsdl:message name="getUnitListResponse">
     <wsdl:part name="parameters" element="tns:getUnitListResponse" />
   </wsdl:message>
+  <wsdl:message name="getMatFormulaById">
+    <wsdl:part name="parameters" element="tns:getMatFormulaById" />
+  </wsdl:message>
   <wsdl:message name="getUnitList">
     <wsdl:part name="parameters" element="tns:getUnitList" />
   </wsdl:message>
+  <wsdl:message name="getAuxFormulaByIdResponse">
+    <wsdl:part name="parameters" element="tns:getAuxFormulaByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAuxFormulaById">
+    <wsdl:part name="parameters" element="tns:getAuxFormulaById" />
+  </wsdl:message>
+  <wsdl:message name="getTechStdById">
+    <wsdl:part name="parameters" element="tns:getTechStdById" />
+  </wsdl:message>
+  <wsdl:message name="getCoatFormulaById">
+    <wsdl:part name="parameters" element="tns:getCoatFormulaById" />
+  </wsdl:message>
+  <wsdl:message name="materialTree">
+    <wsdl:part name="parameters" element="tns:materialTree" />
+  </wsdl:message>
+  <wsdl:message name="getTechStdByIdResponse">
+    <wsdl:part name="parameters" element="tns:getTechStdByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMatFormulaByIdResponse">
+    <wsdl:part name="parameters" element="tns:getMatFormulaByIdResponse" />
+  </wsdl:message>
   <wsdl:portType name="WsBaseDataInterface">
+    <wsdl:operation name="getTechStdById">
+      <wsdl:input name="getTechStdById" message="tns:getTechStdById" />
+      <wsdl:output name="getTechStdByIdResponse" message="tns:getTechStdByIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getMatFormulaById">
+      <wsdl:input name="getMatFormulaById" message="tns:getMatFormulaById" />
+      <wsdl:output name="getMatFormulaByIdResponse" message="tns:getMatFormulaByIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCoatFormulaById">
+      <wsdl:input name="getCoatFormulaById" message="tns:getCoatFormulaById" />
+      <wsdl:output name="getCoatFormulaByIdResponse" message="tns:getCoatFormulaByIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAuxFormulaById">
+      <wsdl:input name="getAuxFormulaById" message="tns:getAuxFormulaById" />
+      <wsdl:output name="getAuxFormulaByIdResponse" message="tns:getAuxFormulaByIdResponse" />
+    </wsdl:operation>
     <wsdl:operation name="materialTree">
       <wsdl:input name="materialTree" message="tns:materialTree" />
       <wsdl:output name="materialTreeResponse" message="tns:materialTreeResponse" />
@@ -158,9 +474,49 @@
       <wsdl:input name="getUnitList" message="tns:getUnitList" />
       <wsdl:output name="getUnitListResponse" message="tns:getUnitListResponse" />
     </wsdl:operation>
+    <wsdl:operation name="getAllProductList">
+      <wsdl:input name="getAllProductList" message="tns:getAllProductList" />
+      <wsdl:output name="getAllProductListResponse" message="tns:getAllProductListResponse" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WsBaseDataInterfaceServiceSoapBinding" type="tns:WsBaseDataInterface">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getMatFormulaById">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getMatFormulaById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMatFormulaByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTechStdById">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getTechStdById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getTechStdByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCoatFormulaById">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getCoatFormulaById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCoatFormulaByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAuxFormulaById">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAuxFormulaById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAuxFormulaByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getAllMaterialtList">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getAllMaterialtList">
@@ -176,6 +532,15 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="materialTreeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllProductList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllProductList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllProductListResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
