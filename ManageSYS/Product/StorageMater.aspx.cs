@@ -25,7 +25,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group order by F_CODE", "F_NAME", "F_CODE");
         opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0' order by prod_code", "PROD_NAME", "PROD_CODE");
-        opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS < '4' and is_DEL = '0' order by Plan_no", "PLAN_NO", "PLAN_NO");
+        opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS <> '3' and is_DEL = '0' and mater_status = '1' order by Plan_no", "PLAN_NO", "PLAN_NO");
         opt.bindDropDownList(listStorage, "select * from ht_inner_mat_depot order by ID", "NAME", "ID");
         // opt.bindDropDownList(listStatus, "select ID,ISSUE_NAME from HT_INNER_BOOL_DISPLAY ", "ISSUE_NAME", "ID");
         opt.bindDropDownList(listStatus, "select * from ht_inner_aprv_status order by ID", "NAME", "ID");
@@ -35,7 +35,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     #region tab1
     protected void bindGrid1()
     {
-        string query = "select g.out_date as 领退日期,r.strg_name as 出入库类型，t.ISSUE_Name as 下发状态,g.order_sn as 单据号 ,g1.YG as 烟梗总量,g2.SP as 碎片总量,s.name as 审批状态,h.name as 编制人,j.name as 收发人  from ht_strg_materia g left join (select main_code, sum(original_demand) as yg from ht_strg_mater_sub where main_code = '' and mater_flag = 'YG' group by main_code ) g1 on g1.main_code = g.order_sn left join (select main_code, sum(original_demand) as sp from ht_strg_mater_sub where main_code = '' and mater_flag = 'SP' group by main_code ) g2 on g2.main_code = g.order_sn left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join HT_INNER_BOOL_DISPLAY t on t.id = g.issue_status left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id  where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and g.IS_DEL = '0'  ";
+        string query = "select g.out_date as 领退日期,r.strg_name as 出入库类型，g.issue_status as 出入库状态,g.order_sn as 单据号 ,g.MONTHPLANNO as 关联批次,g1.YG as 烟梗总量,g2.SP as 碎片总量,s.name as 审批状态,h.name as 编制人,j.name as 收发人  from ht_strg_materia g left join (select main_code, sum(original_demand) as yg from ht_strg_mater_sub where main_code = '' and mater_flag = 'YG' group by main_code ) g1 on g1.main_code = g.order_sn left join (select main_code, sum(original_demand) as sp from ht_strg_mater_sub where main_code = '' and mater_flag = 'SP' group by main_code ) g2 on g2.main_code = g.order_sn left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id  where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and g.IS_DEL = '0'  ";
         if (rdOut1.Checked)
             query += " and g.strg_type = '0'";
         else
@@ -52,11 +52,24 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
                 ((Label)GridView1.Rows[i].FindControl("labStrg")).Text = mydrv["出入库类型"].ToString();
                 ((Label)GridView1.Rows[i].FindControl("labAudit")).Text = mydrv["审批状态"].ToString();
-                ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = mydrv["下发状态"].ToString();
+                if (((Label)GridView1.Rows[i].FindControl("labStrg")).Text == "出库")
+                {
+                    if (mydrv["出入库状态"].ToString() == "0")
+                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "未出库";
+                    else
+                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "己出库";
+                }
+                else
+                {
+                    if (mydrv["出入库状态"].ToString() == "0")
+                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "未入库";
+                    else
+                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "己入库";
+                }
                 ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Text = mydrv["出入库类型"].ToString();
                 if (mydrv["审批状态"].ToString() != "未提交")
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
-                if (mydrv["下发状态"].ToString() != "未下发")
+                if (mydrv["出入库状态"].ToString() != "0")
                     ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = false;
 
 
@@ -72,7 +85,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
                     ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "编制";
                 }
-                if (mydrv["下发状态"].ToString() != "未下发")
+                if (mydrv["出入库状态"].ToString() != "0")
                 {
                     ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = false;
                     ((Button)GridView1.Rows[i].FindControl("btnGridopt")).CssClass = "btngrey";
@@ -145,11 +158,18 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
         string id = GridView1.DataKeys[index].Value.ToString();
         string aprv = ((Label)GridView1.Rows[index].FindControl("labAudit")).Text;
+        string planno = GridView1.Rows[index].Cells[6].Text;
         if (aprv == "己通过")
         {
-            string query = "update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'";
+            List<string> commandlist = new List<string>();
+            commandlist.Add("update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'");
+            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and MATER_STATUS = '1'");
+            MSYS.Web.StorageOpt st = new MSYS.Web.StorageOpt();
+            ////调用接口，变更库存////
+      //      st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
+            /////
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string log_message = opt.UpDateOra(query) == "Success" ? "出入库成功" : "出入库失败";
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "出入库成功" : "出入库失败";
             log_message += "--标识:" + id;
             InsertTlog(log_message);
             bindGrid1();
@@ -326,10 +346,28 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_MATERIA"));
             commandlist.Add("delete from HT_STRG_MATER_SUB where MAIN_CODE = '" + txtCode.Text + "'");
             //根据生产计划对应的配方明细生成原料领用明细           
-            commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE  from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "'");
+            commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY  from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成原料领用主表记录成功" : "生成原料领用主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
+            //////计算出入库单总各类型总量
+            DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from ht_strg_mater_sub t  where t.main_code = '" + txtCode.Text + "' group by  t.mater_flag");
+            if (res != null && res.Tables[0].Rows.Count > 0)
+            {
+                double CABOSUM=0, PEICESSUM=0;
+                foreach (DataRow row in res.Tables[0].Rows)
+                {
+                    if (row["mater_flag"] == "长梗" || row["mater_flag"] == "短梗")
+                        CABOSUM += Convert.ToDouble(row["amount"].ToString());
+                    if(row["mater_flag"] == "碎片" || row["mater_flag"] == "烟末")
+                        PEICESSUM += Convert.ToDouble(row["amount"].ToString());
+                }
+                txtStemSum.Text = CABOSUM.ToString("0.00");
+                txtChipSum.Text = PEICESSUM.ToString("0.00");
+                string[] seg1 = { "ORDER_SN", "CABOSUM", "PEICESSUM" };
+                string[] value1 = { txtCode.Text, txtStemSum.Text,txtChipSum.Text};
+                opt.MergeInto(seg1, value1, 1, "HT_STRG_MATERIA");
+            }
         }
         if (rdIn.Checked)
         {

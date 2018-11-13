@@ -49,7 +49,7 @@ h2{font-weight:normal;}
 .tablelist tbody tr:hover{background:#e5ebee;}
 .sort{padding-left:3px;}
 
-
+  .selectedbold { font-weight:bolder;color:red;   }
 
 /*default*/
 .mainbox{padding:8px;position:relative;

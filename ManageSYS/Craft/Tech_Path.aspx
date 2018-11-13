@@ -100,48 +100,48 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                 DataKeyNames="ID">
                                 <Columns>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="工艺段">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="工艺段">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
                                                 CssClass="tbinput" Enabled="False" Width="120px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="节点名">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="节点名">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtNodeName" runat="server" DataValueField="节点名" DataTextField="节点名"
+                                            <asp:TextBox ID="txtNodeName" runat="server" DataValueField="节点名" DataTextField="节点名" 
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="顺序号">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="顺序号">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号" onKeyUp="value=value.replace(/\D/g,'')" 
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="控制标签">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="控制标签">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtTag" runat="server" DataValueField="控制标签" DataTextField="控制标签"
                                                 CssClass="tbinput" Width="150px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="创建时间">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="创建时间">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtCreatetime" runat="server" DataValueField="创建时间" DataTextField="创建时间"
                                                 CssClass="tbinput" Enabled="False" Width="100px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="描述">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="描述">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtDscrpt" runat="server" DataValueField="描述" DataTextField="描述"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" ItemStyle-Width="80">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1  auth" Width="75"
                                                 OnClick="btnGrid2Save_Click" />

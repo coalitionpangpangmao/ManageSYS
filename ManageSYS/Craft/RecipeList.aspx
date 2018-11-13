@@ -51,26 +51,26 @@
                         <td>
                             <asp:GridView ID="GridView1" runat="server" class="grid"  DataKeyNames="配方编码" AutoGenerateColumns ="false">
                                 <Columns>
-                                    <asp:TemplateField HeaderText="选择">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="选择">
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField >
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridDetail" runat="server" Text="配方详情" CssClass="btn1" Width="100px"
                                                 OnClick="btnGridDetail_Click" />
                                         </ItemTemplate>
                                         <ItemStyle Width="110px" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField >
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  >
                                         <ItemTemplate>
                                             <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1  auth" Width="100px"
                                                 OnClick="btnSubmit_Click" />
                                         </ItemTemplate>
                                           <ItemStyle Width="110px" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField >
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  >
                                         <ItemTemplate>
                                             <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="100px"
                                                 OnClick="btnFLow_Click" />
@@ -81,7 +81,7 @@
                                     <asp:BoundField DataField="配方名称" HeaderText="配方名称" />
                                     <asp:BoundField DataField="启用时间" HeaderText="启用时间" />
                                     <asp:BoundField DataField="编辑人员" HeaderText="编辑人员" />
-                                    <asp:TemplateField HeaderText="审批状态">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批状态">
                                     <ItemTemplate>
                                         <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="60px" />
                                     </ItemTemplate>

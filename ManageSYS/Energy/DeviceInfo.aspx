@@ -113,7 +113,7 @@
                                 <div>
                                     <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="选择">
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="选择">
                                                 <ItemTemplate>
                                                     <asp:CheckBox ID="chk" runat="server" />
                                                 </ItemTemplate>

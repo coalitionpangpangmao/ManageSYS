@@ -108,7 +108,7 @@
  <asp:GridView ID="GridView1" runat="server" class="grid" 
                         AllowPaging="True" AutoGenerateColumns="False"  >
                      <Columns>
-                     <asp:TemplateField >
+                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  >
                         <ItemTemplate>                                                  
                             <asp:CheckBox ID="ck" runat="server" />            
                         </ItemTemplate>

@@ -18,7 +18,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group order by F_CODE", "F_NAME", "F_CODE");
             opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0' order by prod_code", "PROD_NAME", "PROD_CODE");
-            opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS < '4' and is_DEL = '0' order by plan_no", "PLAN_NO", "PLAN_NO");
+            opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS <> '3' and is_DEL = '0' and mater_status = '1' order by Plan_no", "PLAN_NO", "PLAN_NO");
 
             opt.bindDropDownList(listStorage, "select * from ht_inner_mat_depot order by ID", "NAME", "ID");
             opt.bindDropDownList(listStatus, "select * from ht_inner_aprv_status order by ID", "NAME", "ID");
@@ -30,7 +30,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
     #region tab1
     protected void bindGrid1()
     {
-        string query = "select g.out_date as 领退日期,r.strg_name as 出入库类型，t.ISSUE_Name as 下发状态,g.order_sn as 单据号 ,s.name as 审批状态,h.name as 编制人,j.name as 收发人 from HT_STRG_AUX g  left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join HT_INNER_BOOL_DISPLAY t on t.id = g.issue_status left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "' and g.is_del = '0'";
+        string query = "select g.out_date as 领退日期,r.strg_name as 出入库类型，t.ISSUE_Name as 出入库状态,g.order_sn as 单据号 ,g.MONTHPLANNO as 关联批次,s.name as 审批状态,h.name as 编制人,j.name as 收发人 from HT_STRG_AUX g  left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join HT_INNER_BOOL_DISPLAY t on t.id = g.issue_status left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "' and g.is_del = '0'";
         if (rdOut1.Checked)
             query += " and g.strg_type = '0'";
         else
@@ -45,11 +45,24 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
             DataRowView mydrv = data.Tables[0].DefaultView[i];
             ((Label)GridView1.Rows[i].FindControl("labStrg")).Text = mydrv["出入库类型"].ToString();
             ((Label)GridView1.Rows[i].FindControl("labAudit")).Text = mydrv["审批状态"].ToString();
-            ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = mydrv["下发状态"].ToString();
+            if (((Label)GridView1.Rows[i].FindControl("labStrg")).Text == "出库")
+            {
+                if (mydrv["出入库状态"].ToString() == "0")
+                    ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "未出库";
+                else
+                    ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "己出库";
+            }
+            else
+            {
+                if (mydrv["出入库状态"].ToString() == "0")
+                    ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "未入库";
+                else
+                    ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "己入库";
+            }
             ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Text = mydrv["出入库类型"].ToString();
             if (mydrv["审批状态"].ToString() != "未提交")
                 ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
-            if (mydrv["下发状态"].ToString() != "未下发")
+            if (mydrv["出入库状态"].ToString() != "0")
                 ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = false;
 
 
@@ -65,7 +78,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
                 ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
                 ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "编制";
             }
-            if (mydrv["下发状态"].ToString() != "未下发")
+            if (mydrv["出入库状态"].ToString() != "0")
             {
                 ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = false;
                 ((Button)GridView1.Rows[i].FindControl("btnGridopt")).CssClass = "btngrey";
@@ -122,11 +135,17 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
             int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string id = GridView1.DataKeys[index].Value.ToString();
             string aprv = ((Label)GridView1.Rows[index].FindControl("labAudit")).Text;
+            string planno = GridView1.Rows[index].Cells[6].Text;
             if (aprv == "己通过")
             {
-                string query = "update HT_STRG_AUX set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'";
+                List<string> commandlist = new List<string>();
+                commandlist.Add("update HT_STRG_AUX set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'");
+               // commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and MATER_STATUS = '1'");
+                ////调用接口，变更库存////
+                //      st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
+                /////
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                string log_message = opt.UpDateOra(query) == "Success" ? "出入库成功" : "出入库失败";
+                string log_message = opt.TransactionCommand(commandlist) == "Success" ? "出入库成功" : "出入库失败";
                 log_message += "--标识:" + id;
                 InsertTlog(log_message);
                 bindGrid1();
@@ -305,7 +324,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
             string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "AUDIT_MARK", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "STRG_TYPE" };
             string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStatus.SelectedValue, listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, "1" };
 
-            log_message = opt.MergeInto(seg, value,1, "HT_STRG_AUX") == "Success" ? "生成入库主表记录成功" : "生成入库主表记录失败";
+            log_message = opt.MergeInto(seg, value, 1, "HT_STRG_AUX") == "Success" ? "生成入库主表记录成功" : "生成入库主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
         }
@@ -432,7 +451,7 @@ public partial class Product_StorageAux : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)list.NamingContainer;
         ((TextBox)row.FindControl("txtGridcode")).Text = list.SelectedValue;
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-      
+
     }
     protected void listPrdctPlan_SelectedIndexChanged(object sender, EventArgs e)
     {

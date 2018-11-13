@@ -166,6 +166,9 @@ namespace MSYS.DAL
                     }
                     //////////////////////////////////////////////
                     str.Append("'");
+                    if (value[i] != null && value[i].Contains("'"))
+                        value[i] = value[i].Replace("'", "''");
+
                     str.Append(value[i]);
                     str.Append("' AS ");
                     str.Append(seg[i]);

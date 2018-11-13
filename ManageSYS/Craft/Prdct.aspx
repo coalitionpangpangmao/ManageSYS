@@ -60,19 +60,19 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="产品编码" AllowPaging="True"
                             AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
                             <Columns>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="100px"
                                             OnClick="btnSubmit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnGridDetail" runat="server" Text="产品详情" CssClass="btn1" Width="100px"
                                             OnClick="btnGridDetail_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="100px"
                                             OnClick="btnFLow_Click" />
@@ -83,12 +83,12 @@
                                 <asp:BoundField DataField="包装规格" HeaderText="包装规格" />
                                 <asp:BoundField DataField="加工方式" HeaderText="加工方式" />
                                 <asp:BoundField DataField="是否有效" HeaderText="是否有效" />
-                                <asp:TemplateField HeaderText="审批状态">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批状态">
                                     <ItemTemplate>
                                         <asp:Label ID="labGrid1Status" runat="server" CssClass="labstatu" Width="60px" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid1Del_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>

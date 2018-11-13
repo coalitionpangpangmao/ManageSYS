@@ -152,6 +152,7 @@
                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                      <asp:Button ID="btnGridSave" class="btnmodify auth" runat="server" Text="保存" OnClick="btnGridSave_Click" />
                 </span>
             </div>
             <div>
@@ -159,41 +160,41 @@
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
                             <Columns>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="香料种类">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="香料种类">
                                     <ItemTemplate>
                                          <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist"   DataSource='<%# gridXJXLbind()%>' DataValueField="material_code"    DataTextField="material_name" AutoPostBack="true"  OnSelectedIndexChanged="listGirdName_SelectedIndexChanged"></asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                   <asp:TemplateField HeaderText="香料编码" SortExpression="物料编码">
+                                   <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="香料编码" SortExpression="物料编码">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
                                                     CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                             </ItemTemplate>
                                        </asp:TemplateField>
                                 
-                                <asp:TemplateField HeaderText="比例%">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="比例%">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="每罐调配所需">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="每罐调配所需">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
@@ -211,6 +212,7 @@
                         <asp:AsyncPostBackTrigger ControlID="btnModify" />
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
                         <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                        <asp:AsyncPostBackTrigger ControlID="btnGridSave" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
@@ -221,6 +223,7 @@
                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" />
                     <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
                     <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                       <asp:Button ID="btnGridSave2" class="btnmodify auth" runat="server" Text="保存" OnClick="btnGridSave2_Click" />
                 </span>
             </div>
             <div>
@@ -228,40 +231,40 @@
                     <ContentTemplate>
                         <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
                             <Columns>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="回填液种类">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="回填液种类">
                                     <ItemTemplate>
                                          <asp:DropDownList ID="listGridName2" runat="server" CssClass="drpdwnlist"   DataSource='<%# gridHTYbind()%>' DataValueField="material_code"    DataTextField="material_name" AutoPostBack="true"  OnSelectedIndexChanged="listGirdName2_SelectedIndexChanged"></asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                   <asp:TemplateField HeaderText="回填液编码" SortExpression="物料编码">
+                                   <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="回填液编码" SortExpression="物料编码">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtCodeM" runat="server"                                       CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                             </ItemTemplate>
                                        </asp:TemplateField>
                                 
-                                <asp:TemplateField HeaderText="比例%">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="比例%">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtScale2" runat="server" DataValueField="比例" DataTextField="比例"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="备注">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtRemark" runat="server" 
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave2_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnDel2" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>
@@ -279,6 +282,7 @@
                         <asp:AsyncPostBackTrigger ControlID="btnDelSel2" />
                         <asp:AsyncPostBackTrigger ControlID="GridView2" />
                         <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnGridSave2" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

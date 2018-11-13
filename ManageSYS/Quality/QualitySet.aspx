@@ -141,17 +141,17 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr >
                 <td valign="top" width="200">
                     <div style="margin-top: 10px; width: 200px; height: 400px;">
                         <div class="listtitle">
                             工序导航</div>
                         <% = subtvHtml %></div>
                 </td>
-                <td valign="top">
+                <td valign="top" style="position: relative; right: 10px; left: 0px; height: 300px">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <div style="margin-top: 10px; margin-left: 10px; width: 900px;">
+                            <div style="position: relative;margin-top: 10px; margin-left: 10px; width: 98%;">
                                 <div class="listtitle">
                                     质量标准参数表<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
                                         CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
@@ -161,56 +161,56 @@
                                         <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />
                                     </span>
                                 </div>
-                                <div style="width: 900px; height:300px;overflow: scroll">
+                                <div style="position: relative;width: 100%; height:300px;overflow: scroll">
                                     <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
                                         <Columns>
-                                            <asp:TemplateField>
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                                 <ItemTemplate>
                                                     <asp:CheckBox ID="chk" runat="server" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                            
-                                            <asp:TemplateField HeaderText="参数名" SortExpression="参数名">
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数名" SortExpression="参数名">
                                                 <ItemTemplate>
                                                     <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" >
                                                     </asp:DropDownList>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                            
-                                            <asp:TemplateField HeaderText="下限" >
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="下限" >
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtLower" runat="server" DataValueField="下限" DataTextField="下限"
                                                         CssClass="tbinput"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                             <asp:TemplateField HeaderText="上限" >
+                                             <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="上限" >
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtUpper" runat="server" DataValueField="上限" DataTextField="上限"
                                                         CssClass="tbinput"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="考核类型" SortExpression="考核类型">
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="考核类型" SortExpression="考核类型">
                                                 <ItemTemplate>
                                                 <asp:DropDownList ID="listtype" runat ="server" DataSource ="<%#typebind() %>" DataValueField ="ID" DataTextField ="NAME" CssClass ="drpdwnlist" Width ="80px"></asp:DropDownList>                                                </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="超限扣分" >
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="超限扣分" >
                                                 <ItemTemplate>
                                                         <asp:TextBox ID="txtScore" runat="server" DataValueField="超限扣分" DataTextField="超限扣分"
                                                         CssClass="tbinput"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="备注" SortExpression="备注">
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="备注" SortExpression="备注">
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtDscrptM" runat="server" DataValueField="备注" DataTextField="备注"
                                                         CssClass="tbinput1"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField>
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField>
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                                 </ItemTemplate>

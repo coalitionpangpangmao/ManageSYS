@@ -66,7 +66,7 @@
 
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="True">
                             <Columns>
-                                <asp:TemplateField HeaderText="操作" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderStyle-Width="220px">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作"  HeaderStyle-Width="220px">
                                     <ItemTemplate>
                                         <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click" Width="100px" />
                                         <asp:Button ID="btngridDetail" runat="server" Text="查看详情" CssClass="btn1" OnClick="btngridDetail_Click" Width="100px" />

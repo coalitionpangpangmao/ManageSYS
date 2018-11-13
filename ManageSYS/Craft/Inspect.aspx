@@ -66,7 +66,7 @@
                             <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                                 DataKeyNames="检查项目编码" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
                                 <Columns>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="ck" runat="server" />
                                         </ItemTemplate>
@@ -76,7 +76,7 @@
                                     <asp:BoundField DataField="检查项目编码" HeaderText="检查项目编码" />
                                     <asp:BoundField DataField="检查项目" HeaderText="检查项目" />
                                     <asp:BoundField DataField="备注" HeaderText="备注" />
-                                    <asp:TemplateField HeaderText="操作">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                         <ItemTemplate>
                                             <asp:Button ID="btnEdit" runat="server" Text="编辑" CssClass="btn1" OnClick="btnEdit_Click" />
                                         </ItemTemplate>

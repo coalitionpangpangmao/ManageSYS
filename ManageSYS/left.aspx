@@ -23,6 +23,10 @@
                    $(this).next('ul').slideDown();
                }
            });
+           $(".child").click(function () {
+               $("#navigation").find(".child").removeClass("selectedbold");
+               $(this).addClass("selectedbold");
+           });
            jQuery('#navigation').accordion({
                header: '.head',
                navigation: true,
@@ -96,6 +100,13 @@
             text-align: center;
             padding: 3px;
             background: url(images/list.gif) no-repeat;
+        }
+
+        .selectedbold
+        {
+            font-size: 12px;
+          font-weight:bolder;
+          color:red;           
         }
     </style>
 </head>

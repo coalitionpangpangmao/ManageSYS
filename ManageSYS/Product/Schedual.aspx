@@ -76,33 +76,33 @@
                                 <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="False" DataKeyNames="班时编码"
                                     AutoGenerateColumns="False">
                                     <Columns>
-                                        <asp:TemplateField HeaderText="班时">
+                                        <asp:TemplateField     HeaderText="班时">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtShift" runat="server" DataValueField="班时" DataTextField="班时" CssClass="tbinput" Enabled="false"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="开始时间">
+                                        <asp:TemplateField    HeaderText="开始时间">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtStarttime" runat="server" DataValueField="开始时间" DataTextField="开始时间" CssClass="tbinput1" Enabled="false"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="结束时间">
+                                        <asp:TemplateField   HeaderText="结束时间">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtEndtime" runat="server" DataValueField="结束时间" DataTextField="结束时间" Enabled="false" CssClass="tbinput1"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="是否跨天">
+                                        <asp:TemplateField    HeaderText="是否跨天">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="ckInter" runat="server" Enabled="false" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="班组">
+                                        <asp:TemplateField  HeaderText="班组">
                                             <ItemTemplate>
                                                 <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" Width="70px">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="状态">
+                                        <asp:TemplateField   HeaderText="状态">
                                             <ItemTemplate>
                                                 <asp:DropDownList ID="listStatus" runat="server" CssClass="drpdwnlist" Width="70px">
                                                     <asp:ListItem></asp:ListItem>
@@ -138,7 +138,7 @@
                                     <asp:BoundField DataField="班时" HeaderText="班时" />
                                     <asp:BoundField DataField="开始时间" HeaderText="开始时间" />
                                     <asp:BoundField DataField="结束时间" HeaderText="结束时间" />
-                                    <asp:TemplateField HeaderText="状态">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listStatus2" runat="server" CssClass="drpdwnlist" Width="60px">
                                                 <asp:ListItem></asp:ListItem>
@@ -147,7 +147,7 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>

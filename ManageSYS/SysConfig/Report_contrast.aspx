@@ -51,42 +51,42 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize="12"
                             DataKeyNames="section_code,para_code">
                             <Columns>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField> 
-                                <asp:TemplateField HeaderText = "工艺段">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "工艺段">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listType" runat="server" CssClass = 'drpdwnlist' DataSource = "<%#bindInspect() %>"  DataTextField = "Section_name"  DataValueField = "Section_code"  AutoPostBack="True"
                                     OnSelectedIndexChanged="listtype_SelectedIndexChanged">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField HeaderText = "参数">
+                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "参数">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listPara" runat="server" CssClass = 'drpdwnlist'  Width = '200px'>
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField> 
-                                <asp:TemplateField HeaderText = "关联字段">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "关联字段">
                                     <ItemTemplate>
                                       <asp:DropDownList ID="listSeg" runat="server" CssClass = 'drpdwnlist' Width = '120px' DataSource = "<%#bindSeg() %>"  DataTextField = "COLUMN_NAME"  DataValueField = "COLUMN_NAME" />  
                                     </ItemTemplate>                                 
                                 </asp:TemplateField>                               
                                
-                                <asp:TemplateField HeaderText = "字段别称">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "字段别称">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtname" runat="server" CssClass = 'tbinput' Width = '200px'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText = "单位">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "单位">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtUnit" runat="server" CssClass = 'tbinput'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
                               
-                                <asp:TemplateField HeaderText="操作">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
                                     </ItemTemplate>

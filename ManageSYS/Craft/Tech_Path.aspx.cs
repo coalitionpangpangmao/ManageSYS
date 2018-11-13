@@ -145,12 +145,19 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     }
     protected void btnGrid2Save_Click(object sender, EventArgs e)
     {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        Button btn = (Button)sender;
+        int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
+        string ID = GridView2.DataKeys[Rowindex].Value.ToString();
+         Regex regNum = new Regex("^[0-9]");
+         if (((TextBox)GridView2.Rows[Rowindex].FindControl("txtNodeName")).Text == "" || regNum.IsMatch(((TextBox)GridView2.Rows[Rowindex].FindControl("txtNodeName")).Text) || ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text == "")
+         {
+             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('请输入正确格式的信息！！');", true);
+             return;
+         }
         try
         {
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            Button btn = (Button)sender;
-            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
-            string ID = GridView2.DataKeys[Rowindex].Value.ToString();
+            
             string[] seg = { "SECTION_CODE", "NODENAME", "ORDERS", "DESCRIPT", "CREATE_TIME", "TAG" };
             string[] value = { listSection2.SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtNodeName")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtDscrpt")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), ((TextBox)GridView2.Rows[Rowindex].FindControl("txtTag")).Text };
             if (ID == "0")

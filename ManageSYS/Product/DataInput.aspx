@@ -76,7 +76,7 @@
                             <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" DataKeyNames="rowid"
                                 AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
                                 <Columns>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
@@ -123,7 +123,7 @@
                         <ContentTemplate>
                             <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView3_PageIndexChanging">
                                 <Columns>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
@@ -216,13 +216,13 @@
                                     <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID"
                                         AutoGenerateColumns="False">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="参数点">
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数点">
                                                 <ItemTemplate>
                                                     <asp:DropDownList ID="listPara" runat="server" CssClass="drpdwnlist" DataSource="<%#bindpara() %>" DataTextField="para_name" DataValueField="para_code" Width="200px"></asp:DropDownList>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="参数值">
+                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数值">
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtParavalue" runat="server"></asp:TextBox>
                                                 </ItemTemplate>

@@ -66,13 +66,13 @@
                               <asp:HiddenField ID="hideMainid" runat="server" />
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID,MAIN_ID" AutoGenerateColumns="False">
                                 <Columns>
-                                    <asp:TemplateField HeaderText="序号">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="序号">
                                         <ItemTemplate>
                                             <%#(Container.DataItemIndex+1).ToString()%>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="区域">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="区域">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" />
                                         </ItemTemplate>
@@ -81,12 +81,12 @@
                                     <asp:BoundField DataField="维修原因" HeaderText="维修原因" />
                                     <asp:BoundField DataField="维修内容" HeaderText="维修内容" />
                                     <asp:BoundField DataField="期望完成时间" HeaderText="期望完成时间" />
-                                    <asp:TemplateField HeaderText="状态">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="操作" ItemStyle-Width="80">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" ItemStyle-Width="80">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btn1 auth" Width="75"
                                                 OnClick="btnGrid1View_Click" />

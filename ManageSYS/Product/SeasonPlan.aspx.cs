@@ -76,7 +76,24 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         GridView2.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-
+           
+            switch(listSeason2.SelectedValue)
+            { 
+                case "1":
+                 GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>1月份</td><td width='90px'> 2月份 </td> <td width='90px'>3月份</td></tr></table>";
+                    break;
+                case "2":
+                     GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>4月份</td><td width='90px'> 5月份 </td> <td width='90px'>6月份</td></tr></table>";
+                    break;
+                      case "3":
+                     GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>7月份</td><td width='90px'> 8月份 </td> <td width='90px'>9月份</td></tr></table>";
+                    break;
+                      case "4":
+                     GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>10月份</td><td width='90px'> 11月份 </td> <td width='90px'>12月份</td></tr></table>";
+                    break;
+                default:break;
+            }
+  
             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
@@ -239,6 +256,22 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             GridView2.DataBind();
             if (data != null && data.Rows.Count > 0)
             {
+                switch (listSeason2.SelectedValue)
+                {
+                    case "1":
+                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>1月份</td><td width='90px'> 2月份 </td> <td width='90px'>3月份</td></tr></table>";
+                        break;
+                    case "2":
+                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>4月份</td><td width='90px'> 5月份 </td> <td width='90px'>6月份</td></tr></table>";
+                        break;
+                    case "3":
+                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>7月份</td><td width='90px'> 8月份 </td> <td width='90px'>9月份</td></tr></table>";
+                        break;
+                    case "4":
+                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>10月份</td><td width='90px'> 11月份 </td> <td width='90px'>12月份</td></tr></table>";
+                        break;
+                    default: break;
+                }
                 for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
                 {
                     DataRowView mydrv = data.DefaultView[i];

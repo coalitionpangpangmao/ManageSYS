@@ -148,7 +148,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             for (int i = 0; i < GridView1.Rows.Count; i++)
             {
-                if (((CheckBox)GridView1.Rows[i].FindControl("ckBox")).Checked)
+                if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
                 {                   
                     string[] value = {"","2"};
                     string log_message = MSYS.AprvFlow.authorize(GridView1.DataKeys[i].Values[0].ToString(), value) ? "审批成功" : "审批失败";
@@ -157,6 +157,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
                 }
             }
         }
+        bindGrid1();
 
     }
     //业务明细

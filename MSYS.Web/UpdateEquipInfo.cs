@@ -31,7 +31,7 @@ namespace MSYS.Web
                  foreach (tEqEqpTbl item in tbs)
                  {
                      
-                     string[] value = {item.idkey,item.clsCode,item.createTime,item.creator,item.dutyName,item.eqModel,item.eqName,item.eqpFrom,item.eqpIp,item.eqpMac,item.eqpSn,item.eqpSys,item.eqStatus,item.eqType,item.flag.ToString(),item.isDel,item.isMadeinchina,item.isSpecEqp,item.manufacturer,item.mgtDeptCode,item.ncCode,item.netWorth,item.oriOwnerName,item.oriWorth,item.ownerName,item.powerUnit,item.ratedPower,item.realPower,item.remark,item.serialNumber,item.sgsCode,item.supplier,item.usedDate,item.useDeptCode,item.useDeptName,item.zgDate,item.financeEqName,};
+                     string[] value = {item.idkey,item.clsCode,item.createTime,item.creator,item.dutyName,item.eqModel,item.eqName,item.eqpFrom,item.eqpIp,item.eqpMac,item.eqpSn,item.eqpSys,item.eqStatus,item.eqType,item.flag.ToString(),item.isDel,item.isMadeinchina,item.isSpecEqp,item.manufacturer,item.mgtDeptCode,item.ncCode,item.netWorth,item.oriOwnerName,item.oriWorth,item.ownerName,item.powerUnit,item.ratedPower,item.realPower,item.remark,item.serialNumber,item.sgsCode,item.supplier,item.usedDate,item.useDeptCode,item.zgDate,item.financeEqName,};
                      string temp = opt.getMergeStr(seg, value, 1, "HT_EQ_EQP_TBL");
                      commandlist.Add(temp);
                      if (opt.UpDateOra(temp) != "Success")

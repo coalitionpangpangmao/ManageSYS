@@ -72,7 +72,7 @@
                                     <asp:BoundField DataField="班时" HeaderText="班时" />
                                     <asp:BoundField DataField="开始时间" HeaderText="开始时间" />
                                     <asp:BoundField DataField="结束时间" HeaderText="结束时间" />
-                                    <asp:TemplateField HeaderText="操作">
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click" />
                                         </ItemTemplate>

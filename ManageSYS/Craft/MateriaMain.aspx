@@ -135,12 +135,12 @@
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="物料编码" AllowPaging="True"  OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize ="12">
                                 <Columns>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridDel1" runat="server" Text="删除" CssClass="btn1" Width="90px" OnClick="btnGridDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField>
+                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:Button ID="btnDetail1" runat="server" Text="物料详情" CssClass="btn1" Width="90px" OnClick="btnDetail1_Click" />
                                         </ItemTemplate>

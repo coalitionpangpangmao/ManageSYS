@@ -22,7 +22,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select distinct g.id, g.plan_name as 计划名,g.adjust_status 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
+        string query = "select distinct g.id, g.plan_name as 计划名,case g.adjust_status when '1' then '是' else  '否' end as 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
         if (txtStart.Text != "" && txtStart.Text != "")
             query += " and PLAN_TIME between '" + txtStart.Text + "' and  '" + txtStop.Text + "'";
         query += " order by g.id";
@@ -82,27 +82,12 @@ public partial class Product_Plan : MSYS.Web.BasePage
         if (Regex.IsMatch(planID, @"^[+-]?/d*$"))
             hidePlanID.Value = planID;
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
-        string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品名称,plan_output as 计划产量,path_code as  路径编码 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + planID + " order by plan_Sort";
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,t.plan_output as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + planID + " order by plan_Sort";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
-        GridView2.DataSource = data;
-        GridView2.DataBind();
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-            {
-                DataRowView mydrv = data.Tables[0].DefaultView[i];
-                ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Text = mydrv["顺序号"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtPlanNo")).Text = mydrv["计划号"].ToString();
-                ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品名称"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
-            }
-
-        }
-
+        if (data != null)
+            databindGrid2(data.Tables[0]);       
     }
     public DataSet ddlbind()
     {
@@ -156,11 +141,16 @@ public partial class Product_Plan : MSYS.Web.BasePage
     {
         btnAdd.Visible = status;
         btnDelSel.Visible = status;
-        if (GridView2.Columns.Count == 9)
+        btnGrid2Modify.Visible = status;
+        if (GridView2.Columns.Count == 13)
         {
             GridView2.Columns[6].Visible = status;
             GridView2.Columns[7].Visible = status;
             GridView2.Columns[8].Visible = status;
+            GridView2.Columns[9].Visible = !status;
+            GridView2.Columns[10].Visible = !status;
+            GridView2.Columns[11].Visible = !status;
+            GridView2.Columns[12].Visible = !status;
         }
         hideAdjust.Value = adjust;
     }
@@ -250,7 +240,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
         if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
             hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-        string query = " select plan_Sort as 顺序号, plan_no as 计划号, prod_code as 产品名称,plan_output as 计划产量,path_code as  路径编码 from ht_prod_month_plan_detail where is_del = '0' and  MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,t.plan_output as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = new DataTable();
@@ -261,12 +251,19 @@ public partial class Product_Plan : MSYS.Web.BasePage
             data.Columns.Add("产品名称");
             data.Columns.Add("计划产量");
             data.Columns.Add("路径编码");
+            data.Columns.Add("生产状态");
+            data.Columns.Add("来料状态");
         }
         else
             data = set.Tables[0];
 
-        object[] value = { "", "", "", 0, " " };
+        object[] value = { "", "", "", 0, " ","","" };
         data.Rows.Add(value);
+        databindGrid2(data);
+       
+    }
+    protected void databindGrid2(DataTable data)
+    {
         GridView2.DataSource = data;
         GridView2.DataBind();
         if (data != null && data.Rows.Count > 0)
@@ -279,6 +276,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品名称"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
+                ((Label)GridView2.Rows[i].FindControl("labexe")).Text = mydrv["生产状态"].ToString();
+                ((Label)GridView2.Rows[i].FindControl("labmater")).Text = mydrv["来料状态"].ToString();
                 /*     if (i < GridView1.Rows.Count - 1)
                      {
                          ((TextBox)GridView2.Rows[i].FindControl("txtOrder")).Enabled = false;
@@ -295,7 +294,6 @@ public partial class Product_Plan : MSYS.Web.BasePage
                      }*/
             }
         }
-
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
@@ -393,7 +391,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             Response.Write(ee.Message);
         }
     }
-
+    
     protected void btnGrid2Save_Click(object sender, EventArgs e)
     {
         try
@@ -433,6 +431,107 @@ public partial class Product_Plan : MSYS.Web.BasePage
             }
             bindGrid2(hidePlanID.Value);
             bindGrid1();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+    protected void btnGrid2Modify_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            foreach (GridViewRow row in GridView2.Rows)
+            {
+                if (((CheckBox)row.FindControl("chk")).Checked)
+                {
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+                    int Rowindex = row.RowIndex;//获得行号             
+                    string mtr_code = ((TextBox)row.FindControl("txtPlanNo")).Text;
+                    string prod_code = ((DropDownList)row.FindControl("listProd")).SelectedValue;
+                    if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
+                        hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
+                    string path_code = ((TextBox)row.FindControl("txtPathCode")).Text;
+
+                    if (mtr_code == "" || mtr_code.Substring(8, 7) != prod_code)
+                    {
+                        if (mtr_code.Length >= 17 && mtr_code.Substring(8, 7) != prod_code)
+                            opt.UpDateOra("delete from ht_prod_month_plan_detail where plan_no = '" + mtr_code + "'");
+                        string planno = opt.GetSegValue("select nvl(Max(substr(PLAN_NO,16,2)),0)+1 as CODE from ht_prod_month_plan_detail where month_plan_ID = '" + hidePlanID.Value + "'", "CODE");
+                        mtr_code = "PD" + txtYear.Text + listMonth.SelectedValue + prod_code + planno.PadLeft(2, '0');
+
+                    }
+                    List<string> commandlist = new List<string>();
+                    string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort", "prod_code", "plan_output", "path_code", "is_del" };
+                    string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code, "0" };
+                    commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL"));
+                    if (hideAdjust.Value == "1")
+                        commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+
+                    string log_message = opt.TransactionCommand(commandlist) == "Success" ? "保存生产计划详情成功" : "生产计划详情失败";
+                    log_message += "--详情:" + string.Join(",", value);
+                    InsertTlog(log_message);
+
+                    if (path_code != " ")
+                    {
+                        insertSectionPath(path_code, mtr_code);
+                    }
+                }
+            }
+            bindGrid2(hidePlanID.Value);
+            bindGrid1();
+
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+    protected void btnGrid2Apply_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int Rowindex = row.RowIndex;//获得行号  
+            string planno = GridView2.DataKeys[Rowindex].Value.ToString() ;
+
+           
+                  List<string> commandlist = new List<string>();
+          //  commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set EXE_STATUS = '4',MATER_STATUS = '1' where PLAN_NO = '" + planno + "' and EXE_STATUS = '2'");
+            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '1' where PLAN_NO = '" + planno + "' and EXE_STATUS <> '3'");
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "申请物料成功" : "申请物料失败";
+            log_message += "--详情:" + planno;
+            InsertTlog(log_message);
+           
+            bindGrid2(hidePlanID.Value);
+          
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+
+    protected void btnGrid2Feed_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int Rowindex = row.RowIndex;//获得行号  
+            string planno = GridView2.DataKeys[Rowindex].Value.ToString();
+            List<string> commandlist = new List<string>();
+          //  commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set EXE_STATUS = '2',MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and EXE_STATUS = '4'");
+            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '3' where PLAN_NO = '" + planno + "' and MATER_STATUS = '2'");
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "确认到料" : "确认到料";
+            log_message += "--详情:" + planno;
+            InsertTlog(log_message);
+
+            bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)
         {

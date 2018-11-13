@@ -147,7 +147,7 @@
  <asp:GridView ID="GridView1" runat="server" class="grid" 
                         AllowPaging="True" AutoGenerateColumns="False"  >
                      <Columns>
-                     <asp:TemplateField >
+                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  >
                         <ItemTemplate>                                                  
                             <asp:CheckBox ID="ck" runat="server" />            
                         </ItemTemplate>
@@ -160,7 +160,7 @@
                              <asp:BoundField DataField="能耗总量" HeaderText="能耗总量" />
                               <asp:BoundField DataField="单位" HeaderText="单位" />
                               <asp:BoundField DataField="是否有效" HeaderText="是否有效" />
-                         <asp:TemplateField  HeaderText = "操作">
+                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"   HeaderText = "操作">
                         <ItemTemplate>                                                  
                                 
                             <asp:Button ID="btnEdit" runat="server" Text="编辑" CssClass = "btn1" OnClick = "btnEdit_Click"/>               

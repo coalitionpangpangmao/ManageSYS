@@ -22,8 +22,8 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
     protected void bindData()
     {
         string query;
-        if (hdcode.Value.Length == 8)          
-       query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
+        if (hdcode.Value.Length == 8)
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode.Value + "'";
         else
             query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and PROD_CODE = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -48,7 +48,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-          string query;
+        string query;
         if (hdcode.Value.Length == 8)
             query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
         else
@@ -75,9 +75,9 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
 
     protected void bindGrid2()
     {
-         string query;
+        string query;
         if (hdcode.Value.Length == 8)
-         query = "select r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
+            query = "select r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode.Value + "'";
         else
             query = " r.MATER_CODE as 回填液编码,r.coat_scale as 比例,r.REMARK as 备注 from ht_qa_coat_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'TPY' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -166,10 +166,10 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         }
         object[] value = { "", 0, 0 };
         data.Rows.Add(value);
-        
-            GridView1.DataSource = data;
-            GridView1.DataBind();
-        
+
+        GridView1.DataSource = data;
+        GridView1.DataBind();
+
         if (data != null && data.Rows.Count > 0)
         {
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
@@ -240,6 +240,33 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         {
             Response.Write(ee.Message);
         }
+    }
+
+    protected void btnGridSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                if (((CheckBox)row.FindControl("chk")).Checked)
+                {
+                    string mtr_code = ((DropDownList)row.FindControl("listGridName")).SelectedValue;
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                    string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag" };
+                    string[] value = { txtCode.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "XJ" };
+                    string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+                    log_message += "，物料编号:" + txtCode.Text;
+                    InsertTlog(log_message);
+                }
+            }
+            bindGrid1();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+
+
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {
@@ -367,6 +394,28 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         {
             Response.Write(ee.Message);
         }
+    }
+
+    protected void btnGridSave2_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow row in GridView2.Rows)
+        {
+            if (((CheckBox)row.FindControl("chk")).Checked)
+            {
+
+                string mtr_code = ((DropDownList)row.FindControl("listGridName2")).SelectedValue;
+
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+                string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "REMARK", "coat_flag" };
+                string[] value = { txtCode.Text, mtr_code, ((TextBox)row.FindControl("txtScale2")).Text, ((TextBox)row.FindControl("txtRemark")).Text, "TPY" };
+                string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+                log_message += ",物料编号：" + txtCode.Text;
+                InsertTlog(log_message);
+            }
+
+        }
+        bindGrid2();
     }
     protected void btnSave2_Click(object sender, EventArgs e)
     {

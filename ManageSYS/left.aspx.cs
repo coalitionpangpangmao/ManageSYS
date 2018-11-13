@@ -73,7 +73,7 @@ public partial class left : System.Web.UI.Page
            {               
                foreach (DataRow row in data.Tables[0].Rows)
                {
-                   menu += "<li><a href='" + row["url"].ToString() + "' target='rightFrame'>" + row["f_menu"].ToString() + "</a></li>\r\n";                  
+                   menu += "<li><a class='child' href='" + row["url"].ToString() + "' target='rightFrame'>" + row["f_menu"].ToString() + "</a></li>\r\n";                  
                }
                
            }

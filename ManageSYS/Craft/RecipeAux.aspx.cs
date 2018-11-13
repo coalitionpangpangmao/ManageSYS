@@ -222,6 +222,32 @@ public partial class Craft_RecipeAux : MSYS.Web.BasePage
             Response.Write(ee.Message);
         }
     }
+
+    protected void btnGridSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            foreach(GridViewRow row in GridView1.Rows)
+            {
+                if (((CheckBox)row.FindControl("chk")).Checked)
+                {
+                    string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                    string[] seg = { "FORMULA_CODE", "MATER_CODE", "aux_scale", "aux_percent", "mater_type" };
+                    string[] value = { txtCode.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, ((DropDownList)row.FindControl("listGridType")).SelectedValue };
+                    string log_message = opt.MergeInto(seg, value, 2, "ht_qa_aux_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+                    log_message += ",详情：" + string.Join("-", value);
+                }
+            }
+            bindGrid();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+
+
+    }
     protected void btnSave_Click(object sender, EventArgs e)
     {
         try

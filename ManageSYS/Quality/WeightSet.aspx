@@ -37,23 +37,23 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                             DataKeyNames="section_code">
                             <Columns>
-                                <asp:TemplateField HeaderText = "工艺段">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "工艺段">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listSection" runat="server" CssClass = 'drpdwnlist'  DataSource = "<%#bindSection() %>"  DataTextField = "SECTION_NAME"  DataValueField = "SECTION_CODE">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText = "权重">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "权重">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField HeaderText = "备注">
+                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="操作">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btnGrid1Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid1Save_Click" />
                                     </ItemTemplate>
@@ -81,17 +81,17 @@
                                 
                                 <asp:BoundField DataField="NAME" HeaderText="考核项" />
                                 
-                                <asp:TemplateField HeaderText = "权重">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "权重">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField HeaderText = "备注">
+                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="操作">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid2Save_Click" />
                                     </ItemTemplate>

@@ -55,7 +55,7 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid"  AllowPaging ="true"  OnPageIndexChanging ="GridView1_PageIndexChanging"  PageSize="10"  AutoGenerateColumns="False"
                             DataKeyNames="id,type">
                             <Columns>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
@@ -68,12 +68,12 @@
                                 <asp:BoundField HeaderText="开始时间" DataField="b_time" />
                                 <asp:BoundField HeaderText="结束时间" DataField="e_time" />
                                 <asp:BoundField HeaderText="班组" DataField="team_name" />
-                                <asp:TemplateField HeaderText="状态">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                     <ItemTemplate>
                                         <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="跟踪中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="操作">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btngrid1Deal" runat="server" Text="反馈情况" CssClass="btn1" OnClick="btngrid1Deal_Click"  Width ="100px"/>
                                     </ItemTemplate>
@@ -111,7 +111,7 @@
                         <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging ="true"  OnPageIndexChanging ="GridView2_PageIndexChanging"  PageSize="10" AutoGenerateColumns="False"
                             DataKeyNames="ID,inspect_code">
                             <Columns>
-                                <asp:TemplateField>
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
@@ -124,13 +124,13 @@
                                 <asp:BoundField HeaderText="标准范围" DataField="range" />
 
                                 <asp:BoundField DataField="unit" HeaderText="单位" />
-                                <asp:TemplateField HeaderText="状态">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                     <ItemTemplate>
                                         <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="跟踪中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField DataField="minus_score" HeaderText="扣分" />
-                                <asp:TemplateField HeaderText="操作">
+                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btngrid2Deal" runat="server" Text="反馈情况" CssClass="btn1 auth" OnClick="btngrid2Deal_Click"  Width ="100px"/>
                                     </ItemTemplate>

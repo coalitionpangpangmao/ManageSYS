@@ -33,7 +33,7 @@
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
                         onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtBtime_TextChanged" AutoPostBack="true"></asp:TextBox>至
                                     <asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"
-                                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtEtime_TextChanged"  AutoPostBack="true"></asp:TextBox>
 
                                     产品：<asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                                     工艺段：<asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
@@ -43,6 +43,7 @@
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="txtBtime" />
+                                    <asp:AsyncPostBackTrigger ControlID ="txtEtime" />
                                     <asp:AsyncPostBackTrigger ControlID="listSection" />
                                 </Triggers>
                             </asp:UpdatePanel>
