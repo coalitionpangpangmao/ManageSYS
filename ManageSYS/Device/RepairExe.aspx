@@ -77,10 +77,10 @@
                                             <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="设备名称" HeaderText="设备名称" />
-                                    <asp:BoundField DataField="维修原因" HeaderText="维修原因" />
-                                    <asp:BoundField DataField="维修内容" HeaderText="维修内容" />
-                                    <asp:BoundField DataField="期望完成时间" HeaderText="期望完成时间" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="设备名称" HeaderText="设备名称" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维修原因" HeaderText="维修原因" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维修内容" HeaderText="维修内容" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="期望完成时间" HeaderText="期望完成时间" />
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>

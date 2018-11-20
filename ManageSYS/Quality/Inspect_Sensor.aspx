@@ -33,7 +33,7 @@
                            <td width="100">生产日期：
                         </td>
                         <td>
-                            <asp:TextBox ID="txtProdTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>  
+                            <asp:TextBox ID="txtProdTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtProdTime_TextChanged" AutoPostBack="True"></asp:TextBox>  
                         </td>
                         <td width="100">产品：
                         </td>
@@ -52,13 +52,13 @@
                        <td width="100">班组：
                         </td>
                         <td>
-                            <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist">
+                            <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listTeam_SelectedIndexChanged" AutoPostBack="True">
                             </asp:DropDownList>
                         </td>
                          <td width="100">班时：
                         </td>
                         <td>
-                            <asp:DropDownList ID="listShift" runat="server" CssClass="drpdwnlist">
+                            <asp:DropDownList ID="listShift" runat="server" CssClass="drpdwnlist" Enabled="false">
                             </asp:DropDownList>
                         </td>
                     </tr>
@@ -106,6 +106,8 @@
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="listProd" />
                         <asp:AsyncPostBackTrigger ControlID ="btnSave" />
+                         <asp:AsyncPostBackTrigger ControlID ="txtProdTime" />
+                        <asp:AsyncPostBackTrigger ControlID ="listTeam" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

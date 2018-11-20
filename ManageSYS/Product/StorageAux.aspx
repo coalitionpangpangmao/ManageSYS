@@ -101,12 +101,12 @@
                                             <asp:Label ID="labIssue" runat="server" CssClass="labstatu" Width="55px" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                      <asp:BoundField DataField="领退日期" HeaderText="领退日期" />
-                                    <asp:BoundField DataField="单据号" HeaderText="单据号" />
-                                 <asp:BoundField DataField="关联批次" HeaderText="关联批次" />
+                                       <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="领退日期" HeaderText="领退日期" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="单据号" HeaderText="单据号" />
+                                  <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="关联批次" HeaderText="关联批次" />
                                                        
-                                    <asp:BoundField DataField="编制人" HeaderText="编制人" />
-                                    <asp:BoundField DataField="收发人" HeaderText="收发人" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="编制人" HeaderText="编制人" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="收发人" HeaderText="收发人" />
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                         <ItemTemplate>
                                             <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"

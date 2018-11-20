@@ -55,15 +55,15 @@ h2{font-weight:normal;}
 .mainbox{padding:8px;position:relative;
     top: 0px;
     left: 0px;
-    height:100%;
+    bottom:0px;
 }
 /*.mainleft{padding-right:298px;}
 .mainright{width:298px;position:absolute; top:8px; right:8px;}*/
-.mainleft{width:200px;position:absolute; top:8px; left:8px;float:left;}
+.mainleft{width:200px;position:absolute; top:8px; left:8px;float:left;bottom:8px;}
 .mainright{margin-left:220px !important;
    margin-left:26%; 
  /*  height:auto !important; */ }
-.leftinfo{border:#d3dbde solid 1px; height:450px;margin-right: 5px;position:relative;}
+.leftinfo{border:#d3dbde solid 1px; position:relative;overflow: hidden; overflow-y: scroll; top: 0px; bottom: 0px;}
 .dfsublist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;margin-top:10px;margin-left:10px;}
 .dflist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;}
 .framelist{border:#d3dbde solid 1px; position:relative;width:90%; float:left;}
@@ -177,6 +177,8 @@ h2{font-weight:normal;}
 .btnhide{ display: none;}
 .btnpatch{border:solid 1px #a7b5bc;width:80px;height:35px; background:url(../images/leftico03.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 .btndone{border:solid 1px #a7b5bc;width:80px;height:35px; background:url(../images/leftico01.png) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
+.btnup{border:none;width:25px;height:25px; background:url(../images/arrowup.gif) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
+.btndown{border:none;width:25px;height:25px; background:url(../images/arrowdown.gif) no-repeat; font-size:14px;font-weight:bold;color:#000; cursor:pointer;}
 
 /* 状态框 */
 .labstatu{height: 20px; background: #993333;  font-size: 12px; font-weight: bold;color: #fff;

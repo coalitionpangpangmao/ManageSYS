@@ -31,7 +31,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
           foreach (DataRow row in rows)
             {
-                tvHtml += "<li ><span class='folder'  onclick = \"tab1Click(" +row["prod_code"].ToString() + ")\">" + row["prod_name"].ToString() + "</span>";
+                tvHtml += "<li ><span class='folder'  onclick = \"tab1Click('" +row["prod_code"].ToString() + "')\">" + row["prod_name"].ToString() + "</span>";
 
                 tvHtml += InitTreeRecipe(row["prod_code"].ToString());
                 tvHtml += "</li>";
@@ -55,12 +55,11 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             foreach (DataRow row in rows)
             {                
                 if (row["配方编码"].ToString().Substring(0, 5) == "70306")
-                    tvHtml += "<li ><span class='file'  onclick = \"tab2Click(" + row["配方编码"].ToString() + ")\">" + row["配方名称"].ToString() + "</span></li>";
+                    tvHtml += "<li ><span class='file'  onclick = \"tab2Click('" + row["配方编码"].ToString() + "')\">" + row["配方名称"].ToString() + "</span></li>";
                 else if (row["配方编码"].ToString().Substring(0, 5) == "70307")
-                    tvHtml += "<li ><span class='file'  onclick = \"tab3Click(" + row["配方编码"].ToString() + ")\">" + row["配方名称"].ToString() + "</span></li>";
+                    tvHtml += "<li ><span class='file'  onclick = \"tab3Click('" + row["配方编码"].ToString() + "')\">" + row["配方名称"].ToString() + "</span></li>";
                 else
-                    tvHtml += "<li ><span class='file'  onclick = \"tab4Click(" + row["配方编码"].ToString() + ")\">" + row["配方名称"].ToString() + "</span></li>";      
-               
+                    tvHtml += "<li ><span class='file'  onclick = \"tab4Click('" + row["配方编码"].ToString() + "')\">" + row["配方名称"].ToString() + "</span></li>";  
             }
             tvHtml += "</ul>";
             return tvHtml;
@@ -72,7 +71,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     {
         tvHtml = InitTree();
 
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " $('#browser').treeview({ toggle: function () { console.log('%s was toggled.', $(this).find('>span').text());},  persist: 'cookie', collapsed: true });", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " initTree();", true);
     }
 
    

@@ -20,6 +20,12 @@
                     console.log("%s was toggled.", $(this).find(">span").text());
                 }
             });
+           
+            $(".file").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
         });
         function tab1Click(code) {
             $('#hidebookid').val(code);

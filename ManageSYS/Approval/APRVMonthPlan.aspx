@@ -81,16 +81,16 @@
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID,gongwen_ID,BUSIN_ID"  AllowPaging ="true"  OnPageIndexChanging="GridView1_PageIndexChanging"
-                                AutoGenerateColumns="False">
+                                AutoGenerateColumns="False" PageSize ="12">
                                 <Columns>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"   >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="业务名" HeaderText="业务名" />
-                                    <asp:BoundField DataField="申请人" HeaderText="申请人" />
-                                    <asp:BoundField DataField="申请部门" HeaderText="申请部门" />
+                                    <asp:BoundField DataField="业务名" HeaderText="业务名" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
+                                    <asp:BoundField DataField="申请人" HeaderText="申请人" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
+                                    <asp:BoundField DataField="申请部门" HeaderText="申请部门" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="主业务审批状态">
                                         <ItemTemplate>
                                             <asp:Label ID="labStatus1" runat="server" CssClass="labstatu" Text="" Width="60px"></asp:Label>

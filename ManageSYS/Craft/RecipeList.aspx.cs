@@ -48,17 +48,18 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
                     case "70306":
                         commandlist.Add("update ht_qa_mater_formula set is_del = '1' where formula_code = '" + recipeno + "'");
                         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
+                        commandlist.Add("update ht_pub_Prod_design set MATER_FORMULA_CODE = '' where MATER_FORMULA_CODE = '" + recipeno + "'");
 
                         break;
                     case "70307":
                         commandlist.Add("update ht_qa_aux_formula set is_del = '1' where formula_code = '" + recipeno + "'");
                         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
-
+                        commandlist.Add("update ht_pub_Prod_design set AUX_FORMULA_CODE = '' where AUX_FORMULA_CODE = '" + recipeno + "'");
                         break;
                     default:
                         commandlist.Add("update ht_qa_coat_formula set is_del = '1' where formula_code = '" + recipeno + "'");
                         commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + recipeno + "'");
-
+                        commandlist.Add("update ht_pub_Prod_design set COAT_FORMULA_CODE = '' where COAT_FORMULA_CODE = '" + recipeno + "'");
                         break;
                 }
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除配方成功" : "删除配方失败";
@@ -108,15 +109,15 @@ public partial class Craft_RecipeList : MSYS.Web.BasePage
         string formula_code = GridView1.DataKeys[rowIndex].Value.ToString();
         if (formula_code.Substring(0, 5) == "70306")
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab2Click(" + formula_code + ");", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab2Click('" + formula_code + "');", true);
         }
         else if (formula_code.Substring(0, 5) == "70307")
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab3Click(" + formula_code + ");", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab3Click('" + formula_code + "');", true);
         }
         else
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab4Click(" + formula_code + ");", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "tab4Click('" + formula_code + "');", true);
         }
 
     }

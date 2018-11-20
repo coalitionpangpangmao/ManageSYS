@@ -147,20 +147,19 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="父节点名">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist" Width="80px" DataSource="<%#bindprt() %>" DataTextField="NAME" DataValueField="ID" OnSelectedIndexChanged="listPrt_OnSelectedIndexChanged" AutoPostBack="True">
+                                                <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist" Width="120px" DataSource="<%#bindprt() %>" DataTextField="NAME" DataValueField="ID" OnSelectedIndexChanged="listPrt_OnSelectedIndexChanged" AutoPostBack="True">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="Mapping">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listMap" runat="server" CssClass="drpdwnlist" Width="200px">
+                                                <asp:DropDownList ID="listMap" runat="server" CssClass="drpdwnlist" Width="250px">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="权限名称">
+                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="权限名称" >
                                             <ItemTemplate>
-                                                <asp:TextBox ID="txtMenu" runat="server" DataValueField="权限名称" DataTextField="权限名称"
-                                                    CssClass="tbinput1"></asp:TextBox>
+                                                <asp:TextBox ID="txtMenu" runat="server" DataValueField="权限名称" DataTextField="权限名称" Width="180px"  CssClass="tbinput1"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="描述">

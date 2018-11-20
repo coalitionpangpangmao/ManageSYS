@@ -21,6 +21,17 @@
                 persist: "cookie",
                 collapsed: true
             });
+         
+            $(".folder").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+            $(".file").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
             $('.gapinfo').hide();
         });
         function treeClick(code) {           
@@ -48,7 +59,7 @@
     </asp:ScriptManager>
     <div class="mainbox">
         <div class="mainleft">
-            <div class="leftinfo" style="overflow: scroll">
+            <div class="leftinfo" >
                 <div class="listtitle">
                     工艺模型</div>
                 <% = tvHtml %>

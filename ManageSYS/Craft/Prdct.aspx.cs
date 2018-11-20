@@ -124,10 +124,10 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string prod_code = GridView1.DataKeys[rowIndex].Value.ToString();
         string aprvstatus = ((Label)GridView1.Rows[rowIndex].FindControl("labGrid1Status")).Text;
-        if (aprvstatus == "未提交")
-            btnModify.Visible = true;
-        else
-            btnModify.Visible = false;
+      //  if (aprvstatus == "未提交")
+     //       btnModify.Visible = true;
+     //   else
+     //       btnModify.Visible = false;
         string query = "select * from ht_pub_prod_design where PROD_CODE = '" + prod_code + "' and  is_del = '0'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -144,6 +144,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             listqlt.SelectedValue = data.Tables[0].Rows[0]["QLT_CODE"].ToString();
             txtValue.Text = data.Tables[0].Rows[0]["STANDARD_VALUE"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
+            txtPathcode.Text = data.Tables[0].Rows[0]["PATH_CODE"].ToString();
+            bindGrid4();
         }
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeIn(200);", true);
       
@@ -217,12 +219,13 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK","CREATE_TIME" };
-        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text ,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")};
+        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK", "CREATE_TIME", "PATH_CODE" };
+        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text ,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtPathcode.Text};
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
         log_message += ",产品信息：" + string.Join(",", value);
         InsertTlog(log_message);
         bindGrid();
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
 
     }
     protected void btnDel_Click(object sender, EventArgs e)
@@ -240,8 +243,121 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     }
 
 
+    protected void bindGrid4()
+    {
+        string query = "select g.section_name as 工艺段, '' as 路径选择, '' as 路径详情,g.section_code from ht_pub_tech_section g  where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
+       
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView4.DataSource = data;
+        GridView4.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {           
+            string[] subpath = txtPathcode.Text.Split('-');
+            for (int i = 0; i < GridView4.Rows.Count; i++)
+            {
+                
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                ((TextBox)GridView4.Rows[i].FindControl("txtSection")).Text = mydrv["工艺段"].ToString();
+                DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+                opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "'", "pathname", "pathcode");
+                list.SelectedValue = mydrv["路径详情"].ToString();
+                if (subpath.Length == GridView4.Rows.Count)
+                    list.SelectedValue = subpath[i];
+                query = createQuery(mydrv["section_code"].ToString());
+                if (query != "")
+                {
+                    query += " and pathcode = '" + list.SelectedValue + "'";
+
+                    DataSet set = opt.CreateDataSetOra(query);
+                    for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
+                    {
+                        CheckBox ck = new CheckBox();
+                        // ck.Enabled = false;
+                        if (0 == set.Tables[0].Rows.Count)
+                            ck.Checked = false;
+                        else
+                            ck.Checked = (set.Tables[0].Rows[0][j].ToString() == "1");
+
+                        ck.Text = set.Tables[0].Columns[j].Caption;
+                        GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                    }
+                }
+            }
+        }
 
 
+    }//绑定GridView4数据源
 
+    protected void listpath_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        for (int i = 0; i < GridView4.Rows.Count; i++)
+        {
+            DataSet set = opt.CreateDataSetOra("select * from HT_PUB_PATH_NODE where SECTION_CODE ='" + GridView4.DataKeys[i].Value.ToString() + "' and is_del = '0'");
+            DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+            string pathcode = list.SelectedValue;
+            if (set != null && set.Tables[0].Rows.Count > 0)
+            {
+                if (pathcode.Length < set.Tables[0].Rows.Count)
+                    pathcode = pathcode.PadRight(set.Tables[0].Rows.Count, '0');
+                for (int j = 0; j < set.Tables[0].Rows.Count; j++)
+                {
+                    CheckBox ck = new CheckBox();
+                    // ck.Enabled = false;               
+                    ck.Text = set.Tables[0].Rows[j]["NODENAME"].ToString();
+                    GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                    if (pathcode.Length > 0)
+                        ck.Checked = (pathcode.Substring(j, 1) == "1");
+                    else
+                        ck.Checked = false;
+                }
+            }
+        }
+        txtPathcode.Text = getPathCode();
+
+    }
+ 
+    protected string getPathCode()
+    {       
+        string pathcode = "";
+        for (int i = 0; i < GridView4.Rows.Count; i++)
+        {
+            if (i > 0)
+                pathcode += "-";
+            DropDownList list = (DropDownList)GridView4.Rows[i].FindControl("listpath");
+            if (list.SelectedValue != "")
+            {
+                pathcode += list.SelectedValue;
+            }
+            else
+            {
+                return "";               
+            }
+        }
+        return pathcode;  
+    }
+  
+    protected string createQuery(string section)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select nodename from ht_pub_path_node where section_code = '" + section + "' and is_del = '0' order by orders");
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string query = "select PATHNAME as 路径名称";
+            int i = 1;
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                query += ",substr(pathcode," + i.ToString() + ",1) as " + row[0].ToString();
+                i++;
+            }
+            query += ",SECTION_CODE,pathcode  from ht_pub_path_section where section_code = '" + section + "'";
+            return query;
+        }
+        else
+            return "";
+    }
+   
 
 }

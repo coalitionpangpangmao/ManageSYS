@@ -77,10 +77,10 @@
                                         </ItemTemplate>
                                         <ItemStyle Width="110px" />
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="配方编码" HeaderText="配方编码" />
-                                    <asp:BoundField DataField="配方名称" HeaderText="配方名称" />
-                                    <asp:BoundField DataField="启用时间" HeaderText="启用时间" />
-                                    <asp:BoundField DataField="编辑人员" HeaderText="编辑人员" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="配方编码" HeaderText="配方编码" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="配方名称" HeaderText="配方名称" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="启用时间" HeaderText="启用时间" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="编辑人员" HeaderText="编辑人员" />
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批状态">
                                     <ItemTemplate>
                                         <asp:Label ID="labAprv" runat="server"  CssClass="labstatu"  Width="60px" />

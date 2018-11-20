@@ -25,6 +25,16 @@
                 persist: "cookie",
                 collapsed: true
             });
+            $(".folder").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+            $(".file").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
         }
         function tab1Click(code) {
             $('#tabtop1').click();
@@ -51,7 +61,7 @@
     </asp:ScriptManager>
     <div class="mainbox">
         <div class="mainleft">
-            <div class="leftinfo" style="overflow: scroll">
+            <div class="leftinfo" >
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="listtitle">

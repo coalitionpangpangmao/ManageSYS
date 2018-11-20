@@ -81,13 +81,13 @@
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                    <asp:BoundField DataField="产品" HeaderText="产品" />
-                                    <asp:BoundField DataField="记录项目" HeaderText="记录项目" />
-                                    <asp:BoundField DataField="记录值" HeaderText="记录值" />
-                                    <asp:BoundField DataField="班组" HeaderText="班组" />
-                                    <asp:BoundField DataField="记录时间" HeaderText="记录时间" />
-                                    <asp:BoundField DataField="记录人" HeaderText="记录人" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="产品" HeaderText="产品" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录项目" HeaderText="记录项目" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录值" HeaderText="记录值" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="班组" HeaderText="班组" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录时间" HeaderText="记录时间" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录人" HeaderText="记录人" />
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
@@ -128,10 +128,10 @@
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                    <asp:BoundField DataField="产品" HeaderText="产品" />
-                                    <asp:BoundField DataField="记录项目" HeaderText="记录项目" />
-                                    <asp:BoundField DataField="记录值" HeaderText="记录值" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="产品" HeaderText="产品" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录项目" HeaderText="记录项目" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录值" HeaderText="记录值" />
 
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />

@@ -61,11 +61,11 @@
                             <ContentTemplate>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8">
                                     <Columns>
-                                        <asp:BoundField DataField="润滑计划" HeaderText="润滑计划" />
-                                        <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                        <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
-                                        <asp:BoundField DataField="申请人" HeaderText="申请人" />
-                                        <asp:BoundField DataField="备注" HeaderText="备注" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑计划" HeaderText="润滑计划" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="过期时间" HeaderText="过期时间" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请人" HeaderText="申请人" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" />
@@ -111,15 +111,15 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="10"
                                 DataKeyNames="ID">
                                 <Columns>
-                                     <asp:BoundField DataField="工段" HeaderText="工段" />
-                                        <asp:BoundField DataField="设备名称" HeaderText="设备名称" />
-                                        <asp:BoundField DataField="润滑部位" HeaderText="润滑部位" />
-                                       <asp:BoundField DataField="润滑点数" HeaderText="润滑点数" />
-                                        <asp:BoundField DataField="润滑油脂" HeaderText="润滑油脂" />
-                                        <asp:BoundField DataField="润滑周期" HeaderText="润滑周期" />  
-                                 <asp:BoundField DataField="润滑方式" HeaderText="润滑方式" />
-                                        <asp:BoundField DataField="润滑量" HeaderText="润滑量" />
-                                        <asp:BoundField DataField="过期时间" HeaderText="过期时间" />  
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="工段" HeaderText="工段" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="设备名称" HeaderText="设备名称" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑部位" HeaderText="润滑部位" />
+                                       <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑点数" HeaderText="润滑点数" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑油脂" HeaderText="润滑油脂" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑周期" HeaderText="润滑周期" />  
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑方式" HeaderText="润滑方式" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑量" HeaderText="润滑量" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="过期时间" HeaderText="过期时间" />  
                                            
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                         <ItemTemplate>

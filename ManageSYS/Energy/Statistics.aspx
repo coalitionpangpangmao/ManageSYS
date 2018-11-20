@@ -21,6 +21,16 @@
                     console.log("%s was toggled.", $(this).find(">span").text());
                 }
             });
+            $(".folder").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+            $(".file").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
         });
         function tab1Click(code) {
             $('#tabtop1').click();

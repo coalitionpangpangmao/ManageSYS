@@ -143,13 +143,13 @@
                             CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
-                            <asp:Button ID="btnGridSave" class="btnmodify  auth" runat="server" Text="保存" OnClick="btnGridSave_Click" />
+                            <asp:Button ID="btnGridSave" class="btnmodify  auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave_Click" />
                         </span>
                     </div>
                     <div>
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
+                                <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
                                     <Columns>
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                             <ItemTemplate>
@@ -164,7 +164,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="物料名称" >
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" AutoPostBack="true"  OnSelectedIndexChanged="listGridName_SelectedIndexChanged">
+                                                <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" AutoPostBack="true"  OnSelectedIndexChanged="listGridName_SelectedIndexChanged" Width ="250px">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -200,6 +200,19 @@
                                     <HeaderStyle CssClass="gridheader" />
                                     <RowStyle CssClass="gridrow" />
                                      <AlternatingRowStyle CssClass="gridalterrow" />
+                                         <PagerStyle CssClass="gridpager" />
+                                <PagerTemplate>
+                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                    <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                    到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                    页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+                                </PagerTemplate>
                                 </asp:GridView>
                             </ContentTemplate>
                             <Triggers>

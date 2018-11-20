@@ -57,11 +57,13 @@
                                 <asp:Button ID="btnSelAll1" runat="server" Text="全选" CssClass="btnview auth" OnClick="btnSelAll1_Click" />
                                 <asp:Button ID="btnIgnore1" runat="server" Text="忽略" CssClass="btndel auth" OnClick="btnIgnore1_Click" />
                                 <asp:Button ID="btnConfirm1" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm1_Click" />
+                                   <asp:Button ID="btnFeed1" runat="server" Text="反馈" CssClass="btnmodify auth" OnClick="btnFeed1_Click" />
+                                <asp:Button ID="btnDone1" runat="server" Text="完成" CssClass="btndone auth" OnClick="btnDone1_Click" />
                             </span>
                         </div>
 
 
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="10" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="14" AutoGenerateColumns="False"
                             DataKeyNames="id,type">
                             <Columns>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
@@ -69,20 +71,20 @@
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField HeaderText="产品" DataField="prod_name" />
-                                <asp:BoundField HeaderText="工艺点" DataField="para_name" />
-                                <asp:BoundField HeaderText="类型" DataField="type" />
-                                <asp:BoundField HeaderText="值" DataField="value" />
-                                <asp:BoundField HeaderText="范围" DataField="range" />
-                                <asp:BoundField HeaderText="开始时间" DataField="b_time" />
-                                <asp:BoundField HeaderText="结束时间" DataField="e_time" />
-                                <asp:BoundField HeaderText="班组" DataField="team_name" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="产品" DataField="prod_name" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="工艺点" DataField="para_name" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="类型" DataField="type" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="值" DataField="value" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="范围" DataField="range" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="开始时间" DataField="b_time" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="结束时间" DataField="e_time" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="班组" DataField="team_name" />
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                     <ItemTemplate>
                                         <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="minus_score" HeaderText="扣分" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="minus_score" HeaderText="扣分" />
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btngrid1Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid1Ignore_Click" />
@@ -116,6 +118,8 @@
                         <asp:AsyncPostBackTrigger ControlID="btnIgnore1" />
                         <asp:AsyncPostBackTrigger ControlID="btnSelAll1" />
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnFeed1" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnDone1" />
                     </Triggers>
                 </asp:UpdatePanel>
 
@@ -128,11 +132,13 @@
                                 <asp:Button ID="btnSelAll" runat="server" Text="全选" CssClass="btnview auth" OnClick="btnSelAll_Click" />
                                 <asp:Button ID="btnIgnore" runat="server" Text="忽略" CssClass="btndel auth" OnClick="btnIgnore_Click" />
                                 <asp:Button ID="btnConfirm" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm_Click" />
+                                 <asp:Button ID="btnFeed" runat="server" Text="反馈" CssClass="btnmodify auth" OnClick="btnFeed_Click" />
+                                <asp:Button ID="btnDone" runat="server" Text="完成" CssClass="btndone auth" OnClick="btnDone_Click" />
                             </span>
                         </div>
 
 
-                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="10" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="14" AutoGenerateColumns="False"
                             DataKeyNames="ID,inspect_code">
                             <Columns>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
@@ -140,18 +146,22 @@
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField HeaderText="检验类型" DataField="inspect_type" />
-                                <asp:BoundField HeaderText="分组" DataField="insgroup" />
-                                <asp:BoundField HeaderText="检验项目" DataField="inspect_name" />
-                                <asp:BoundField HeaderText="检测值" DataField="value" />
-                                <asp:BoundField HeaderText="标准范围" DataField="range" />
-                                <asp:BoundField DataField="unit" HeaderText="单位" />
+                                  <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="RECORD_TIME" HeaderText="检测时间" />
+                                   <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="产品" DataField="prod_name" />
+                                   <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="班组" DataField="team_name" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="检验类型" DataField="inspect_type" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="分组" DataField="insgroup" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="检验项目" DataField="inspect_name" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="检测值" DataField="value" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="标准范围" DataField="range" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="unit" HeaderText="单位" />
+
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                     <ItemTemplate>
                                         <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="minus_score" HeaderText="扣分" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="minus_score" HeaderText="扣分" />
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btngrid2Ignore" runat="server" Text="忽略" CssClass="btn1" OnClick="btngrid2Ignore_Click" />
@@ -187,6 +197,8 @@
                         <asp:AsyncPostBackTrigger ControlID="btnIgnore" />
                         <asp:AsyncPostBackTrigger ControlID="btnSelAll" />
                         <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                          <asp:AsyncPostBackTrigger ControlID ="btnFeed" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnDone" />
                     </Triggers>
                 </asp:UpdatePanel>
 

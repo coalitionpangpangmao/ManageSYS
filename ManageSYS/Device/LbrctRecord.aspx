@@ -94,11 +94,11 @@
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="润滑计划" HeaderText="润滑计划" />
-                                    <asp:BoundField DataField="部门" HeaderText="部门" />
-                                    <asp:BoundField DataField="审批状态" HeaderText="审批状态" />
-                                    <asp:BoundField DataField="执行状态" HeaderText="执行状态" />
-                                    <asp:BoundField DataField="备注" HeaderText="备注" />                                 
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑计划" HeaderText="润滑计划" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="部门" HeaderText="部门" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="审批状态" HeaderText="审批状态" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="执行状态" HeaderText="执行状态" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />                                 
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btnred" Width="75" OnClick = "btnGridview_Click" />
@@ -131,7 +131,7 @@
                 </div>
                 
                <div class="shade">
-                <div  style="width:1200px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                <div  style="width:1000px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
                     <div class="tiphead">
                         <span>润滑详情</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>

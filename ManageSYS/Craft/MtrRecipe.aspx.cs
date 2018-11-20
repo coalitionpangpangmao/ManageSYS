@@ -31,13 +31,13 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
         DataSet data = opt.CreateDataSetOra(query);
         if(data!= null && data.Tables[0].Rows.Count > 0)
         {
-            txtCode.Text = hdcode.Value;
+            txtCode.Text = data.Tables[0].Rows[0]["配方编号"].ToString();
             txtName.Text = data.Tables[0].Rows[0]["配方名称"].ToString();
             listPro.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
             txtVersion.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate.Text = data.Tables[0].Rows[0]["结束日期"].ToString();
-            listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
+          //  listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
             listCreator.SelectedValue = data.Tables[0].Rows[0]["编制人"].ToString();
             txtCrtDate.Text = data.Tables[0].Rows[0]["编制日期"].ToString();
             listCrtApt.SelectedValue = data.Tables[0].Rows[0]["编制部门"].ToString();
@@ -59,10 +59,11 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
       GridView1.DataBind();
       if (data != null && data.Tables[0].Rows.Count > 0)
       {
-          for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+          for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
           {
-              GridViewRow row = GridView1.Rows[i];
+              int j = i - GridView1.PageSize * GridView1.PageIndex;
               DataRowView mydrv = data.Tables[0].DefaultView[i];
+              GridViewRow row = GridView1.Rows[j];
               DropDownList list = (DropDownList)row.FindControl("listGridType");
               list.SelectedValue = mydrv["物料分类"].ToString();
               opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
@@ -76,7 +77,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         string query;
-        if (hdcode.Value.Length == 8)
+        if (hdcode.Value.Length ==8)
             query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.MATER_FLAG   as 物料分类 from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0'  and FORMULA_CODE = '" + hdcode.Value + "'";
         else
             query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.MATER_FLAG   as 物料分类 from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0'  and t.PROD_CODE = '" + hdcode.Value + "'";
@@ -98,10 +99,11 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
         GridView1.DataBind();
         if (data != null && data.Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Rows.Count; i++)
             {
-                GridViewRow row = GridView1.Rows[i];
+                int j = i - GridView1.PageSize * GridView1.PageIndex;
                 DataRowView mydrv = data.DefaultView[i];
+                GridViewRow row = GridView1.Rows[j];
                 DropDownList list = (DropDownList)row.FindControl("listGridType");
                 list.SelectedValue = mydrv["物料分类"].ToString();
                 opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
@@ -136,7 +138,43 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
             opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
         }
     }
-    
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid();
+    }
    
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
@@ -218,8 +256,8 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
     {
         foreach (GridViewRow row in GridView1.Rows)
         {
-            if (((CheckBox)row.FindControl("chk")).Checked)
-            {
+           // if (((CheckBox)row.FindControl("chk")).Checked)
+          //  {
                 string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 string[] seg = { "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "MATER_FLAG" };
@@ -227,7 +265,7 @@ public partial class Craft_MtrRecipe : MSYS.Web.BasePage
                 string log_message = opt.MergeInto(seg, value, 2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += ",物料编码：" + txtCode.Text;
                 InsertTlog(log_message);
-            }
+          //  }
         }
         bindGrid();
     }

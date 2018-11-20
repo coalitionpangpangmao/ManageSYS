@@ -77,6 +77,8 @@
                             <asp:AsyncPostBackTrigger ControlID="btnGrid1CkAll" />
                             <asp:AsyncPostBackTrigger ControlID="btnGrid1DelSel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnGrid2DelSel" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -108,31 +110,31 @@
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="工艺段">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
-                                                CssClass="tbinput" Enabled="False" Width="120px"></asp:TextBox>
+                                                CssClass="tbinput" Enabled="False" Width="150px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="节点名">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtNodeName" runat="server" DataValueField="节点名" DataTextField="节点名" 
+                                            <asp:TextBox ID="txtNodeName" runat="server" DataValueField="节点名" DataTextField="节点名" Width="120px"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="顺序号">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号" onKeyUp="value=value.replace(/\D/g,'')" 
+                                            <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号" onKeyUp="value=value.replace(/\D/g,'')"  Width="40px"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="控制标签">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtTag" runat="server" DataValueField="控制标签" DataTextField="控制标签"
-                                                CssClass="tbinput" Width="150px"></asp:TextBox>
+                                                CssClass="tbinput" Width="200px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="创建时间">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtCreatetime" runat="server" DataValueField="创建时间" DataTextField="创建时间"
-                                                CssClass="tbinput" Enabled="False" Width="100px"></asp:TextBox>
+                                                CssClass="tbinput" Enabled="False" Width="150px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="描述">

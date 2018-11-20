@@ -137,6 +137,11 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 }
             }
             bindGrid2();
+            if (listSection1.SelectedValue == listSection2.SelectedValue)
+            {
+                createGridView();
+                bindGrid1();
+            }
         }
         catch (Exception ee)
         {
@@ -174,6 +179,11 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             }
 
             bindGrid2();
+            if (listSection1.SelectedValue == listSection2.SelectedValue)
+            {
+                createGridView();
+                bindGrid1();
+            }
         }
         catch (Exception ee)
         {
@@ -221,6 +231,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 DataRowView mydrv = data.DefaultView[k];
                 ((TextBox)GridView1.Rows[k].FindControl("txt_Pathname")).Text = mydrv["路径名称"].ToString();
                 ((TextBox)GridView1.Rows[k].FindControl("txt_Pathcode")).Text = mydrv["路径编码"].ToString();
+                ((TextBox)GridView1.Rows[k].FindControl("txt_Pathcode")).Enabled = false;
                 for (int j = 2; j < data.Columns.Count - 2; j++)
                 {
                     ((CheckBox)GridView1.Rows[k].FindControl("ck_" + j.ToString())).Checked = (mydrv[data.Columns[j].ColumnName].ToString() == "1");

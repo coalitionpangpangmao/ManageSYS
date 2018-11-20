@@ -242,7 +242,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
 
 
         string[] seg = { "F_BOOK_ID", "F_SHEET", "F_DES", "F_SQL", "F_DESX", "F_DESY", "F_SHEETINDEX", "F_SYNCHRO_TIME" };
-        string[] value = { listReport.SelectedValue, Sheet1.Text , DesC.Text.Trim()+ DesR.Text.Trim() ,SQLText.Text.Replace("'","''") , DesR.Text , DesC.Text ,Index.Text ,DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") };
+        string[] value = { listReport.SelectedValue, Sheet1.Text , DesC.Text.Trim()+ DesR.Text.Trim() ,SQLText.Text , DesR.Text , DesC.Text ,Index.Text ,DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") };
         string log_message = opt.MergeInto(seg, value, 3, "HT_SYS_EXCEL_SEG") == "Success" ? "插入报表记录成功" : "插入报表记录失败";
         log_message += "--详情:" + ReportName.Text + "--工作表名为" + Sheet1.Text + "--位置为" + DesC.Text.Trim() + DesR.Text.Trim();
         InsertTlog(log_message);

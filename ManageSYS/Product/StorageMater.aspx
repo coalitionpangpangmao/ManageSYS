@@ -62,10 +62,10 @@
                         <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>
-                <div style="overflow: auto">
+                <div style="height: 400px" >
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="单据号" AutoGenerateColumns="False" HeaderStyle-Wrap="False" AlternatingRowStyle-Wrap="False" EditRowStyle-Wrap="False" RowStyle-Wrap="False">
+                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="单据号" AutoGenerateColumns="False" HeaderStyle-Wrap="False" AlternatingRowStyle-Wrap="False" EditRowStyle-Wrap="False" RowStyle-Wrap="False"  OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12" AllowPaging ="true">
                                 <Columns>
                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                         <ItemTemplate>
@@ -88,13 +88,13 @@
                                             <asp:Label ID="labIssue" runat="server" CssClass="labstatu" Width="55px" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="领退日期" HeaderText="领退日期" />
-                                    <asp:BoundField DataField="单据号" HeaderText="单据号" />
-                                    <asp:BoundField DataField="关联批次" HeaderText="关联批次" />
-                                    <asp:BoundField DataField="烟梗总量" HeaderText="烟梗总量" />
-                                    <asp:BoundField DataField="碎片总量" HeaderText="碎片总量" />
-                                    <asp:BoundField DataField="编制人" HeaderText="编制人" />
-                                    <asp:BoundField DataField="收发人" HeaderText="收发人" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="领退日期" HeaderText="领退日期" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="单据号" HeaderText="单据号" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="关联批次" HeaderText="关联批次" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="烟梗总量" HeaderText="烟梗总量" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="碎片总量" HeaderText="碎片总量" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="编制人" HeaderText="编制人" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="收发人" HeaderText="收发人" />
                                     <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                         <ItemTemplate>
                                             <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
@@ -123,6 +123,19 @@
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
                                 <AlternatingRowStyle CssClass="gridalterrow" />
+                                      <PagerStyle CssClass="gridpager" />
+                                <PagerTemplate>
+                                    <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                    <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                    到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                    页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+                                </PagerTemplate>
                             </asp:GridView>
                         </ContentTemplate>
                         <Triggers>
@@ -182,6 +195,7 @@
                                             <asp:DropDownList ID="listPrdctPlan" runat="server" CssClass="drpdwnlist"
                                                 OnSelectedIndexChanged="listPrdctPlan_SelectedIndexChanged" AutoPostBack="True">
                                             </asp:DropDownList>
+                                              <asp:TextBox ID="txtPrdctPlan" runat="server" class="dfinput1" Visible ="false"></asp:TextBox>
                                         </td>
                                         <td width="100">产品名称
                                         </td>
@@ -250,7 +264,7 @@
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                 </span>
                             </div>
-
+                          
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                 DataKeyNames="ID">
                                 <Columns>
@@ -323,6 +337,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnModify" />
                             <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnGridNew" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

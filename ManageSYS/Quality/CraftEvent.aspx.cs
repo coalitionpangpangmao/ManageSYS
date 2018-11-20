@@ -106,51 +106,41 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            string status = ""; 
-            foreach (GridViewRow row in GridView1.Rows)
+            string status = "";
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
-                status = data.Tables[0].Rows[row.RowIndex]["status"].ToString();
+                int j = i - GridView1.PageSize * GridView1.PageIndex;
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                GridViewRow row = GridView1.Rows[j];
+                status = mydrv["status"].ToString();
                 ((Label)row.FindControl("labStatus")).Text = opt.GetSegValue("select * from ht_inner_inspect_status where id = '" + status + "'", "NAME");
                 switch (status)
                 {
-                    case "0":
-                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btn1";
-                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btn1";
-                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
+                    case "0"://未处理
+                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
                         break;
-                    case "1":
-                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
+
+                    case "3"://己处理
+                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
                         break;
-                    case "2":
-                         ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
+                    case "5"://己反馈
+                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2done")).CssClass = "btn1";
                         break;
-                    case "3":
-                         ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btn1";
-                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
+                    default://  case "1"://己忽略  case "2"://处理中 case "4"://跟踪中case 6 己完成
+                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
                         break;
-                    case "4":
-                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
-                        break;
-                    case "5":
-                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid1done")).CssClass = "btn1";
-                        break;
-                    default:
-                       break;
                 }
             }
         }
@@ -159,56 +149,46 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
     protected void bindgrid2()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.ID,'成品检测'  as inspect_type ,r.inspect_code, h.name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status  ,nvl(s.minus_score,0) as minus_score  from ht_qlt_inspect_record t left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join  ht_qlt_inspect_proj r  on t.inspect_code = r.inspect_code left join ht_inner_inspect_group h on h.id = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '1' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' union select t.ID, '过程检验'  as inspect_type,r.inspect_code,h.section_name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status ,nvl(s.minus_score,0) as minus_score   from ht_qlt_inspect_record t  left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join ht_qlt_inspect_proj r  on r.inspect_code = t.inspect_code left join ht_pub_tech_section h on h.section_code = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '0' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'  order by inspect_type,insgroup ";
+        string query = "select t.id,r.prod_name,s.team_name,t.inspect_type,t.inspect_code,t.insgroup,t.inspect_name,t.value,t.range,t.unit,t.status,t.minus_score,t.record_time from hv_craft_offline t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team_id where t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'  order by RECORD_TIME,prod_name,inspect_code ";
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string status = "";
-            foreach (GridViewRow row in GridView2.Rows)
+            for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
-                status = data.Tables[0].Rows[row.RowIndex]["status"].ToString();
+                int j = i - GridView2.PageSize * GridView2.PageIndex;
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                GridViewRow row = GridView2.Rows[j];
+                status = mydrv["status"].ToString();
                 ((Label)row.FindControl("labStatus")).Text = opt.GetSegValue("select * from ht_inner_inspect_status where id = '" + status + "'", "NAME");
                 switch (status)
                 {
-                    case "0":
+                    case "0"://未处理
                         ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btn1";
                         ((Button)row.FindControl("btngrid2Sure")).CssClass = "btn1";
                         ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
                         ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
-                        break;
-                    case "1":
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
-                        break;
-                    case "2":
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
-                        break;
-                    case "3":
+                        break;                  
+                   
+                    case "3"://己处理
                         ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
                         ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
                         ((Button)row.FindControl("btngrid2fdback")).CssClass = "btn1";
                         ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
-                        break;
-                    case "4":
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
-                        break;
-                    case "5":
+                        break;                 
+                    case "5"://己反馈
                         ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
                         ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
                         ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
                         ((Button)row.FindControl("btngrid2done")).CssClass = "btn1";
                         break;
-                    default:
+                    default://  case "1"://己忽略  case "2"://处理中 case "4"://跟踪中case 6 己完成
+                         ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
                         break;
                 }
             }
@@ -243,8 +223,8 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         foreach (GridViewRow row in GridView1.Rows)
         {
-             
-            if (((CheckBox)row.FindControl("ck")).Checked)
+
+            if (((CheckBox)row.FindControl("ck")).Checked && ((Label)row.FindControl("labStatus")).Text == "未处理")
             {
                 int index = row.RowIndex;
                 string[] seg = { "RECORD_ID", "SORT", "SCORE", "STATUS", "CREAT_ID", "CREATE_TIME" };
@@ -264,7 +244,7 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         foreach (GridViewRow row in GridView1.Rows)
         {
-            if (((CheckBox)row.FindControl("ck")).Checked)
+            if (((CheckBox)row.FindControl("ck")).Checked && ((Label)row.FindControl("labStatus")).Text == "未处理")
             {
                 int index = row.RowIndex;
                 string[] seg = { "RECORD_ID", "SORT", "SCORE", "STATUS", "CREAT_ID", "CREATE_TIME" };
@@ -308,34 +288,58 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
 
     protected void btngrid1fdback_Click(object sender, EventArgs e)
     {
-        MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+     
         Button btn = (Button)sender;
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         int index = row.RowIndex;
-        string[] seg = { "RECORD_ID", "SORT",  "STATUS" };
-        string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(),  "4" };
+       
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
-        log_message += "--详情:" + string.Join(",", value);
+        string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '4' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
         InsertTlog(log_message);
         bindgrid1();
     }
 
     protected void btngrid1done_Click(object sender, EventArgs e)
     {
-        MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+      
         Button btn = (Button)sender;
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         int index = row.RowIndex;
-        string[] seg = { "RECORD_ID", "SORT", "STATUS" };
-        string[] value = { GridView1.DataKeys[index].Values[0].ToString(), GridView1.DataKeys[index].Values[1].ToString(), "6" };
+     
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.MergeInto(seg, value, 2, "HT_QLT_AUTO_EVENT") == "Success" ? "完结工艺质量事件成功" : "完结工艺质量事件失败";
-        log_message += "--详情:" + string.Join(",", value);
+        string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '6' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
         InsertTlog(log_message);
         bindgrid1();
     }
-  
+    protected void btnFeed1_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            int index = row.RowIndex;
+
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '4' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+            log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
+            InsertTlog(log_message);
+            bindgrid2();
+        }
+    }
+
+    protected void btnDone1_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            int index = row.RowIndex;
+
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '6' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+            log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
+            InsertTlog(log_message);
+            bindgrid2();
+        }
+    }
     /// <summary>
     /// 离线工艺事件
     /// </summary>
@@ -359,11 +363,11 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         foreach (GridViewRow row in GridView2.Rows)
         {
-            if (((CheckBox)row.FindControl("ck")).Checked)
+            if (((CheckBox)row.FindControl("ck")).Checked && ((Label)row.FindControl("labStatus")).Text == "未处理")
             {
                 int index = row.RowIndex;
                 string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS","SCORE", "CREAT_ID", "CREATE_TIME" };
-                string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "1", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "1", row.Cells[11].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 
 
@@ -379,11 +383,11 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         foreach (GridViewRow row in GridView2.Rows)
         {
-            if (((CheckBox)row.FindControl("ck")).Checked)
+            if (((CheckBox)row.FindControl("ck")).Checked && ((Label)row.FindControl("labStatus")).Text == "未处理")
             {
                 int index = row.RowIndex;
                 string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "SCORE", "CREAT_ID", "CREATE_TIME" };
-                string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "2", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "2", row.Cells[11].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "确认工艺质量事件成功" : "确认工艺质量事件失败";
                 log_message += "--详情:" + string.Join(",", value);
@@ -399,7 +403,7 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         int index = row.RowIndex;
         string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "SCORE", "CREAT_ID", "CREATE_TIME" };
-        string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "1", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+        string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "1", row.Cells[11].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "忽略工艺质量事件成功" : "忽略工艺质量事件失败";
         log_message += "--详情:" + string.Join(",", value);
@@ -413,7 +417,7 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         int index = row.RowIndex;
         string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS", "SCORE", "CREAT_ID", "CREATE_TIME" };
-        string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "2", row.Cells[8].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+        string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "2", row.Cells[11].Text, user.id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "保存工艺质量事件成功" : "保存工艺质量事件失败";
         log_message += "--详情:" + string.Join(",", value);
@@ -423,31 +427,58 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
 
     protected void btngrid2fdback_Click(object sender, EventArgs e)
     {
-        MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+      
         Button btn = (Button)sender;
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         int index = row.RowIndex;
-        string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS" };
-        string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "4"};
+     
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
-        log_message += "--详情:" + string.Join(",", value);
+      
+        string log_message =  opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '4' where RECORD_ID = '" + GridView2.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        log_message += "--详情:" + GridView2.DataKeys[index].Values[0].ToString();
         InsertTlog(log_message);
         bindgrid2();
     }
 
+  
     protected void btngrid2done_Click(object sender, EventArgs e)
     {
-        MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+       
         Button btn = (Button)sender;
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         int index = row.RowIndex;
-        string[] seg = { "RECORD_ID", "INSPECT_CODE", "STATUS" };
-        string[] value = { GridView2.DataKeys[index].Values[0].ToString(), GridView2.DataKeys[index].Values[1].ToString(), "6" };
+       
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.MergeInto(seg, value, 1, "HT_QLT_INSPECT_EVENT") == "Success" ? "完结工艺质量事件成功" : "完结工艺质量事件失败";
-        log_message += "--详情:" + string.Join(",", value);
+        string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '6' where RECORD_ID = '" + GridView2.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "完结工艺质量事件成功" : "完结工艺质量事件失败";
+        log_message += "--详情:" + GridView2.DataKeys[index].Values[0].ToString();
         InsertTlog(log_message);
         bindgrid2();
+    }
+    protected void btnFeed_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow row in GridView2.Rows)
+        {
+            int index = row.RowIndex;
+
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '4' where RECORD_ID = '" + GridView2.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+            log_message += "--详情:" + GridView2.DataKeys[index].Values[0].ToString();
+            InsertTlog(log_message);
+            bindgrid2();
+        }
+    }
+
+    protected void btnDone_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow row in GridView2.Rows)
+        {
+            int index = row.RowIndex;
+
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '6' where RECORD_ID = '" + GridView2.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+            log_message += "--详情:" + GridView2.DataKeys[index].Values[0].ToString();
+            InsertTlog(log_message);
+            bindgrid2();
+        }
     }
 }

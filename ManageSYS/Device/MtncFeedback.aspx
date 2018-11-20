@@ -61,11 +61,11 @@
                             <ContentTemplate>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8">
                                     <Columns>
-                                        <asp:BoundField DataField="维保计划" HeaderText="维保计划" />
-                                        <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                        <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
-                                        <asp:BoundField DataField="申请人" HeaderText="申请人" />
-                                        <asp:BoundField DataField="备注" HeaderText="备注" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维保计划" HeaderText="维保计划" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="过期时间" HeaderText="过期时间" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请人" HeaderText="申请人" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" />
@@ -110,11 +110,11 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="10"
                                 DataKeyNames="ID">
                                 <Columns>                                 
-                                       <asp:BoundField DataField="区域" HeaderText="区域" />
-                                    <asp:BoundField DataField="设备名称" HeaderText="设备名称" />
-                                    <asp:BoundField DataField="维保原因" HeaderText="维保原因" />
-                                    <asp:BoundField DataField="维保内容" HeaderText="维保内容" />
-                                    <asp:BoundField DataField="期望完成时间" HeaderText="期望完成时间" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="区域" HeaderText="区域" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="设备名称" HeaderText="设备名称" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维保原因" HeaderText="维保原因" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维保内容" HeaderText="维保内容" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="期望完成时间" HeaderText="期望完成时间" />
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False" DataSource="<%# statusbind() %>" DataTextField="Name" DataValueField="ID"></asp:DropDownList>

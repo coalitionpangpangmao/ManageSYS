@@ -33,7 +33,7 @@
                            <td width="100">生产日期：
                         </td>
                         <td>
-                            <asp:TextBox ID="txtProdTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>  
+                            <asp:TextBox ID="txtProdTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtProdTime_TextChanged" AutoPostBack ="true"></asp:TextBox>  
                         </td>
                         <td width="100">产品：
                         </td>
@@ -52,13 +52,13 @@
                        <td width="100">班组：
                         </td>
                         <td>
-                            <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist">
+                            <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listTeam_SelectedIndexChanged" AutoPostBack ="true">
                             </asp:DropDownList>
                         </td>
                          <td width="100">班时：
                         </td>
                         <td>
-                            <asp:DropDownList ID="listShift" runat="server" CssClass="drpdwnlist">
+                            <asp:DropDownList ID="listShift" runat="server" CssClass="drpdwnlist" Enabled ="false">
                             </asp:DropDownList>
                         </td>
                     </tr>
@@ -70,8 +70,8 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                             DataKeyNames="inspect_code">
                             <Columns>
-                                <asp:BoundField DataField="insgroup" HeaderText="类型" />
-                                <asp:BoundField HeaderText="检验项目" DataField="inspect_name"/>
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="insgroup" HeaderText="类型" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="检验项目" DataField="inspect_name"/>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="检测值">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtPara" runat="server" CssClass='tbinput1'></asp:TextBox>
@@ -84,7 +84,7 @@
                                     </ItemTemplate>
 
                                 </asp:TemplateField>
-                                  <asp:BoundField DataField="unit" HeaderText="单位" />
+                                   <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="unit" HeaderText="单位" />
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                     <ItemTemplate>
                                         <asp:Label ID="labStatus" runat="server" Text="" CssClass="labstatu" Width ="50px"></asp:Label>
@@ -106,6 +106,8 @@
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="listProd" />
                         <asp:AsyncPostBackTrigger ControlID ="btnSave" />
+                        <asp:AsyncPostBackTrigger ControlID ="txtProdTime" />
+                        <asp:AsyncPostBackTrigger ControlID ="listTeam" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

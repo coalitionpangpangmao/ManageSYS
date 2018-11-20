@@ -19,8 +19,16 @@
             $(".folder").bind("click", function () {
                 $('#hdcode').val($(this).attr('value'));
                 $('#btnUpdate1').click();
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
             });
-                
+        
+            $(".file").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
         });
         function initTree() {
             $("#browser").treeview({
@@ -60,7 +68,7 @@
                 <asp:UpdatePanel runat="server" ID="UpdatePanel4" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:HiddenField ID="hideY" runat="server" />
-                        <div class="leftinfo" id="gridPanel" style="overflow: scroll" onscroll="saveScroll()">
+                        <div class="leftinfo" id="gridPanel"  onscroll="saveScroll()">
                             <div class="listtitle">物料分类</div>
                             <% = tvHtml %>
                         </div>
@@ -189,45 +197,50 @@
                                             <tr>
                                                 <td width="100">物料编码</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtCode2" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtCode2" runat="server" class="dfinput1" Enabled ="false" Width ="220px"></asp:TextBox></td>
                                                 <td width="100">物料名称</td>
                                                 <!-- code name-->
                                                 <td>
-                                                    <asp:TextBox ID="txtName2" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtName2" runat="server" class="dfinput1" Enabled ="false" Width ="220px"></asp:TextBox></td>
+                                                 </tr>
+                                            <tr>
                                                 <td width="100">父级类别</td>
                                                 <td>
-                                                    <asp:DropDownList ID="listType2" runat="server" CssClass="drpdwnlist" Enabled ="false"></asp:DropDownList></td>
-                                            </tr>
-                                            <tr>
+                                                    <asp:DropDownList ID="listType2" runat="server" CssClass="drpdwnlist" Enabled ="false" Width ="220px"></asp:DropDownList></td>
+                                           
                                                 <td width="100">物料类型</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtCtgr2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtCtgr2" runat="server" class="dfinput1" Width ="220px"></asp:TextBox></td>   </tr>
+                                            <tr>
                                                 <td width="100">单位</td>
+                                              
                                                 <td>
-                                                    <asp:TextBox ID="txtUint2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtUint2" runat="server" class="dfinput1" Width ="220px"></asp:TextBox></td>
                                                 <td width="100">用友编码</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtPkmtr2" runat="server" class="dfinput1"></asp:TextBox></td>
-                                            </tr>
+                                                    <asp:TextBox ID="txtPkmtr2" runat="server" class="dfinput1" Width ="220px"></asp:TextBox></td>                                          
+                                              
+                                                  </tr>
                                             <tr>
-                                                <td width="100">等级</td>
-                                                <td>
-                                                    <asp:TextBox ID="txtLevel2" runat="server" class="dfinput1"></asp:TextBox></td>
                                                 <td width="100">种类</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtVrt2" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtVrt2" runat="server" class="dfinput1" Width ="220px"></asp:TextBox></td>
                                                 <td width="100">单重</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtWeight2" runat="server"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtWeight2" runat="server"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  class="dfinput1" Width ="220px"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td width="100">是否有效</td>
                                                 <td>
                                                     <asp:CheckBox ID="ckValid2" runat="server" /></td>
                                                 <td width="100">备注</td>
+                                                <td >
+                                                    <asp:TextBox ID="txtDscrp2" runat="server" class="dfinput1" Width ="220px"></asp:TextBox></td>
+                                            </tr>
+                                            <tr>
+                                                  <td width="100">等级</td>
                                                 <td colspan="3">
-                                                    <asp:TextBox ID="txtDscrp2" runat="server" class="dfinput1"></asp:TextBox></td>
-
+                                                    <asp:TextBox ID="txtLevel2" runat="server" class="dfinput1" Width ="220px"></asp:TextBox></td>
                                             </tr>
                                         </tbody>
                                     </table>

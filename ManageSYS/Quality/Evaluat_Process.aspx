@@ -38,9 +38,11 @@
             <table class="tablelist" style="margin-bottom: 5px">
                 <tbody>
                     <tr>
-                        <td colspan="7" align="center">请选择月度：     
+                        <td colspan="7" align="center"> 
+                  请选择时间：     
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
-                        onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
+                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至 <asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"
+                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp; 
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -16,11 +16,16 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#browser").treeview({
-                toggle: function () {
-                    console.log("%s was toggled.", $(this).find(">span").text());
-                }
-            });
+            initTree();
+        });
+        function initTree() {
+            $('#browser').treeview(
+                {
+                    toggle: function ()
+                    { console.log('%s was toggled.', $(this).find('>span').text()); },
+                    persist: 'cookie',
+                    collapsed: true
+                });
             $(".folder").click(function () {
                 $('.folder').removeClass("selectedbold");
                 $('.file').removeClass("selectedbold");
@@ -31,8 +36,7 @@
                 $('.file').removeClass("selectedbold");
                 $(this).addClass("selectedbold");
             });
-        });
-       
+        }
         function tab1Click(code) {
          
             $('#tabtop1').click();
@@ -88,7 +92,7 @@
                 <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:Button ID="btnUpdate" CssClass="btnhide" runat="server" OnClick="btnUpdate_Click" />
-                        <div class="leftinfo">
+                        <div class="leftinfo" >
                             <div class="listtitle">配方管理</div>
                             <% = tvHtml %>
                         </div>
@@ -112,17 +116,17 @@
                     </div>
                 </div>
                 <div id="tab1" class="tabson">
-                    <iframe name="Frame1" id="Frame1" src="RecipeList.aspx" height="400" scrolling="no"
-                        style="width: 100%; position: relative;"></iframe>
+                    <iframe name="Frame1" id="Frame1" src="RecipeList.aspx"  scrolling="no"
+                        style="width: 100%; position: relative;height:500px;"></iframe>
                 </div>
                 <div id="tab2" class="tabson">
-                    <iframe name="Frame2" id="Frame2" src="MtrRecipe.aspx" height="400" scrolling="no" style="width: 100%; position: relative"></iframe>
+                    <iframe name="Frame2" id="Frame2" src="MtrRecipe.aspx"  scrolling="no" style="width: 100%; position: relative;height:500px;"></iframe>
                 </div>
                 <div id="tab3" class="tabson">
-                    <iframe name="Frame3" id="Frame3" src="RecipeAux.aspx" height="400" scrolling="no" style="width: 100%; position: relative;"></iframe>
+                    <iframe name="Frame3" id="Frame3" src="RecipeAux.aspx"  scrolling="no" style="width: 100%; position: relative;height:500px;"></iframe>
                 </div>
                 <div id="tab4" class="tabson">
-                    <iframe name="Frame4" id="Frame4" src="RecipeCoat.aspx" height="400" scrolling="no" style="width: 100%; position: relative;"></iframe>
+                    <iframe name="Frame4" id="Frame4" src="RecipeCoat.aspx"  scrolling="no" style="width: 100%; position: relative;height:500px;"></iframe>
                 </div>
             </div>
         </div>

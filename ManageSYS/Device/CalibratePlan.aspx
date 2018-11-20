@@ -90,7 +90,7 @@
                                                 <asp:CheckBox ID="chk" runat="server" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField DataField="校准计划" HeaderText="校准计划" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="校准计划" HeaderText="校准计划" />
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
@@ -101,8 +101,8 @@
                                                 <asp:Label ID="labexe" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField DataField="校准方式" HeaderText="校准方式" />
-                                        <asp:BoundField DataField="备注" HeaderText="备注" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="校准方式" HeaderText="校准方式" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
@@ -272,7 +272,7 @@
                                             <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False" DataSource="<%# statusbind() %>" DataTextField="Name" DataValueField="ID"></asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="备注">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridremark" runat="server" DataValueField="备注" DataTextField="备注"

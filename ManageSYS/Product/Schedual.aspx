@@ -131,13 +131,13 @@
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging"
-                                AutoGenerateColumns="False" PageSize="6">
+                                AutoGenerateColumns="False" PageSize="9">
                                 <Columns>
-                                    <asp:BoundField DataField="日期" HeaderText="日期" />
-                                    <asp:BoundField DataField="班组" HeaderText="班组" />
-                                    <asp:BoundField DataField="班时" HeaderText="班时" />
-                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间" />
-                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间" />
+                                    <asp:BoundField DataField="日期" HeaderText="日期" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
+                                    <asp:BoundField DataField="班组" HeaderText="班组"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
+                                    <asp:BoundField DataField="班时" HeaderText="班时"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
+                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
+                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listStatus2" runat="server" CssClass="drpdwnlist" Width="60px">

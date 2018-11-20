@@ -60,17 +60,17 @@
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="润滑计划名" HeaderText="润滑计划名" />
-                                         <asp:BoundField DataField="凭证号" HeaderText="凭证号" />                                        
-                                        <asp:BoundField DataField="区域" HeaderText="区域" />
-                                    <asp:BoundField DataField="设备名称" HeaderText="设备名称" />
-                                    <asp:BoundField DataField="润滑部位" HeaderText="润滑部位" />
-                                    <asp:BoundField DataField="润滑点数" HeaderText="润滑点数" />
-                                     <asp:BoundField DataField="润滑周期" HeaderText="润滑周期" />
-                                    <asp:BoundField DataField="润滑方式" HeaderText="润滑方式" />
-                                    <asp:BoundField DataField="润滑量" HeaderText="润滑量" />
-                                    <asp:BoundField DataField="期望完成时间" HeaderText="期望完成时间" />
-                                     <asp:BoundField DataField="状态" HeaderText="状态" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑计划名" HeaderText="润滑计划名" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="凭证号" HeaderText="凭证号" />                                        
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="区域" HeaderText="区域" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="设备名称" HeaderText="设备名称" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑部位" HeaderText="润滑部位" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑点数" HeaderText="润滑点数" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑周期" HeaderText="润滑周期" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑方式" HeaderText="润滑方式" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑量" HeaderText="润滑量" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="期望完成时间" HeaderText="期望完成时间" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="状态" HeaderText="状态" />
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" ItemStyle-Width="80">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btnred" Width="75"
@@ -106,9 +106,9 @@
             </div>
        
         <div class="shade">
-                <div  style="width:1200px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                <div  style="width:1000px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
                     <div class="tiphead">
-                        <span>维修详情</span><a onclick="$('.shade').fadeOut(100);"></a>
+                        <span>润滑详情</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>
                     <div class="gridinfo">                  
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
@@ -130,6 +130,8 @@
                                         <td>
                                             <asp:TextBox ID="txtCode" runat="server" class="dfinput1"  Enabled="false"></asp:TextBox>
                                         </td>
+                                              </tr>
+                                    <tr>
                                         <td width="100">区域
                                         </td>
                                         <td>
@@ -137,8 +139,7 @@
                                             </asp:DropDownList>
                                         </td>
                                        
-                                    </tr>
-                                    <tr>
+                                  
                                          <td width="100">润滑设备
                                         </td>
                                         <td>
@@ -151,6 +152,8 @@
                                             <asp:DropDownList ID="listOptor" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
+                                          </tr>
+                                    <tr>
                                         <td width="100">操作时间
                                         </td>
                                         <td>
@@ -160,7 +163,8 @@
                                         <td>
                                             <asp:TextBox ID="txtSegcount" runat="server" class="dfinput1" ></asp:TextBox>
                                         </td>
-
+                                        <td></td>
+                                        <td></td>
 
                                     </tr>
                                     <tr>

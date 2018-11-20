@@ -91,13 +91,12 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             
-                                <asp:BoundField DataField="计划名" HeaderText="计划名" />
-                                 <asp:BoundField DataField="年份" HeaderText="年份" />
-                                <asp:BoundField DataField="年份" HeaderText="年份" />
-                                <asp:BoundField DataField="季度" HeaderText="季度" />
-                                <asp:BoundField DataField="计划总产量" HeaderText="计划总产量" />
-                                <asp:BoundField DataField="单位" HeaderText="单位" />
-                                <asp:BoundField DataField="编制人" HeaderText="编制人" />
+                                <asp:BoundField DataField="计划名" HeaderText="计划名"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
+                                 <asp:BoundField DataField="年份" HeaderText="年份"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />                              
+                                <asp:BoundField DataField="季度" HeaderText="季度"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="计划总产量" HeaderText="计划总产量"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="单位" HeaderText="单位"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="编制人" HeaderText="编制人"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1 auth" Width="75"
@@ -182,6 +181,7 @@
                                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                                        <asp:Button ID="btnGrid2Modify" class="btnmodify auth" runat="server" Text="全部保存" Width ="90px" OnClick="btnGrid2Modify_Click" />
                                 </span>
                             </div>
                             <asp:HiddenField ID="hidePlanID" runat="server" />

@@ -158,14 +158,14 @@
                         </ItemTemplate>
                             
                         </asp:TemplateField>  
-                        <asp:BoundField DataField="记录ID" HeaderText="记录ID" />
-                         <asp:BoundField DataField="能耗项目" HeaderText="能耗项目" />
-                          <asp:BoundField DataField="能耗项目编码" HeaderText="能耗项目编码" />
-                          <asp:BoundField DataField="能耗类型" HeaderText="能耗类型" />
-                         <asp:BoundField DataField="能耗类型编码" HeaderText="能耗类型编码" />
-                           <asp:BoundField DataField="能耗工艺段" HeaderText="能耗工艺段" />
-                            <asp:BoundField DataField="能耗工艺段编码" HeaderText="能耗工艺段编码" />  
-                            <asp:BoundField DataField="是否有效" HeaderText="是否有效" />
+                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录ID" HeaderText="记录ID" />
+                          <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗项目" HeaderText="能耗项目" />
+                           <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗项目编码" HeaderText="能耗项目编码" />
+                           <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗类型" HeaderText="能耗类型" />
+                          <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗类型编码" HeaderText="能耗类型编码" />
+                            <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗工艺段" HeaderText="能耗工艺段" />
+                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗工艺段编码" HeaderText="能耗工艺段编码" />  
+                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="是否有效" HeaderText="是否有效" />
                          <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"   HeaderText = "操作">
                         <ItemTemplate>                                                  
                                 

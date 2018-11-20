@@ -27,42 +27,60 @@ public partial class Quality_MonthlyAnlz : MSYS.Web.BasePage
     protected void bindStatistic()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select * from ht_qlt_weight t where is_del = '0' order by ID ");
-        if (data != null && data.Tables[0].Rows.Count == 4)
-        {
-            DataRowCollection Rows = data.Tables[0].Rows;
-            StringBuilder str = new StringBuilder();
-            str.Append("select r.产品,r.班组,substr(r.时间,1,7) as 月度,avg(r.总分) as 在线考核分,avg(s.得分) as 过程检测得分,avg(t.得分) as 理化检测得分,avg(p.得分) as 感观评测得分,avg(r.总分)*");
-            str.Append(Rows[0]["Weight"].ToString());
-            str.Append("+ avg(s.得分) * ");
-            str.Append(Rows[1]["Weight"].ToString());
-            str.Append("+ avg(t.得分) * ");
-            str.Append(Rows[2]["Weight"].ToString());
-            str.Append("+ avg(p.得分) * ");
-            str.Append(Rows[2]["Weight"].ToString());
-            str.Append(" as 总得分 from hv_online_daily_report r left join hv_process_daily_report s on s.产品 = r.产品 and s.班组 = r.班组 and s.检测时间 = r.时间 left join hv_phychem_daily_report t on t.产品 = r.产品 and t.班组 = r.班组 and t.检测时间 = r.时间 left join hv_sensor_daily_report p on p.产品 = r.产品 and p.班组 = r.班组 and p.检测时间 = r.时间 where substr(r.时间,1,7) = '");
-            str.Append(txtStartTime.Text);
-            str.Append("'");
-            if (listTeam.SelectedValue != "")
-            {
-                str.Append(" r.班组 ='");
-                str.Append(listTeam.SelectedItem.Text);
-                str.Append("'");
-            }
-            str.Append(" group by r.产品,r.班组,substr(r.时间,1,7)");
-
-            data = opt.CreateDataSetOra(str.ToString());
-            GridAll.DataSource = data;
+        //DataSet data = opt.CreateDataSetOra("select * from ht_qlt_weight t where is_del = '0' order by ID ");
+        //if (data != null && data.Tables[0].Rows.Count == 4)
+        //{
+        //    DataRowCollection Rows = data.Tables[0].Rows;
+        //    StringBuilder str = new StringBuilder();
+        //    str.Append("select s.prod_name as 产品,r.team_name as 班组,substr(t.时间,0,7) as 时间,avg(nvl(t.在线考核分,100)) as 在线考核分,avg(nvl(t.过程检测得分,100)) as 过程检测得分,avg(nvl(t.理化检测得分,100)) as 理化检测得分,avg(nvl(t.感观评测得分,100)) as 感观评测得分 , avg(nvl(t.在线考核分,100))*");
+        //    str.Append(Rows[0]["Weight"].ToString());
+        //    str.Append("+ avg(nvl(t.理化检测得分,100)) * ");
+        //    str.Append(Rows[1]["Weight"].ToString());
+        //    str.Append("+ avg(nvl(t.感观评测得分,100)) * ");
+        //    str.Append(Rows[2]["Weight"].ToString());
+        //    str.Append("+ avg(nvl(t.过程检测得分,100)) * ");
+        //    str.Append(Rows[3]["Weight"].ToString());
+        //    str.Append(" as 总得分 from hv_qlt_daily_report   t left join ht_sys_team r on r.team_code = t.班组 left join ht_pub_prod_design s on s.prod_code = t.产品  where substr(t.时间,1,7) = '");
+        //    str.Append(txtStartTime.Text);
+        //    str.Append("'");
+        //    if (listTeam.SelectedValue != "")
+        //    {
+        //        str.Append(" t.班组 ='");
+        //        str.Append(listTeam.SelectedValue);
+        //        str.Append("'");
+        //    }
+        ////    str.Append(" group by s.prod_name,r.team_name,substr(t.时间,0,7) order by s.prod_name,r.team_name");
+        string query = "select t.prod_name as 产品,s.team_name as 班组,r.score1 as 在线考核分,r.score2 as 过程检测得分,r.score3 as 理化检测得分,r.score4 as 感观评测得分,r.score as 总得分   from (select t.产品,t.班组,avg(nvl(t.在线考核分,100)) as score1,avg(nvl(t.过程检测得分,100)) as score2,avg(nvl(t.理化检测得分,100)) as score3,avg(nvl(t.感观评测得分,100)) as score4,(select weight from ht_qlt_weight where id = '1')* avg(nvl(t.在线考核分,100))+(select weight from ht_qlt_weight where id = '2')* avg(nvl(t.理化检测得分,100))+(select weight from ht_qlt_weight where id = '3')* avg(nvl(t.感观评测得分,100))+(select weight from ht_qlt_weight where id = '4')* avg(nvl(t.过程检测得分,100)) as score  from hv_qlt_daily_report t  where substr(时间,0,7) = '" + txtStartTime.Text + "' group by 产品,班组,substr(时间,0,7)) r left join ht_pub_prod_design t on t.prod_code = r.产品 left join ht_sys_team s on s.team_code = r.班组 ";
+           if (listTeam.SelectedValue != "")
+                query += " and team_name = '" + listTeam.SelectedItem.Text + "'";
+            query += " order by prod_name,team_name";
+            GridAll.DataSource = opt.CreateDataSetOra(query);
             GridAll.DataBind();
-            GridView1.DataSource = opt.CreateDataSetOra("select * from hv_online_daily_report t where substr(时间,1,7) = '" + txtStartTime.Text + "'");
+             query= "select * from hv_online_daily_report t where substr(时间,1,7) = '" + txtStartTime.Text + "'";
+            if (listTeam.SelectedValue != "")
+                query += " and t.班组 = '" + listTeam.SelectedItem.Text + "'";
+            query += " order by t.产品,t.班组";
+            GridView1.DataSource = opt.CreateDataSetOra(query);
             GridView1.DataBind();
-            GridView2.DataSource = opt.CreateDataSetOra("select * from hv_process_daily_report t where substr(检测时间,1,7) = '" + txtStartTime.Text + "'");
+            query = "select * from hv_process_daily_report t where substr(检测时间,1,7) = '" + txtStartTime.Text + "'";
+            if (listTeam.SelectedValue != "")
+                query += " and t.班组 = '" + listTeam.SelectedItem.Text + "'";
+            query += " order by t.产品,t.班组";
+            GridView2.DataSource = opt.CreateDataSetOra(query);
             GridView2.DataBind();
-            GridView3.DataSource = opt.CreateDataSetOra("select * from hv_phychem_daily_report t where substr(检测时间,1,7)= '" + txtStartTime.Text + "'");
+            query = "select * from hv_phychem_daily_report t where substr(检测时间,1,7) = '" + txtStartTime.Text + "'";
+            if (listTeam.SelectedValue != "")
+                query += " and t.班组 = '" + listTeam.SelectedItem.Text + "'";
+            query += " order by t.产品,t.班组";
+            GridView3.DataSource = opt.CreateDataSetOra(query);
             GridView3.DataBind();
-            GridView4.DataSource = opt.CreateDataSetOra("select * from hv_sensor_daily_report t where substr(检测时间,1,7) = '" + txtStartTime.Text + "'");
+            query = "select * from hv_sensor_daily_report t where substr(检测时间,1,7) = '" + txtStartTime.Text + "'";
+            if (listTeam.SelectedValue != "")
+                query += " and t.班组 = '" + listTeam.SelectedItem.Text + "'";
+            query += " order by t.产品,t.班组";
+            GridView4.DataSource = opt.CreateDataSetOra(query);
             GridView4.DataBind();
-        }
+   
     }
 
 

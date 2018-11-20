@@ -23,9 +23,9 @@ public partial class Quality_Evaluat_Sensor : MSYS.Web.BasePage
     protected void bindgrid()
     {
         StringBuilder query = new StringBuilder();
-        query.Append(createSql(true, txtBtime.Text));
+        query.Append(createSql(true, txtBtime.Text, txtEtime.Text));
         query.Append(" union ");
-        query.Append(createSql(false, txtBtime.Text));
+        query.Append(createSql(false, txtBtime.Text, txtEtime.Text));
         query.Append(" order by 产品 ");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query.ToString());
@@ -41,7 +41,8 @@ public partial class Quality_Evaluat_Sensor : MSYS.Web.BasePage
 
     protected void initView()
     {
-        txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
+        txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM") + "-01";
+        txtEtime.Text = System.DateTime.Now.AddMonths(1).ToString("yyyy-MM") + "-01";
         createView();
         bindgrid();
 
@@ -93,15 +94,17 @@ public partial class Quality_Evaluat_Sensor : MSYS.Web.BasePage
 
         var result = dt.AsEnumerable().GroupBy(x =>
 x.Field<String>("name")).Select(x => x.First()).ToList();
+        int i = 0;
         foreach (var item in result)
         {
             var temp = item[0].ToString();
             var sub = dt.AsEnumerable().Where(p => p.Field<String>("name") == temp).ToList();
-            int i = 0;
+            int j = 0;
             foreach (var subitem in sub)
             {
+               
                 str.Append("<tr>");
-                if (i > 0)
+                if (j > 0)
                     str.Append("<td style='border-top-style: none; border-bottom-style: none' ></td>");
                 else
                 {
@@ -123,6 +126,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
                 str.Append("</td>");
                 str.Append(" </tr>");
                 i++;
+                j++;
             }
         }
         str.Append(" </table>");
@@ -139,7 +143,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
 
        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select * from  hv_Sensor_daily_report where 产品 = '" + prod_name + "'  and  substr(检测时间,1,7) = '" + txtBtime.Text + "'";
+        string query = "select * from  hv_Sensor_daily_report where 产品 = '" + prod_name + "'  and   检测时间 between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'";
         if (team_name != "&nbsp;")
             query += " and 班组 = '" + team_name + "'";
 
@@ -198,9 +202,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
                     str.Append(i.ToString());
                     str.Append(".prod_code  and g1.team_id = g");
                     str.Append(i.ToString());
-                    str.Append(".team_id  and g1.shift_id = g");
-                    str.Append(i.ToString());
-                    str.Append(".shift_id  and g1.record_time = g");
+                    str.Append(".team_id  and g1.record_time = g");
                     str.Append(i.ToString());
                     str.Append(".record_time  ");
                 }
@@ -217,7 +219,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
 
     }
 
-    private string createSql(bool Isteamgroup, string month)
+    private string createSql(bool Isteamgroup, string btime,string etime)
     {
         StringBuilder sql = new StringBuilder();
         StringBuilder str = new StringBuilder();
@@ -262,8 +264,10 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
                 str.Append(name);
                 str.Append("  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '");
                 str.Append(code);
-                str.Append("' and substr(a.record_time,1,7) = '");
-                str.Append(txtBtime.Text);
+                str.Append("' and a.record_time between  '");
+                str.Append(btime);
+                str.Append("' and '");
+                str.Append(etime);
                 str.Append("')g");
 
 
@@ -274,9 +278,7 @@ x.Field<String>("name")).Select(x => x.First()).ToList();
                     str.Append(i.ToString());
                     str.Append(".prod_code  and g1.team_id = g");
                     str.Append(i.ToString());
-                    str.Append(".team_id  and g1.shift_id = g");
-                    str.Append(i.ToString());
-                    str.Append(".shift_id  and g1.record_time = g");
+                    str.Append(".team_id   and g1.record_time = g");
                     str.Append(i.ToString());
                     str.Append(".record_time  ");
                 }

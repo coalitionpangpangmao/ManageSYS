@@ -42,18 +42,18 @@
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" Width="95%" CssClass="grid" border="0"
-                            CellPadding="2" CellSpacing="1" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="14" HeaderStyle-Wrap="False" AutoGenerateColumns ="false">
+                            CellPadding="2" CellSpacing="1" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="17" HeaderStyle-Wrap="False" AutoGenerateColumns ="false">
                             <Columns>
-                                <asp:BoundField DataField="用户" HeaderText="用户">
+                                <asp:BoundField DataField="用户" HeaderText="用户" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle Width="60px" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="操作站" HeaderText="操作站">
+                                <asp:BoundField DataField="操作站" HeaderText="操作站" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle Width="150px" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="时间" HeaderText="时间">
+                                <asp:BoundField DataField="时间" HeaderText="时间" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle Width="150px" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="描述" HeaderText="描述" >
+                                <asp:BoundField DataField="描述" HeaderText="描述"  HeaderStyle-HorizontalAlign="Center" >
                                       <ItemStyle Width="650px" />
                                 </asp:BoundField>
                             </Columns>

@@ -79,7 +79,7 @@
                             DataKeyNames="ID">
                             <Columns>
                                 
-                                <asp:BoundField DataField="NAME" HeaderText="考核项" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="NAME" HeaderText="考核项" />
                                 
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "权重">
                                     <ItemTemplate>

@@ -118,7 +118,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="父菜单">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist" Width="80px"
+                                        <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist" Width="120px"
                                             DataSource="<%#bindprt() %>" DataTextField="NAME" DataValueField="ID">
                                         </asp:DropDownList>
                                     </ItemTemplate>

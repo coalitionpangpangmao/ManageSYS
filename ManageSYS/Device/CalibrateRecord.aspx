@@ -56,13 +56,13 @@
                             <ContentTemplate>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12">
                                     <Columns>                                     
-                                        <asp:BoundField DataField="校准计划" HeaderText="校准计划" />
-                                        <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                          <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
-                                        <asp:BoundField DataField="申请人" HeaderText="申请人" />
-                                         <asp:BoundField DataField="状态" HeaderText="状态" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="校准计划" HeaderText="校准计划" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                          <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="过期时间" HeaderText="过期时间" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请人" HeaderText="申请人" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="状态" HeaderText="状态" />
                                         
-                                        <asp:BoundField DataField="备注" HeaderText="备注" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
 
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                             <ItemTemplate>
@@ -97,7 +97,7 @@
                     </div>             
            
            <div class="shade">
-                <div  style="width:1200px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                <div  style="width:1000px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
                     <div class="tiphead">
                         <span>校准详情</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>

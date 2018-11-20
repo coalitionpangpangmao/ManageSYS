@@ -153,13 +153,13 @@
                         </ItemTemplate>
                             
                         </asp:TemplateField>  
-                        <asp:BoundField DataField="记录ID" HeaderText="记录ID" />
-                         <asp:BoundField DataField="能耗点" HeaderText="能耗点" />
-                          <asp:BoundField DataField="工序编码" HeaderText="工序编码" />
-                           <asp:BoundField DataField="日期" HeaderText="日期" />
-                             <asp:BoundField DataField="能耗总量" HeaderText="能耗总量" />
-                              <asp:BoundField DataField="单位" HeaderText="单位" />
-                              <asp:BoundField DataField="是否有效" HeaderText="是否有效" />
+                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录ID" HeaderText="记录ID" />
+                          <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗点" HeaderText="能耗点" />
+                           <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="工序编码" HeaderText="工序编码" />
+                            <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="日期" HeaderText="日期" />
+                              <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗总量" HeaderText="能耗总量" />
+                               <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="单位" HeaderText="单位" />
+                               <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="是否有效" HeaderText="是否有效" />
                          <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"   HeaderText = "操作">
                         <ItemTemplate>                                                  
                                 

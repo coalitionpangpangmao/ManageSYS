@@ -20,6 +20,12 @@
                     console.log("%s was toggled.", $(this).find(">span").text());
                 }
             });
+            $(".folder").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+         
         });
         function tabClick(code) {
             $("#hideprc").attr('value', code);
@@ -201,7 +207,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数名" SortExpression="参数名">
                                                         <ItemTemplate>
-                                                            <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="200px">
+                                                            <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="230px">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
@@ -283,7 +289,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数名" SortExpression="参数名">
                                                         <ItemTemplate>
-                                                            <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="200px">
+                                                            <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="230px">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>

@@ -73,13 +73,13 @@
                         <ContentTemplate>
                             <asp:HiddenField ID="hdID" runat="server" />
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"
-                                AutoGenerateColumns="False" PageSize="8">
+                                AutoGenerateColumns="False" PageSize="12">
                                 <Columns>
-                                    <asp:BoundField DataField="日期" HeaderText="日期" />
-                                    <asp:BoundField DataField="班组" HeaderText="班组" />
-                                    <asp:BoundField DataField="班时" HeaderText="班时" />
-                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间" />
-                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="日期" HeaderText="日期" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="班组" HeaderText="班组" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="班时" HeaderText="班时" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="开始时间" HeaderText="开始时间" />
+                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="结束时间" HeaderText="结束时间" />
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click" />

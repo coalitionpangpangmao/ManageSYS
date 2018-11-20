@@ -24,14 +24,14 @@ namespace MSYS.Web
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             List<string> commandlist = new List<string>();
             productEntity[] prods = service.getAllProductList(new productEntity());
-            commandlist.Clear();
-            string[] matseg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "REMARK", "CREATEOR_ID", "CREATE_TIME", "MODIFY_ID", "MODIFY_TIME", "STANDARD_VALUE", "XY_PROD_CODE" };
+
+            string[] matseg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "REMARK", "CREATEOR_ID", "CREATE_TIME", "MODIFY_ID", "MODIFY_TIME", "STANDARD_VALUE", "XY_PROD_CODE", "IS_VALID", "IS_DEL" };
             int SucCount = 0;
 
             foreach (productEntity prod in prods)
             {
-                
-                string[] value = { prod.prodCode, prod.prodName, prod.packName, prod.handMode, prod.techStddId, prod.materFormulaId, prod.auxFormulaId, prod.coatFormulaId, prod.remark, prod.createorId, prod.createTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.modifyId, prod.modifyTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.standardValue, prod.xyProdCode };
+                commandlist.Clear(); 
+                string[] value = { prod.prodCode, prod.prodName, prod.packName, prod.handMode, prod.techStddId, prod.materFormulaId, prod.auxFormulaId, prod.coatFormulaId, prod.remark, prod.createorId, prod.createTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.modifyId, prod.modifyTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.standardValue, prod.xyProdCode,prod.isValid,prod.isDel };
 
                 string temp = opt.getMergeStr(matseg, value, 1, "HT_PUB_PROD_DESIGN");
                 commandlist.Add(temp);
@@ -41,11 +41,20 @@ namespace MSYS.Web
                 commandlist.Concat(getMaterFormalu_SQL(prod.materFormulaId, prod.prodCode));
                 commandlist.Concat(getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode)); //java.math.BigDecimal cannot be cast to java.lang.Double
                 commandlist.Concat(getCoatFormalu_SQL(prod.coatFormulaId, prod.prodCode));
-                if (opt.TransactionCommand(commandlist) == "Success")
+                if (opt.TransactionCommand(commandlist) == "Success" )
                 {
+                    commandlist.Clear();
+                    commandlist.Add("update ht_pub_prod_design t set tech_stdd_code = (select r.tech_code from ht_tech_stdd_code r where substr(t.tech_stdd_code,0,3)<>'TCH' and  r.id = to_number( t.tech_stdd_code)),mater_formula_code = (select s.formula_code from ht_qa_mater_formula s where  t.mater_formula_code is not null and  s.id = to_number( t.mater_formula_code)),aux_formula_code = (select  q.formula_code from ht_qa_aux_formula q where  t.aux_formula_code is not null and  q.id = to_number( t.aux_formula_code)),coat_formula_code = (select p.formula_code from ht_qa_coat_formula p where  t.coat_formula_code is not null and  p.id = to_number( t.coat_formula_code)) where t.prod_code = '" + prod.prodCode + "'");
+                    commandlist.Add("update ht_qa_mater_formula_detail r set formula_code = (select t.formula_code from ht_qa_mater_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.materFormulaId + "'");
+                    commandlist.Add("update ht_qa_aux_formula_detail r set formula_code = (select t.formula_code from ht_qa_aux_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.auxFormulaId + "'");
+                    commandlist.Add("update ht_qa_coat_formula_detail r set formula_code = (select t.formula_code from ht_qa_coat_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.coatFormulaId + "'");
+                      commandlist.Add("update ht_tech_stdd_code_detail r set tech_code = (select t.tech_code from ht_tech_stdd_code t where t.id = r.tech_code) where r.tech_code = '" + prod.techStddId + "'");
+                    commandlist.Add("update ht_qa_mater_formula_detail t set t.mater_flag = (select r.mat_type from ht_pub_materiel r  where r.material_code = t.mater_code)");
+                      opt.TransactionCommand(commandlist);
                     System.Diagnostics.Debug.Write("产品更新成功" + prod.prodCode + prod.prodName);
                     SucCount++;
                 }
+                
             }
             return SucCount.ToString() + "项产品更新成功,总记录条数：" + prods.Length;
 
@@ -120,7 +129,7 @@ namespace MSYS.Web
             if (info != null)
             {
                 string[] seg = { "ID", "FORMULA_CODE", "FORMULA_NAME", "ADJUST", "B_DATE", "CABO_SUM", "CONTROL_STATUS", "CREATE_DATE", "CREATE_DEPT_ID", "CREATE_ID", "E_DATE", "EXECUTEBATCH", "FLOW_STATUS" , "IS_DEL", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "PIECE_NUM", "PIECES_SUM", "PROD_CODE", "REMARK", "SMALLS_NUM", "STANDARD_VOL", "STEM_NUM", "STICKS_NUM"};
-                string[] value = { id,info.formulaCode,info.formulaName,info.adjust,info.BDate.ToString("yyyy-MM-dd HH:mm:ss"),info.caboSum.ToString(),info.controlStatus,info.createDate,info.createDept,info.createId,info.EDate.ToString("yyyy-MM-dd HH:mm:ss"),info.executeBatch.ToString(),info.flowStatus,info.isDel,info.isValid,
+                string[] value = { id,"703"+info.formulaCode,info.formulaName,info.adjust,info.BDate.ToString("yyyy-MM-dd HH:mm:ss"),info.caboSum.ToString(),info.controlStatus,info.createDate,info.createDept,info.createId,info.EDate.ToString("yyyy-MM-dd HH:mm:ss"),info.executeBatch.ToString(),info.flowStatus,info.isDel,info.isValid,
                                      info.modifyId,info.modifyTime,info.pieceNum.ToString(),info.piecesSum.ToString(),prodCode,info.remark,info.smallsNum.ToString(),info.standardVol,info.stemNum.ToString(),info.sticksNum.ToString()};
                 temp =opt.getMergeStr(seg, value, 2, "HT_QA_MATER_FORMULA");
                 commandlist.Add(temp);
@@ -169,7 +178,7 @@ namespace MSYS.Web
                 if (info != null)
                 {
                     string[] seg = { "ID", "FORMULA_CODE", "FORMULA_NAME", "B_DATE", "CONTROL_STATUS", "CREATE_DATE", "CREATE_DEPT_ID", "CREATE_ID", "E_DATE", "IS_DEL", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "PROD_CODE", "REMARK", "STANDARD_VOL" };
-                    string[] value = {id, info.formulaCode, info.formulaName, info.BDate.ToString("yyyy-MM-dd HH:mm:ss"), info.controlStatus, info.createDate, info.createDept, info.createId, info.EDate.ToString("yyyy-MM-dd HH:mm:ss"), info.isDel, info.isValid, info.modifyId, info.modifyTime, prodCode, info.remark, info.standardVol };
+                    string[] value = { id, "703" + info.formulaCode, info.formulaName, info.BDate.ToString("yyyy-MM-dd HH:mm:ss"), info.controlStatus, info.createDate, info.createDept, info.createId, info.EDate.ToString("yyyy-MM-dd HH:mm:ss"), info.isDel, info.isValid, info.modifyId, info.modifyTime, prodCode, info.remark, info.standardVol };
                     temp = opt.getMergeStr(seg, value, 2, "HT_QA_AUX_FORMULA");
                     commandlist.Add(temp);
                     if (opt.UpDateOra(temp) != "Success")
@@ -210,7 +219,7 @@ namespace MSYS.Web
                 if (info != null)
                 {
                     string[] seg = { "ID", "FORMULA_CODE", "FORMULA_NAME", "B_DATE", "CONTROL_STATUS", "CREATE_DATE", "CREATE_DEPT_ID", "CREATE_ID", "E_DATE", "IS_DEL", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "PROD_CODE", "REMARK", "STANDARD_VOL", "FORMULA_TPY", "FORMULA_XJ", "W_TOTAL" };
-                    string[] value = { id, info.formulaCode, info.formulaName, info.BDate.ToString("yyyy-MM-dd HH:mm:ss"), info.controlStatus, info.createDate, info.createDept, info.createId, info.EDate.ToString("yyyy-MM-dd HH:mm:ss"), info.isDel, info.isValid, info.modifyId, info.modifyTime, prodCode, info.remark, info.standardVol, info.formulaTpy.ToString(), info.formulaXj.ToString(), info.WTotal.ToString() };
+                    string[] value = { id, "703" + info.formulaCode, info.formulaName, info.BDate.ToString("yyyy-MM-dd HH:mm:ss"), info.controlStatus, info.createDate, info.createDept, info.createId, info.EDate.ToString("yyyy-MM-dd HH:mm:ss"), info.isDel, info.isValid, info.modifyId, info.modifyTime, prodCode, info.remark, info.standardVol, info.formulaTpy.ToString(), info.formulaXj.ToString(), info.WTotal.ToString() };
                     temp = opt.getMergeStr(seg, value, 2, "HT_QA_COAT_FORMULA");
                     commandlist.Add(temp);
                     if (opt.UpDateOra(temp) != "Success")

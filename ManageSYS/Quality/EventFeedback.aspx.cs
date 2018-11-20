@@ -108,16 +108,41 @@ public partial class Quality_EventFeedback : MSYS.Web.BasePage
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string status = "";
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
+            {
+                int j = i - GridView1.PageSize * GridView1.PageIndex;
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                GridViewRow row = GridView1.Rows[j];
+                status = mydrv["status"].ToString();
+              
+                ((Label)row.FindControl("labStatus")).Text = opt.GetSegValue("select * from ht_inner_inspect_status where id = '" + status + "'", "NAME");
+            }
+        }
       
     }
 
     protected void bindgrid2()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select t.ID,'成品检测'  as inspect_type ,r.inspect_code, h.name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status  ,s.minus_score  from ht_qlt_inspect_record t left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join  ht_qlt_inspect_proj r  on t.inspect_code = r.inspect_code left join ht_inner_inspect_group h on h.id = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '1' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'  union select t.ID, '过程检验'  as inspect_type,r.inspect_code,h.section_name as insgroup,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value||'~'||s.upper_value as range,r.unit,nvl(j.status,0) as status ,s.minus_score  from ht_qlt_inspect_record t  left join ht_qlt_inspect_stdd s on s.inspect_code = t.inspect_code left join ht_qlt_inspect_proj r  on r.inspect_code = t.inspect_code left join ht_pub_tech_section h on h.section_code = r.inspect_group left join ht_qlt_inspect_event j on j.record_id = t.id where r.inspect_type = '0' and not( t.inspect_value >s.lower_value and t.inspect_value <s.upper_value) and t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' and j.status = '4'  order by inspect_type,insgroup ";
+        string query = "select t.id,r.prod_name,s.team_name,t.inspect_type,t.inspect_code,t.insgroup,t.inspect_name,t.value,t.range,t.unit,t.status,t.minus_score,t.record_time from hv_craft_offline t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team_id where t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' and t.status >= '4'  order by  RECORD_TIME,prod_name,inspect_code ";
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            string status = "";
+            for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
+            {
+                int j = i - GridView2.PageSize * GridView2.PageIndex;
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                GridViewRow row = GridView2.Rows[j];
+                status = mydrv["status"].ToString();
+                ((Label)row.FindControl("labStatus")).Text = opt.GetSegValue("select * from ht_inner_inspect_status where id = '" + status + "'", "NAME");
+            }
+        }
         
     }
     protected void btnSearch_Click(object sender, EventArgs e)

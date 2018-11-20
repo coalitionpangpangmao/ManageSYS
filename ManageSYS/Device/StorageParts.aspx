@@ -105,13 +105,13 @@
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="申请部门" HeaderText="申请部门" />
-                                <asp:BoundField DataField="申请人" HeaderText="申请人" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请部门" HeaderText="申请部门" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请人" HeaderText="申请人" />
                               
-                                <asp:BoundField DataField="领用状态" HeaderText="领用状态" />
-                                <asp:BoundField DataField="领用时间" HeaderText="领用时间" />
-                                <asp:BoundField DataField="备注" HeaderText="备注" />
-                                <asp:BoundField DataField="流程状态" HeaderText="流程状态" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="领用状态" HeaderText="领用状态" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="领用时间" HeaderText="领用时间" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="流程状态" HeaderText="流程状态" />
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                     <ItemTemplate>
                                         <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
@@ -359,17 +359,17 @@
                         <asp:GridView ID="GridView4" runat="server" class="grid" 
                              AutoGenerateColumns="False">
                             <Columns>
-                                <asp:BoundField DataField="序号" HeaderText="序号" />
-                                <asp:BoundField DataField="物料编码" HeaderText="物料编码" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="序号" HeaderText="序号" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="物料编码" HeaderText="物料编码" />
                               
-                                <asp:BoundField DataField="物料名称" HeaderText="物料名称" />
-                                <asp:BoundField DataField="规格" HeaderText="规格" />
-                                <asp:BoundField DataField="型号" HeaderText="型号" />
-                                <asp:BoundField DataField="货位" HeaderText="货位" />
-                                 <asp:BoundField DataField="库存数量" HeaderText="库存数量" />
-                                <asp:BoundField DataField="单位" HeaderText="单位" />
-                                <asp:BoundField DataField="含税单价" HeaderText="含税单价" />
-                                <asp:BoundField DataField="备注" HeaderText="备注" />                              
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="物料名称" HeaderText="物料名称" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="规格" HeaderText="规格" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="型号" HeaderText="型号" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="货位" HeaderText="货位" />
+                                  <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="库存数量" HeaderText="库存数量" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="单位" HeaderText="单位" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="含税单价" HeaderText="含税单价" />
+                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />                              
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                              <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />

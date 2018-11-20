@@ -94,11 +94,11 @@
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="润滑计划" HeaderText="润滑计划" />
-                                    <asp:BoundField DataField="部门" HeaderText="部门" />
-                                    <asp:BoundField DataField="审批状态" HeaderText="审批状态" />
-                                    <asp:BoundField DataField="执行状态" HeaderText="执行状态" />
-                                    <asp:BoundField DataField="备注" HeaderText="备注" />                                 
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑计划" HeaderText="润滑计划" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="部门" HeaderText="部门" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="审批状态" HeaderText="审批状态" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="执行状态" HeaderText="执行状态" />
+                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />                                 
                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick = "btnGridview_Click" />

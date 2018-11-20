@@ -61,11 +61,11 @@
                             <ContentTemplate>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8">
                                     <Columns>
-                                        <asp:BoundField DataField="维修计划" HeaderText="维修计划" />
-                                        <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                        <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
-                                        <asp:BoundField DataField="申请人" HeaderText="申请人" />
-                                        <asp:BoundField DataField="备注" HeaderText="备注" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维修计划" HeaderText="维修计划" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="过期时间" HeaderText="过期时间" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请人" HeaderText="申请人" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
 
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                             <ItemTemplate>

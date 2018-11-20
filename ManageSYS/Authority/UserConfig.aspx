@@ -36,7 +36,7 @@
             <div id="gridPanel">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" CssClass="grid" DataKeyNames="人员ID" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="12">
+                        <asp:GridView ID="GridView1" runat="server" CssClass="grid" DataKeyNames="人员ID" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PagerSettings-FirstPageText="第一页" PagerSettings-LastPageText="最后页" PagerSettings-Mode="NumericFirstLast" PageSize="16">
                             <Columns>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <HeaderTemplate>

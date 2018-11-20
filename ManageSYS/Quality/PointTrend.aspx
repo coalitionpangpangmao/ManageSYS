@@ -30,7 +30,7 @@
         </asp:ScriptManager>
         <div class="mainbox">
             <div class="mainleft">
-                <div class="leftinfo" style="overflow: scroll"> 
+                <div class="leftinfo" > 
                     <asp:HiddenField ID ="hdPrcd"  runat ="server"/>
                      <div class="listtitle">
                         工艺模型

@@ -231,8 +231,8 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
     protected void btnDetail1_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
-        int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string code = GridView1.DataKeys[rowindex].Value.ToString();
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+        string code = GridView1.DataKeys[row.RowIndex].Value.ToString();
         bindData2(code);
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "viewDetail", " $('.shade').fadeIn(100);", true);
 

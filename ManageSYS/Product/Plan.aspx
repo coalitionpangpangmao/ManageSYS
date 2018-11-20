@@ -72,9 +72,9 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:BoundField DataField="计划名" HeaderText="计划名" />
-                                        <asp:BoundField DataField="是否有调整" HeaderText="是否有调整" />
-                                        <asp:BoundField DataField="编制人" HeaderText="编制人" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划名" HeaderText="计划名" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="是否有调整" HeaderText="是否有调整" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="编制人" HeaderText="编制人" />
                                         <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1" Width="75"
@@ -179,7 +179,7 @@
                                         CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除所选生产计划吗？');" />
-                                              <asp:Button ID="btnGrid2Modify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnGrid2Modify_Click" />
+                                              <asp:Button ID="btnGrid2Modify" class="btnmodify auth" runat="server" Text="全部保存" Width ="90px" OnClick="btnGrid2Modify_Click" />
                                     </span>
                                 </div>
                                 <asp:HiddenField ID="hidePlanID" runat="server" />
@@ -191,6 +191,16 @@
                                         <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chk" runat="server" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField>
+                                            <ItemTemplate>
+                                                 <asp:Button ID="btnUp" runat="server"  CssClass="btnup auth" OnClick="btnUp_Click"  />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField>
+                                            <ItemTemplate>
+                                                   <asp:Button ID="btnDown" runat="server"  CssClass="btndown auth" OnClick="btnDown_Click"  />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="顺序号" SortExpression="顺序号">
@@ -224,11 +234,7 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                       
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
-                                            <ItemTemplate>
-                                                <asp:Button ID="btnPath" runat="server" Text="路径设置" class="btn1 auth" OnClick="btnPath_Click" Width="75px" />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
+                                     
                                         <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" OnClientClick="javascript:return confirm('确认保存该生产计划吗？');" />
@@ -270,8 +276,7 @@
                                 <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
                                 <asp:AsyncPostBackTrigger ControlID="GridView2" />
                                 <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                                <asp:AsyncPostBackTrigger ControlID="btnAddPlan" />
-                                <asp:AsyncPostBackTrigger ControlID="btnSavePath" />
+                                <asp:AsyncPostBackTrigger ControlID="btnAddPlan" />                               
                                 <asp:AsyncPostBackTrigger ControlID ="btnGrid2Modify" />
                             </Triggers>
                         </asp:UpdatePanel>
@@ -300,56 +305,7 @@
                 </div>
             </div>
 
-            <div class="shade" id="pathinfo">
-                <div class="pathinfo">
-                    <div class="tiphead">
-                        <span>工艺路径配置</span><a onclick="$('.shade').fadeOut(100);"></a>
-
-                    </div>
-                    <div class="gridinfo">
-                        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <asp:GridView ID="GridView4" runat="server" class="grid" DataKeyNames="section_code"
-                                    AutoGenerateColumns="False">
-                                    <Columns>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="工艺段">
-                                            <ItemTemplate>
-                                                <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
-                                                    CssClass="tbinput" Enabled="False" Width="150px"></asp:TextBox>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="路径选择">
-                                            <ItemTemplate>
-                                                <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="200px"
-                                                    OnSelectedIndexChanged="listpath_SelectedIndexChanged" AutoPostBack="True">
-                                                </asp:DropDownList>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="路径详情">
-                                            <ItemTemplate>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-
-                                    </Columns>
-                                    <HeaderStyle CssClass="gridheader" />
-                                    <RowStyle CssClass="gridrow" />
-                                    <AlternatingRowStyle CssClass="gridalterrow" />
-                                </asp:GridView>
-                                <div align="center" style="margin-top: 10px">
-                                    <asp:Button ID="btnSavePath" runat="server" Text="确认" CssClass="btnmodify" OnClick="btnSavePath_Click" /></div>
-                            </ContentTemplate>
-                            <Triggers>
-
-                                <asp:AsyncPostBackTrigger ControlID="GridView4" />
-                                <asp:AsyncPostBackTrigger ControlID="btnSavePath" />
-                                <asp:AsyncPostBackTrigger ControlID="GridView2" />
-                            </Triggers>
-                        </asp:UpdatePanel>
-                    </div>
-
-                </div>
-
-            </div>
+            
             <script type="text/javascript">
                 $("#usual1 ul").idTabs();
             </script>

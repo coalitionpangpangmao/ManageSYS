@@ -30,13 +30,13 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            txtCode.Text = hdcode.Value;
+            txtCode.Text = data.Tables[0].Rows[0]["配方编号"].ToString();
             txtName.Text = data.Tables[0].Rows[0]["配方名称"].ToString();
             listPro.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
             txtVersion.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate.Text = data.Tables[0].Rows[0]["结束日期"].ToString();
-            listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
+           // listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
             listCreator.SelectedValue = data.Tables[0].Rows[0]["编制人"].ToString();
             txtCrtDate.Text = data.Tables[0].Rows[0]["编制日期"].ToString();
             listCrtApt.SelectedValue = data.Tables[0].Rows[0]["编制部门"].ToString();
@@ -59,13 +59,15 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
+                int j = i - GridView1.PageSize * GridView1.PageIndex;
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
-                ((DropDownList)GridView1.Rows[i].FindControl("listGridName")).SelectedValue = mydrv["香料种类"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text = mydrv["香料种类"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtScale")).Text = mydrv["比例"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
+                GridViewRow row = GridView1.Rows[j];
+                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["香料种类"].ToString();
+                ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["香料种类"].ToString();
+                ((TextBox)row.FindControl("txtScale")).Text = mydrv["比例"].ToString();
+                ((TextBox)row.FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
 
 
             }
@@ -86,13 +88,15 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         GridView2.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+            for (int i = GridView2.PageSize * GridView1.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
+                int j = i - GridView2.PageSize * GridView2.PageIndex;
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
-                ((DropDownList)GridView2.Rows[i].FindControl("listGridName2")).SelectedValue = mydrv["回填液编码"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtCodeM")).Text = mydrv["回填液编码"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtScale2")).Text = mydrv["比例"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtRemark")).Text = mydrv["备注"].ToString();
+                GridViewRow row = GridView2.Rows[j];
+                ((DropDownList)row.FindControl("listGridName2")).SelectedValue = mydrv["回填液编码"].ToString();
+                ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["回填液编码"].ToString();
+                ((TextBox)row.FindControl("txtScale2")).Text = mydrv["比例"].ToString();
+                ((TextBox)row.FindControl("txtRemark")).Text = mydrv["备注"].ToString();
 
 
             }
@@ -103,7 +107,8 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
     protected DataSet gridXJXLbind()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel where mat_type = '香精香料' and is_del = '0' union select '' as material_code, '' as material_name from dual order by material_code desc");
+        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel where ( TYPE_CODE like '0410%' or material_code like '0410%') and is_del = '0' union select '' as material_code, '' as material_name from dual order by material_code desc");
+       
     }
 
     protected DataSet gridHTYbind()
@@ -172,13 +177,15 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
 
         if (data != null && data.Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Rows.Count; i++)
             {
+                int j = i - GridView1.PageSize * GridView1.PageIndex;
                 DataRowView mydrv = data.DefaultView[i];
-                ((DropDownList)GridView1.Rows[i].FindControl("listGridName")).SelectedValue = mydrv["香料种类"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text = mydrv["香料种类"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtScale")).Text = mydrv["比例"].ToString();
-                ((TextBox)GridView1.Rows[i].FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
+                GridViewRow row = GridView1.Rows[j];
+                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["香料种类"].ToString();
+                ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["香料种类"].ToString();
+                ((TextBox)row.FindControl("txtScale")).Text = mydrv["比例"].ToString();
+                ((TextBox)row.FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
 
             }
 
@@ -248,8 +255,8 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         {
             foreach (GridViewRow row in GridView1.Rows)
             {
-                if (((CheckBox)row.FindControl("chk")).Checked)
-                {
+          //      if (((CheckBox)row.FindControl("chk")).Checked)
+           //     {
                     string mtr_code = ((DropDownList)row.FindControl("listGridName")).SelectedValue;
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag" };
@@ -257,7 +264,7 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
                     string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                     log_message += "，物料编号:" + txtCode.Text;
                     InsertTlog(log_message);
-                }
+              //  }
             }
             bindGrid1();
         }
@@ -327,17 +334,93 @@ public partial class Craft_RecipeCoat : MSYS.Web.BasePage
         GridView2.DataBind();
         if (data != null && data.Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+            for (int i = GridView2.PageSize * GridView1.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Rows.Count; i++)
             {
+                int j = i - GridView2.PageSize * GridView2.PageIndex;
                 DataRowView mydrv = data.DefaultView[i];
-                ((DropDownList)GridView2.Rows[i].FindControl("listGridName2")).SelectedValue = mydrv["回填液编码"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtCodeM")).Text = mydrv["回填液编码"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtScale2")).Text = mydrv["比例"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtRemark")).Text = mydrv["备注"].ToString();
+                GridViewRow row = GridView2.Rows[j];
+                ((DropDownList)row.FindControl("listGridName2")).SelectedValue = mydrv["回填液编码"].ToString();
+                ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["回填液编码"].ToString();
+                ((TextBox)row.FindControl("txtScale2")).Text = mydrv["比例"].ToString();
+                ((TextBox)row.FindControl("txtRemark")).Text = mydrv["备注"].ToString();
 
             }
 
         }
+    }
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid1();
+    }
+    protected void GridView2_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid2();
     }
     protected void btnDel2_Click(object sender, EventArgs e)
     {

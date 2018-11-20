@@ -47,53 +47,55 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
+                int j = i - GridView1.PageSize * GridView1.PageIndex;
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
-                ((Label)GridView1.Rows[i].FindControl("labStrg")).Text = mydrv["出入库类型"].ToString();
-                ((Label)GridView1.Rows[i].FindControl("labAudit")).Text = mydrv["审批状态"].ToString();
-                if (((Label)GridView1.Rows[i].FindControl("labStrg")).Text == "出库")
+                GridViewRow row = GridView1.Rows[j];
+                ((Label)row.FindControl("labStrg")).Text = mydrv["出入库类型"].ToString();
+                ((Label)row.FindControl("labAudit")).Text = mydrv["审批状态"].ToString();
+                if (((Label)row.FindControl("labStrg")).Text == "出库")
                 {
                     if (mydrv["出入库状态"].ToString() == "0")
-                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "未出库";
+                        ((Label)row.FindControl("labIssue")).Text = "未出库";
                     else
-                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "己出库";
+                        ((Label)row.FindControl("labIssue")).Text = "己出库";
                 }
                 else
                 {
                     if (mydrv["出入库状态"].ToString() == "0")
-                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "未入库";
+                        ((Label)row.FindControl("labIssue")).Text = "未入库";
                     else
-                        ((Label)GridView1.Rows[i].FindControl("labIssue")).Text = "己入库";
+                        ((Label)row.FindControl("labIssue")).Text = "己入库";
                 }
-                ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Text = mydrv["出入库类型"].ToString();
+                ((Button)row.FindControl("btnGridopt")).Text = mydrv["出入库类型"].ToString();
                 if (mydrv["审批状态"].ToString() != "未提交")
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
+                    ((Button)row.FindControl("btnSubmit")).Enabled = false;
                 if (mydrv["出入库状态"].ToString() != "0")
-                    ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = false;
+                    ((Button)row.FindControl("btnGridopt")).Enabled = false;
 
 
                 if (!(mydrv["审批状态"].ToString() == "未提交" || mydrv["审批状态"].ToString() == "未通过"))
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
-                    ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "查看";
+                    ((Button)row.FindControl("btnSubmit")).Enabled = false;
+                    ((Button)row.FindControl("btnSubmit")).CssClass = "btngrey";
+                    ((Button)row.FindControl("btnGridview")).Text = "查看";
                 }
                 else
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
-                    ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "编制";
+                    ((Button)row.FindControl("btnSubmit")).Enabled = true;
+                    ((Button)row.FindControl("btnSubmit")).CssClass = "btn1 auth";
+                    ((Button)row.FindControl("btnGridview")).Text = "编制";
                 }
                 if (mydrv["出入库状态"].ToString() != "0")
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = false;
-                    ((Button)GridView1.Rows[i].FindControl("btnGridopt")).CssClass = "btngrey";
+                    ((Button)row.FindControl("btnGridopt")).Enabled = false;
+                    ((Button)row.FindControl("btnGridopt")).CssClass = "btngrey";
                 }
                 else
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnGridopt")).Enabled = true;
-                    ((Button)GridView1.Rows[i].FindControl("btnGridopt")).CssClass = "btn1 auth";
+                    ((Button)row.FindControl("btnGridopt")).Enabled = true;
+                    ((Button)row.FindControl("btnGridopt")).CssClass = "btn1 auth";
                 }
             }
         }
@@ -101,6 +103,43 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     }//绑定gridview1数据源
     protected void btnSearch_Click(object sender, EventArgs e)
     {
+        bindGrid1();
+    }
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
         bindGrid1();
     }
     protected void btnCkAll1_Click(object sender, EventArgs e)
@@ -195,9 +234,25 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
             listStatus.SelectedValue = data.Tables[0].Rows[0]["AUDIT_MARK"].ToString();
             listStorage.SelectedValue = data.Tables[0].Rows[0]["WARE_HOUSE_ID"].ToString();
             listApt.SelectedValue = data.Tables[0].Rows[0]["DEPT_ID"].ToString();
-            listPrdctPlan.SelectedValue = data.Tables[0].Rows[0]["MONTHPLANNO"].ToString();
+            if (listPrdctPlan.Items.FindByValue(data.Tables[0].Rows[0]["MONTHPLANNO"].ToString())!= null)
+            {
+                listPrdctPlan.SelectedValue = data.Tables[0].Rows[0]["MONTHPLANNO"].ToString();
+                txtPrdctPlan.Visible = false;
+                listPrdctPlan.Visible = true;
+            }
+            else
+            {
+                listPrdctPlan.SelectedValue = "";
+                txtPrdctPlan.Text = data.Tables[0].Rows[0]["MONTHPLANNO"].ToString();
+                txtPrdctPlan.Visible = true;
+                listPrdctPlan.Visible = false;
+            }
             string temp = opt.GetSegValue("select Prod_code from ht_prod_month_plan_detail where plan_no = '" + listPrdctPlan.SelectedValue + "'", "PROD_CODE");
-            listPrdct.SelectedValue = (temp == "NoRecord" ? "" : temp);
+            if (listPrdct.Items.FindByValue(temp) != null)
+                listPrdct.SelectedValue = temp;
+            else
+                listPrdct.SelectedValue = "";
+          
             txtBatchNum.Text = data.Tables[0].Rows[0]["BATCHNUM"].ToString();
             if (data.Tables[0].Rows[0]["STRG_TYPE"].ToString() == "0")
                 rdOut.Checked = true;
@@ -250,7 +305,7 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
 
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select max(substr(ORDER_SN,11,3)) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
@@ -310,6 +365,14 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         listApt.SelectedValue = "";
         listPrdctPlan.SelectedValue = "";
         txtBatchNum.Text = "";
+        listPrdct.SelectedValue = "";
+        txtChipSum.Text = "";
+        txtStemSum.Text = "";
+        txtValiddate.Text = "";
+        bindGrid2();
+        listPrdctPlan.Visible = true;
+        txtPrdctPlan.Visible = false;
+      
     }
 
     protected void listGridName_SelectedIndexChanged(object sender, EventArgs e)
@@ -337,6 +400,11 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         List<string> commandlist = new List<string>();
         string log_message;
+        if (txtPrdctdate.Text == "" || txtValiddate.Text == "" || txtBatchNum.Text == "" || listPrdctPlan.SelectedValue == "" || listPrdct.SelectedValue == "")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('请输入必要信息!!')", true);
+            return;
+        }
         if (rdOut.Checked)
         {
             //生成领用主表记录
@@ -357,9 +425,9 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
                 double CABOSUM=0, PEICESSUM=0;
                 foreach (DataRow row in res.Tables[0].Rows)
                 {
-                    if (row["mater_flag"] == "长梗" || row["mater_flag"] == "短梗")
+                    if (row["mater_flag"].ToString() == "长梗" || row["mater_flag"].ToString() == "短梗")
                         CABOSUM += Convert.ToDouble(row["amount"].ToString());
-                    if(row["mater_flag"] == "碎片" || row["mater_flag"] == "烟末")
+                    if (row["mater_flag"].ToString() == "碎片" || row["mater_flag"].ToString() == "烟末")
                         PEICESSUM += Convert.ToDouble(row["amount"].ToString());
                 }
                 txtStemSum.Text = CABOSUM.ToString("0.00");
@@ -515,7 +583,14 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
     protected void listPrdctPlan_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        listPrdct.SelectedValue = opt.GetSegValue("select Prod_code from ht_prod_month_plan_detail where plan_no = '" + listPrdctPlan.SelectedValue + "'", "PROD_CODE");
+      
+            string prod_code = opt.GetSegValue("select Prod_code from ht_prod_month_plan_detail where plan_no = '" + listPrdctPlan.SelectedValue + "'", "PROD_CODE");
+            if (listPrdct.Items.FindByValue(prod_code) != null)
+                listPrdct.SelectedValue = prod_code;
+            else
+                listPrdct.SelectedValue = "";
+       
+      
     }
     #endregion
 }

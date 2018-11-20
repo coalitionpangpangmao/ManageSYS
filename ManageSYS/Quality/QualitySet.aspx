@@ -21,6 +21,12 @@
                     console.log("%s was toggled.", $(this).find(">span").text());
                 }
             });
+            $(".folder").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+          
         });
         function tabClick(code) {
             $("#hideprc").attr('value', code);

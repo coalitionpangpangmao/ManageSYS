@@ -20,6 +20,16 @@ $(document).ready(function () {
         persist: "cookie",
         collapsed: true
     });
+    $(".folder").click(function () {
+        $('.folder').removeClass("selectedbold");
+        $('.file').removeClass("selectedbold");
+        $(this).addClass("selectedbold");
+    });
+    $(".file").click(function () {
+        $('.folder').removeClass("selectedbold");
+        $('.file').removeClass("selectedbold");
+        $(this).addClass("selectedbold");
+    });
     showtempchart();
 });
 Date.prototype.Format = function (fmt) {

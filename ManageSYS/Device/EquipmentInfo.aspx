@@ -21,7 +21,12 @@
                 collapsed: true
 
             });
-
+            $(".folder").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+           
 
         });
 
@@ -47,7 +52,7 @@
         </div>
         <div class="mainbox">
             <div class="mainleft">
-                <div class="leftinfo" style="overflow: scroll">
+                <div class="leftinfo" >
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="listtitle">
@@ -157,7 +162,7 @@
           
         </div>
          <div class="shade">
-                <div  style="width:1200px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                <div  style="width:1100px; height:380px; position:absolute;top:6%; left:5%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
                     <div class="tiphead">
                         <span>设备详情</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>

@@ -60,12 +60,12 @@
                                  
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False">
                                     <Columns>                                     
-                                        <asp:BoundField DataField="校准计划" HeaderText="校准计划" />
-                                        <asp:BoundField DataField="计划号" HeaderText="计划号" />
-                                          <asp:BoundField DataField="过期时间" HeaderText="过期时间" />
-                                        <asp:BoundField DataField="申请人" HeaderText="申请人" />
-                                         <asp:BoundField DataField="状态" HeaderText="状态" />
-                                        <asp:BoundField DataField="备注" HeaderText="备注" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="校准计划" HeaderText="校准计划" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
+                                          <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="过期时间" HeaderText="过期时间" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="申请人" HeaderText="申请人" />
+                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="状态" HeaderText="状态" />
+                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
 
                                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
                                             <ItemTemplate>

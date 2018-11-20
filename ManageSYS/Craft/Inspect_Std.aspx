@@ -63,7 +63,7 @@
                 <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize="12"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize="14"
                             DataKeyNames="检查项目编码">
                             <Columns>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
@@ -79,7 +79,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "分组">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listGroup" runat="server" CssClass = 'drpdwnlist'  Enabled="false">
+                                        <asp:DropDownList ID="listGroup" runat="server" CssClass = 'drpdwnlist'  Enabled="false" Width ="200px">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>                               
