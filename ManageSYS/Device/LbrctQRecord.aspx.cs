@@ -56,7 +56,7 @@ public partial class Device_LbrctQRecord : MSYS.Web.BasePage
 
     protected void btnGrid1View_Click(object sender, EventArgs e)
     {
-        (1Button btn = (Button)sender;
+       Button btn = (Button)sender;
         GridViewRow Row = (GridViewRow)btn.NamingContainer;
         int rowIndex = Row.RowIndex;
         string ID = GridView1.DataKeys[rowIndex].Value.ToString();

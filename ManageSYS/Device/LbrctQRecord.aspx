@@ -54,24 +54,24 @@
                               <asp:HiddenField ID="hideMainid" runat="server" />
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="序号">
+                                    <asp:TemplateField      HeaderText="序号">
                                         <ItemTemplate>
                                             <%#(Container.DataItemIndex+1).ToString()%>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑计划名" HeaderText="润滑计划名" />
-                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="凭证号" HeaderText="凭证号" />                                        
-                                        <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="区域" HeaderText="区域" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="设备名称" HeaderText="设备名称" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑部位" HeaderText="润滑部位" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑点数" HeaderText="润滑点数" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑周期" HeaderText="润滑周期" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑方式" HeaderText="润滑方式" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="润滑量" HeaderText="润滑量" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="期望完成时间" HeaderText="期望完成时间" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="状态" HeaderText="状态" />
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" ItemStyle-Width="80">
+                                    <asp:BoundField    DataField="润滑计划名" HeaderText="润滑计划名" />
+                                         <asp:BoundField    DataField="凭证号" HeaderText="凭证号" />                                        
+                                        <asp:BoundField    DataField="区域" HeaderText="区域" />
+                                    <asp:BoundField    DataField="设备名称" HeaderText="设备名称" />
+                                    <asp:BoundField    DataField="润滑部位" HeaderText="润滑部位" />
+                                    <asp:BoundField    DataField="润滑点数" HeaderText="润滑点数" />
+                                     <asp:BoundField    DataField="润滑周期" HeaderText="润滑周期" />
+                                    <asp:BoundField    DataField="润滑方式" HeaderText="润滑方式" />
+                                    <asp:BoundField    DataField="润滑量" HeaderText="润滑量" />
+                                    <asp:BoundField    DataField="期望完成时间" HeaderText="期望完成时间" />
+                                     <asp:BoundField    DataField="状态" HeaderText="状态" />
+                                        <asp:TemplateField      HeaderText="操作" ItemStyle-Width="80">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btnred" Width="75"
                                                     OnClick="btnGrid1View_Click" />

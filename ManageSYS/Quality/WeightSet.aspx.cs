@@ -67,30 +67,30 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
 
     protected void btnGrid1Save_Click(object sender, EventArgs e)
     {
-        Button btn = (Button)sender;
-        int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string[] seg = {  "Weight", "remark" };
-        string[] value = { ((TextBox)GridView1.Rows[rowindex].FindControl("txtWeight")).Text, ((TextBox)GridView1.Rows[rowindex].FindControl("txtRemark")).Text };
+        foreach (GridViewRow row in GridView1.Rows)
+        {            
+            string[] seg = { "Weight", "remark" };
+            string[] value = { ((TextBox)row.FindControl("txtWeight")).Text, ((TextBox)row.FindControl("txtRemark")).Text };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-            string log_message = opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue + "'") == "Success" ? "修改工艺段质量评估权重成功" : "修改工艺段质量评估权重失败";
-            log_message += ",工艺段:" + ((DropDownList)GridView1.Rows[rowindex].FindControl("listSection")).SelectedValue;
+            string log_message = opt.UpDateData(seg, value, "HT_PUB_TECH_SECTION", " where section_code = '" + ((DropDownList)row.FindControl("listSection")).SelectedValue + "'") == "Success" ? "修改工艺段质量评估权重成功" : "修改工艺段质量评估权重失败";
+            log_message += ",工艺段:" + ((DropDownList)row.FindControl("listSection")).SelectedValue;
             InsertTlog(log_message);
+        }
     }
 
     protected void btnGrid2Save_Click(object sender, EventArgs e)
     {
-        
-        Button btn = (Button)sender;
-        GridViewRow row = (GridViewRow)btn.NamingContainer;
-       // int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string[] seg = { "Weight", "remark" ,"CREATE_ID","CREATE_DATE","is_adjust"};
-        string[] value = { ((TextBox)row.FindControl("txtWeight")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "1" };
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        foreach (GridViewRow row in GridView2.Rows)
+        {          
+            string[] seg = { "Weight", "remark", "CREATE_ID", "CREATE_DATE", "is_adjust" };
+            string[] value = { ((TextBox)row.FindControl("txtWeight")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "1" };
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        string log_message = opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[row.RowIndex].Value.ToString() + "'") == "Success" ? "更改质量评估权重成功" : "更改质量评估权重失败";
-        log_message += "--详情:" + string.Join(",", value);
-        InsertTlog(log_message);
+            string log_message = opt.UpDateData(seg, value, "HT_QLT_WEIGHT", " where ID = '" + GridView2.DataKeys[row.RowIndex].Value.ToString() + "'") == "Success" ? "更改质量评估权重成功" : "更改质量评估权重失败";
+            log_message += "--详情:" + string.Join(",", value);
+            InsertTlog(log_message);
+        }
     }
   
 

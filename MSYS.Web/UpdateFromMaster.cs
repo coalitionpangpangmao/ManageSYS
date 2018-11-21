@@ -15,6 +15,8 @@ namespace MSYS.Web
 
         }      
 
-        public abstract  string InsertLocalFromMaster();   
+        public abstract  string InsertLocalFromMaster();
+        protected abstract void InsertLocalFromMasterAsyn();
+        
     }
 }

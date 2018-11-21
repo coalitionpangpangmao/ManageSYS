@@ -76,18 +76,18 @@
                             <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" DataKeyNames="rowid"
                                 AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="产品" HeaderText="产品" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录项目" HeaderText="记录项目" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录值" HeaderText="记录值" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="班组" HeaderText="班组" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录时间" HeaderText="记录时间" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录人" HeaderText="记录人" />
+                                     <asp:BoundField    DataField="计划号" HeaderText="计划号" />
+                                     <asp:BoundField    DataField="产品" HeaderText="产品" />
+                                     <asp:BoundField    DataField="记录项目" HeaderText="记录项目" />
+                                     <asp:BoundField    DataField="记录值" HeaderText="记录值" />
+                                     <asp:BoundField    DataField="班组" HeaderText="班组" />
+                                     <asp:BoundField    DataField="记录时间" HeaderText="记录时间" />
+                                     <asp:BoundField    DataField="记录人" HeaderText="记录人" />
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
@@ -123,15 +123,15 @@
                         <ContentTemplate>
                             <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView3_PageIndexChanging">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划号" HeaderText="计划号" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="产品" HeaderText="产品" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录项目" HeaderText="记录项目" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录值" HeaderText="记录值" />
+                                     <asp:BoundField    DataField="计划号" HeaderText="计划号" />
+                                     <asp:BoundField    DataField="产品" HeaderText="产品" />
+                                     <asp:BoundField    DataField="记录项目" HeaderText="记录项目" />
+                                     <asp:BoundField    DataField="记录值" HeaderText="记录值" />
 
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
@@ -216,13 +216,13 @@
                                     <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID"
                                         AutoGenerateColumns="False">
                                         <Columns>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数点">
+                                            <asp:TemplateField      HeaderText="参数点">
                                                 <ItemTemplate>
                                                     <asp:DropDownList ID="listPara" runat="server" CssClass="drpdwnlist" DataSource="<%#bindpara() %>" DataTextField="para_name" DataValueField="para_code" Width="200px"></asp:DropDownList>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数值">
+                                            <asp:TemplateField      HeaderText="参数值">
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtParavalue" runat="server"></asp:TextBox>
                                                 </ItemTemplate>

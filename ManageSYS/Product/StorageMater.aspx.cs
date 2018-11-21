@@ -300,12 +300,11 @@ public partial class Product_StorageMater : MSYS.Web.BasePage
         bindGrid1();
 
     }
-    protected void btnGridNew_Click(object sender, EventArgs e)// 新建领退明细
+    protected void btnGridNew_Click(object sender, EventArgs e)// 新增领退明细
     {
-
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select max(substr(ORDER_SN,11,3)) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;

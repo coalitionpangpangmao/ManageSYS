@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>维保计划</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+  
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script type="text/javascript">
@@ -76,7 +76,7 @@
                         <div class="listtitle">
                             <span style="position: relative; float: right">
                                 <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                                <asp:Button ID="btnGridNew" runat="server" Text="新建" class="btnadd  auth" OnClick="btnGridNew_Click" />
+                                <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
                             </span>
                         </div>
                         <div>
@@ -84,38 +84,38 @@
                                 <ContentTemplate>
                                     <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8">
                                         <Columns>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                            <asp:TemplateField     >
                                                 <ItemTemplate>
                                                     <asp:CheckBox ID="chk" runat="server" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维保计划" HeaderText="维保计划" />
-                                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="部门" HeaderText="部门" />
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批状态">
+                                             <asp:BoundField    DataField="维保计划" HeaderText="维保计划" />
+                                             <asp:BoundField    DataField="部门" HeaderText="部门" />
+                                            <asp:TemplateField      HeaderText="审批状态">
                                                 <ItemTemplate>
                                                     <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="执行状态">
+                                            <asp:TemplateField      HeaderText="执行状态">
                                                 <ItemTemplate>
                                                     <asp:Label ID="labexe" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                             <asp:BoundField    DataField="备注" HeaderText="备注" />
+                                            <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
                                                         OnClick="btnSubmit_Click" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                            <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
                                                         OnClick="btnGridIssue_Click" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                            <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" />
                                                 </ItemTemplate>
@@ -156,7 +156,7 @@
                         <div class="listtitle">
                             <span style="position: relative; float: right">
                                 <asp:Button ID="btnGrid4Del" runat="server" Text="删除" class="btndel auth" OnClick="btnGrid4Del_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                                <asp:Button ID="btnGrid4New" runat="server" Text="新建" class="btnadd  auth" OnClick="btnGrid4New_Click" />
+                                <asp:Button ID="btnGrid4New" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGrid4New_Click" />
                             </span>
                         </div>
                         <div>
@@ -164,34 +164,34 @@
                                 <ContentTemplate>
                                     <asp:GridView ID="GridView4" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView4_PageIndexChanging" PageSize="8">
                                         <Columns>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                            <asp:TemplateField     >
                                                 <ItemTemplate>
                                                     <asp:CheckBox ID="chk" runat="server" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="维保计划" HeaderText="维保计划" />
-                                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="部门" HeaderText="部门" />
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批状态">
+                                             <asp:BoundField    DataField="维保计划" HeaderText="维保计划" />
+                                             <asp:BoundField    DataField="部门" HeaderText="部门" />
+                                            <asp:TemplateField      HeaderText="审批状态">
                                                 <ItemTemplate>
                                                     <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                           
 
-                                             <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="备注" HeaderText="备注" />
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                             <asp:BoundField    DataField="备注" HeaderText="备注" />
+                                            <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnSubmit4" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
                                                         OnClick="btnSubmit4_Click" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                            <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnGridIssue4" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
                                                         OnClick="btnGridIssue4_Click" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                            <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnGridview4" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview4_Click" />
                                                 </ItemTemplate>
@@ -306,59 +306,59 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                 DataKeyNames="ID">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="区域">
+                                    <asp:TemplateField      HeaderText="区域">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" OnSelectedIndexChanged="listGridarea_SelectedIndexChanged" AutoPostBack="True" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="设备名称">
+                                    <asp:TemplateField      HeaderText="设备名称">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist">
+                                            <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" Width ="180px">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="维保原因">
+                                    <asp:TemplateField      HeaderText="维保原因">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridReason" runat="server" DataValueField="维保原因" DataTextField="维保原因"
+                                            <asp:TextBox ID="txtGridReason" runat="server" DataValueField="维保原因" DataTextField="维保原因" 
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="维保内容">
+                                    <asp:TemplateField      HeaderText="维保内容">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridcntnt" runat="server" DataValueField="维保内容" DataTextField="维保内容"
+                                            <asp:TextBox ID="txtGridcntnt" runat="server" DataValueField="维保内容" DataTextField="维保内容" Width ="250px"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="期望完成时间">
+                                    <asp:TemplateField      HeaderText="期望完成时间">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
+                                    <asp:TemplateField      HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False" DataSource="<%# statusbind() %>" DataTextField="Name" DataValueField="ID"></asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                      <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="备注">
+                                      <asp:BoundField    DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />
+                                    <asp:TemplateField      HeaderText="备注">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridremark" runat="server" DataValueField="备注" DataTextField="备注"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" ItemStyle-Width="80">
+                                    <asp:TemplateField      HeaderText="操作" ItemStyle-Width="80">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
                                                 OnClick="btnGrid2Save_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                      <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ItemStyle-Width="80">
+                                      <asp:TemplateField      ItemStyle-Width="80">
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid2View" runat="server" Text="详情" CssClass="btnred" Width="75px"
                                                     OnClick="btnGrid2View_Click" />

@@ -123,23 +123,23 @@
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  ControlStyle-Width="110px">
+                                    <asp:TemplateField      ControlStyle-Width="110px">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridView" runat="server" Text="查看详情" CssClass="btn1" OnClick="btnGridView_Click"
                                                 Width="90px" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="故障设备" HeaderText="故障设备" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="故障名" HeaderText="故障名" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="故障位置" HeaderText="故障位置" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="编制人" HeaderText="编制人" />
-                                     <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录时间" HeaderText="记录时间" />
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                     <asp:BoundField    DataField="故障设备" HeaderText="故障设备" />
+                                    <asp:BoundField    DataField="故障名" HeaderText="故障名" />
+                                    <asp:BoundField    DataField="故障位置" HeaderText="故障位置" />
+                                    <asp:BoundField    DataField="编制人" HeaderText="编制人" />
+                                     <asp:BoundField    DataField="记录时间" HeaderText="记录时间" />
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGridDel" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                                         </ItemTemplate>

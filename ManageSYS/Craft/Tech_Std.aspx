@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>技术标准管理</title>
-    <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />  
     <script type="text/javascript" src="../js/jquery.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
@@ -194,47 +193,47 @@
                                 
                                             <asp:GridView ID="GridView2" runat="server" class="grid" AutoGenerateColumns="False">
                                                 <Columns>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                                    <asp:TemplateField     >
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chk" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数编码" SortExpression="参数编码">
+                                                    <asp:TemplateField      HeaderText="参数编码" SortExpression="参数编码">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtCodeM" runat="server" DataValueField="参数编码" DataTextField="参数编码"
                                                                 CssClass="tbinput1" Enabled="false"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数名" SortExpression="参数名">
+                                                    <asp:TemplateField      HeaderText="参数名" SortExpression="参数名">
                                                         <ItemTemplate>
                                                             <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="230px">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="标准值" SortExpression="标准值">
+                                                    <asp:TemplateField      HeaderText="标准值" SortExpression="标准值">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtValueM" runat="server" DataValueField="标准值" DataTextField="标准值"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="上限" SortExpression="上限">
+                                                    <asp:TemplateField      HeaderText="上限" SortExpression="上限">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtUlimitM" runat="server" DataValueField="上限" DataTextField="上限"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="下限" SortExpression="下限">
+                                                    <asp:TemplateField      HeaderText="下限" SortExpression="下限">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtLlimitM" runat="server" DataValueField="下限" DataTextField="下限"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="允差" SortExpression="允差">
+                                                    <asp:TemplateField      HeaderText="允差" SortExpression="允差">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtDevM" runat="server" DataValueField="允差" DataTextField="允差"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="单位" SortExpression="单位">
+                                                    <asp:TemplateField      HeaderText="单位" SortExpression="单位">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtUnitM" runat="server" DataValueField="单位" DataTextField="单位"
                                                                 CssClass="tbinput"></asp:TextBox>
@@ -276,47 +275,47 @@
                                         <ContentTemplate>
                                             <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False">
                                                 <Columns>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                                    <asp:TemplateField     >
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chk" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数编码" SortExpression="参数编码">
+                                                    <asp:TemplateField      HeaderText="参数编码" SortExpression="参数编码">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtCodeM" runat="server" DataValueField="参数编码" DataTextField="参数编码"
                                                                 CssClass="tbinput1" Enabled="false"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="参数名" SortExpression="参数名">
+                                                    <asp:TemplateField      HeaderText="参数名" SortExpression="参数名">
                                                         <ItemTemplate>
                                                             <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="230px">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="标准值" SortExpression="标准值">
+                                                    <asp:TemplateField      HeaderText="标准值" SortExpression="标准值">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtValueM" runat="server" DataValueField="标准值" DataTextField="标准值"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="上限" SortExpression="上限">
+                                                    <asp:TemplateField      HeaderText="上限" SortExpression="上限">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtUlimitM" runat="server" DataValueField="上限" DataTextField="上限"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="下限" SortExpression="下限">
+                                                    <asp:TemplateField      HeaderText="下限" SortExpression="下限">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtLlimitM" runat="server" DataValueField="下限" DataTextField="下限"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="允差" SortExpression="允差">
+                                                    <asp:TemplateField      HeaderText="允差" SortExpression="允差">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtDevM" runat="server" DataValueField="允差" DataTextField="允差"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="单位" SortExpression="单位">
+                                                    <asp:TemplateField      HeaderText="单位" SortExpression="单位">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtUnitM" runat="server" DataValueField="单位" DataTextField="单位"
                                                                 CssClass="tbinput"></asp:TextBox>

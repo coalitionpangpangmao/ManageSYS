@@ -32,32 +32,35 @@
         </div>
         <div id="tab1" class="tabson">
             <div class="framelist"> 
+                 <div class="listtitle">
+                               <span style="position: relative; float: right">
+                                    <asp:Button ID="btnGrid1Save" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnGrid1Save_Click" />
+                                  
+                               </span>
+                            </div>
+                <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                             DataKeyNames="section_code">
                             <Columns>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "工艺段">
+                                <asp:TemplateField      HeaderText = "工艺段">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listSection" runat="server" CssClass = 'drpdwnlist'  DataSource = "<%#bindSection() %>"  DataTextField = "SECTION_NAME"  DataValueField = "SECTION_CODE">
+                                        <asp:DropDownList ID="listSection" runat="server" CssClass = 'drpdwnlist'  DataSource = "<%#bindSection() %>"  DataTextField = "SECTION_NAME"  DataValueField = "SECTION_CODE" Width ="220px">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "权重">
+                                <asp:TemplateField      HeaderText = "权重">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "备注">
+                                 <asp:TemplateField      HeaderText = "备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnGrid1Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid1Save_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                             
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
@@ -68,34 +71,36 @@
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />                     
                     </Triggers>
                 </asp:UpdatePanel>
-              
+              </div>
         </div>
         </div>
         <div id="tab2" class="tabson">
            <div class="framelist"> 
+                <div class="listtitle">
+                                <span style="position: relative; float: right">
+                                    <asp:Button ID="btnGrid2Save" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnGrid2Save_Click" />
+                               </span>
+                            </div>
+               <div>
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
                             DataKeyNames="ID">
                             <Columns>
                                 
-                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="NAME" HeaderText="考核项" />
+                                 <asp:BoundField    DataField="NAME" HeaderText="考核项" />
                                 
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "权重">
+                                <asp:TemplateField      HeaderText = "权重">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "备注">
+                                 <asp:TemplateField      HeaderText = "备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1" OnClick="btnGrid2Save_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                              
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
@@ -106,7 +111,7 @@
                         <asp:AsyncPostBackTrigger ControlID="GridView2" />                     
                     </Triggers>
                 </asp:UpdatePanel>
-             
+             </div>
         </div>
         
     </div>

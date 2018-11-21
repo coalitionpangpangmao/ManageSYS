@@ -70,27 +70,27 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                             DataKeyNames="inspect_code">
                             <Columns>
-                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="insgroup" HeaderText="类型" />
-                                 <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="检验项目" DataField="inspect_name"/>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="检测值">
+                                 <asp:BoundField    DataField="insgroup" HeaderText="类型" />
+                                 <asp:BoundField    HeaderText="检验项目" DataField="inspect_name"/>
+                                <asp:TemplateField      HeaderText="检测值">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtPara" runat="server" CssClass='tbinput1'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="标准范围">
+                                <asp:TemplateField      HeaderText="标准范围">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtValue" runat="server" CssClass='tbinput1' Enabled="False"></asp:TextBox>
                                     </ItemTemplate>
 
                                 </asp:TemplateField>
-                                   <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="unit" HeaderText="单位" />
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
+                                   <asp:BoundField    DataField="unit" HeaderText="单位" />
+                                <asp:TemplateField      HeaderText="状态">
                                     <ItemTemplate>
                                         <asp:Label ID="labStatus" runat="server" Text="" CssClass="labstatu" Width ="50px"></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="扣分">
+                                <asp:TemplateField      HeaderText="扣分">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtScore" runat="server" CssClass='tbinput1' Enabled="False"></asp:TextBox>
                                     </ItemTemplate>

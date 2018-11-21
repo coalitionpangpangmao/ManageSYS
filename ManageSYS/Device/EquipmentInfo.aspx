@@ -102,28 +102,28 @@
                             <div >                              
                                         <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="设备编号" AllowPaging="True" HeaderStyle-Wrap="False" RowStyle-Wrap="False" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize ="12">
                                             <Columns>
-                                                  <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                                  <asp:TemplateField     >
                                                     <ItemTemplate>
                                                         <asp:CheckBox ID="chk" runat="server" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                                <asp:TemplateField     >
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnGridview" runat="server" Text="设备详情" CssClass="btn1 auth" OnClick="btnGridview_Click"
                                                             Width="80px" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="润滑记录">
+                                                <asp:TemplateField      HeaderText="润滑记录">
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnGridrh" runat="server" Text="查看" CssClass="btnred" OnClick="btnGridrh_Click" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="维保记录">
+                                                <asp:TemplateField      HeaderText="维保记录">
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnGridwb" runat="server" Text="查看" CssClass="btnred" OnClick="btnGridwb_Click" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="维修记录">
+                                                 <asp:TemplateField      HeaderText="维修记录">
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnGridwx" runat="server" Text="查看" CssClass="btnred" OnClick="btnGridwx_Click" />
                                                     </ItemTemplate>

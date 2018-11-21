@@ -47,7 +47,7 @@
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" CssClass="grid" DataKeyNames="组织机构代码">
                             <Columns>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                <asp:TemplateField     >
                                     <HeaderTemplate>
                                         <asp:CheckBox ID="headck" runat="server" OnCheckedChanged="ck_CheckedChanged" AutoPostBack="True" />
                                     </HeaderTemplate>

@@ -705,7 +705,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             string[] seg = {"ID", "mech_area", "equipment_id", "reason", "content", "exp_finish_time", "remark",  "CREATE_TIME","MAIN_ID" };
             string[] value = { id, ((DropDownList)row.FindControl("listGridarea")).SelectedValue, ((DropDownList)row.FindControl("listGridEq")).SelectedValue, ((TextBox)row.FindControl("txtGridReason")).Text, ((TextBox)row.FindControl("txtGridcntnt")).Text, ((TextBox)row.FindControl("txtGridExptime")).Text, ((TextBox)row.FindControl("txtGridremark")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtCode.Text };
 
-            string log_message = opt.MergeInto(seg, value,1, "ht_eq_mt_plan_detail") == "Success" ? "新建维保明细成功" : "新建维保明细失败";
+            string log_message = opt.MergeInto(seg, value,1, "ht_eq_mt_plan_detail") == "Success" ? "新增维保明细成功" : "新增维保明细失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
 

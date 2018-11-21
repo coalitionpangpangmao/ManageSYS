@@ -84,12 +84,12 @@
               
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="班组编码" AllowPaging="True">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnGrid1Del_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                     <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1Edit" runat="server" Text="编辑" CssClass="btn1  auth" OnClick="btnGrid1Edit_Click" />
                                         </ItemTemplate>
@@ -171,12 +171,12 @@
               
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="班时编码" AllowPaging="True">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnGrid2Del_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                      <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                      <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid2Edit" runat="server" Text="编辑" CssClass="btn1  auth" OnClick="btnGrid2Edit_Click" />
                                         </ItemTemplate>

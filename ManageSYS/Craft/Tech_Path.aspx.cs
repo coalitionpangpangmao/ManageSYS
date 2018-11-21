@@ -167,7 +167,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             string[] value = { listSection2.SelectedValue, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtNodeName")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtOrder")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtDscrpt")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), ((TextBox)GridView2.Rows[Rowindex].FindControl("txtTag")).Text };
             if (ID == "0")
             {
-                string log_message = opt.InsertData(seg, value, "ht_pub_path_node") == "Success" ? "新建路径节点成功" : "新建路径节点失败";
+                string log_message = opt.InsertData(seg, value, "ht_pub_path_node") == "Success" ? "新增路径节点成功" : "新增路径节点失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
             }
@@ -237,6 +237,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     ((CheckBox)GridView1.Rows[k].FindControl("ck_" + j.ToString())).Checked = (mydrv[data.Columns[j].ColumnName].ToString() == "1");
                 }
             }
+           
         }
     }
     protected void createGridView()
@@ -255,6 +256,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             customField.ShowHeader = true;
             customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "选择", "");
             customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "sel", "CheckBox");
+          
             ViewState["ck_sel"] = true;
             GridView1.Columns.Add(customField);
             /////增加路径名列

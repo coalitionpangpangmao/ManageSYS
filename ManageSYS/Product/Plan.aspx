@@ -61,51 +61,51 @@
                                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" AllowPaging="True"
                                     AutoGenerateColumns="False">
                                     <Columns>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="审批状态">
+                                        <asp:TemplateField   HeaderText="审批状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="下发状态">
+                                        <asp:TemplateField   HeaderText="下发状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labIssue" runat="server" CssClass="labstatu" Width="60" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="计划名" HeaderText="计划名" />
-                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="是否有调整" HeaderText="是否有调整" />
-                                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="编制人" HeaderText="编制人" />
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                         <asp:BoundField    DataField="计划名" HeaderText="计划名" />
+                                         <asp:BoundField    DataField="是否有调整" HeaderText="是否有调整" />
+                                         <asp:BoundField    DataField="编制人" HeaderText="编制人" />
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1" Width="75"
                                                     OnClick="btnGridEdit_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="75"
                                                     OnClick="btnSubmit_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
                                                     OnClick="btnFLow_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnIssued" runat="server" Text="下发" class="btn1 auth" OnClick="btnIssued_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除该月生产计划吗？');" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGridAlter" runat="server" Text="调整计划" class="btn1 auth" OnClick="btnGridAlter_Click" Width="75" />
                                             </ItemTemplate>
@@ -188,7 +188,7 @@
                                 <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                     DataKeyNames="计划号">
                                     <Columns>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chk" runat="server" />
                                             </ItemTemplate>
@@ -203,31 +203,31 @@
                                                    <asp:Button ID="btnDown" runat="server"  CssClass="btndown auth" OnClick="btnDown_Click"  />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="顺序号" SortExpression="顺序号">
+                                        <asp:TemplateField   HeaderText="顺序号" SortExpression="顺序号">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号"
                                                     CssClass="tbinput1" Width="40px"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="计划号" SortExpression="计划号">
+                                        <asp:TemplateField   HeaderText="计划号" SortExpression="计划号">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtPlanNo" runat="server" DataValueField="计划号" DataTextField="计划号" Width="150px" CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="产品名称" SortExpression="产品名称">
+                                        <asp:TemplateField   HeaderText="产品名称" SortExpression="产品名称">
                                             <ItemTemplate>
                                                 <asp:DropDownList ID="listProd" runat="server" DataSource='<%# ddlbind()%>' DataValueField="prod_code"
                                                     CssClass="drpdwnlist" DataTextField="产品名称">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="计划产量" SortExpression="计划产量">
+                                        <asp:TemplateField   HeaderText="计划产量" SortExpression="计划产量">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtOutput" runat="server" DataValueField="计划产量" DataTextField="计划产量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                     CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="路径编码">
+                                        <asp:TemplateField   HeaderText="路径编码">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtPathCode" runat="server" DataValueField="路径编码" DataTextField="路径编码" Enabled="false" Width="150px"
                                                     CssClass="tbinput"></asp:TextBox>
@@ -235,32 +235,32 @@
                                         </asp:TemplateField>
                                       
                                      
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" OnClientClick="javascript:return confirm('确认保存该生产计划吗？');" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid2Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid2Del_Click" OnClientClick="javascript:return confirm('确认删除该生产计划吗？');" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                          <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="生产状态">
+                                          <asp:TemplateField   HeaderText="生产状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labexe" runat="server" CssClass="labstatu" Width="60" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                          <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="来料状态">
+                                          <asp:TemplateField   HeaderText="来料状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labmater" runat="server" CssClass="labstatu" Width="60" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid2Apply" runat="server" Text="要料" CssClass="btn1 auth" OnClick="btnGrid2Apply_Click" OnClientClick="javascript:return confirm('确认要料？');" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField  >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnGrid2Feed" runat="server" Text="到料" CssClass="btn1 auth" OnClick="btnGrid2Feed_Click" OnClientClick="javascript:return confirm('确认到料？');" />
                                             </ItemTemplate>

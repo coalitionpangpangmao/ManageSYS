@@ -323,7 +323,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         string[] seg = { "PLAN_NAME", "PLAN_TIME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { planname + "生产月计划", planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
 
-        string log_message = opt.InsertData(seg, value, "ht_prod_month_plan") == "Success" ? "新建月度生产计划成功" : "新建月度生产计划失败";
+        string log_message = opt.InsertData(seg, value, "ht_prod_month_plan") == "Success" ? "新增月度生产计划成功" : "新增月度生产计划失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);        
         hidePlanID.Value = opt.GetSegValue(query, "ID");

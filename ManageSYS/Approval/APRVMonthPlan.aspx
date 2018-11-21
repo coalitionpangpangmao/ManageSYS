@@ -83,25 +83,25 @@
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID,gongwen_ID,BUSIN_ID"  AllowPaging ="true"  OnPageIndexChanging="GridView1_PageIndexChanging"
                                 AutoGenerateColumns="False" PageSize ="12">
                                 <Columns>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"   >
+                                    <asp:TemplateField       >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="业务名" HeaderText="业务名" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:BoundField DataField="申请人" HeaderText="申请人" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:BoundField DataField="申请部门" HeaderText="申请部门" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="主业务审批状态">
+                                    <asp:BoundField DataField="业务名" HeaderText="业务名"  />
+                                    <asp:BoundField DataField="申请人" HeaderText="申请人"  />
+                                    <asp:BoundField DataField="申请部门" HeaderText="申请部门"  />
+                                    <asp:TemplateField      HeaderText="主业务审批状态">
                                         <ItemTemplate>
                                             <asp:Label ID="labStatus1" runat="server" CssClass="labstatu" Text="" Width="60px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="当前流程状态">
+                                    <asp:TemplateField      HeaderText="当前流程状态">
                                         <ItemTemplate>
                                             <asp:Label ID="labStatus2" runat="server" CssClass="labstatu" Text="" Width="60px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" >
+                                    <asp:TemplateField      HeaderText="操作" >
                                         <ItemTemplate>
                                             <asp:Button ID="btnDetail" runat="server" Text="业务明细" CssClass="btn1 auth" Width="80px"
                                                 OnClick="btnDetail_Click" />

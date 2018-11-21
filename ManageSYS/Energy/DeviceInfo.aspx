@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>能源设施详情</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+  
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
@@ -119,7 +119,7 @@
                                 <div>
                                     <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True">
                                         <Columns>
-                                            <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="选择">
+                                            <asp:TemplateField      HeaderText="选择">
                                                 <ItemTemplate>
                                                     <asp:CheckBox ID="chk" runat="server" />
                                                 </ItemTemplate>

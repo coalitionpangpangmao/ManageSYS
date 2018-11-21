@@ -60,35 +60,35 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="产品编码" AllowPaging="True"  PageSize="14"
                             AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
                             <Columns>
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField  >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="100px"
                                             OnClick="btnSubmit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField  >
                                     <ItemTemplate>
                                         <asp:Button ID="btnGridDetail" runat="server" Text="产品详情" CssClass="btn1" Width="100px"
                                             OnClick="btnGridDetail_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField  >
                                     <ItemTemplate>
                                         <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="100px"
                                             OnClick="btnFLow_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="产品编码" HeaderText="产品编码" />
-                                <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="产品名称" HeaderText="产品名称" />
-                                <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="包装规格" HeaderText="包装规格" />
-                                <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="加工方式" HeaderText="加工方式" />
-                                <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="是否有效" HeaderText="是否有效" />
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="审批状态">
+                                <asp:BoundField    DataField="产品编码" HeaderText="产品编码" />
+                                <asp:BoundField    DataField="产品名称" HeaderText="产品名称" />
+                                <asp:BoundField    DataField="包装规格" HeaderText="包装规格" />
+                                <asp:BoundField    DataField="加工方式" HeaderText="加工方式" />
+                                <asp:BoundField    DataField="是否有效" HeaderText="是否有效" />
+                                <asp:TemplateField   HeaderText="审批状态">
                                     <ItemTemplate>
                                         <asp:Label ID="labGrid1Status" runat="server" CssClass="labstatu" Width="60px" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField  >
                                     <ItemTemplate>
                                         <asp:Button ID="btnGrid1Del" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnGrid1Del_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                     </ItemTemplate>
@@ -215,20 +215,20 @@
                                                 <asp:GridView ID="GridView4" runat="server" class="grid" DataKeyNames="section_code"
                                                     AutoGenerateColumns="False">
                                                     <Columns>
-                                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="工艺段">
+                                                        <asp:TemplateField   HeaderText="工艺段">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txtSection" runat="server" DataValueField="工艺段" DataTextField="工艺段"
                                                                     CssClass="tbinput" Enabled="False" Width="150px"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="路径选择">
+                                                        <asp:TemplateField   HeaderText="路径选择">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="200px"
                                                                     OnSelectedIndexChanged="listpath_SelectedIndexChanged" AutoPostBack="True">
                                                                 </asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderText="路径详情">
+                                                        <asp:TemplateField   HeaderText="路径详情">
                                                             <ItemTemplate>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>

@@ -7,13 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>数据对比</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
     <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
      <script src="../js/msys/Comparison.js" type="text/javascript"></script>
+  
+        
+    
+    
 </head>
 <body>
     <script type="text/javascript" src="../js/code/highcharts.js"></script>
@@ -38,6 +41,7 @@
                             <asp:Button ID="btnAdd" runat="server" Text="Button" CssClass="btnhide" OnClick="btnAdd_Click" />
                             <asp:Button ID="btnDel" runat="server" Text="Button" CssClass="btnhide" OnClick="btnDel_Click" /></span>
                     </div>
+
                     <% = tvHtml %>
                 </div>
                 <!--leftinfo end-->

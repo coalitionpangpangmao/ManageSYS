@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>生产排班</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+ 
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
@@ -133,12 +133,12 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging"
                                 AutoGenerateColumns="False" PageSize="9">
                                 <Columns>
-                                    <asp:BoundField DataField="日期" HeaderText="日期" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
-                                    <asp:BoundField DataField="班组" HeaderText="班组"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:BoundField DataField="班时" HeaderText="班时"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"/>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="状态">
+                                    <asp:BoundField DataField="日期" HeaderText="日期"   />
+                                    <asp:BoundField DataField="班组" HeaderText="班组"   />
+                                    <asp:BoundField DataField="班时" HeaderText="班时"   />
+                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间"   />
+                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间"   />
+                                    <asp:TemplateField      HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listStatus2" runat="server" CssClass="drpdwnlist" Width="60px">
                                                 <asp:ListItem></asp:ListItem>
@@ -147,7 +147,7 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                    <asp:TemplateField     >
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>

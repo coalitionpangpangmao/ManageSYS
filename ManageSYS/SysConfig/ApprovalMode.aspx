@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>审批模版管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+ 
     <script type="text/javascript" src="../js/jquery.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
@@ -91,7 +91,7 @@
                     </table>
                     <div class="listtitle">
                         模版流程表<span style="position: relative; float: right">
-                               <asp:Button ID="btnAdd" runat="server" CssClass="btnadd" Text="新建" OnClick="btnAdd_Click" />
+                               <asp:Button ID="btnAdd" runat="server" CssClass="btnadd" Text="新增" OnClick="btnAdd_Click" />
                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         </span>
@@ -99,41 +99,41 @@
                     <div>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False">
                             <Columns>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                <asp:TemplateField     >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="chk" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批类型">
+                                <asp:TemplateField      HeaderText="审批类型">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listType" runat="server" CssClass="drpdwnlist">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="顺序号">
+                                <asp:TemplateField      HeaderText="顺序号">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtOrder" runat="server" DataValueField="顺序号" DataTextField="顺序号"
                                             CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="审批角色">
+                                <asp:TemplateField      HeaderText="审批角色">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listRole" runat="server" CssClass="drpdwnlist">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="发送环节名">
+                                <asp:TemplateField      HeaderText="发送环节名">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtFlowname" runat="server" DataValueField="发送环节名" DataTextField="发送环节名"
                                             Width="150px" CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                <asp:TemplateField     >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                <asp:TemplateField     >
                                     <ItemTemplate>
                                         <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </ItemTemplate>

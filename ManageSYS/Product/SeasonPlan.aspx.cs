@@ -298,7 +298,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         opt.UpDateOra("delete from  HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'");
         string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
-         string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新建季度生产计划成功" : "新建季度生产计划失败";      
+         string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新增季度生产计划成功" : "新增季度生产计划失败";      
         log_message += "--详情:" + string.Join(",",value);
         InsertTlog(log_message);
         hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");
@@ -398,7 +398,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "QUARTER_PLAN_ID" };
                 string[] value = { ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, hidePlanID.Value };
 
-                log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新建季度生产计划明细成功" : "新建季度生产计划明细失败";
+                log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新增季度生产计划明细成功" : "新增季度生产计划明细失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
             }
@@ -440,7 +440,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                     string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "QUARTER_PLAN_ID" };
                     string[] value = { ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, hidePlanID.Value };
 
-                    log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新建季度生产计划明细成功" : "新建季度生产计划明细失败";
+                    log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新增季度生产计划明细成功" : "新增季度生产计划明细失败";
                     log_message += "--详情:" + string.Join(",", value);
                     InsertTlog(log_message);
                 }

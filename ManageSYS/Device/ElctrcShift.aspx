@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>电气维修交接班记录</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     
@@ -67,12 +67,12 @@
                             <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12"
                                 AutoGenerateColumns="False">
                                 <Columns>                                 
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="日期" HeaderText="日期" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="班组" HeaderText="班组" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="班时" HeaderText="班时" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="开始时间" HeaderText="开始时间" />
-                                    <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="结束时间" HeaderText="结束时间" />
-                                    <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
+                                    <asp:BoundField    DataField="日期" HeaderText="日期" />
+                                    <asp:BoundField    DataField="班组" HeaderText="班组" />
+                                    <asp:BoundField    DataField="班时" HeaderText="班时" />
+                                    <asp:BoundField    DataField="开始时间" HeaderText="开始时间" />
+                                    <asp:BoundField    DataField="结束时间" HeaderText="结束时间" />
+                                    <asp:TemplateField      HeaderText="操作">
                                         <ItemTemplate>
                                             <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click" />
                                         </ItemTemplate>

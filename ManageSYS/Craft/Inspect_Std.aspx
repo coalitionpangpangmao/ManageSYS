@@ -66,50 +66,50 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"  AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"  PageSize="14"
                             DataKeyNames="检查项目编码">
                             <Columns>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                                <asp:TemplateField     >
                                     <ItemTemplate>
                                         <asp:CheckBox ID="ck" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField> 
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "检查类型">
+                                <asp:TemplateField      HeaderText = "检查类型">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listType" runat="server" CssClass = 'drpdwnlist' Width = '80px' DataSource = "<%#bindInspect() %>"  DataTextField = "INSPECT_TYPE"  DataValueField = "ID" Enabled ="false">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "分组">
+                                <asp:TemplateField      HeaderText = "分组">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listGroup" runat="server" CssClass = 'drpdwnlist'  Enabled="false" Width ="200px">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>                               
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "检查项目">
+                                <asp:TemplateField      HeaderText = "检查项目">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listInspect" runat="server" CssClass = 'drpdwnlist' Enabled="false">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField> 
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "上限">
+                                <asp:TemplateField      HeaderText = "上限">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtUpper" runat="server"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  CssClass = 'tbinput'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "下限">
+                                <asp:TemplateField      HeaderText = "下限">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtLower" runat="server"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  CssClass = 'tbinput'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "单次扣分">
+                                <asp:TemplateField      HeaderText = "单次扣分">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtScore" runat="server"  onkeyup="value=value.replace(/[^\d\.]/g,'')"  CssClass = 'tbinput'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText = "备注">
+                                 <asp:TemplateField      HeaderText = "备注">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作">
+                                <asp:TemplateField      HeaderText="操作">
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1" OnClick="btnSave_Click" />
                                     </ItemTemplate>

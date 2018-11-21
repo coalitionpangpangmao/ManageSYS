@@ -28,7 +28,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select PROD_CODE  as 产品编码,PROD_NAME  as 产品名称,PACK_NAME  as 包装规格,HAND_MODE  as 加工方式,is_valid as 是否有效,(case B_FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态 from ht_pub_prod_design where is_del = '0'";
+        string query = "select PROD_CODE  as 产品编码,PROD_NAME  as 产品名称,PACK_NAME  as 包装规格,case HAND_MODE when '1' then '自主加工' when '2' then '来料加工' else hand_mode end  as 加工方式,case is_valid when '1' then '有效' else '无效' end as 是否有效,(case B_FLOW_STATUS when '-1' then '未提交' when '0' then '办理中' when '1' then '未通过' else '己通过' end) as 审批状态 from ht_pub_prod_design where is_del = '0'";
         if (txtCodeS.Text != "")
             query += " and prod_code = '" + txtCodeS.Text + "'";
         if (txtNameS.Text != "")

@@ -147,20 +147,20 @@
  <asp:GridView ID="GridView1" runat="server" class="grid" 
                         AllowPaging="True" AutoGenerateColumns="False"  >
                      <Columns>
-                     <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  >
+                     <asp:TemplateField      >
                         <ItemTemplate>                                                  
                             <asp:CheckBox ID="ck" runat="server" />            
                         </ItemTemplate>
                             
                         </asp:TemplateField>  
-                         <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="记录ID" HeaderText="记录ID" />
-                          <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗点" HeaderText="能耗点" />
-                           <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="工序编码" HeaderText="工序编码" />
-                            <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="日期" HeaderText="日期" />
-                              <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="能耗总量" HeaderText="能耗总量" />
-                               <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="单位" HeaderText="单位" />
-                               <asp:BoundField  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataField="是否有效" HeaderText="是否有效" />
-                         <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"   HeaderText = "操作">
+                         <asp:BoundField    DataField="记录ID" HeaderText="记录ID" />
+                          <asp:BoundField    DataField="能耗点" HeaderText="能耗点" />
+                           <asp:BoundField    DataField="工序编码" HeaderText="工序编码" />
+                            <asp:BoundField    DataField="日期" HeaderText="日期" />
+                              <asp:BoundField    DataField="能耗总量" HeaderText="能耗总量" />
+                               <asp:BoundField    DataField="单位" HeaderText="单位" />
+                               <asp:BoundField    DataField="是否有效" HeaderText="是否有效" />
+                         <asp:TemplateField       HeaderText = "操作">
                         <ItemTemplate>                                                  
                                 
                             <asp:Button ID="btnEdit" runat="server" Text="编辑" CssClass = "btn1" OnClick = "btnEdit_Click"/>               

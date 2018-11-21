@@ -5,8 +5,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>权限配置</title>
-    <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+    <link href="../css/style.css" rel="stylesheet" type="text/css" /> 
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script type="text/javascript">
@@ -128,15 +127,15 @@
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False" AllowPaging="true"
-                                    DataKeyNames="权限ID" PageSize="12"  OnPageIndexChanging ="GridView1_PageIndexChanging">
+                                    DataKeyNames="权限ID" PageSize="16"  OnPageIndexChanging ="GridView1_PageIndexChanging">
                                     <Columns>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="权限ID">
+                                        <asp:TemplateField      HeaderText="权限ID">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtID" runat="server" DataValueField="权限ID" DataTextField="权限ID"
                                                     Width="50px" CssClass="tbinput" Enabled="False"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="权限类型">
+                                        <asp:TemplateField      HeaderText="权限类型">
                                             <ItemTemplate>
                                                 <asp:DropDownList ID="listType" runat="server" CssClass="drpdwnlist" Width="80px">
                                                     <asp:ListItem></asp:ListItem>
@@ -145,30 +144,30 @@
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="父节点名">
+                                        <asp:TemplateField      HeaderText="父节点名">
                                             <ItemTemplate>
                                                 <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist" Width="120px" DataSource="<%#bindprt() %>" DataTextField="NAME" DataValueField="ID" OnSelectedIndexChanged="listPrt_OnSelectedIndexChanged" AutoPostBack="True">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="Mapping">
+                                        <asp:TemplateField      HeaderText="Mapping">
                                             <ItemTemplate>
                                                 <asp:DropDownList ID="listMap" runat="server" CssClass="drpdwnlist" Width="250px">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="权限名称" >
+                                        <asp:TemplateField      HeaderText="权限名称" >
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtMenu" runat="server" DataValueField="权限名称" DataTextField="权限名称" Width="180px"  CssClass="tbinput1"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="描述">
+                                        <asp:TemplateField      HeaderText="描述">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtDscrp" runat="server" DataValueField="描述" DataTextField="描述"
                                                     Width="200px" CssClass="tbinput"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" >
+                                        <asp:TemplateField      HeaderText="操作" >
                                             <ItemTemplate>
                                                 <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave_Click" />
                                                 <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>

@@ -32,7 +32,7 @@
             <div class="listtitle">
                 父级菜单配置
             </div>
-            <div>
+            <div  >
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
                     <ContentTemplate>
                         <asp:HiddenField ID="hdScrollY" runat="server" />
@@ -104,44 +104,44 @@
                     <asp:Button ID="btnAdds" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdds_Click" />
                 </span>
             </div>
-            <div id="gridPanel" onscroll="saveScroll()" style="height: 350px; overflow: scroll">
+            <div id="gridPanel" onscroll="saveScroll()" style="height: 450px; overflow: scroll">
                 <asp:UpdatePanel ID="updtpanel1" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
                             DataKeyNames="MapID">
                             <Columns>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="MapID">
+                                <asp:TemplateField      HeaderText="MapID">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtID" runat="server" DataValueField="MapID" DataTextField="MapID"
                                             Width="50px" CssClass="tbinput" Enabled="False"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="父菜单">
+                                <asp:TemplateField      HeaderText="父菜单">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="listPrt" runat="server" CssClass="drpdwnlist" Width="120px"
                                             DataSource="<%#bindprt() %>" DataTextField="NAME" DataValueField="ID">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="菜单名称">
+                                <asp:TemplateField      HeaderText="菜单名称">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtMenu" runat="server" DataValueField="菜单名称" DataTextField="菜单名称"
                                             CssClass="tbinput1"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="URL">
+                                <asp:TemplateField      HeaderText="URL">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtURL" runat="server" DataValueField="URL" DataTextField="URL"
                                             Width="200px" CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="描述">
+                                <asp:TemplateField      HeaderText="描述">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtDscrp" runat="server" DataValueField="描述" DataTextField="描述"
                                             Width="200px" CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField   HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderText="操作" >
+                                <asp:TemplateField      HeaderText="操作" >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />
                                         <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>

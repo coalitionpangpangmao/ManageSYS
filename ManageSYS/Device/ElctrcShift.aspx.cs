@@ -171,7 +171,7 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
                 commandlist.Add(opt.InsertDatastr(seg1, value1, "HT_EQ_MT_SHIFT_DETAIL")); 
             }
         }
-        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "新建机电交接班记录成功" : "新建机电交接班记录失败";
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "新增机电交接班记录成功" : "新增机电交接班记录失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
       

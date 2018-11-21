@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>应急维修</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../css/select.css" rel="stylesheet" type="text/css" />
+ 
     <script type="text/javascript" src="../js/jquery.js"></script>
         <link href="../css/falutsearchbox.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/msys/falutSearch.js"></script>

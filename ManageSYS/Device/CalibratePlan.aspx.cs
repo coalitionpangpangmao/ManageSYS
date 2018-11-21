@@ -608,7 +608,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
                 string[] seg = { "section", "equipment_id", "point", "exp_finish_time", "remark", "CREATE_TIME", "MAIN_ID" };
                 string[] value = { row["section"].ToString(), row["equipment_id"].ToString(), row["point"].ToString(), System.DateTime.Now.AddMonths(1).ToString("yyyy-MM") + "-01", row["remark"].ToString(), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtCode.Text };
 
-                string log_message = opt.InsertData(seg, value, "HT_EQ_MCLBR_PLAN_detail") == "Success" ? "新建校准计划明细成功" : "新建校准计划明细失败";
+                string log_message = opt.InsertData(seg, value, "HT_EQ_MCLBR_PLAN_detail") == "Success" ? "新增校准计划明细成功" : "新增校准计划明细失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
        

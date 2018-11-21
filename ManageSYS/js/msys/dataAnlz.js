@@ -70,7 +70,7 @@ $(function () {
         var errdev = result["errdev"];
         var xAxis = result["xAxis"];
         var yAxis = result["yAxis"];
-        var para_name = result["para_name"];
+        var para_name = result["pointname"];
       
         var chart = new Highcharts.Chart({
             chart: {

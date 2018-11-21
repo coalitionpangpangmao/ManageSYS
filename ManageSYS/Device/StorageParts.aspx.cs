@@ -112,7 +112,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
         }
     }
 
-    protected void btnGridNew_Click(object sender, EventArgs e)// 新建领退明细
+    protected void btnGridNew_Click(object sender, EventArgs e)// 新增领退明细
     {
 
         setBlank();

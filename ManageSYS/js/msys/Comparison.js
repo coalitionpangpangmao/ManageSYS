@@ -38,7 +38,7 @@ function showPointPlot() {
                 debugger;
                 var xAxis = result[0]["xAxis"];
                 var yAxis = result[0]["yAxis"];
-                var para_name = result[0]["para_name"];
+                var para_name = result[0]["pointname"].toString();
                 chart.addSeries({
                     name: para_name,                  
                     data: yAxis
@@ -103,6 +103,7 @@ function drawPicture() {
                                     color: '#FFFFFF'
                                 })
                                 .add();
+
                     setTimeout(function () {
                         label.fadeOut();
                     }, 1000);
@@ -120,7 +121,7 @@ function drawPicture() {
             rules: [{
                 condition: { maxWidth: 500 },
                 chartOptions: {
-                    legend: { layout: 'horizontal', align: 'center', verticalAlign: 'bottom' }
+                    legend: {  layout: 'horizontal', align: 'center', verticalAlign: 'bottom' }
                 }
             }]
         }
