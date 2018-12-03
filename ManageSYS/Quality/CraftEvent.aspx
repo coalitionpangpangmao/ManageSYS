@@ -73,7 +73,7 @@
                                 </asp:TemplateField>
                                  <asp:BoundField    HeaderText="产品" DataField="prod_name" />
                                  <asp:BoundField    HeaderText="工艺点" DataField="para_name" />
-                                 <asp:BoundField    HeaderText="类型" DataField="type" />
+                                 <asp:BoundField    HeaderText="类型" DataField="typename" />
                                  <asp:BoundField    HeaderText="值" DataField="value" />
                                  <asp:BoundField    HeaderText="范围" DataField="range" />
                                  <asp:BoundField    HeaderText="开始时间" DataField="b_time" />

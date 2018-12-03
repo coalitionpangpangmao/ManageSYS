@@ -41,7 +41,7 @@
         <div id="tab1" class="tabson">          
                 <div class="listtitle">
                     编辑<span style="position: relative; float: right">
-                        <asp:Button ID="btnSaveT" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSaveT_Click" />
+                        <asp:Button ID="btnSaveT" runat="server" Text="保存" CssClass="btnmodify  auth" OnClick="btnSaveT_Click" />
                     </span>
                 </div>
                   <div>
@@ -112,7 +112,7 @@
           
                 <div class="listtitle">
                     编辑<span style="position: relative; float: right">
-                        <asp:Button ID="btnSaveS" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSaveS_Click" />
+                        <asp:Button ID="btnSaveS" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSaveS_Click" />
                     </span>
                 </div>
                   <div>

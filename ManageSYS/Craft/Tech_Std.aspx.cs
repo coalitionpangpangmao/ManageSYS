@@ -31,11 +31,13 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
 
     protected void SetEnable(bool enable)
     {
-        btnAdd.Visible = enable;
-        btnModify.Visible = enable;
-        btnDelete.Visible = enable;
-        btnSave2.Visible = enable;
-        btnDelSel2.Visible = enable;
+     //   btnAdd.Visible = enable;
+     //   btnModify.Visible = enable;
+     ////   btnDelete.Visible = enable;
+     //   btnSave2.Visible = enable;
+     //   btnDelSel2.Visible = enable;
+     //   btnSave.Visible = enable;
+     //   btnDelSel.Visible = enable;
     }
     protected void initView()
     {
@@ -102,14 +104,13 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             string log_message = opt.MergeInto(seg, value, 1, "HT_TECH_STDD_CODE") == "Success" ? "保存标准成功" : "保存标准失败";
             log_message += ",保存数据：" + string.Join(",", value);
             InsertTlog(log_message);
+            ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
         }
-        bindGrid(txtCode.Text, hideprc.Value);
-
-        opt.bindDropDownList(listtech, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
-        opt.bindDropDownList(listtechC, "select * from HT_TECH_STDD_CODE where is_valid = '1' and is_del = '0'", "TECH_NAME", "TECH_CODE");
+        bindGrid(txtCode.Text, hideprc.Value);      
+       
         listAprv.SelectedValue = "-1";
         initView();
-
+       
 
 
     }
@@ -378,6 +379,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
+        string suc = "保存成功";
         for (int i = 0; i < GridView1.Rows.Count; i++)
         {
             GridViewRow row = GridView1.Rows[i];
@@ -388,16 +390,26 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             {
                 string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT", "IS_DEL" };
                 string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
-                string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
+                string log_message;
+                if (opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success")
+                    log_message = "保存参数成功";
+                else
+                {
+                    log_message = "保存参数失败";
+                    suc = "部分参数保存失败，请检查！！";
+                }
                 log_message += ", 保存数据：" + string.Join(",", value);
                 InsertTlog(log_message);
+              
             }
         }
         bindGrid(txtCode.Text, hideprc.Value);
         bindGrid2(txtCode.Text, hideprc.Value);
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('" + suc + "')", true);
     }
     protected void btnSave2_Click(object sender, EventArgs e)
     {
+        string suc = "保存成功";
         for (int i = 0; i < GridView2.Rows.Count; i++)
         {
             GridViewRow row = GridView2.Rows[i];
@@ -408,13 +420,22 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
             {
                 string[] seg = { "PARA_CODE", "TECH_CODE", "VALUE", "UPPER_LIMIT", "LOWER_LIMIT", "EER_DEV", "UNIT","IS_DEL" };
                 string[] value = { ((TextBox)row.FindControl("txtCodeM")).Text, txtCode.Text, ((TextBox)row.FindControl("txtValueM")).Text, ((TextBox)row.FindControl("txtUlimitM")).Text, ((TextBox)row.FindControl("txtLlimitM")).Text, ((TextBox)row.FindControl("txtDevM")).Text, ((TextBox)row.FindControl("txtUnitM")).Text ,"0"};
-                string log_message = opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success" ? "保存参数成功" : "保存参数失败";
+                string log_message;
+                if (opt.MergeInto(seg, value, 2, "HT_TECH_STDD_CODE_DETAIL") == "Success")
+                    log_message = "保存参数成功";
+                else
+                {
+                    log_message = "保存参数失败";
+                    suc = "部分参数保存失败，请检查！！";
+                }
                 log_message += ", 保存数据：" + string.Join(",", value);
                 InsertTlog(log_message);
+               
             }
         }
         bindGrid(txtCode.Text, hideprc.Value);
         bindGrid2(txtCode.Text, hideprc.Value);
+        ScriptManager.RegisterStartupScript(UpdatePanel5, this.Page.GetType(), "alert", "alert('" + suc + "')", true);
 
     }
     protected void btnAdd_Click(object sender, EventArgs e)

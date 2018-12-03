@@ -227,8 +227,8 @@
                                                 </tr>
                                             </table>
                                         </HeaderTemplate>
-                                        <ItemTemplate>
-                                            <table width="270px">
+                                        <ItemTemplate  >
+                                            <table width="270px" align="center">
                                                 <tr>
                                                     <td width="90px">
                                                         <asp:TextBox ID="txtAmount1" runat="server" DataValueField="计划数量" DataTextField="计划数量"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 

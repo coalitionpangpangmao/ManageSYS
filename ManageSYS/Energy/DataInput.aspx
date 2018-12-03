@@ -77,7 +77,7 @@
     <li><a href="#">数据手动录入</a></li>
     </ul>
     </div>
-    <div class="rightinfo"> 
+    <div class="mainbox"> 
      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
   <ContentTemplate>
  <table class="tablelist">    	
@@ -122,7 +122,7 @@
         </table>
         </ContentTemplate>
         </asp:UpdatePanel>
-        <div class="tools">
+        <div class="gridtools  auth">
     
     	<ul class="toolbar">
         <li class="click"><span><img src="../images/t01.png" /></span>添加</li>

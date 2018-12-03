@@ -107,7 +107,7 @@
                 <div class="listtitle" >
                     交接班详情<span style="position: relative; float: right">
                                                 <asp:Button ID="btnSave" runat="server" Text="保存" class=
-                                                "btnview"  OnClick = "btnSave_Click"/>                       
+                                                "btnmodify auth"  OnClick = "btnSave_Click"/>                       
                                             </span>
                 </div>
                 <div>

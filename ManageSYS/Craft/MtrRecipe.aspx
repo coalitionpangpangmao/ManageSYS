@@ -170,7 +170,7 @@
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField      HeaderText="物料编码" SortExpression="物料编码">
+                                        <asp:TemplateField      HeaderText="物料编码" >
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
                                                     CssClass="tbinput1" Enabled="False"></asp:TextBox>

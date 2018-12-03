@@ -26,7 +26,7 @@
             <li><a href="#">用户信息</a></li>          
         </ul>
     </div>
-    <div class="rightinfo">
+    <div class="mainbox">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
                             <table class="tablelist">
@@ -101,12 +101,11 @@
                                                 Enabled="False">
                                             </asp:DropDownList>
                                         </td>
-                                          <td width="120">
-                                            登陆名
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtUser" runat="server" class="dfinput1"></asp:TextBox>
-                                        </td>
+                                          <td width="120">班组
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist"></asp:DropDownList> 
+                                            </td>
                                         </tr>
                                         <tr>
                                         <td width="120">

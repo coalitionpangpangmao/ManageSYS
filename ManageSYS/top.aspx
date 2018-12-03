@@ -17,7 +17,7 @@ body {
 	font-size: 12px;
 	color: #000000;
 }
-.STYLE5 {font-size: 12}
+.STYLE5 {font-size: 12px;}
 .STYLE7 {font-size: 12px; color: #FFFFFF; }
 .STYLE7 a{font-size: 12px; color: #FFFFFF; }
 a img {

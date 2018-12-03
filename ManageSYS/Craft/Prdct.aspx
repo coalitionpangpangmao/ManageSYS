@@ -7,6 +7,7 @@
     <title>产品管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
+  
 </head>
 <body>
     <form id="form1" runat="server">
@@ -178,12 +179,7 @@
                                                 <asp:DropDownList ID="listMtrl" runat="server" class="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
-                                            <td width="100">辅料配方编码
-                                            </td>
-                                            <td>
-                                                <asp:DropDownList ID="listAux" runat="server" class="drpdwnlist">
-                                                </asp:DropDownList>
-                                            </td>
+                                           
 
                                             <td width="110">回填液配方编码
                                             </td>
@@ -191,11 +187,19 @@
                                                 <asp:DropDownList ID="listcoat" runat="server" class="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
+                                            
+                                             <td width="100">香精香料配方
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="listFla" runat="server" class="drpdwnlist">
+                                                </asp:DropDownList>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td width="100">质量考核标准
                                             </td>
                                             <td>
+                                              
                                                 <asp:DropDownList ID="listqlt" runat="server" class="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>

@@ -16,19 +16,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             initTree();
-            $(".folder").bind("click", function () {
-                $('#hdcode').val($(this).attr('value'));
-                $('#btnUpdate1').click();
-                $('.folder').removeClass("selectedbold");
-                $('.file').removeClass("selectedbold");
-                $(this).addClass("selectedbold");
-            });
-        
-            $(".file").click(function () {
-                $('.folder').removeClass("selectedbold");
-                $('.file').removeClass("selectedbold");
-                $(this).addClass("selectedbold");
-            });
+           
         });
         function initTree() {
             $("#browser").treeview({
@@ -37,6 +25,19 @@
                 },
                 persist: "cookie",
                 collapsed: true
+            });
+            $(".folder").bind("click", function () {
+                $('#hdcode').val($(this).attr('value'));
+                $('#btnUpdate1').click();
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
+            });
+
+            $(".file").click(function () {
+                $('.folder').removeClass("selectedbold");
+                $('.file').removeClass("selectedbold");
+                $(this).addClass("selectedbold");
             });
             $("#gridPanel").scrollTop($("#hideY").val());
         }
@@ -74,6 +75,8 @@
                         </div>
                     </ContentTemplate>
                     <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID ="btnModify1" />
+                        <asp:AsyncPostBackTrigger ControlID ="btnDel1" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
@@ -82,12 +85,12 @@
                 <div class="listtitle">
                     类型查询与维护<span style="position: relative; float: right">
                         <asp:Button ID="btnAdd1" CssClass="btnadd auth" runat="server" OnClick="btnAdd1_Click"
-                            Text="新增"  Visible ="false"/>
+                            Text="新增"  />
                         &nbsp; &nbsp;
                     <asp:Button ID="btnModify1" CssClass="btnmodify auth" runat="server" OnClick="btnModify1_Click"
-                        Text="保存" Visible ="false" />
+                        Text="保存"  />
                         &nbsp; &nbsp;
-                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');"  Visible ="false"/>
+                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                         &nbsp; &nbsp;    
                           <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>     
                 <asp:Button ID="btnSearch1" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch1_Click" />
@@ -136,7 +139,9 @@
                     </asp:UpdatePanel>
                 </div>
                 <div class="listtitle" style="margin-top: 10px">
-                    物料列表
+                    物料列表<span style="position: relative; float: right">
+                        <asp:Button ID="btnAdd2" CssClass="btnadd auth" runat="server" OnClick="btnAdd2_Click"
+                            Text="新增"  /></span>
                 </div>
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -179,6 +184,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnDel1" />
                             <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
                             <asp:AsyncPostBackTrigger ControlID="btnSearch1" />
+                             <asp:AsyncPostBackTrigger ControlID="btnModify2" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -201,7 +207,7 @@
                                                 <td width="100">物料名称</td>
                                                 <!-- code name-->
                                                 <td>
-                                                    <asp:TextBox ID="txtName2" runat="server" class="dfinput1" Enabled ="false" Width ="220px"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtName2" runat="server" class="dfinput1"  Width ="220px"></asp:TextBox></td>
                                                  </tr>
                                             <tr>
                                                 <td width="100">父级类别</td>
@@ -252,6 +258,7 @@
                                 </ContentTemplate>
                                 <Triggers>                                  
                                     <asp:AsyncPostBackTrigger ControlID="btnModify2" />
+                                    <asp:AsyncPostBackTrigger ControlID ="btnAdd2" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>

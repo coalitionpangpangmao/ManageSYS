@@ -247,9 +247,9 @@ namespace MSYS.Web
          
         
         }
-  //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览   
-        
-        public string CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,DateTime date,bool merge)
+
+  //在服务器中找到报表模板，从数据库中选择数据，将数据写入模板中，把该文件保存在服务器的C://temp目录下；客户端再下载该文件，就能在客户端进行浏览
+        public string CreateExcel(string filename, string brand, string startDate, string endDate, string team,string style,string month,DateTime date,bool merge)
         {           
             MSYS.Common.ExcelExport openXMLExcel = null;
             try
@@ -306,6 +306,8 @@ namespace MSYS.Web
                             sqlstr = sqlstr.Replace("$endDate$", endDate);
                         if (team != "")
                             sqlstr = sqlstr.Replace("$team$", team);
+                        if (month != "")
+                            sqlstr = sqlstr.Replace("$month$", month);
                         if (sqlstr != "")
                         {
                             //将选择的数据写入Excel
@@ -406,11 +408,11 @@ namespace MSYS.Web
             }
         }
 
-        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style,DateTime date,bool merge)
+        public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style,string month,DateTime date,bool merge)
         {
             try
             {
-                CreateExcel(filename, brand, startDate, endDate, team, style,date,merge);
+                CreateExcel(filename, brand, startDate, endDate, team, style,month,date,merge);
                 String filepath = System.AppDomain.CurrentDomain.BaseDirectory.ToString() + @"TEMP\" + filename + date.ToString("HHmmss") + style;
 
                 //Response.ContentType = "application/octet-stream";

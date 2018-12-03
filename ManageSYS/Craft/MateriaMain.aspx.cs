@@ -143,6 +143,8 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
         log_message += ",分类信息：" + string.Join(",", value);
         InsertTlog(log_message);
         bindGrid(txtCode1.Text);
+        tvHtml = InitTree();
+        ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "init", " initTree();", true);
 
     }
     protected void btnDel1_Click(object sender, EventArgs e)
@@ -153,6 +155,8 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
         log_message += ", 分类编码：" + txtCode1.Text;
         InsertTlog(log_message);
         bindGrid(txtCode1.Text);
+        tvHtml = InitTree();
+        ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "init", " initTree();", true);
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -264,23 +268,41 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
 
     protected void btnAdd2_Click(object sender, EventArgs e)
     {
-        string[] seg = { "MATERIAL_CODE", "MATERIAL_NAME", "MAT_TYPE", "MAT_CATEGORY", "UNIT_CODE", "PK_MATERIAL", " MAT_LEVEL", " MAT_VARIETY", "PIECE_WEIGHT", " LAST_UPDATE_TIME", "REMARK" };
-        string[] value = { txtCode2.Text, txtName2.Text, txtCtgr2.Text, listType2.SelectedValue, txtUint2.Text, txtPkmtr2.Text, txtLevel2.Text, txtVrt2.Text, txtWeight2.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp2.Text };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_MATERIEL") == "Success" ? "物料添加成功" : "物料添加失败";
-        log_message += ",物料信息:" + string.Join(",", value);
-        InsertTlog(log_message);
+        if (txtCode1.Text == ""||Convert.ToInt16( opt.GetSegValue("select count(*) as num from ht_pub_mattree where parent_code = '" + txtCode1.Text + "'","num")) > 0)
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "alert", "alert('请选择正确的物料分类！！！');", true);
+            return;
+        }
+        string code = opt.GetSegValue("select nvl(max(substr(material_code,length(material_code)-1,2)),0) as code from ht_pub_materiel  where type_code = '" + txtCode1.Text + "'", "code");
+        code = (Convert.ToInt16(code) + 1).ToString().PadLeft(2, '0');
+        txtCode2.Text = txtCode1.Text + code;
+;
+        txtName2.Text = "";
+        listType2.SelectedValue = txtCode1.Text;
+        txtCtgr2.Text = "";
+        txtUint2.Text = "";
+        txtPkmtr2.Text = "";
+        txtLevel2.Text = "";
+        txtVrt2.Text = "";
+        txtWeight2.Text = "";
+        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "viewDetail", " $('.shade').fadeIn(100);", true);
+        
 
     }
 
     protected void btnModify2_Click(object sender, EventArgs e)
     {
-        string[] seg = { "MATERIAL_CODE", "MATERIAL_NAME", "MAT_TYPE", "TYPE_CODE", "UNIT_CODE", "PK_MATERIAL", " MAT_LEVEL", " MAT_VARIETY", "PIECE_WEIGHT", " LAST_UPDATE_TIME", "REMARK" };
-        string[] value = { txtCode2.Text, txtName2.Text, txtCtgr2.Text, listType2.SelectedValue, txtUint2.Text, txtPkmtr2.Text, txtLevel2.Text, txtVrt2.Text, txtWeight2.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp2.Text };
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string catgory = opt.GetSegValue("select MATTREE_NAME  from ht_pub_mattree t where MATTREE_CODE = '" + listType2.SelectedValue.Substring(0, 2) + "'", "MATTREE_NAME");
+        catgory = (catgory == "NoRecord") ? "" : catgory;
+        string[] seg = { "MATERIAL_CODE", "MATERIAL_NAME", "MAT_TYPE", "Type_code", "UNIT_CODE", "PK_MATERIAL", " MAT_LEVEL", "MAT_VARIETY", "PIECE_WEIGHT", " LAST_UPDATE_TIME", "REMARK" ,"MAT_CATEGORY"};
+        string[] value = { txtCode2.Text, txtName2.Text, txtCtgr2.Text, listType2.SelectedValue, txtUint2.Text, txtPkmtr2.Text, txtLevel2.Text, txtVrt2.Text, txtWeight2.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtDscrp2.Text ,catgory};
+        
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_MATERIEL") == "Success" ? "物料添加成功" : "物料添加失败";
         log_message += ",物料信息:" + string.Join(",", value);
         InsertTlog(log_message);
+        bindGrid(txtCode1.Text);    
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "viewDetail", " $('.shade').fadeOut(100);", true);
     }
     protected void btnDel2_Click(object sender, EventArgs e)

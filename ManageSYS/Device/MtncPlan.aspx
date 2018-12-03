@@ -233,7 +233,7 @@
                         <ContentTemplate>
                             <div class="listtitle">
                                 维保计划<span style="position: relative; float: right">
-                                    <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview  auth" OnClick="btnSave_Click" />
+                                    <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnmodify  auth" OnClick="btnSave_Click" />
                                 </span>
                             </div>
                             <table class="tablelist">

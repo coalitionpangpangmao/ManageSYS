@@ -102,10 +102,7 @@
             <div id="tab3" class="tabson" style="margin-top: 0px; padding-top: 0px;">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-
-
                         <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True">
-
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
                             <AlternatingRowStyle CssClass="gridalterrow" />

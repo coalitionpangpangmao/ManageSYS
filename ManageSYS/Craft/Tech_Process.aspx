@@ -16,7 +16,7 @@
                     <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
                         Text="新增" />
                     &nbsp; &nbsp;
-                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
+                    <asp:Button ID="btnModify" CssClass="btnmodify  auth" runat="server" OnClick="btnModify_Click"
                         Text="保存" />
                     &nbsp; &nbsp;
                     <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>        

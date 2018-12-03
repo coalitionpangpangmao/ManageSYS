@@ -20,7 +20,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     protected void initView()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listAux, "select Formula_code, FORMULA_NAME from ht_qa_aux_formula where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
+        opt.bindDropDownList(listFla, "select Formula_code, FORMULA_NAME from ht_qa_fla_formula where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
         opt.bindDropDownList(listcoat, "select  Formula_code, FORMULA_NAME  from HT_QA_coat_FORMULA where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
         opt.bindDropDownList(listMtrl, "select Formula_code, FORMULA_NAME  from ht_qa_mater_formula where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
         opt.bindDropDownList(listTechStd, "select distinct tech_code,tech_name from ht_tech_stdd_code where is_valid = '1' and is_del = '0'", "tech_name", "tech_code");
@@ -139,7 +139,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             listType.SelectedValue = data.Tables[0].Rows[0]["HAND_MODE"].ToString();
             listTechStd.SelectedValue = data.Tables[0].Rows[0]["TECH_STDD_CODE"].ToString();
             listMtrl.SelectedValue = data.Tables[0].Rows[0]["MATER_FORMULA_CODE"].ToString();
-            listAux.SelectedValue = data.Tables[0].Rows[0]["AUX_FORMULA_CODE"].ToString();
+            listFla.SelectedValue = data.Tables[0].Rows[0]["FLA_FORMULA_CODE"].ToString();
             listcoat.SelectedValue = data.Tables[0].Rows[0]["Coat_FORMULA_CODE"].ToString();
             listqlt.SelectedValue = data.Tables[0].Rows[0]["QLT_CODE"].ToString();
             txtValue.Text = data.Tables[0].Rows[0]["STANDARD_VALUE"].ToString();
@@ -207,7 +207,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         listType.SelectedValue = ""; 
         listTechStd.SelectedValue = ""; 
         listMtrl.SelectedValue = ""; 
-        listAux.SelectedValue = ""; 
+        listFla.SelectedValue = ""; 
         listcoat.SelectedValue = ""; 
         listqlt.SelectedValue = ""; 
         txtValue.Text = "";
@@ -219,8 +219,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK", "CREATE_TIME", "PATH_CODE" };
-        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listAux.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text ,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtPathcode.Text};
+        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "FLA_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK", "CREATE_TIME", "PATH_CODE" };
+        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listFla.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text ,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtPathcode.Text};
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
         log_message += ",产品信息：" + string.Join(",", value);
         InsertTlog(log_message);
@@ -270,22 +270,24 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
                     query += " and pathcode = '" + list.SelectedValue + "'";
 
                     DataSet set = opt.CreateDataSetOra(query);
-                    for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
+                    if (set != null && set.Tables[0].Rows.Count > 0)
                     {
-                        CheckBox ck = new CheckBox();
-                        // ck.Enabled = false;
-                        if (0 == set.Tables[0].Rows.Count)
-                            ck.Checked = false;
-                        else
-                            ck.Checked = (set.Tables[0].Rows[0][j].ToString() == "1");
+                        for (int j = 1; j < set.Tables[0].Columns.Count - 2; j++)
+                        {
+                            CheckBox ck = new CheckBox();
+                            if (0 == set.Tables[0].Rows.Count)
+                                ck.Checked = false;
+                            else
+                                ck.Checked = (set.Tables[0].Rows[0][j].ToString() == "1");
 
-                        ck.Text = set.Tables[0].Columns[j].Caption;
-                        GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                            ck.Text = set.Tables[0].Columns[j].Caption;
+                            GridView4.Rows[i].Cells[2].Controls.Add(ck);
+                        }
                     }
                 }
             }
         }
-
+        ScriptManager.RegisterStartupScript(UpdatePanel2,this.Page.GetType(),"disable"," $(\"input[type$='checkbox']\").attr('disabled', 'disabled');",true);
 
     }//绑定GridView4数据源
 
@@ -316,7 +318,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             }
         }
         txtPathcode.Text = getPathCode();
-
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "disable", " $(\"input[type$='checkbox']\").attr('disabled', 'disabled');", true);
     }
  
     protected string getPathCode()

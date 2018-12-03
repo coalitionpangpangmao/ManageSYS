@@ -79,7 +79,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2" height="50px">
-                                                <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnview auth" OnClick="btnSave2_Click" />
+                                                <asp:Button ID="btnSave2" runat="server" Text="保存" class="btnmodify auth" OnClick="btnSave2_Click" />
                                                 &nbsp;&nbsp
                                                 <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel  auth" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                                 &nbsp;&nbsp

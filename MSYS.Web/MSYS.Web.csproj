@@ -178,11 +178,20 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\MateriaService\WsBaseDataInterfaceService.wsdl" />
+    <None Include="Web References\StoreService\hashMap.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\StoreService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\StoreService\StoreServiceInterfaceService.wsdl" />
+    <None Include="Web References\StoreService\tWaOnhand.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\StoreService\tWaSaponhand.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\StoreService\wsRespond.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>

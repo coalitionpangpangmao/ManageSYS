@@ -17,7 +17,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listReport, "select F_ID,F_NAME  from HT_SYS_EXCEL_BOOK  order by F_ID ", "F_NAME", "F_ID");
             tvHtml = InitTreeR();
-            SetPara("00000");
+            SetPara("000000");
         }
     }
 
@@ -148,12 +148,12 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     }
     private void SetPara(string para)
     {
-        if (para.Length < 5)
-            para = para.PadRight(5, '0');
-        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$","$merge$" };
+        if (para.Length < 6)
+            para = para.PadRight(6, '0');
+        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$","$merge$" ,"$month$"};
         ArrayList plist = new ArrayList();
         ArrayList tlist = new ArrayList();
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (para.Substring(i, 1) == "1")
                 plist.Add(paratable[i]);
@@ -167,18 +167,18 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
     }
     private string GetPara()
     {
-        string para = "00000";
-        string[] paratable = new string[] {  "$brand$", "$startDate$", "$endDate$", "$team$","$merge$" };
+        string para = "000000";
+        string[] paratable = new string[] { "$brand$", "$startDate$", "$endDate$", "$team$", "$merge$", "$month$" };
         ListItemCollection list = new ListItemCollection();
         list = Paralist.Items;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (list.FindByValue(paratable[i]) != null)
             {
                 if (i == 0)
-                    para = "10000";
-                else if (i == 4)
-                    para = para.Substring(0, 4) + "1";
+                    para = "100000";
+                else if (i == 5)
+                    para = para.Substring(0, 5) + "1";
                 else
                     para = para.Substring(0, i) + "1" + para.Substring(i + 1);
             }
@@ -219,12 +219,11 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
         }
     }
     //删除报表
-    protected void Delete_Click(object sender, EventArgs e)//应该进行事务封装
+    protected void Delete_Click(object sender, EventArgs e)
     {
 
         string query;
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
         query = "delete from HT_SYS_EXCEL_BOOK where F_NAME = '" + ReportName.Text.Trim() + "'";
         string log_message = opt.UpDateOra(query) == "Success" ? "删除报表成功" : "删除报表失败";
         log_message += "--标识:" + ReportName.Text;

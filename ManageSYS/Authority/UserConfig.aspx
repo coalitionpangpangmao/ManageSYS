@@ -21,7 +21,7 @@
                 <li><a href="#">人员管理</a></li>
             </ul>
         </div>
-        <div class="rightinfo">
+        <div class="mainbox">
             <div class="gridtools  auth">
                 <ul class="toolbar">
                     <asp:Button ID="btnAdd" CssClass="btnhide" runat="server" OnClick="btnAdd_Click" Text="添加" />
@@ -33,6 +33,7 @@
     <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
                 </ul>
             </div>
+
             <div id="gridPanel">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                     <ContentTemplate>
@@ -139,7 +140,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td width="120">密码（加密）
+                                            <td width="120">密码
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtPswd" runat="server" class="dfinput1" TextMode="Password"></asp:TextBox>
@@ -149,7 +150,7 @@
                                             <td>
                                                 <asp:TextBox ID="txtEmail" runat="server" class="dfinput1"></asp:TextBox>
                                             </td>
-                                            <td width="120">组织机构名称
+                                            <td width="120">组织机构
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist" Enabled="False">
@@ -170,7 +171,7 @@
                                             <td width="120">删除标识
                                             </td>
                                             <td>
-                                                <asp:RadioButton ID="rdDel" runat="server" Text=" " />
+                                               
                                             </td>
                                         </tr>
                                         <tr>
@@ -180,10 +181,18 @@
                                                 <asp:DropDownList ID="listRole" runat="server" CssClass="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
-                                            <td width="120">描述
+                                             <td width="120">班组
                                             </td>
-                                            <td colspan="3">
-                                                <asp:TextBox ID="txtDscp" runat="server" class="dfinput1" Width="300px"></asp:TextBox>
+                                            <td>
+                                                <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist"></asp:DropDownList> 
+                                            </td>
+                                          
+                                            </tr>
+                                        <tr>
+                                              <td width="120">描述
+                                            </td>
+                                            <td  colspan ="5">
+                                                <asp:TextBox ID="txtDscp" runat="server" class="dfinput1" Width="500px"></asp:TextBox>
                                             </td>
                                         </tr>
 

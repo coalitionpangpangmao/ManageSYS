@@ -68,7 +68,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         if (Regex.IsMatch(planID, @"^[+-]?/d*$"))
             hidePlanID.Value = planID;
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
-        string query = "select r.prod_code as 产品,r.TOTAL_OUTPUT as 计划数量,r.plan_output_1 as month1,r.plan_output_2 as month2,r.plan_output_3 as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
+        string query = "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -162,6 +162,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         btnAdd.Visible = status;
         btnDelSel.Visible = status;
+        btnGrid2Modify.Visible = status;
         if (GridView2.Columns.Count == 6)
         {
             GridView2.Columns[4].Visible = status;
@@ -173,8 +174,8 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         Button btn = (Button)sender;
         int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
         string id = GridView1.DataKeys[Rowindex].Value.ToString();
-        txtYear.Text = GridView1.Rows[Rowindex].Cells[3].Text;
-        listSeason2.SelectedValue = GridView1.Rows[Rowindex].Cells[4].Text;
+        txtYear.Text = GridView1.Rows[Rowindex].Cells[2].Text;
+        listSeason2.SelectedValue = GridView1.Rows[Rowindex].Cells[3].Text;
        
         string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
         bindGrid2(id);
@@ -235,7 +236,8 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         {
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-            string query = "select r.prod_code as 产品,r.plan_output_1 + r.plan_output_2 + r.plan_output_3 as 计划数量,r.plan_output_1 as month1,r.plan_output_2 as month2,r.plan_output_3 as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
+            string query =  "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
+
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
@@ -382,6 +384,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             string log_message;
+            ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL" };
@@ -424,6 +427,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 DataSet data = opt.CreateDataSetOra(query);
                 string log_message;
+                ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
                 if (data != null && data.Tables[0].Rows.Count > 0)
                 {
                     string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL" };

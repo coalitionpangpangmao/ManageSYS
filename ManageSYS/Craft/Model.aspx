@@ -112,7 +112,7 @@
                             <asp:Button ID="btnAdd1" CssClass="btnadd auth" runat="server" OnClick="btnAdd1_Click"
                                 Text="新增" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnModify1" CssClass="btnview  auth" runat="server" OnClick="btnModify1_Click"
+                    <asp:Button ID="btnModify1" CssClass="btnmodify  auth" runat="server" OnClick="btnModify1_Click"
                         Text="保存" />
                             &nbsp; &nbsp;
                     <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
@@ -158,7 +158,7 @@
                             <asp:Button ID="btnAdd2" CssClass="btnadd auth" runat="server" OnClick="btnAdd2_Click"
                                 Text="新增" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnModify2" CssClass="btnview  auth" runat="server" OnClick="btnModify2_Click"
+                    <asp:Button ID="btnModify2" CssClass="btnmodify  auth" runat="server" OnClick="btnModify2_Click"
                         Text="保存" />
                             &nbsp; &nbsp;
                     <asp:Button ID="btnDel2" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
@@ -230,7 +230,7 @@
                             <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
                                 Text="新增" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnModify" CssClass="btnview  auth" runat="server" OnClick="btnModify_Click"
+                    <asp:Button ID="btnModify" CssClass="btnmodify  auth" runat="server" OnClick="btnModify_Click"
                         Text="保存" />
                             &nbsp; &nbsp;
                     <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />

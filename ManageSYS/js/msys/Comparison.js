@@ -19,8 +19,7 @@ function showPointPlot() {
     while (chart.series.length) {
         chart.series[0].remove(false);
     }
-    $("#cklistPara tbody").find("tr").each(function () {
-        debugger;
+    $("#cklistPara tbody").find("tr").each(function () {      
         var item = $(this).find('label').text();;
         var json = {
             "type": "Para",

@@ -130,8 +130,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField      ControlStyle-Width="110px">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGridView" runat="server" Text="查看详情" CssClass="btn1" OnClick="btnGridView_Click"
-                                                Width="90px" />
+                                            <asp:Button ID="btnGridView" runat="server" Text="查看" CssClass="btn1" OnClick="btnGridView_Click"     />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                      <asp:BoundField    DataField="故障设备" HeaderText="故障设备" />
@@ -328,7 +327,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="6" align="center">
-                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave_Click" />
+                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave_Click" />
                                     </td>
                                 </tr>
                             </tbody>

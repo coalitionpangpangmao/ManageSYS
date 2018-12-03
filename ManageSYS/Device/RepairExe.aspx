@@ -294,7 +294,7 @@
                     </table>
                          <div  align="center">  
                            
-                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btnview  auth" OnClick = "btnSave_Click" />
+                                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass = "btnmodify  auth" OnClick = "btnSave_Click" />
                           </div>      
                         </ContentTemplate>
                         <Triggers>

@@ -84,7 +84,8 @@ public class RealDataHandler : IHttpHandler
             string tag = row["value_tag"].ToString();
             datainfo.pointname = row["para_name"].ToString();
             if (pointinfo.Tables[0].Columns.Count >2 )
-            {                
+            {    
+                if( ! (row["upper_limit"].ToString() == "" || row["lower_limit"].ToString() ==""|| row["value"].ToString()==""||row["eer_dev"].ToString() ==""))
                 datainfo.upper = Convert.ToDouble(row["upper_limit"].ToString());
                 datainfo.lower = Convert.ToDouble(row["lower_limit"].ToString());
                 datainfo.value = Convert.ToDouble(row["value"].ToString());
@@ -93,18 +94,24 @@ public class RealDataHandler : IHttpHandler
             if(tag != "")
             {
                  //get rawdata from IHistorian 
-                 MSYS.IHDataOpt ihopt = new MSYS.IHDataOpt();
-                 DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
+              //   MSYS.IHDataOpt ihopt = new MSYS.IHDataOpt();
+               //  DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
+                MSYS.IHAction ihopt = new MSYS.IHAction();
+                List<MSYS.IHAction.ParaInfo> Rows = ihopt.GetData(starttime, endtime, point);
                  if (Rows != null)
                  {
                      datainfo.xAxis = new List<string>();
                      datainfo.yAxis = new List<double>();
-                     foreach (DataRow srow in Rows)
+                     //foreach (MSYS.IHAction.ParaInfo srow in Rows)
+                     //{
+                     //    datainfo.xAxis.Add(Convert.ToDateTime(srow[0].ToString()).ToString("HH:mm"));
+                     //    datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
+                     //}
+                     foreach (MSYS.IHAction.ParaInfo srow in Rows)
                      {
-                         datainfo.xAxis.Add(Convert.ToDateTime(srow[0].ToString()).ToString("HH:mm"));
-                         datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
+                         datainfo.xAxis.Add(Convert.ToDateTime(srow.timestamp).ToString("HH:mm"));
+                         datainfo.yAxis.Add(srow.value);
                      }
-
                      datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
                  }
             }

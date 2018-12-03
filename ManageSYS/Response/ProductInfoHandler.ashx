@@ -30,6 +30,7 @@ public struct DataInfo
     public ProductInfo[] productinfo;
     public ProductSeries[] productseries;    
 }
+[Serializable]
 public struct ResponseProductData
 {
     public List<DataInfo> info;
@@ -40,7 +41,7 @@ public class ProductInfoHandler : IHttpHandler
 
     public void ProcessRequest(HttpContext context)
     {
-        context.Response.ContentType = "application/json";
+       // context.Response.ContentType = "application/json";
         var data = context.Request["date"];
         try
         {

@@ -68,11 +68,11 @@ public class InoutRatioHandler : IHttpHandler
             query = "select * from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus;
         }
         else if (PostedData.type == 2)
-            query = "select substr(datetime,1,7) as datetime,prod_code,sum(inweight) as inweight ,sum(outweight) as outweight ,sum(inweight)/sum(outweight) as rate from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus + " group by substr(datetime,1,7),prod_code ";
+            query = "select substr(datetime,1,7) as datetime,prod_code,sum(inweight) as inweight ,sum(outweight) as outweight ,sum(outweight)/sum(inweight) as rate from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus + " group by substr(datetime,1,7),prod_code ";
         else if (PostedData.type == 3)
-            query = "select substr(datetime,1,7) as datetime,prod_code,sum(inweight) as inweight ,sum(outweight) as outweight ,sum(inweight)/sum(outweight) as rate from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus + "  group by substr(datetime,1,7),prod_code ";
+            query = "select substr(datetime,1,7) as datetime,prod_code,sum(inweight) as inweight ,sum(outweight) as outweight ,sum(outweight)/sum(inweight) as rate from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus + "  group by substr(datetime,1,7),prod_code ";
         else
-            query = "select substr(datetime,1,4) as datetime,prod_code,sum(inweight) as inweight ,sum(outweight) as outweight ,sum(inweight)/sum(outweight) as rate from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus + "  group by substr(datetime,1,4),prod_code ";
+            query = "select substr(datetime,1,4) as datetime,prod_code,sum(inweight) as inweight ,sum(outweight) as outweight ,sum(outweight)/sum(inweight) as rate from hv_prod_inout_ratio  where datetime between '" + PostedData.startTime + "' and '" + PostedData.stopTime + "'" + plus + "  group by substr(datetime,1,4),prod_code ";
         query += "order by datetime";
        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();

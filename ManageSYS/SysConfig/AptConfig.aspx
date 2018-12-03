@@ -28,7 +28,7 @@
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
-        <div class="rightinfo">
+        <div class="mainbox">
             <div class="gridtools  auth">
                 <ul class="toolbar">
                     <asp:Button ID="btnAdd" CssClass="btnadd  auth" runat="server" OnClick="btnAdd_Click"

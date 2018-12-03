@@ -8,6 +8,10 @@ using System.Data;
 using System.Text.RegularExpressions;
 public partial class Product_Schedual : MSYS.Web.BasePage
 {
+    protected struct TeamSchedula
+    {
+        public List<string> team;
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
@@ -17,6 +21,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
             txtEndDate.Text = Convert.ToDateTime(txtStartDate.Text).AddMonths(1).AddDays(-1).ToString("yyyy-MM-dd");
             bindGrid1();
             bindGrid2();
+            bindGrid3();
         }
 
     }
@@ -32,8 +37,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
             for (int i = 0; i <= GridView1.Rows.Count - 1; i++)
             {
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
-                DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listTeam");
-                opt.bindDropDownList(list, "select * from ht_sys_team where is_del = '0' and is_valid = '1' order by TEAM_CODE", "TEAM_NAME", "TEAM_CODE");
+
                 ((TextBox)GridView1.Rows[i].FindControl("txtShift")).Text = mydrv["班时"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text = mydrv["开始时间"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text = mydrv["结束时间"].ToString();
@@ -61,6 +65,13 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         InsertTlog(log_message);
         bindGrid2();
     }
+    public static DateTime GetMondayDate(DateTime someDate)
+    {
+        int i = someDate.DayOfWeek - DayOfWeek.Monday;
+        if (i == -1) i = 6;// i值 > = 0 ，因为枚举原因，Sunday排在最前，此时Sunday-Monday=-1，必须+7=6。 
+        TimeSpan ts = new TimeSpan(i, 0, 0, 0);
+        return someDate.Subtract(ts);
+    }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         if (listPrdline.SelectedValue == "" || txtStartDate.Text == "" || txtEndDate.Text == "")
@@ -70,24 +81,36 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         }
         DateTime startdate = Convert.ToDateTime(txtStartDate.Text);
         DateTime enddate = Convert.ToDateTime(txtEndDate.Text);
+        DateTime tempdate = GetMondayDate(startdate).AddDays(7);
         if (GridView1.Rows.Count > 0)
         {
             List<string> commandlist = new List<string>();
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            List<TeamSchedula> schedules = getTeamSchedule();
+            int h = 0;
+            
             while (startdate < enddate)
             {
-
-                for (int i = 0; i < GridView1.Rows.Count; i++)
+                if (h == 3)
+                    h = 0;
+                TeamSchedula schedule = schedules.ToArray()[h];
+                while (startdate < tempdate && startdate < enddate)
                 {
-                    string endtime = startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
-                    if (((CheckBox)GridView1.Rows[i].FindControl("ckInter")).Checked)
-                        endtime = startdate.AddDays(1).ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
-                    string[] seg = { "WORK_DATE", "WORK_SHOP_CODE", "SHIFT_CODE", "TEAM_CODE", "WORK_STAUS", "CREATE_TIME", "MODIFY_TIME", "DATE_BEGIN", "DATE_END", "is_del" };
-                    string[] value = { startdate.ToString("yyyy-MM-dd"), listPrdline.SelectedValue, GridView1.DataKeys[i].Value.ToString(), ((DropDownList)GridView1.Rows[i].FindControl("listTeam")).SelectedValue, ((DropDownList)GridView1.Rows[i].FindControl("listStatus")).SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text, endtime, "0" };
 
-                    commandlist.Add(opt.getMergeStr(seg, value, 3, "HT_PROD_SCHEDULE"));
+                    for (int i = 0; i < GridView1.Rows.Count; i++)
+                    {
+                        string endtime = startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
+                        if (((CheckBox)GridView1.Rows[i].FindControl("ckInter")).Checked)
+                            endtime = startdate.AddDays(1).ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
+                        string[] seg = { "WORK_DATE", "WORK_SHOP_CODE", "SHIFT_CODE", "TEAM_CODE", "WORK_STAUS", "CREATE_TIME", "MODIFY_TIME", "DATE_BEGIN", "DATE_END", "is_del" };
+                        string[] value = { startdate.ToString("yyyy-MM-dd"), listPrdline.SelectedValue, GridView1.DataKeys[i].Value.ToString(), schedule.team.ToArray()[i], "1", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text, endtime, "0" };
+
+                        commandlist.Add(opt.getMergeStr(seg, value, 3, "HT_PROD_SCHEDULE"));
+                    }
+                    startdate = startdate.AddDays(1);
                 }
-                startdate = startdate.AddDays(1);
+                h++;
+                tempdate = tempdate.AddDays(7);
             }
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "排班成功" : "排班失败";
             log_message += ",排班时间：" + txtStartDate.Text + "~" + txtEndDate.Text;
@@ -98,6 +121,20 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         bindGrid2();
     }
 
+    protected List<TeamSchedula> getTeamSchedule()
+    {
+        List<TeamSchedula> teams = new List<TeamSchedula>();
+        foreach (GridViewRow row in GridView3.Rows)
+        {           
+            TeamSchedula schedule = new TeamSchedula();
+            schedule.team = new List<string>();
+            schedule.team.Add(((DropDownList)row.FindControl("listTeam1")).SelectedValue);
+            schedule.team.Add(((DropDownList)row.FindControl("listTeam2")).SelectedValue);
+            schedule.team.Add(((DropDownList)row.FindControl("listTeam3")).SelectedValue);
+            teams.Add(schedule);
+        }        
+        return teams;
+    }
     protected void GridView2_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         GridView theGrid = sender as GridView;
@@ -137,7 +174,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
     }
     protected void bindGrid2()
     {
-        string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.work_staus as 状态,g1.Id from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code where g1.work_date between '" + txtStartDate.Text + "' and '" + txtEndDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' and g1.WORK_SHOP_CODE = '" + listPrdline.SelectedValue + "' order by g1.work_date,g1.date_begin";
+        string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.work_staus as 状态,g1.Id,g1.shift_code from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code where g1.work_date between '" + txtStartDate.Text + "' and '" + txtEndDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' and g1.WORK_SHOP_CODE = '" + listPrdline.SelectedValue + "' order by  g1.work_date,g1.shift_code,g1.date_begin";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
@@ -171,7 +208,44 @@ public partial class Product_Schedual : MSYS.Web.BasePage
             }
         }
     }
+    protected void bindGrid3()
+    {
+        string query = "select * from ht_inner_team_schedule  order by ID";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        GridView3.DataSource = data;
+        GridView3.DataBind();
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            for (int i = 0; i < GridView3.Rows.Count; i++)
+            {
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                ((TextBox)GridView3.Rows[i].FindControl("txtOrder")).Text = mydrv["ID"].ToString();
+                ((DropDownList)GridView3.Rows[i].FindControl("listTeam1")).SelectedValue = mydrv["FIRST"].ToString();
+                ((DropDownList)GridView3.Rows[i].FindControl("listTeam2")).SelectedValue = mydrv["SECOND"].ToString();
+                ((DropDownList)GridView3.Rows[i].FindControl("listTeam3")).SelectedValue = mydrv["THIRD"].ToString();
+            }
+        }
+    }
 
+    protected DataSet gridTeambind()
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select team_code,team_name from ht_sys_team where is_del = '0'  union select '' as team_code,'' as team_name from dual  order by  team_code desc");
+        //  return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料'");      
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        foreach (GridViewRow row in GridView3.Rows)
+        {
+            string[] seg = { "ID", "FIRST", "SECOND", "THIRD" };
+            string[] value = { ((TextBox)row.FindControl("txtOrder")).Text, ((DropDownList)row.FindControl("listTeam1")).Text, ((DropDownList)row.FindControl("listTeam2")).Text, ((DropDownList)row.FindControl("listTeam3")).Text };
+            opt.MergeInto(seg, value, 1, "ht_inner_team_schedule");
+        }
+
+    }
     protected void btnckAll_Click(object sender, EventArgs e)
     {
         int ckno = 0;

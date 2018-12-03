@@ -98,7 +98,7 @@
                             width="600"></iframe>
                     </div>
                     <div class="tools">
-                        <asp:Button ID="SaveBook" runat="server" Text="保存" OnClick="SaveBook_Click" CssClass="btnview  auth" />
+                        <asp:Button ID="SaveBook" runat="server" Text="保存" OnClick="SaveBook_Click" CssClass="btnmodify auth" />
                         &nbsp;&nbsp;&nbsp;
                         <asp:Button ID="Delete" runat="server" Text="删除" OnClick="Delete_Click" CssClass="btndel  auth"  OnClientClick="javascript:return confirm('确认删除？');"/>
                     </div>
@@ -230,7 +230,7 @@
                             </table>
                         </div>
                         <div class="tools">
-                            <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnview  auth" />
+                            <asp:Button ID="Save" runat="server" Text="保存" OnClick="Save_Click" CssClass="btnmodify  auth" />
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button ID="btnSegDel" runat="server" Text="删除" CssClass="btndel  auth" OnClick="btnSegDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         </div>

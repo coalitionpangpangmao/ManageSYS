@@ -99,7 +99,7 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
     protected void bindgrid1()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.para_name,s.prod_name,r.type,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,nvl(r.minus_score,0) as minus_score,r.id from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "'";
+        string query = "select distinct t.para_name,s.prod_name,a.name as typename,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,nvl(r.minus_score,0) as minus_score,r.id,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type a on a.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "' order by r.b_time";
 
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -117,29 +117,29 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
                 switch (status)
                 {
                     case "0"://未处理
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btn1";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btn1";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
                         break;
 
                     case "3"://己处理
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btn1";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
                         break;
                     case "5"://己反馈
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btn1";
+                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1done")).CssClass = "btn1";
                         break;
                     default://  case "1"://己忽略  case "2"://处理中 case "4"://跟踪中case 6 己完成
-                        ((Button)row.FindControl("btngrid2Ignore")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2Sure")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2fdback")).CssClass = "btnhide";
-                        ((Button)row.FindControl("btngrid2done")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1Ignore")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1Sure")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1fdback")).CssClass = "btnhide";
+                        ((Button)row.FindControl("btngrid1done")).CssClass = "btnhide";
                         break;
                 }
             }
@@ -294,7 +294,7 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         int index = row.RowIndex;
        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '4' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        string log_message = opt.UpDateOra("update HT_QLT_AUTO_EVENT set status = '4' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and SORT = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
         log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
         InsertTlog(log_message);
         bindgrid1();
@@ -308,7 +308,7 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
         int index = row.RowIndex;
      
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '6' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+        string log_message = opt.UpDateOra("update HT_QLT_AUTO_EVENT set status = '6' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and SORT = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
         log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
         InsertTlog(log_message);
         bindgrid1();
@@ -320,10 +320,10 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
             int index = row.RowIndex;
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '4' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+            string log_message = opt.UpDateOra("update HT_QLT_AUTO_EVENT set status = '4' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and SORT = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '3'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
             log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
             InsertTlog(log_message);
-            bindgrid2();
+            bindgrid1();
         }
     }
 
@@ -334,10 +334,10 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
             int index = row.RowIndex;
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string log_message = opt.UpDateOra("update HT_QLT_INSPECT_EVENT set status = '6' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and INSPECT_CODE = '" + GridView2.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
+            string log_message = opt.UpDateOra("update HT_QLT_AUTO_EVENT set status = '6' where RECORD_ID = '" + GridView1.DataKeys[index].Values[0].ToString() + "' and SORT = '" + GridView1.DataKeys[index].Values[1].ToString() + "' and status = '5'") == "Success" ? "反馈工艺质量事件成功" : "反馈工艺质量事件失败";
             log_message += "--详情:" + GridView1.DataKeys[index].Values[0].ToString();
             InsertTlog(log_message);
-            bindgrid2();
+            bindgrid1();
         }
     }
     /// <summary>

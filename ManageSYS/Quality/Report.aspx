@@ -20,7 +20,7 @@
                     console.log("%s was toggled.", $(this).find(">span").text());
                 }
             });
-           
+
             $(".file").click(function () {
                 $('.folder').removeClass("selectedbold");
                 $('.file').removeClass("selectedbold");
@@ -85,12 +85,16 @@
                                     <td>
                                         <asp:Label ID="lab4" runat="server" Text="班组" Width="50px" CssClass="labinfo" /><asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                                     </td>
+                                    <td>
+                                        <asp:Label ID="lab5" runat="server" Text="月度" Width="50px" CssClass="labinfo" />
+                                        <asp:TextBox ID="txtMonth" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
+                                    </td>
                                 </tr>
                             </table>
                         </ContentTemplate>
                         <Triggers>
-                             <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
-                              <asp:AsyncPostBackTrigger ControlID="listProd" />
+                            <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
+                            <asp:AsyncPostBackTrigger ControlID="listProd" />
                             <asp:AsyncPostBackTrigger ControlID="listTeam" />
                         </Triggers>
                     </asp:UpdatePanel>

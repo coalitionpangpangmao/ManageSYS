@@ -79,6 +79,9 @@
   <ItemGroup>
     <Compile Include="AprvFlow.cs" />
     <Compile Include="GridViewTemplate.cs" />
+    <Compile Include="IHAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IHDataOpt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StorageMater.aspx.cs" Inherits="Product_StorageMater" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StorageMaterIn.aspx.cs" Inherits="Product_StorageMaterOut" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>原料库管理</title>
+    <title>原料退库管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
@@ -19,15 +19,15 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">库存管理</a></li>
-                <li><a href="#">原料库管理</a></li>
+                <li><a href="#">原料退库管理</a></li>
             </ul>
         </div>
         <div class="formbody">
             <div id="usual1" class="usual">
                 <div class="itab">
                     <ul>
-                        <li><a href="#tab1" class="selected" id="tabtop1">出入库管理</a></li>
-                        <li><a href="#tab2" id="tabtop2">原料领退明细</a></li>
+                        <li><a href="#tab1" class="selected" id="tabtop1">退库管理</a></li>
+                        <li><a href="#tab2" id="tabtop2">退库明细</a></li>
                     </ul>
                 </div>
             </div>
@@ -47,15 +47,12 @@
                                 <asp:TextBox ID="txtStart" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至
                                 <asp:TextBox ID="txtStop" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
-                            <td>
-                                <asp:RadioButton ID="rdOut1" runat="server" Text="领用" GroupName="Storage1" Checked="True" />
-                                <asp:RadioButton ID="rdIn1" runat="server" Text="退库" GroupName="Storage1" />
-                            </td>
+                           
                         </tr>
                     </tbody>
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
-                    原料领退表<span style="position: relative; float: right">
+                    原料退库表<span style="position: relative; float: right">
 
                         <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
                         <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
@@ -88,9 +85,11 @@
                                             <asp:Label ID="labIssue" runat="server" CssClass="labstatu" Width="60px" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:BoundField    DataField="领退日期" HeaderText="领退日期" />
                                      <asp:BoundField    DataField="单据号" HeaderText="单据号" />
-                                     <asp:BoundField    DataField="关联批次" HeaderText="关联批次" />
+                                     <asp:BoundField    DataField="产品" HeaderText="产品" />
+                                      <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                   
+                                     <asp:BoundField    DataField="领退日期" HeaderText="领退日期" />                                   
+                                    
                                      <asp:BoundField    DataField="烟梗总量" HeaderText="烟梗总量" />
                                      <asp:BoundField    DataField="碎片总量" HeaderText="碎片总量" />
                                      <asp:BoundField    DataField="编制人" HeaderText="编制人" />
@@ -140,8 +139,7 @@
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnSearch" />
-                            <asp:AsyncPostBackTrigger ControlID="btnModify" />
-                            <asp:AsyncPostBackTrigger ControlID="btnCreate" />
+                            <asp:AsyncPostBackTrigger ControlID="btnModify" />                          
                             <asp:AsyncPostBackTrigger ControlID="btnGridDel" />
                             <asp:AsyncPostBackTrigger ControlID="btnCkAll1" />
                         </Triggers>
@@ -155,8 +153,7 @@
                         <ContentTemplate>
                             <div class="listtitle">
                                 原料领退管理<span style="position: relative; float: right" class="click2">
-                                    <asp:RadioButton ID="rdOut" runat="server" Text="领用" GroupName="Storage" Checked="True" />
-                                    <asp:RadioButton ID="rdIn" runat="server" Text="退库" GroupName="Storage" />
+                                   
                                     <asp:Button ID="btnReset" runat="server" Text="重置" CssClass="btnset" OnClick="btnReset_Click" />
                                     <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
                                 </span>
@@ -170,7 +167,7 @@
                                         <td>
                                             <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="false"></asp:TextBox>
                                         </td>
-                                        <td width="100">生产日期
+                                        <td width="100">退库日期
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtPrdctdate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
@@ -189,19 +186,26 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="100">生产计划号
+                                         <td width="100">产品名称
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listPrdctPlan" runat="server" CssClass="drpdwnlist"
-                                                OnSelectedIndexChanged="listPrdctPlan_SelectedIndexChanged" AutoPostBack="True">
+                                            <asp:DropDownList ID="listPrdct" runat="server" CssClass="drpdwnlist" 
+                                                OnSelectedIndexChanged="listPrdct_SelectedIndexChanged" AutoPostBack="True">
                                             </asp:DropDownList>
-                                              <asp:TextBox ID="txtPrdctPlan" runat="server" class="dfinput1" Visible ="false"></asp:TextBox>
                                         </td>
-                                        <td width="100">产品名称
+                                        <td width="100">关联出库表单
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listPrdct" runat="server" CssClass="drpdwnlist" Enabled="False">
+                                            <asp:DropDownList ID="listStrgOut" runat="server" CssClass="drpdwnlist"
+                                                OnSelectedIndexChanged="listStrgOut_SelectedIndexChanged" AutoPostBack="True">
                                             </asp:DropDownList>
+                                              <asp:TextBox ID="txtStrgOut" runat="server" class="dfinput1" Visible ="false"></asp:TextBox>
+                                        </td>
+                                        <td width="100">关联计划号
+                                        </td>
+                                        <td>
+                                           
+                                              <asp:TextBox ID="txtPlanno" runat="server" class="dfinput1"  Enabled ="false"></asp:TextBox>
                                         </td>
                                         <td width="100">审批状态
                                         </td>
@@ -210,11 +214,7 @@
                                                 Enabled="False">
                                             </asp:DropDownList>
                                         </td>
-                                        <td width="100">投料批次
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtBatchNum" runat="server" class="dfinput1"></asp:TextBox>
-                                        </td>
+                                       
                                     </tr>
                                     <tr>
                                         <td width="100" class="btnhide">仓库
@@ -247,8 +247,10 @@
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnGridNew" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                            <asp:AsyncPostBackTrigger ControlID="listPrdctPlan" />
+                            <asp:AsyncPostBackTrigger ControlID="listStrgOut" />
                             <asp:AsyncPostBackTrigger ControlID="btnReset" />
+                            <asp:AsyncPostBackTrigger ControlID ="listPrdct" />
+                             <asp:AsyncPostBackTrigger ControlID="btnGrid2Save" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -256,10 +258,9 @@
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
-                                领退明细<span style="position: relative; float: right">
-                                    <asp:Button ID="btnCreate" runat="server" CssClass="btnview auth" Text="按明细生成领退单"
-                                        OnClick="btnCreate_Click" Width="160px" />
-                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
+                                明细<span style="position: relative; float: right">
+                                   
+                                   <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btnmodify auth"  OnClick="btnGrid2Save_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                 </span>
@@ -300,7 +301,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField   HeaderText="领料量" SortExpression="领料量">
+                                    <asp:TemplateField   HeaderText="退料量" SortExpression="退料量">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领料量" DataTextField="领料量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                 CssClass="tbinput"></asp:TextBox>
@@ -318,12 +319,7 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderText="操作" ItemStyle-Width="80">
-                                        <ItemTemplate>
-                                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" Width="75"
-                                                OnClick="btnGrid2Save_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                   
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />
@@ -335,7 +331,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView2" />
                             <asp:AsyncPostBackTrigger ControlID="btnModify" />
-                            <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                            <asp:AsyncPostBackTrigger ControlID="btnGrid2Save" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID ="btnGridNew" />
                         </Triggers>

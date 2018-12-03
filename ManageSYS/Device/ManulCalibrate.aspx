@@ -93,7 +93,7 @@
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
                                 校准记录<span style="position: relative; float: right">
-                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btnview auth" 
+                            <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btnmodify auth" 
                                                 OnClick="btnGrid2Save_Click" />
                                     <asp:HiddenField ID ="txtCode" runat ="server" />
                         </span> 

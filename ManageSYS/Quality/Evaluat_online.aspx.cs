@@ -56,11 +56,9 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string prod_code = opt.GetSegValue("select prod_name,prod_code from ht_pub_prod_design where prod_name = '" + row.Cells[1].Text + "'", "prod_code");
         string team_code = opt.GetSegValue("select team_name,team_code from ht_sys_team where team_name = '" + row.Cells[2].Text + "'", "team_code");
-        string query = "select s.section_name,r.para_code,r.para_name,h.quarate,h.stddev,h.absdev,h.cpk from  ( select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code) s left join ht_pub_tech_para r on s.section_code = substr(r.para_code,1,5) left join hv_qlt_online_score h on h.para_code = r.para_code and substr(h.prodday,1,7) = '" + txtBtime.Text + "' and h.prod_code = '" + prod_code + "' and h.team = '" + team_code + "'  where r.para_type like '___1%' and r.is_del = '0' order by  s.section_code,r.para_code";
-       
+        string query = "select distinct s.section_name,r.para_code,r.para_name,h.quarate,h.stddev,h.absdev,h.cpk from  ( select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code) s left join ht_pub_tech_para r on s.section_code = substr(r.para_code,1,5) left join hv_qlt_online_score h on h.para_code = r.para_code and substr(h.prodday,1,7) = '" + txtBtime.Text + "' and h.prod_code = '" + prod_code + "' and h.team = '" + team_code + "'  where r.para_type like '______1%' and r.is_del = '0' order by  s.section_name,r.para_code";       
 
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
-
 
         StringBuilder str = new StringBuilder();
         str.Append(" <table class = 'reporttable'>");
@@ -95,11 +93,13 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
 
         var result = dt.AsEnumerable().GroupBy(x =>
 x.Field<String>("section_name")).Select(x => x.First()).ToList();
+        int j = 0;
         foreach (var item in result)
         {
             var temp = item[0].ToString();
             var sub = dt.AsEnumerable().Where(p => p.Field<String>("section_name") == temp).ToList();
             int i = 0;
+           
             foreach (var subitem in sub)
             {
                 str.Append("<tr>");
@@ -114,7 +114,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                     str.Append(item[0]);
                     str.Append("</td>");
                     str.Append("<td style=' border-bottom-style: none'>");
-                    str.Append(row.Cells[i+3].Text);
+                    str.Append(row.Cells[j+3].Text);
                     str.Append("</td>");
                 }
                 str.Append("<td >");
@@ -136,6 +136,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                 str.Append(" </tr>");
                 i++;
             }
+            j++;
         }
         str.Append(" </table>");
         htmltable = str.ToString();
@@ -174,18 +175,21 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                     str.Append(" left join ");
                     temp.Append("+");
                 }
-                temp.Append("round(ln(power(nvl(g");
+               
+                temp.Append("round(ln(power((case g");
                 temp.Append(i.ToString());
-                temp.Append(".score,1),");
+                temp.Append(".score when 0 then 0.01 else g");
+                temp.Append(i.ToString());
+                temp.Append(".score end),");
                 temp.Append(weight);
                 temp.Append(")),3)");
 
-                            
-                str.Append("(select prod_code,team,section, round(exp(sum(ln(power(quarate,weight)))),4) as score from hv_qlt_online_score  where substr(prodday,1,7) = '");
+
+                str.Append("(select a.prod_code,a.team,a.section, round(exp(sum(ln(power((case a.quarate when 0 then 0.01 else a.quarate end ),a.weight)))),4) as score from hv_qlt_online_score a  left join ht_pub_tech_para b on a.para_code = b.para_code   where b.para_type like '______1%' and  substr(a.prodday,1,7) = '");
                 str.Append(txtBtime.Text);
-                str.Append("' and section = '");
+                str.Append("' and a.section = '");
                 str.Append(code);
-                str.Append("'  group by prod_code,team,section) g");             
+                str.Append("'  group by a.prod_code,a.team,a.section) g");             
                 str.Append(i.ToString());
                 if (i > 1)
                 {
@@ -197,11 +201,15 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                 }
                 i++;
             }
-            temp.Append(")*100,2) as 总分");
-            sql.Append(",");
+          
+
+            temp.Append(")*100,2)- nvl(q.score,0) as 总分");
+            sql.Append(",q.score as 考核扣分,");
             sql.Append(temp);
             sql.Append(" from ");
             sql.Append(str.ToString());
+            sql.Append(" left join (select sum(s.score) as score,t.team,r.prod_code,substr(t.b_time,1,7) as prodday from ht_qlt_auto_event s left join ht_qlt_data_record t on t.id = s.record_id left join ht_prod_month_plan_detail r on r.plan_no = t.plan_id where substr(t.b_time,1,7) = '" + txtBtime.Text + "' group by t.team,r.prod_code,substr(t.b_time,1,7) )q on g1.prod_code = q.prod_code  and g1.team = q.team   ");
+
             sql.Append("left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team ");
 
           
@@ -232,6 +240,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                 string name = row["remark"].ToString();
                 string code = row["section_code"].ToString();
                 string weight = row["WEIGHT"].ToString();
+                weight = weight == "" ? "0" : weight;
                 sql.Append(",g");
                 sql.Append(i.ToString());
                 sql.Append(".score*100 as ");
@@ -241,16 +250,18 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                     str.Append(" left join ");
                     temp.Append("+");
                 }
-                temp.Append("round(ln(power(nvl(g");
+                temp.Append("round(ln(power((case g");
                 temp.Append(i.ToString());
-                temp.Append(".score,1),");
+                temp.Append(".score when 0 then 0.01 else g");
+                temp.Append(i.ToString());
+                temp.Append(".score end),");
                 temp.Append(weight);
                 temp.Append(")),3)");
 
 
-                str.Append("(select prod_code,team,section, prodday,round(exp(sum(ln(power(quarate,weight)))),4) as score from hv_qlt_online_score  where  section = '");
+                str.Append("(select a.prod_code,a.team,a.section, a.prodday,round(exp(sum(ln(power((case a.quarate when 0 then 0.01 else quarate end),a.weight)))),4) as score from hv_qlt_online_score a left join ht_pub_tech_para b on a.para_code = b.para_code   where b.para_type like '______1%' and   a.section = '");
                 str.Append(code);
-                str.Append("'  group by prod_code,team,section,prodday) g");
+                str.Append("'  group by a.prod_code,a.team,a.section,a.prodday) g");
                 str.Append(i.ToString());
                 if (i > 1)
                 {
@@ -264,11 +275,12 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                 }
                 i++;
             }
-            temp.Append(")*100,2) as 总分");
-            sql.Append(",");
+            temp.Append(")*100,2)- nvl(q.score,0) as 总分");
+            sql.Append(",q.score as 考核扣分,");
             sql.Append(temp);
             sql.Append(" from ");
             sql.Append(str.ToString());
+            sql.Append(" left join (select sum(s.score) as score,t.team,r.prod_code,substr(t.b_time,1,10) as prodday from ht_qlt_auto_event s left join ht_qlt_data_record t on t.id = s.record_id left join ht_prod_month_plan_detail r on r.plan_no = t.plan_id  group by t.team,r.prod_code,substr(t.b_time,1,10) )q on g1.prod_code = q.prod_code  and g1.team = q.team and g1.prodday = q.prodday  ");
             sql.Append("left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team ");
             opt.UpDateOra("create or replace view hv_online_Daily_report as " + sql.ToString());
 

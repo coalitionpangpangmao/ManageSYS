@@ -16,13 +16,14 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listRole, "select * from ht_svr_sys_role t", "F_ROLE", "F_ID");
+            opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team t where t.is_del = '0' order by team_code", "team_name", "team_code");
             bindData();
         }
     }
 
     protected void bindData()
     {
-        string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称, r.f_name  as 组织机构名称,s.f_role as 角色,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DEL = '0' order by t.ID";
+        string query = "select  t.ID  as 人员ID, t.NAME  as 人员名称, r.f_name  as 组织机构名称,s.f_role as 角色,a.team_name as 班组,t.MOBILE  as 手机, t.PHONE  as 座机, t.RTXID  as 传真, t.GENDER  as 性别,  t.EMAIL  as 电子邮件, t.DESCRIPTION  as 描述 from ht_svr_user t left join ht_sys_team a on a.team_code = t.team_code left join ht_svr_org_group r on r.f_code = t.levelgroupid left join ht_svr_sys_role s on s.f_id = t.role where t.IS_DEL = '0' order by t.ID";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView1.DataSource = opt.CreateDataSetOra(query);
         GridView1.DataBind();
@@ -116,7 +117,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
                 listApt.SelectedValue = data.Tables[0].Rows[0]["LEVELGROUPID"].ToString();
                 rdLocal.Checked = (data.Tables[0].Rows[0]["IS_LOCAL"].ToString() == "1");
                 rdAsyn.Checked = (data.Tables[0].Rows[0]["IS_SYNC"].ToString() == "1");
-                rdDel.Checked = (data.Tables[0].Rows[0]["IS_DEL"].ToString() == "1");
+                listTeam.SelectedValue = data.Tables[0].Rows[0]["Team_code"].ToString();
                 txtDscp.Text = data.Tables[0].Rows[0]["DESCRIPTION"].ToString();
                 listRole.SelectedValue = data.Tables[0].Rows[0]["ROLE"].ToString();
             }
@@ -161,8 +162,8 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
     {
         userPwd = MSYS.Security.Encrypt.GetMD5String(txtPswd.Text);
     }
-        string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE","PSD" };
-        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), Convert.ToInt16(rdDel.Checked).ToString(), txtDscp.Text, listRole.SelectedValue,txtPswd.Text };        
+        string[] seg = { "ID", "NAME", "WEIGHT", "PARENTID", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "PASSWORD", "EMAIL", "LEVELGROUPID",  "IS_LOCAL", "IS_SYNC", "IS_DEL", "DESCRIPTION", "ROLE","PSD" ,"TEAM_CODE"};
+        string[] value = { txtID.Text, txtName.Text, txtWeight.Text, txtPrt.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, userPwd, txtEmail.Text, listApt.SelectedValue, Convert.ToInt16(rdLocal.Checked).ToString(), Convert.ToInt16(rdAsyn.Checked).ToString(), "0", txtDscp.Text, listRole.SelectedValue,txtPswd.Text,listTeam.SelectedValue };        
 
         string log_message = opt.MergeInto(seg, value, 1, "ht_svr_user") == "Success" ? "修改用户成功" : "修改用户失败";
         value[9] = "";
@@ -218,7 +219,7 @@ public partial class Authority_UserConfig : MSYS.Web.BasePage
         listRole.SelectedValue = "";
         rdLocal.Checked = false;
         rdAsyn.Checked = false;
-        rdDel.Checked = false;
+        listTeam.SelectedValue = "";
         txtDscp.Text = "";
 
 

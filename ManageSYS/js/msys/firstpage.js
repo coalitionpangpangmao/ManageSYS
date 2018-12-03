@@ -47,7 +47,7 @@ function showPlot() {
         url: "Response/ProductinfoHandler.ashx",
         data: sendData,
         dataType: "json",
-        success: function (result) {
+        success: function (result) {            
             Drawchart(result["info"][0], 'container1','生产计划完成情况');
             Drawchart(result["info"][1], 'container2','产品产出情况');
             if (result["statics"]) {

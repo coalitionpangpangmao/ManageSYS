@@ -22,6 +22,7 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
        MSYS.Data.SysUser user =  (MSYS.Data.SysUser)Session["User"];
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listProd, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
+        opt.bindDropDownList(prod_code, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
         opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team where is_del = '0' order by team_code", "team_name", "team_code");
         opt.bindDropDownList(listShift, "select shift_code,shift_name from ht_sys_shift where is_del = '0'", "shift_name", "shift_code");
         listTeam.SelectedValue = opt.GetSegValue(" select team_code from ht_prod_schedule where date_begin < '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and date_end > '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "team_code");
@@ -68,7 +69,12 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
    
     protected void listProd_SelectedIndexChanged(object sender,EventArgs e)
     {
-        bindData();
+        string query = "select r.inspect_code,h.section_name,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value,s.upper_value,case when t.inspect_value is null then '' when t.inspect_value > s.lower_value and t.inspect_value <s.upper_value then '合格' else '超限' end as status,r.unit,s.minus_score  from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_qlt_inspect_record t on t.inspect_code = r.inspect_code and t.is_del = '0'  left join ht_pub_tech_section h on h.section_code = r.inspect_group where r.inspect_type = '0'  and r.is_del = '0' and t.prod_code = '" + listProd.SelectedValue + "' and t.team_id = '" + listTeam.SelectedValue + "' and t.record_time = '" + txtProdTime.Text + "'  union select r.inspect_code,s.section_name ,r.inspect_name,0 as value,t.lower_value,t.upper_value,r.unit,'' as status,t.minus_score from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_type = '0' and r.is_del = '0' and r.inspect_code in (select inspect_code from ht_qlt_inspect_proj where inspect_type = '0' minus select inspect_code from ht_qlt_inspect_record where Prod_code = '" + listProd.SelectedValue + "' and team_id = '" + listTeam.SelectedValue + "' and record_time = '" + txtProdTime.Text + "')";
+       
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra(query);
+        if(data != null && data.Tables[0].Rows.Count >0)
+        bindGrid1(data);      
     }
 
     protected void btnSave_Click(object sender, EventArgs e)
@@ -87,29 +93,10 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
         }
     }
 
-    protected void bindData()
-    {
-        string query = "select r.inspect_code,h.section_name,r.inspect_name,nvl(t.inspect_value,0) as value,s.lower_value,s.upper_value,case when t.inspect_value is null then '' when t.inspect_value > s.lower_value and t.inspect_value <s.upper_value then '合格' else '超限' end as status,r.unit,s.minus_score  from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_qlt_inspect_record t on t.inspect_code = r.inspect_code and t.is_del = '0'  left join ht_pub_tech_section h on h.section_code = r.inspect_group where r.inspect_type = '0'  and r.is_del = '0' and t.prod_code = '" + listProd.SelectedValue + "' and t.team_id = '" + listTeam.SelectedValue + "' and t.record_time = '" + txtProdTime.Text + "'  union select r.inspect_code,s.section_name ,r.inspect_name,0 as value,t.lower_value,t.upper_value,'' as status,r.unit,t.minus_score from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_type = '0' and r.is_del = '0' and r.inspect_code in (select inspect_code from ht_qlt_inspect_proj where inspect_type = '0' minus select inspect_code from ht_qlt_inspect_record where Prod_code = '" + listProd.SelectedValue + "' and team_id = '" + listTeam.SelectedValue + "' and record_time = '" + txtProdTime.Text + "')";
-
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra(query);
-        if (data != null && data.Tables[0].Rows.Count > 0)
-            bindGrid1(data);      
-    }
+   
 
 
-    protected void txtProdTime_TextChanged(object sender, EventArgs e)
-    {
-        bindData();
-    }
-    protected void listTeam_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string temp = opt.GetSegValue("select shift_code from ht_prod_schedule where work_date = '" + txtProdTime.Text + "' and team_code = '" + listTeam.SelectedValue + "'", "shift_code");
-        if (temp != "NoRecord")
-            listShift.SelectedValue = temp;
-        bindData();
-    }
-
+ 
+   
 
 }

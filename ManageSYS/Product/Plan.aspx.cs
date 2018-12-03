@@ -82,7 +82,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         if (Regex.IsMatch(planID, @"^[+-]?/d*$"))
             hidePlanID.Value = planID;
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
-        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,t.plan_output as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + planID + " order by plan_Sort";
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + planID + " order by plan_Sort";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -243,7 +243,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
 
         if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
             hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,t.plan_output as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = new DataTable();

@@ -16,6 +16,7 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listApt, "select F_CODE,F_NAME from HT_SVR_ORG_GROUP", "F_NAME", "F_CODE");
             opt.bindDropDownList(listRole, "select * from ht_svr_sys_role t", "F_ROLE", "F_ID");
+            opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team t where t.is_del = '0' order by team_code", "team_name", "team_code");
             if (Session["User"] != null)
             {
                 SysUser user = (SysUser)Session["User"];
@@ -31,7 +32,7 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
                 txtCallNO.Text= row["PHONE"].ToString();
                 txtFax.Text =row["RTXID"].ToString();
                 setGender(row["GENDER"].ToString());
-                txtUser.Text= row["LOGINNAME"].ToString();
+                listTeam.SelectedValue= row["TEAM_CODE"].ToString();
                 txtEmail.Text= row["EMAIL"].ToString();               
                 txtDscp.Text =row["DESCRIPTION"].ToString();
                 }
@@ -57,8 +58,8 @@ public partial class Authority_UserInfo : MSYS.Web.BasePage
     protected void btnModify_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string[] seg = { "ID", "NAME", "MOBILE", "PHONE", "RTXID", "GENDER", "LOGINNAME", "EMAIL", "LEVELGROUPID", "DESCRIPTION", "ROLE" };
-        string[] value = { txtID.Text, txtName.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), txtUser.Text, txtEmail.Text, listApt.SelectedValue, txtDscp.Text, listRole.SelectedValue };
+        string[] seg = { "ID", "NAME", "MOBILE", "PHONE", "RTXID", "GENDER", "TEAM_CODE", "EMAIL", "LEVELGROUPID", "DESCRIPTION", "ROLE" };
+        string[] value = { txtID.Text, txtName.Text, txtPhone.Text, txtCallNO.Text, txtFax.Text, getGender(), listTeam.SelectedValue, txtEmail.Text, listApt.SelectedValue, txtDscp.Text, listRole.SelectedValue };
 
         string log_message = opt.UpDateData(seg, value, "ht_svr_user", " where ID = '" + txtID.Text + "'") == "Success" ? "修改用户成功" : "修改用户失败";
         log_message += "--用户ID:" + txtID.Text;

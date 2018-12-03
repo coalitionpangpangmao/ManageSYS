@@ -1,0 +1,54 @@
+﻿@charset "utf-8";
+
+*{border-style: none;
+    border-color: inherit;
+    border-width: 0;
+    font-size:9pt;padding:0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+}
+body{font-family:'微软雅黑'; margin:0 auto;min-width:980px;}
+ul{display:block;margin:0;padding:0;list-style:none;}
+li{display:block;margin:0;padding:0;list-style: none;}
+img{border:0;}
+dl,dt,dd,span{padding:0;display:block;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+}
+a,a:focus{text-decoration:none;color:#000;outline:none;blr:expression(this.onFocus=this.blur());}
+a:hover{color:#00a4ac;text-decoration:none;}
+table{border-collapse:collapse;border-spacing: 0;}
+cite{font-style:normal;}
+h2{font-weight:normal;}
+
+
+
+
+
+/*right.html*/
+.place{height:40px; background:url(../images/righttop.gif) repeat-x;}
+.place span{line-height:40px; font-weight:bold;float:left; margin-left:12px;}
+.placeul li{float:left; line-height:40px; padding-left:7px; padding-right:12px; background:url(../images/rlist.gif) no-repeat right;}
+.placeul li:last-child{background:none;}
+
+.mainbox{padding:8px;position:relative;    top: 0px;    left: 0px;    height:100%;}
+.mainleft{width:200px;position:absolute; top:8px; left:8px;float:left;bottom:8px;}
+.leftinfo{border:#d3dbde solid 1px; overflow: hidden; overflow-y: scroll; height:510px;margin-right: 5px;position:relative;}
+.listtitle{background:url(../images/tbg.png) repeat-x; height:36px; line-height:36px; border-bottom:solid 1px #d3dbde; text-indent:14px; font-weight:bold; font-size:14px;}
+.mainright{margin-left:220px !important;   margin-left:26%;  /*  height:auto !important; */ }
+.dflist{border:#d3dbde solid 1px; position:relative;width:95%; float:left;}
+
+/*待办事项*/
+.newlist{padding-left:14px; padding-top:15px;}
+.newlist li{line-height:25px; background:url(../images/list2.png) no-repeat 0px 8px; text-indent:11px;}
+.newlist i{width:80px; display:block; float:left; font-style:normal;}
+.newlist b{font-weight:normal; color:#7b7b7b; padding-left:10px;}
+
+
+/*picdataTable*/
+.staticHead {color: #000000; font-size: 12px; }
+.staticHeadtext {color: #000000; font-size: 12px; }
+.staticRow {	color: #344b50;	font-size: 12px;}
+

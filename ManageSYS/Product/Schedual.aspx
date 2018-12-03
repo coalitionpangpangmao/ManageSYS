@@ -72,7 +72,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="2"  style="border-style: solid; border-width: thin; margin-right: 8px">
+                                 <div class="listtitle">班时浏览  </div>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="False" DataKeyNames="班时编码"
                                     AutoGenerateColumns="False">
                                     <Columns>
@@ -96,21 +97,45 @@
                                                 <asp:CheckBox ID="ckInter" runat="server" Enabled="false" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField  HeaderText="班组">
+                                     
+                                    </Columns>
+                                    <HeaderStyle CssClass="gridheader" />
+                                    <RowStyle CssClass="gridrow" />
+                                    <AlternatingRowStyle CssClass="gridalterrow" />
+                                </asp:GridView>
+                            </td>
+                            <td colspan="2" style="border-style: solid; border-width: thin; margin-left: 8px">
+                                    <div class="listtitle">班组轮换 <span style="position: relative; float: right">
+                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave_Click" Width="100" />                       
+                    </span> </div>
+                                <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="False" DataKeyNames="ID"
+                                    AutoGenerateColumns="False">
+                                    <Columns>
+                                        <asp:TemplateField     HeaderText="顺序号" HeaderStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" Width="70px">
+                                                <asp:TextBox ID="txtOrder" runat="server"  CssClass="tbinput" Enabled="false" Width ="40px"></asp:TextBox>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField    HeaderText="早班" HeaderStyle-HorizontalAlign="Center">
+                                            <ItemTemplate>
+                                                 <asp:DropDownList ID="listTeam1" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>'  DataValueField="team_code" DataTextField="team_name">
+                                                </asp:DropDownList>
+                                               
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField   HeaderText="中班" HeaderStyle-HorizontalAlign="Center">
+                                            <ItemTemplate>
+                                                  <asp:DropDownList ID="listTeam2" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>' DataValueField="team_code" DataTextField="team_name">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderText="状态">
+                                        <asp:TemplateField    HeaderText="晚班" HeaderStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listStatus" runat="server" CssClass="drpdwnlist" Width="70px">
-                                                    <asp:ListItem></asp:ListItem>
-                                                    <asp:ListItem Value="1">工作</asp:ListItem>
-                                                    <asp:ListItem Value="0">休息</asp:ListItem>
+                                                  <asp:DropDownList ID="listTeam3" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>'  DataValueField="team_code" DataTextField="team_name">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                     
                                     </Columns>
                                     <HeaderStyle CssClass="gridheader" />
                                     <RowStyle CssClass="gridrow" />

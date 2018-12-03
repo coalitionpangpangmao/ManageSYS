@@ -20,7 +20,7 @@
                 <li><a href="#">每日班组评估</a></li>
             </ul>
         </div>
-        <div class="rightinfo">
+        <div class="mainbox">
             <table class="tablelist" style="margin-bottom: 8px">
                 <tr>
                     <td align="center">时间
@@ -28,9 +28,9 @@
                         CssClass="dfinput1"></asp:TextBox>
                         <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" Width="80px">
                         </asp:DropDownList>
-                        <asp:Button ID="btnSearch" runat="server" CssClass="btn1 auth" Text="查找" OnClick="btnSearch_Click" />
+                        <asp:Button ID="btnSearch" runat="server" CssClass="btnview" Text="查询" OnClick="btnSearch_Click" />
                         &nbsp;&nbsp;
-                    <asp:Button ID="btnExport" runat="server" Text="导出" CssClass="btn1 auth" />
+                    <asp:Button ID="btnExport" runat="server" Text="导出" CssClass="btnpatch auth" />
                     </td>
                 </tr>
                 <tr>

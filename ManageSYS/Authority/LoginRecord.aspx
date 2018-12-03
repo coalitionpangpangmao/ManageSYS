@@ -26,17 +26,17 @@
                 <li><a href="#">日志管理</a></li>
             </ul>
         </div>
-        <div class="rightinfo">
+        <div class="mainbox">
             <div>
                 时间 
                 <asp:TextBox ID="StartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 至<asp:TextBox ID="EndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 &nbsp; 
-                 <asp:Button ID="btnSearch" runat="server" Height="25px" Width="72px"
-                     Text="查询" CssClass="btn" OnClick="btnSearch_Click" />
+                 <asp:Button ID="btnSearch" runat="server" 
+                     Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                 &nbsp;
-                  <asp:Button ID="btnDelete" runat="server" Height="25px" Width="72px"
-                      Text="删除" CssClass="btn auth" OnClick="btnDelete_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
+                  <asp:Button ID="btnDelete" runat="server" 
+                      Text="删除" CssClass="btndel auth" OnClick="btnDelete_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
             </div>
             <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">

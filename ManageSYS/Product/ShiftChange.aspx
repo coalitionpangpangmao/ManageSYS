@@ -115,7 +115,7 @@
             <div class="framelist">
                 <div class="listtitle">
                     交接班详情<span style="position: relative; float: right">
-                        <asp:Button ID="btnSave" runat="server" Text="保存" class="btnview auth" OnClick="btnSave_Click" />
+                        <asp:Button ID="btnSave" runat="server" Text="保存" class="btnmodify auth" OnClick="btnSave_Click" />
                                <input id="btnPrint" type="button" value="打印" class ="btnpatch"  onclick ="$('#report').printArea();"/> <asp:Button ID="btnExport" runat="server" Text="导出" class="btnset" OnClick="btnExport_Click" />
                     </span>
                 </div>
@@ -160,7 +160,9 @@
                                             计划号
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtPlanNo" runat="server" class="dfinput1" Enabled="false"></asp:TextBox>
+                                            <asp:DropDownList ID="listPlanno" runat="server" CssClass="drpdwnlist">
+                                            </asp:DropDownList>
+                                           
                                         </td>
                                         <td>
                                             填写人
@@ -207,7 +209,7 @@
                                                 Width="500px"></asp:TextBox>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr class="btnhide">
                                         <td width="100" height="55">
                                             工艺质量情况
                                         </td>
@@ -248,7 +250,7 @@
                                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
                                                 PageSize="12">
                                                 <Columns>
-                                                    <asp:TemplateField     >
+                                                    <asp:TemplateField    HeaderText="选择"  >
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chk" runat="server" />
                                                         </ItemTemplate>
@@ -281,7 +283,8 @@
                                                     </asp:TemplateField>
                                                 </Columns>
                                                 <HeaderStyle CssClass="gridheader" />
-                                                 <RowStyle CssClass="gridrow" /> <AlternatingRowStyle CssClass="gridalterrow" />
+                                                 <RowStyle CssClass="gridrow" /> 
+                                                <AlternatingRowStyle CssClass="gridalterrow" />
                                             </asp:GridView>
                                         </td>
                                     </tr>

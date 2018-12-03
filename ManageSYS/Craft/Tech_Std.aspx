@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>技术标准管理</title>
-    <link href="../css/style.css" rel="stylesheet" type="text/css" />  
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
     <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
@@ -24,7 +24,7 @@
                 $('.file').removeClass("selectedbold");
                 $(this).addClass("selectedbold");
             });
-         
+
         });
         function tabClick(code) {
             $("#hideprc").attr('value', code);
@@ -43,7 +43,7 @@
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
-        <div class="rightinfo">
+        <div class="mainbox">
             <table class="dflist">
                 <tr>
                     <td colspan="2">
@@ -59,7 +59,7 @@
                                         &nbsp;&nbsp;           
                                   <asp:Button ID="btnAdd" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnAdd_Click" />
                                         <asp:Button ID="btnModify" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnModify_Click" />
-                                        <asp:Button ID="btnDelete" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelete_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                                        <asp:Button ID="btnDelete" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelete_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                         <asp:Button ID="btnUpdate" runat="server" CssClass="btnhide" OnClick="btnUpdate_Click" />
                                     </span>
                                 </div>
@@ -137,6 +137,15 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="listtitle">
+                                    从标准
+                        <asp:DropDownList ID="listtech" runat="server" CssClass="drpdwnlist">
+                        </asp:DropDownList>
+                                    复制为标准
+                        <asp:DropDownList ID="listtechC" runat="server" CssClass="drpdwnlist">
+                        </asp:DropDownList>
+                                    <asp:Button ID="btnCopy" runat="server" CssClass="btnmodify auth" Text="复制" OnClick="btnCopy_Click" />
+                                </div>
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="btnUpdate" />
@@ -147,20 +156,7 @@
                         </asp:UpdatePanel>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="listtitle">
-                            从标准
-                        <asp:DropDownList ID="listtech" runat="server" CssClass="drpdwnlist">
-                        </asp:DropDownList>
-                            复制为标准
-                        <asp:DropDownList ID="listtechC" runat="server" CssClass="drpdwnlist">
-                        </asp:DropDownList>
-                            <asp:Button ID="btnCopy" runat="server" CssClass="btnmodify auth" Text="复制" OnClick="btnCopy_Click" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
+                 <tr>
                     <td valign="top" width="200">
                         <div style="margin-top: 10px; width: 200px; height: 400px;">
                             <div class="listtitle">
@@ -185,7 +181,7 @@
                                 <div class="listtitle">
                                     <span style="position: relative; float: right">
                                         <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
-                                        <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave2_Click" />
+                                        <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave2_Click" />
                                         <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                     </span>
                                 </div>
@@ -259,12 +255,12 @@
                                         </Triggers>
                                     </asp:UpdatePanel>
                                 </div>
-                            </div>
+                           </div>
                             <div id="tab2" class="tabson">
                                 <div class="listtitle">
                                     <span style="position: relative; float: right">
                                         <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnview auth" OnClick="btnSave_Click" />
+                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave_Click" />
                                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                         <asp:HiddenField ID="hideprc" runat="server" Value="70301" />
                                         <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />
@@ -343,7 +339,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        
                     </td>
                 </tr>
             </table>

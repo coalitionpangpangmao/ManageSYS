@@ -19,7 +19,7 @@
             <li><a href="#">能耗报表</a></li>
         </ul>
     </div>
-    <div class="rightinfo">
+    <div class="mainbox">
         <div id="usual1" class="usual">
             <div class="itab">
                 <ul>

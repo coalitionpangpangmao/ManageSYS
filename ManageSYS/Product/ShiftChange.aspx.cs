@@ -136,8 +136,9 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
         hdID.Value = id;
-        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组, g3.prod_code as 牌号,g3.planno as 计划号,g4.output_vl,g4.shift_id,g4.succ_id,g4.remark,g4.create_id,g4.devicestatus,g4.qlt_status,g4.scean_status from Ht_Prod_Schedule g   left join ht_prod_report g3 on (g.date_end between g3.starttime and g3.endtime)  or (g.date_end >g3.starttime and g3.endtime is null) left join ht_prod_shiftchg g4 on g4.shift_main_id = g.id   where g.id = '" + id + "'";
+        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组, g3.prod_code as 牌号,g3.planno as 计划号,g4.output_vl,g4.shift_id,g4.succ_id,g4.remark,g4.create_id,g4.devicestatus,g4.qlt_status,g4.scean_status,g.date_end from Ht_Prod_Schedule g   left join ht_prod_report g3 on (g.date_end between g3.starttime and g3.endtime)  or (g.date_end >g3.starttime and g3.endtime is null) left join ht_prod_shiftchg g4 on g4.shift_main_id = g.id   where g.id = '" + id + "'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+        
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -146,7 +147,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             listShift.SelectedValue = row["班时"].ToString();
             listTeam.SelectedValue = row["班组"].ToString();
             listProd.SelectedValue = row["牌号"].ToString();
-            txtPlanNo.Text = row["计划号"].ToString();
+           
             txtEditor.Text = row["create_id"].ToString();
             if (txtEditor.Text == "")
                 txtEditor.Text = ((MSYS.Data.SysUser)Session["User"]).text; 
@@ -156,7 +157,11 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             txtDevice.Text = row["devicestatus"].ToString();
             txtQlt.Text = row["qlt_status"].ToString();
             txtScean.Text = row["scean_status"].ToString();
-            txtRemark.Text = row["remark"].ToString(); ;
+            txtRemark.Text = row["remark"].ToString(); 
+
+            string endtime = row["date_end"].ToString();
+            opt.bindDropDownList(listPlanno, "select planno from  ht_prod_report  where  ('" + endtime + "' between starttime and endtime)  or ('" + endtime  + "' >g3.starttime and g3.endtime is null) ", "planno", "planno");
+            listPlanno.SelectedValue = row["计划号"].ToString();
 
         }
         bindGrid2();
@@ -167,7 +172,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        // hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
         string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK", "OUTPLUS" };
-        string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, txtPlanNo.Text, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id , listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
+        string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, listPlanno.SelectedValue, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id , listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
 
         string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "新生产交接班记录失败";
         log_message += ",交接班ID：" + hdID.Value;
@@ -176,7 +181,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     }
     protected void btnExport_Click(object sender, EventArgs e)
     {
-        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xls",DateTime.Now,false);
+        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02",".xls","",DateTime.Now,false);
      
     }
     public DataSet bindpara()
@@ -285,7 +290,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             string paracode = ((DropDownList)row.FindControl("listMater")).SelectedValue;
             if (((TextBox)row.FindControl("txtParavalue")).Text != "")
             {
-                string[] value1 = { txtPlanNo.Text, txtPlanNo.Text.Substring(8,7), paracode.Substring(0, 5), listTeam.SelectedValue, txtDate.Text, paracode, txtEditor.Text, paravalue };
+                string[] value1 = { listPlanno.SelectedValue, listPlanno.SelectedValue.Substring(8, 7), paracode.Substring(0, 5), listTeam.SelectedValue, txtDate.Text, paracode, txtEditor.Text, paravalue };
                opt.MergeInto(seg1, value1, 6, "HT_PROD_REPORT_DETAIL");
             }
         }

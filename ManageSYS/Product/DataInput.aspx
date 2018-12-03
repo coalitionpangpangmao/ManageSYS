@@ -209,7 +209,7 @@
                                     <div class="listtitle" style="margin-top: 10px">
                                         录入记录 <span style="position: relative; float: right">
                                             <asp:HiddenField ID="hdScrollY" runat="server" />
-                                            <asp:Button ID="btnView" class="btnview" runat="server" Text="查看记录" OnClick="btnView_Click" Width="150px" />
+                                            <asp:Button ID="btnView" class="btnview" runat="server" Text="查询" OnClick="btnView_Click"  />
                                             <asp:Button ID="btnModify" class="sure" runat="server" Text="保存" OnClick="btnModify_Click" />
                                         </span>
                                     </div>
