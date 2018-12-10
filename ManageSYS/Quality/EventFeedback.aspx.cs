@@ -103,7 +103,7 @@ public partial class Quality_EventFeedback : MSYS.Web.BasePage
     protected void bindgrid1()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.para_name,s.prod_name,k.name,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,r.id ,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type k on k.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "' and j.status = '4'";
+        string query = "select distinct t.para_name,s.prod_name,k.name,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,r.id ,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type k on k.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "' and j.status >= '4'";
 
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;

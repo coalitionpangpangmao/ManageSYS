@@ -20,6 +20,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                <li><a href="#">计量设备校准</a></li>
                 <li><a href="#">人工校准</a></li>
             </ul>
         </div>
@@ -139,7 +140,7 @@
 
                                     <asp:TemplateField      HeaderText="校准时间">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridClbrtime" runat="server" DataValueField="校准时间" DataTextField="校准时间" CssClass="tbinput" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                            <asp:TextBox ID="txtGridClbrtime" runat="server" DataValueField="校准时间" DataTextField="校准时间" CssClass="tbinput" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" Width ="120px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField      HeaderText="状态">

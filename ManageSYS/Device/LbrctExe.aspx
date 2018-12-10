@@ -51,6 +51,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">设备管理</a></li>
+            <li><a href="#">设备润滑管理</a></li>
             <li><a href="#">润滑执行</a></li>
         </ul>
     </div>
@@ -186,7 +187,7 @@
                                 </asp:TemplateField>  
                                 <asp:TemplateField      HeaderText="过期时间">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="过期时间" DataTextField="过期时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"   CssClass="tbinput"></asp:TextBox>
+                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="过期时间" DataTextField="过期时间"    CssClass="tbinput1"  Width ="80px" ></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>                            
                                     <asp:TemplateField      HeaderText="状态">

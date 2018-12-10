@@ -174,7 +174,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
     }
     protected void bindGrid2()
     {
-        string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.work_staus as 状态,g1.Id,g1.shift_code from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code where g1.work_date between '" + txtStartDate.Text + "' and '" + txtEndDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' and g1.WORK_SHOP_CODE = '" + listPrdline.SelectedValue + "' order by  g1.work_date,g1.shift_code,g1.date_begin";
+        string query = "select g1.work_date as 日期,g2.team_name as 班组,g3.shift_name as 班时,g1.date_begin as 开始时间,g1.date_end as 结束时间,g1.work_staus as 状态,g1.Id,g1.shift_code from ht_prod_schedule g1 left join Ht_Sys_Team g2 on g2.team_code = g1.team_code left join ht_sys_shift g3 on g3.shift_code = g1.shift_code where g1.work_date between '" + txtStartDate.Text + "' and '" + txtEndDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' and g1.WORK_SHOP_CODE = '" + listPrdline.SelectedValue + "' order by g1.date_begin,  g1.work_date,g1.shift_code";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;

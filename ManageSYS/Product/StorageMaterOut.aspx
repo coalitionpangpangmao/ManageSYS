@@ -62,7 +62,7 @@
                 <div style="height: 400px" >
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="单据号" AutoGenerateColumns="False" HeaderStyle-Wrap="False" AlternatingRowStyle-Wrap="False" EditRowStyle-Wrap="False" RowStyle-Wrap="False"  OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12" AllowPaging ="true">
+                            <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="单据号,MONTHPLANNO" AutoGenerateColumns="False" HeaderStyle-Wrap="False" AlternatingRowStyle-Wrap="False" EditRowStyle-Wrap="False" RowStyle-Wrap="False"  OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12" AllowPaging ="true">
                                 <Columns>
                                     <asp:TemplateField  >
                                         <ItemTemplate>
@@ -88,7 +88,7 @@
                                      <asp:BoundField    DataField="单据号" HeaderText="单据号" />
                                      <asp:BoundField    DataField="产品" HeaderText="产品" />
                                       <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                   
-                                     <asp:BoundField    DataField="领退日期" HeaderText="领退日期" />                                   
+                                     <asp:BoundField    DataField="领用日期" HeaderText="领用日期" />                                   
                                     
                                      <asp:BoundField    DataField="烟梗总量" HeaderText="烟梗总量" />
                                      <asp:BoundField    DataField="碎片总量" HeaderText="碎片总量" />
@@ -153,7 +153,7 @@
                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="listtitle">
-                                原料领退管理<span style="position: relative; float: right" class="click2">
+                                原料领用管理<span style="position: relative; float: right" class="click2">
                                    
                                     <asp:Button ID="btnReset" runat="server" Text="重置" CssClass="btnset" OnClick="btnReset_Click" />
                                     <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
@@ -254,7 +254,7 @@
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
-                                领退明细<span style="position: relative; float: right">
+                                领用明细<span style="position: relative; float: right">
                                     <asp:Button ID="btnCreate" runat="server" CssClass="btnview auth" Text="按明细生成领退单"
                                         OnClick="btnCreate_Click" Width="160px" />
                                     <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
@@ -275,7 +275,7 @@
 
                                     <asp:TemplateField   HeaderText="类型">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_name" DataTextField="mattree_name">
+                                            <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_code" DataTextField="mattree_name">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>

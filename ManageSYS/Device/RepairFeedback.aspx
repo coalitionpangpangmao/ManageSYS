@@ -20,6 +20,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                   <li><a href="#">设备维修管理</a></li>
                 <li><a href="#">维修情况反馈</a></li>
             </ul>
         </div>
@@ -113,12 +114,12 @@
 
                                     <asp:TemplateField      HeaderText="区域">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" />
+                                            <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" Enabled ="false" Width ="180px" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField      HeaderText="设备名称">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" DataSource="<%# eqbind() %>" DataTextField="EQ_NAME" DataValueField="IDKEY" Enabled="false" Width ="180px">
+                                            <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" DataSource="<%# eqbind() %>" DataTextField="EQ_NAME" DataValueField="IDKEY" Enabled="false" Width ="200px">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -136,7 +137,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField      HeaderText="期望完成时间">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="tbinput"></asp:TextBox>
+                                            <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间"  CssClass="tbinput" Width ="80px"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField      HeaderText="状态">

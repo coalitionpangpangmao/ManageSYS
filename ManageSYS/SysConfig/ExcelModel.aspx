@@ -54,7 +54,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">系统配置</a></li>
-            <li><a href="#">报表模版配置</a></li>
+            <li><a href="#">报表模版管理</a></li>
         </ul>
     </div>
     <asp:ScriptManager ID="ScriptManager1" runat="server">

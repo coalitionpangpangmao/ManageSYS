@@ -17,8 +17,9 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">质量评估</a></li>
-                <li><a href="#">工艺事件确认</a></li>
+                <li><a href="#">质量评估与分析</a></li>
+                 <li><a href="#">工艺事件管理</a></li>
+                <li><a href="#">工艺事件管理</a></li>
             </ul>
         </div>
 
@@ -32,9 +33,9 @@
                             至
             <asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"
                 onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-
                             &nbsp;&nbsp;&nbsp;
-                        
+                            状态：
+                        <asp:DropDownList ID="listStatus" runat="server" CssClass="drpdwnlist" Width ="80px"></asp:DropDownList>
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                         </td>
 
@@ -81,7 +82,7 @@
                                  <asp:BoundField    HeaderText="班组" DataField="team_name" />
                                 <asp:TemplateField      HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="60px"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                  <asp:BoundField    DataField="minus_score" HeaderText="扣分" />
@@ -158,7 +159,7 @@
 
                                 <asp:TemplateField      HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="60px"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                  <asp:BoundField    DataField="minus_score" HeaderText="扣分" />

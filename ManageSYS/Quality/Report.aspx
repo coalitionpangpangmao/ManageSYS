@@ -39,7 +39,7 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">生产管理</a></li>
+                <li><a href="#">质量分析与评估</a></li>
                 <li><a href="#">质量统计表</a></li>
             </ul>
         </div>

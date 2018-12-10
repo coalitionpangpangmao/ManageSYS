@@ -18,7 +18,9 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
     protected void initView()
     {
         txtBtime.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-        txtEtime.Text = System.DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");     
+        txtEtime.Text = System.DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(listStatus, "select ID,NAME from ht_inner_inspect_status  order by ID", "NAME", "ID");
         bindgrid1();
         bindgrid2();
     }
@@ -99,8 +101,10 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
     protected void bindgrid1()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.para_name,s.prod_name,a.name as typename,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,nvl(r.minus_score,0) as minus_score,r.id,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type a on a.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "' order by r.b_time";
-
+        string query = "select distinct t.para_name,s.prod_name,a.name as typename,r.value,r.range,r.b_time,r.e_time,h.team_name,nvl(j.status,0) as status,nvl(r.minus_score,0) as minus_score,r.id,r.type from hv_qlt_data_event r left join ht_pub_prod_design s on s.prod_code = r.prod_code left join ht_pub_tech_para t on t.para_code = r.para_code left join ht_sys_team h on h.team_code = r.team left join ht_qlt_auto_event j on j.record_id = r.id and j.sort = r.type left join ht_inner_qlt_type a on a.id = r.type where r.b_time>'" + txtBtime.Text + "' and r.e_time <'" + txtEtime.Text + "'";
+        if (listStatus.SelectedValue != "")
+            query += " and nvl(j.status,0) = '" + listStatus.SelectedValue + "'";
+        query += "  order by r.b_time";
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
@@ -149,7 +153,10 @@ public partial class Quality_CraftEvent : MSYS.Web.BasePage
     protected void bindgrid2()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select t.id,r.prod_name,s.team_name,t.inspect_type,t.inspect_code,t.insgroup,t.inspect_name,t.value,t.range,t.unit,t.status,t.minus_score,t.record_time from hv_craft_offline t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team_id where t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'  order by RECORD_TIME,prod_name,inspect_code ";
+        string query = "select distinct t.id,r.prod_name,s.team_name,t.inspect_type,t.inspect_code,t.insgroup,t.inspect_name,t.value,t.range,t.unit,t.status,t.minus_score,t.record_time from hv_craft_offline t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team_id where t.RECORD_TIME between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'";
+        if (listStatus.SelectedValue != "")
+            query += " and t.status = '" + listStatus.SelectedValue + "'";
+        query += "    order by RECORD_TIME,prod_name,inspect_code ";
         DataSet data = opt.CreateDataSetOra(query);
         GridView2.DataSource = data;
         GridView2.DataBind();

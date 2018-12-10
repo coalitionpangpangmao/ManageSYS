@@ -49,7 +49,7 @@
         <div id="tab1" class="tabson">
             <div class="framelist">
                 <div class="listtitle">
-                    工艺段路径管理<asp:DropDownList ID="listSection1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection1_SelectedIndexChanged"
+                    工艺段路径管理<asp:DropDownList ID="listSection1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection1_SelectedIndexChanged" Width ="180px"
                         AutoPostBack="True">
                     </asp:DropDownList>
                     <span style="position: relative; float: right" class="click2">
@@ -86,7 +86,7 @@
         <div id="tab2" class="tabson">
             <div class="framelist">
                 <div class="listtitle">
-                    路径节点配置<asp:DropDownList ID="listSection2" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection2_SelectedIndexChanged"
+                    路径节点配置<asp:DropDownList ID="listSection2" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection2_SelectedIndexChanged" Width ="180px"
                         AutoPostBack="True">
                     </asp:DropDownList>
                     <span style="position: relative; float: right">

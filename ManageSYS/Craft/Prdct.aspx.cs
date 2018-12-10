@@ -33,6 +33,10 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             query += " and prod_code = '" + txtCodeS.Text + "'";
         if (txtNameS.Text != "")
             query += " and proD_name = '" + txtNameS.Text + "'";
+        if (rdValidS.Checked)
+            query += " and is_valid = '1'";
+        else
+            query += " and is_valid = '0'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;

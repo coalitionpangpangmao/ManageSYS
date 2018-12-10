@@ -17,7 +17,8 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">质量评估</a></li>
+                <li><a href="#">质量评估与分析</a></li>
+                 <li><a href="#">质量考核</a></li>          
                 <li><a href="#">车间月度评估</a></li>
             </ul>
         </div>
@@ -38,9 +39,30 @@
                     <td>
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                             <ContentTemplate>
-                                <asp:GridView ID="GridAll" runat="server" class="grid" AutoGenerateColumns="True"   ShowHeaderWhenEmpty="True" HeaderStyle-HorizontalAlign="Center" >
-                                    <HeaderStyle CssClass="gridheader" />
-                                    <RowStyle CssClass="gridrow" />
+                                <asp:GridView ID="GridAll" runat="server" class="grid" AutoGenerateColumns ="False" RowStyle-HorizontalAlign="Left" >
+                                    <Columns>
+                                        <asp:BoundField DataField="产品" HeaderText="产品" >
+                                        <ItemStyle HorizontalAlign="Left" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="在线考核分" HeaderText="在线考核分" >
+                                        <ItemStyle HorizontalAlign="Left" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="理化检测得分" HeaderText="理化检测得分"  >
+                                        <ItemStyle HorizontalAlign="Left" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="感观评测得分" HeaderText="感观评测得分"  >
+                                        <ItemStyle HorizontalAlign="Left" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="过程检测得分" HeaderText="过程检测得分"  >
+                                        <ItemStyle HorizontalAlign="Left" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="总得分" HeaderText="总得分"  >
+                                        <ItemStyle HorizontalAlign="Left" />
+                                        </asp:BoundField>
+                                    </Columns>
+
+                                    <HeaderStyle CssClass="gridheader" HorizontalAlign="Left" />
+                                    <RowStyle CssClass="gridrow" HorizontalAlign="Left" />
                                     <AlternatingRowStyle CssClass="gridalterrow" />
                                 </asp:GridView>
                             </ContentTemplate>

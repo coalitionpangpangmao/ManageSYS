@@ -33,7 +33,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">生产管理</a></li>
-            <li><a href="#">班组交接班记录</a></li>
+            <li><a href="#">生产班组交接班</a></li>
         </ul>
     </div>
     <div class="formbody">
@@ -247,36 +247,35 @@
                                     </tr>
                                     <tr>
                                         <td colspan="8">
-                                            <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
-                                                PageSize="12">
+                                            <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"  PageSize="12">
                                                 <Columns>
-                                                    <asp:TemplateField    HeaderText="选择"  >
+                                                    <asp:TemplateField    HeaderText="选择" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left" >
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chk" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField      HeaderText="物料名称">
+                                                    <asp:TemplateField      HeaderText="物料名称" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:DropDownList ID="listMater" runat="server" CssClass="drpdwnlist"   DataSource ="<%#bindpara() %>" DataTextField="para_name" DataValueField="para_code" Width="200px">
                                                             </asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField      HeaderText="数量">
+                                                    <asp:TemplateField      HeaderText="数量" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtAmount" runat="server" CssClass="tbinput1"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField      HeaderText="单位">
+                                                    <asp:TemplateField      HeaderText="单位" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtUnit" runat="server" CssClass="tbinput1"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField      HeaderText="备注">
+                                                    <asp:TemplateField      HeaderText="备注" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:TextBox ID="txtDescpt" runat="server" CssClass="tbinput1"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField      HeaderText="操作">
+                                                    <asp:TemplateField      HeaderText="操作" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:Button ID="btnGrid2Save" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnGrid2Save_Click" />
                                                         </ItemTemplate>

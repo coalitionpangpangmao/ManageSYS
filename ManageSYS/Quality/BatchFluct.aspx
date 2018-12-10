@@ -21,7 +21,8 @@
     <div class="place">
         <span>位置:</span>
         <ul class="placeul">
-            <li><a href="#">质量管理</a></li>
+            <li><a href="#">质量评估与分析</a></li>
+            <li><a href="#">在线数据评估</a></li>     
             <li><a href="#">成品批间波动</a></li>
         </ul>
     </div>

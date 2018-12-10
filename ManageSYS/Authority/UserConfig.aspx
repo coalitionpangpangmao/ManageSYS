@@ -17,7 +17,7 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">系统管理</a></li>
+                <li><a href="#">权限管理</a></li>
                 <li><a href="#">人员管理</a></li>
             </ul>
         </div>

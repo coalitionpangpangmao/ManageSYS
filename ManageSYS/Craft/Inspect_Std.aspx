@@ -35,7 +35,7 @@
                             </td>
                             <td width="100">
                                 <asp:DropDownList ID="listtype" runat="server" CssClass="drpdwnlist" AutoPostBack="True"
-                                    OnSelectedIndexChanged="listtype_SelectedIndexChanged">
+                                    OnSelectedIndexChanged="listtype_SelectedIndexChanged" Width ="200px">
                                 </asp:DropDownList>
                             </td>
                             <td width="100">
@@ -44,7 +44,7 @@
                             <td>
                               <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                                <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist">
+                                <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" Width ="200px">
                                 </asp:DropDownList>
                                 </ContentTemplate>
                                 <Triggers>

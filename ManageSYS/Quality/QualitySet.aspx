@@ -40,7 +40,8 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">质量评估与分析</a></li>
-                <li><a href="#">质量标准维护</a></li>
+                 <li><a href="#">管理与配置</a></li>
+                <li><a href="#">质量考核标准</a></li>
             </ul>
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">

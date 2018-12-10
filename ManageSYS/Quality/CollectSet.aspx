@@ -52,6 +52,7 @@
             <span>位置:</span>
             <ul class="placeul">
                 <li><a href="#">质量分析与评估</a></li>
+                <li><a href="#">管理与配置</a></li>
                 <li><a href="#">采集设置</a></li>
             </ul>
         </div>
@@ -92,35 +93,33 @@
                                             <td width="100px">父模型
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" AutoPostBack="True"
-                                                    OnSelectedIndexChanged="listSection_SelectedIndexChanged">
+                                                <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" AutoPostBack="True" Width="300px" OnSelectedIndexChanged="listSection_SelectedIndexChanged">
                                                 </asp:DropDownList>
                                             </td>
                                             <td width="100px">权重：
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtWeight" runat="server" CssClass="dfinput1"></asp:TextBox>
+                                                <asp:TextBox ID="txtWeight" runat="server" CssClass="dfinput1" Width="300px"></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>数据点名称
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="listPointname" runat="server" CssClass="drpdwnlist" AutoPostBack="True"
-                                                    OnSelectedIndexChanged="listPointname_SelectedIndexChanged">
+                                                <asp:DropDownList ID="listPointname" runat="server" CssClass="drpdwnlist" AutoPostBack="True" Width="300px"   OnSelectedIndexChanged="listPointname_SelectedIndexChanged">
                                                 </asp:DropDownList>
                                             </td>
                                             <td>数据点ID
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtID" runat="server" CssClass="dfinput1" Enabled="False"></asp:TextBox>
+                                                <asp:TextBox ID="txtID" runat="server" CssClass="dfinput1" Enabled="False" Width="300px"></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>数据点类型
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="listStyle" runat="server" CssClass="drpdwnlist">
+                                                <asp:DropDownList ID="listStyle" runat="server" CssClass="drpdwnlist" Width="300px">
                                                     <asp:ListItem></asp:ListItem>
                                                     <asp:ListItem>水份</asp:ListItem>
                                                     <asp:ListItem>温度</asp:ListItem>

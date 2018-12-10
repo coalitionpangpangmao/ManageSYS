@@ -43,6 +43,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="#">设备管理</a></li>
+               <li><a href="#">设备维修管理</a></li>
             <li><a href="#">维修计划与派工</a></li>
         </ul>
     </div>
@@ -235,7 +236,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="区域">
                                     <ItemTemplate>
-                                          <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist"   DataSource = "<%# sectionbind() %>"  DataTextField = "Section_NAME"  DataValueField = "Section_CODE"  OnSelectedIndexChanged = "listGridarea_SelectedIndexChanged" AutoPostBack="True" />
+                                          <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist"   DataSource = "<%# sectionbind() %>"  DataTextField = "Section_NAME"  DataValueField = "Section_CODE"  OnSelectedIndexChanged = "listGridarea_SelectedIndexChanged" AutoPostBack="True" Width ="180px"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="设备名称">
@@ -258,12 +259,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="期望完成时间">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"                      CssClass="tbinput"></asp:TextBox>
+                                        <asp:TextBox ID="txtGridExptime" runat="server" DataValueField="期望完成时间" DataTextField="期望完成时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"     Width ="80px"                 CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="状态">
                                     <ItemTemplate>
-                                       <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
+                                       <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="100px" Enabled="False"  DataSource = "<%# statusbind() %>"  DataTextField = "Name"  DataValueField = "ID"  >  </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                   <asp:BoundField    DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />

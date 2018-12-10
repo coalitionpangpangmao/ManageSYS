@@ -46,6 +46,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                <li><a href="#">设备维保管理</a></li>
                 <li><a href="#">维保执行情况</a></li>
             </ul>
         </div>
@@ -96,7 +97,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField      HeaderText="区域">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE" />
+                                                <asp:DropDownList ID="listGridarea" runat="server" CssClass="drpdwnlist" DataSource="<%# sectionbind() %>" DataTextField="Section_NAME" DataValueField="Section_CODE"  Enabled ="false"/>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField    DataField="设备名称" HeaderText="设备名称" />

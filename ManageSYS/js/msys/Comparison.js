@@ -42,7 +42,7 @@ function showPointPlot() {
                     name: para_name,                  
                     data: yAxis
                 });
-                if (result[0]["statics"])
+                if (result[0]["statics"])                    
                     $('#statics').append(result[0]["statics"].toString());
             },
             error: function (message) {

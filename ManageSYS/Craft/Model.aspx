@@ -69,7 +69,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">工艺管理</a></li>
-                <li><a href="#">工艺模型</a></li>
+                <li><a href="#">工艺模型管理</a></li>
             </ul>
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
@@ -126,18 +126,18 @@
                                             <tr>
                                                 <td width="100">工艺段编码</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtCode_1" runat="server" class="dfinput1" Enabled="False"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtCode_1" runat="server" class="dfinput1" Enabled="False" Width ="300px"></asp:TextBox></td>
                                                 <td width="100">名称</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtName_1" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtName_1" runat="server" class="dfinput1" Width ="300px"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td width="100">备注</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtDscrp_1" runat="server" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtDscrp_1" runat="server" class="dfinput1" Width ="300px"></asp:TextBox></td>
                                                 <td width="100">路径配置</td>
                                                 <td title=" ">
-                                                    <asp:CheckBox ID="rdValid_1" runat="server" Text=" " />
+                                                    <asp:CheckBox ID="rdValid_1" runat="server" Text=" "/>
                                                 </td>
 
                                             </tr>
@@ -174,13 +174,13 @@
                                                 <td>工艺段
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="listSection_2" runat="server" CssClass="drpdwnlist"  Width="200px">
+                                                    <asp:DropDownList ID="listSection_2" runat="server" CssClass="drpdwnlist"  Width="300px">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td width="100">设备分类
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="listSort_2" runat="server" CssClass="drpdwnlist"  Width="200px">
+                                                    <asp:DropDownList ID="listSort_2" runat="server" CssClass="drpdwnlist"  Width="300px">
                                                         <asp:ListItem Value="01">生产设备</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </td>
@@ -191,13 +191,13 @@
                                                 <td width="100">设备编码
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtCode_2" runat="server" class="dfinput1" Enabled="False"  Width="200px"></asp:TextBox>
+                                                    <asp:TextBox ID="txtCode_2" runat="server" class="dfinput1" Enabled="False"  Width ="300px"></asp:TextBox>
                                                 </td>
 
                                                 <td width="100">设备名称
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtName_2" runat="server" class="dfinput1"  Width="200px"></asp:TextBox>
+                                                    <asp:TextBox ID="txtName_2" runat="server" class="dfinput1"  Width="300px"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -210,7 +210,7 @@
                                                 <td width="100">备注
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtDscpt_2" runat="server" class="dfinput1"  Width="200px"></asp:TextBox>
+                                                    <asp:TextBox ID="txtDscpt_2" runat="server" class="dfinput1"  Width="300px"></asp:TextBox>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -245,12 +245,12 @@
                                             <tr>
                                                 <td width="100">所属工艺段</td>
                                                 <td>
-                                                    <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" Width="200px" OnSelectedIndexChanged="listSection_SelectedIndexChanged" AutoPostBack="True">
+                                                    <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" Width="300px" OnSelectedIndexChanged="listSection_SelectedIndexChanged" AutoPostBack="True">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td>所属设备</td>
                                                 <td>
-                                                    <asp:DropDownList ID="listEquip" runat="server" CssClass="drpdwnlist" Width="200px">
+                                                    <asp:DropDownList ID="listEquip" runat="server" CssClass="drpdwnlist" Width="300px">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
@@ -258,15 +258,15 @@
                                                 <td width="100">参数点编码</td>
                                                 <td>
                                                     <asp:TextBox ID="txtCode" runat="server" class="dfinput1"
-                                                        Enabled="False" Width="200px"></asp:TextBox></td>
+                                                        Enabled="False" Width="300px"></asp:TextBox></td>
                                                 <td width="100">参数点名称</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtName" runat="server" Width="200px" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtName" runat="server" Width="300px" class="dfinput1"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td width="100">单位</td>
                                                 <td>
-                                                    <asp:TextBox ID="txtUnit" runat="server" Width="200px" class="dfinput1"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtUnit" runat="server" Width="300px" class="dfinput1"></asp:TextBox></td>
                                                 <td width="100">是否有效</td>
                                                 <td>
                                                     <asp:CheckBox ID="rdValid" runat="server" Text=" " Checked="true" />
@@ -295,21 +295,21 @@
                                                 <td width="100">设定标签地址</td>
                                                 <td>
                                                     <asp:TextBox ID="txtSetTag" runat="server" class="dfinput1"
-                                                        Width="200px"></asp:TextBox></td>
+                                                        Width="300px"></asp:TextBox></td>
                                                 <td width="100">反馈标签地址</td>
                                                 <td>
                                                     <asp:TextBox ID="txtValueTag" runat="server" class="dfinput1"
-                                                        Width="200px"></asp:TextBox></td>
+                                                        Width="300px"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>维护部门</td>
                                                 <td>
-                                                    <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist" Width="200px"></asp:DropDownList>
+                                                    <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist" Width="300px"></asp:DropDownList>
                                                 </td>
                                                 <td width="100">备注</td>
                                                 <td>
                                                     <asp:TextBox ID="txtDscrp" runat="server" class="dfinput1"
-                                                        Width="200px"></asp:TextBox></td>
+                                                        Width="300px"></asp:TextBox></td>
                                             </tr>
                                         </tbody>
                                     </table>

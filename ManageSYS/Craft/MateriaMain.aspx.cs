@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
+
 public partial class Craft_MateriaMain : MSYS.Web.BasePage
 {
     protected string tvHtml;
@@ -21,10 +22,9 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
         }
     }
 
-     
-    public string  InitTree()
+   
+    public   string  InitTree()
     {
-
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select mattree_code,mattree_name  from ht_pub_mattree where IS_DEL = '0'  and length(mattree_code) = 2  order by mattree_code ");
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -38,13 +38,14 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
                 tvHtml += "</li>";
             }
           tvHtml += "</ul>";
-          return tvHtml;
+          return tvHtml;     
+       
         }
         else
             return "";
     }
 
-    public string InitTreeM(string mattree_code)
+    public  string InitTreeM(string mattree_code)
     {
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
        DataSet data = opt.CreateDataSetOra("select mattree_code,mattree_name  from ht_pub_mattree where IS_DEL = '0' and  PARENT_CODE = '" + mattree_code + "' order by mattree_code ");

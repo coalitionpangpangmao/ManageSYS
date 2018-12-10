@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>生产排班</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
- 
+
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
@@ -41,7 +41,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">生产管理</a></li>
-                <li><a href="#">生产排班</a></li>
+                <li><a href="#">生产计划排班</a></li>
             </ul>
         </div>
         <div class="formbody">
@@ -49,8 +49,8 @@
                 <div class="listtitle">
                     排班管理<span style="position: relative; float: right">
                         <asp:Button ID="btnAdd" runat="server" Text="自动排班" CssClass="btnmodify auth" OnClick="btnAdd_Click" Width="100" />
-                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview auth" OnClick="btnSearch_Click"  />
-                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btndel auth" OnClick="btnDel_Click"  />
+                        <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview auth" OnClick="btnSearch_Click" />
+                        <asp:Button ID="btnDel" runat="server" Text="删除" CssClass="btndel auth" OnClick="btnDel_Click" />
                     </span>
                 </div>
                 <table class="tablelist">
@@ -60,7 +60,7 @@
                             </td>
                             <td>
                                 <asp:DropDownList ID="listPrdline" runat="server"
-                                    CssClass="drpdwnlist">                                   
+                                    CssClass="drpdwnlist">
                                     <asp:ListItem Value="703">再造梗丝生产线</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
@@ -72,32 +72,32 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"  style="border-style: solid; border-width: thin; margin-right: 8px">
-                                 <div class="listtitle">班时浏览  </div>
+                            <td colspan="2" style="border-style: solid; border-width: thin; margin-right: 8px">
+                                <div class="listtitle">班时浏览  </div>
                                 <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="False" DataKeyNames="班时编码"
                                     AutoGenerateColumns="False">
                                     <Columns>
-                                        <asp:TemplateField     HeaderText="班时">
+                                        <asp:TemplateField HeaderText="班时" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtShift" runat="server" DataValueField="班时" DataTextField="班时" CssClass="tbinput" Enabled="false"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField    HeaderText="开始时间">
+                                        <asp:TemplateField HeaderText="开始时间" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtStarttime" runat="server" DataValueField="开始时间" DataTextField="开始时间" CssClass="tbinput1" Enabled="false"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderText="结束时间">
+                                        <asp:TemplateField HeaderText="结束时间" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtEndtime" runat="server" DataValueField="结束时间" DataTextField="结束时间" Enabled="false" CssClass="tbinput1"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField    HeaderText="是否跨天">
+                                        <asp:TemplateField HeaderText="是否跨天" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="ckInter" runat="server" Enabled="false" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                     
+
                                     </Columns>
                                     <HeaderStyle CssClass="gridheader" />
                                     <RowStyle CssClass="gridrow" />
@@ -105,37 +105,39 @@
                                 </asp:GridView>
                             </td>
                             <td colspan="2" style="border-style: solid; border-width: thin; margin-left: 8px">
-                                    <div class="listtitle">班组轮换 <span style="position: relative; float: right">
-                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave_Click" Width="100" />                       
-                    </span> </div>
+                                <div class="listtitle">
+                                    班组轮换 <span style="position: relative; float: right">
+                                        <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave_Click" Width="100" />
+                                    </span>
+                                </div>
                                 <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="False" DataKeyNames="ID"
                                     AutoGenerateColumns="False">
                                     <Columns>
-                                        <asp:TemplateField     HeaderText="顺序号" HeaderStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField HeaderText="顺序号" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="txtOrder" runat="server"  CssClass="tbinput" Enabled="false" Width ="40px"></asp:TextBox>
+                                                <asp:TextBox ID="txtOrder" runat="server" CssClass="tbinput" Enabled="false" Width="40px"></asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField    HeaderText="早班" HeaderStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField HeaderText="早班" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left" >
                                             <ItemTemplate>
-                                                 <asp:DropDownList ID="listTeam1" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>'  DataValueField="team_code" DataTextField="team_name">
+                                                <asp:DropDownList ID="listTeam1" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>' DataValueField="team_code" DataTextField="team_name">
                                                 </asp:DropDownList>
-                                               
+
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderText="中班" HeaderStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField HeaderText="中班"  HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
-                                                  <asp:DropDownList ID="listTeam2" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>' DataValueField="team_code" DataTextField="team_name">
-                                                </asp:DropDownList>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField    HeaderText="晚班" HeaderStyle-HorizontalAlign="Center">
-                                            <ItemTemplate>
-                                                  <asp:DropDownList ID="listTeam3" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>'  DataValueField="team_code" DataTextField="team_name">
+                                                <asp:DropDownList ID="listTeam2" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>' DataValueField="team_code" DataTextField="team_name">
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                     
+                                        <asp:TemplateField HeaderText="晚班" HeaderStyle-Wrap="False" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:DropDownList ID="listTeam3" runat="server" CssClass="drpdwnlist" Width="70px" DataSource='<%# gridTeambind()%>' DataValueField="team_code" DataTextField="team_name">
+                                                </asp:DropDownList>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
                                     </Columns>
                                     <HeaderStyle CssClass="gridheader" />
                                     <RowStyle CssClass="gridrow" />
@@ -148,22 +150,22 @@
                 <div class="listtitle" style="margin-top: 10px">
                     生产日历<span style="position: relative; float: right">
                         <asp:Button ID="btnckAll" runat="server" Text="全选" class="btnset auth" OnClick="btnckAll_Click" />
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
+                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                         <asp:Button ID="btnGridEdit" runat="server" Text="保存" class="btnmodify" OnClick="btnGridEdit_Click" />
                     </span>
                 </div>
-                <div >
+                <div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging"
                                 AutoGenerateColumns="False" PageSize="9">
                                 <Columns>
-                                    <asp:BoundField DataField="日期" HeaderText="日期"   />
-                                    <asp:BoundField DataField="班组" HeaderText="班组"   />
-                                    <asp:BoundField DataField="班时" HeaderText="班时"   />
-                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间"   />
-                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间"   />
-                                    <asp:TemplateField      HeaderText="状态">
+                                    <asp:BoundField DataField="日期" HeaderText="日期" />
+                                    <asp:BoundField DataField="班组" HeaderText="班组" />
+                                    <asp:BoundField DataField="班时" HeaderText="班时" />
+                                    <asp:BoundField DataField="开始时间" HeaderText="开始时间" />
+                                    <asp:BoundField DataField="结束时间" HeaderText="结束时间" />
+                                    <asp:TemplateField HeaderText="状态">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listStatus2" runat="server" CssClass="drpdwnlist" Width="60px">
                                                 <asp:ListItem></asp:ListItem>
@@ -172,7 +174,7 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField     >
+                                    <asp:TemplateField>
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
@@ -202,8 +204,8 @@
                             <asp:AsyncPostBackTrigger ControlID="btnGridEdit" />
                             <asp:AsyncPostBackTrigger ControlID="btnGridDel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView2" />
-                            <asp:AsyncPostBackTrigger ControlID ="btnSearch" />
-                            <asp:AsyncPostBackTrigger ControlID ="btnDel" />
+                            <asp:AsyncPostBackTrigger ControlID="btnSearch" />
+                            <asp:AsyncPostBackTrigger ControlID="btnDel" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

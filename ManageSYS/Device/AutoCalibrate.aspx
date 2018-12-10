@@ -20,6 +20,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                <li><a href="#">计量设备校准</a></li>
                 <li><a href="#">自动取样校准</a></li>
             </ul>
         </div>

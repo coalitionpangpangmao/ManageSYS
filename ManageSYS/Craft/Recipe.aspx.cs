@@ -20,7 +20,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             opt.bindDropDownList(listStatus1, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
             opt.bindDropDownList(listCrtApt1, "select F_CODE,F_NAME from ht_svr_org_group ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listCreator1, "select s.name,s.id from ht_svr_user s   order by id desc", "Name", "ID");
-              opt.bindDropDownList(listPro2, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
+            opt.bindDropDownList(listPro2, "select PROD_CODE,PROD_NAME from ht_pub_prod_design t where is_del = '0' ", "PROD_NAME", "PROD_CODE");
             opt.bindDropDownList(listStatus2, "select * from HT_INNER_BOOL_DISPLAY t", "CTRL_NAME", "ID");
             opt.bindDropDownList(listCrtApt2, "select F_CODE,F_NAME from ht_svr_org_group order by f_code  ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listCreator2, "select s.name,s.id from ht_svr_user s   order by id desc", "Name", "ID");
@@ -29,50 +29,50 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             opt.bindDropDownList(listCrtApt3, "select F_CODE,F_NAME from ht_svr_org_group order by f_code  ", "F_NAME", "F_CODE");
             opt.bindDropDownList(listCreator3, "select s.name,s.id from ht_svr_user s   order by id desc", "Name", "ID");
         }
-           
+
 
     }
 
     #region model
-    public string  InitTree()
+    public string InitTree()
     {
 
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra("select prod_code,prod_name from ht_pub_prod_design where is_del = '0' order by prod_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-              string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
+            string tvHtml = "<ul id='browser' class='filetree treeview-famfamfam'>";
             DataRow[] rows = data.Tables[0].Select();
-          foreach (DataRow row in rows)
+            foreach (DataRow row in rows)
             {
                 tvHtml += "<li ><span class='folder'  value = '" + row["prod_code"].ToString() + "'>" + row["prod_name"].ToString() + "</span>";
 
                 tvHtml += InitTreeRecipe(row["prod_code"].ToString());
                 tvHtml += "</li>";
             }
-          tvHtml += "</ul>";
-          return tvHtml;
+            tvHtml += "</ul>";
+            return tvHtml;
         }
         else
             return "";
     }
     public string InitTreeRecipe(string prod_code)
     {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
-       DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-             string tvHtml = "<ul>";
+            string tvHtml = "<ul>";
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
-            {   
-                    tvHtml += "<li ><span class='file'  value = '" + row["配方编码"].ToString() + "'>" + row["配方名称"].ToString() + "</span></li>";               
+            {
+                tvHtml += "<li ><span class='file'  value = '" + row["配方编码"].ToString() + "'>" + row["配方名称"].ToString() + "</span></li>";
             }
             tvHtml += "</ul>";
             return tvHtml;
         }
         else
-            return "";            
+            return "";
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
@@ -246,6 +246,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         else
             query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_mater_formula where is_del = '0' and PROD_CODE = '" + hdcode1.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.UpDateOra("delete from ht_qa_mater_formula_detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -261,7 +262,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             listCrtApt1.SelectedValue = data.Tables[0].Rows[0]["编制部门"].ToString();
             txtDscpt1.Text = data.Tables[0].Rows[0]["备注"].ToString();
             ckValid1.Checked = ("1" == data.Tables[0].Rows[0]["is_valid"].ToString());
-            
+
         }
         else
         {
@@ -279,76 +280,45 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             ckValid1.Checked = false;
         }
         bindGrid1();
+        bindGrid1_2();
     }
-    protected void bindGrid1()
-    {
-        string query;
-        if (hdcode1.Value.Length == 8)
-            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.MATER_FLAG   as 物料分类 from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0'  and FORMULA_CODE = '" + hdcode1.Value + "'";
-        else
-            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.MATER_FLAG   as 物料分类 from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0'  and t.PROD_CODE = '" + hdcode1.Value + "'";
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra(query);
-        if (data != null)
-            grid1Databind(data.Tables[0]);
-    }
-    protected void btnAdd1_Click(object sender, EventArgs e)
-    {
-        string query;
-        if (hdcode1.Value.Length == 8)
-            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.MATER_FLAG   as 物料分类 from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0'  and FORMULA_CODE = '" + hdcode1.Value + "'";
-        else
-            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.MATER_FLAG   as 物料分类 from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0'  and t.PROD_CODE = '" + hdcode1.Value + "'";
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet set = opt.CreateDataSetOra(query);
-        DataTable data = set.Tables[0];
-        if (data == null)
-        {
-            data = new DataTable();
-            data.Columns.Add("物料编码");
-            data.Columns.Add("物料名称");
-            data.Columns.Add("批投料量");
-            data.Columns.Add("优先组");
-            data.Columns.Add("物料分类");
-        }
-        object[] value = { "", "", 0, "", 0 };
-        data.Rows.Add(value);
-        grid1Databind(data);
 
-    }
-    protected void grid1Databind(DataTable data)
+    protected void grid1Databind(DataTable data, GridView gv)
     {
-        GridView1.DataSource = data;
-        GridView1.DataBind();
+
+        gv.DataSource = data;
+        gv.DataBind();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (data != null && data.Rows.Count > 0)
         {
-            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Rows.Count; i++)
+            for (int i = gv.PageSize * gv.PageIndex; i < gv.PageSize * (gv.PageIndex + 1) && i < data.Rows.Count; i++)
             {
-                int j = i - GridView1.PageSize * GridView1.PageIndex;
+                int j = i - gv.PageSize * gv.PageIndex;
                 DataRowView mydrv = data.DefaultView[i];
-                GridViewRow row = GridView1.Rows[j];
+                GridViewRow row = gv.Rows[j];
                 DropDownList list = (DropDownList)row.FindControl("listGridType1");
                 list.SelectedValue = mydrv["物料分类"].ToString();
-                opt.bindDropDownList((DropDownList)row.FindControl("listGridName1"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
+                opt.bindDropDownList((DropDownList)row.FindControl("listGridName1"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and substr(TYPE_CODE,1,4) ='" + list.SelectedValue + "'", "material_name", "material_code");
                 ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["物料编码"].ToString();
                 ((DropDownList)row.FindControl("listGridName1")).SelectedValue = mydrv["物料编码"].ToString();
                 ((TextBox)row.FindControl("txtAmountM")).Text = mydrv["批投料量"].ToString();
                 ((TextBox)row.FindControl("txtGroupM")).Text = mydrv["优先组"].ToString();
             }
         }
+
     }
-    protected DataSet gridTypebind()
+    protected DataSet gridTypebind(string code)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select mattree_name,mattree_code from ht_pub_mattree t where length(mattree_code) = 4 and parent_code = '02' and mattree_code <>'0299' union select '' as mattree_name,'' as mattree_code from dual  order by mattree_code desc");
+        return opt.CreateDataSetOra("select mattree_name,mattree_code from ht_pub_mattree t where length(mattree_code) = 4 and parent_code = '02' and mattree_code ='" + code + "' union select '' as mattree_name,'' as mattree_code from dual  order by mattree_code desc");
         //  return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料'");      
     }
     protected void listGirdName1_SelectedIndexChanged(object sender, EventArgs e)
     {
         DropDownList list = (DropDownList)sender;
-        int rowIndex = ((GridViewRow)list.NamingContainer).RowIndex;
-        ((TextBox)GridView1.Rows[rowIndex].FindControl("txtCodeM")).Text = list.SelectedValue;
+        GridViewRow row = (GridViewRow)list.NamingContainer;
+
+        ((TextBox)row.FindControl("txtCodeM")).Text = list.SelectedValue;
     }
     protected void listGridType1_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -357,8 +327,96 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         if (list.SelectedValue != "")
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.bindDropDownList((DropDownList)row.FindControl("listGridName1"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and mat_type ='" + list.SelectedValue + "'", "material_name", "material_code");
+            opt.bindDropDownList((DropDownList)row.FindControl("listGridName1"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and substr(TYPE_CODE,1,4) ='" + list.SelectedValue + "'", "material_name", "material_code");
         }
+    }
+    protected void btnUpdate1_Click(object sender, EventArgs e)
+    {
+        bindData1();
+    }
+    protected void btnModify1_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        hdcode1.Value = txtCode1.Text;
+
+
+        string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
+        string[] value = { txtCode1.Text, txtName1.Text, listPro1.SelectedValue, txtVersion1.Text, txtExeDate1.Text, txtEndDate1.Text, listStatus1.SelectedValue, listCreator1.SelectedValue, txtCrtDate1.Text, listCrtApt1.SelectedValue, txtDscpt1.Text, };
+        List<String> commandlist = new List<string>();
+        commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_mater_formula"));
+        commandlist.Add("update ht_pub_prod_design set mater_formula_code = '" + txtCode1.Text + "' where prod_code = '" + listPro1.SelectedValue + "'");
+        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "原料配方保存成功，" : "原料配方保存失败，";
+        log_message += "--详情：" + string.Join(",", value);
+        InsertTlog(log_message);
+
+        bindGrid1();
+        bindGrid1_2();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " $('#btnUpdate').click();", true);
+    }
+
+    protected void bindGrid1()
+    {
+        string query;
+        if (hdcode1.Value.Length == 8)
+            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and  r.MATER_FLAG = 'YG' and FORMULA_CODE = '" + hdcode1.Value + "' order by r.id";
+        else
+            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and r.MATER_FLAG = 'YG' and t.is_del ='0'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+    
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
+            grid1Databind(data.Tables[0], GridView1);
+    }
+    protected void bindGrid1_2()
+    {
+        string query;
+        if (hdcode1.Value.Length == 8)
+            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and r.MATER_FLAG = 'SP' and FORMULA_CODE = '" + hdcode1.Value + "'  order by r.id";
+        else
+            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and t.is_del ='0' and r.MATER_FLAG = 'SP'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+      
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
+            grid1Databind(data.Tables[0], GridView1_2);
+    }
+    protected void btnAdd1_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string id = opt.GetSegValue(" select MFORMULA_DT_ID_SEQ.nextval as id from dual", "ID");
+        string[] seg = { "id", "IS_VALID", "MATER_FLAG", "FORMULA_CODE" };
+        string[] value = { id, "0", "YG", txtCode1.Text };
+        opt.MergeInto(seg, value, 1, "ht_qa_mater_formula_detail");
+
+        string query;
+
+        if (hdcode1.Value.Length == 8)
+            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and  r.MATER_FLAG = 'YG' and FORMULA_CODE = '" + hdcode1.Value + "'  order by r.id";
+        else
+            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and r.MATER_FLAG = 'YG' and t.is_del ='0'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
+            grid1Databind(data.Tables[0], GridView1);
+    }
+    protected void btnAdd1_2_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string id = opt.GetSegValue(" select MFORMULA_DT_ID_SEQ.nextval as id from dual", "ID");
+        string[] seg = { "id", "IS_VALID", "MATER_FLAG", "FORMULA_CODE" };
+        string[] value = { id, "0", "SP", txtCode1.Text };
+        opt.MergeInto(seg, value, 1, "ht_qa_mater_formula_detail");
+
+        string query;
+        if (hdcode1.Value.Length == 8)
+            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and  r.MATER_FLAG = 'SP' and FORMULA_CODE = '" + hdcode1.Value + "'  order by r.id";
+        else
+            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and r.MATER_FLAG = 'SP' and t.is_del ='0'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
+            grid1Databind(data.Tables[0], GridView1_2);
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -397,30 +455,46 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
         bindGrid1();
     }
-
-    protected void btnUpdate1_Click(object sender, EventArgs e)
+    protected void GridView1_2_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        bindData1();
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid1_2();
     }
-    protected void btnModify1_Click(object sender, EventArgs e)
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
-        hdcode1.Value = txtCode1.Text;
 
 
-        string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
-        string[] value = { txtCode1.Text, txtName1.Text, listPro1.SelectedValue, txtVersion1.Text, txtExeDate1.Text, txtEndDate1.Text, listStatus1.SelectedValue, listCreator1.SelectedValue, txtCrtDate1.Text, listCrtApt1.SelectedValue, txtDscpt1.Text, };
-        List<String> commandlist = new List<string>();
-        commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_mater_formula"));
-        commandlist.Add("update ht_pub_prod_design set mater_formula_code = '" + txtCode1.Text + "' where prod_code = '" + listPro1.SelectedValue + "'");
-        string log_message = opt.TransactionCommand(commandlist) == "Success" ? "原料配方保存成功，" : "原料配方保存失败，";
-        log_message += "--详情：" + string.Join(",", value);
-        InsertTlog(log_message);
 
-        bindGrid1();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "updatetree", " $('#btnUpdate').click();", true);
-    }
     protected void btnDel1_Click(object sender, EventArgs e)
     {
         try
@@ -428,12 +502,40 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string mtr_code = ((TextBox)GridView1.Rows[Rowindex].FindControl("txtCodeM")).Text;
-            string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode1.Text + "' and MATER_CODE = '" + mtr_code + "'";
+            string query;
+            if (mtr_code == "")
+                query = "delete from HT_QA_MATER_FORMULA_DETAIL where id= '" + GridView1.DataKeys[Rowindex].Value.ToString() + "'";
+            else
+                query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode1.Text + "' and MATER_CODE = '" + mtr_code + "'";
+          
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "删除配方详情成功，" : "删除配方详情失败,";
             log_message += ",物料编码：" + mtr_code;
             InsertTlog(log_message);
             bindGrid1();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+    protected void btnDel1_2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Button btn = (Button)sender;
+            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
+            string mtr_code = ((TextBox)GridView1_2.Rows[Rowindex].FindControl("txtCodeM")).Text;
+            string query;
+            if (mtr_code == "")
+                query = "delete from HT_QA_MATER_FORMULA_DETAIL where id= '" + GridView1_2.DataKeys[Rowindex].Value.ToString() + "'";
+            else
+                query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode1.Text + "' and MATER_CODE = '" + mtr_code + "'";
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = opt.UpDateOra(query) == "Success" ? "删除配方详情成功，" : "删除配方详情失败,";
+            log_message += ",物料编码：" + mtr_code;
+            InsertTlog(log_message);
+            bindGrid1_2();
         }
         catch (Exception ee)
         {
@@ -455,6 +557,21 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
         }
     }
+    protected void btnCkAll1_2_Click(object sender, EventArgs e)
+    {
+        int ckno = 0;
+        for (int i = 0; i < GridView1_2.Rows.Count; i++)
+        {
+            if (((CheckBox)GridView1_2.Rows[i].FindControl("chk")).Checked)
+                ckno++;
+        }
+        bool check = (ckno < GridView1_2.Rows.Count);
+        for (int i = 0; i < GridView1_2.Rows.Count; i++)
+        {
+            ((CheckBox)GridView1_2.Rows[i].FindControl("chk")).Checked = check;
+
+        }
+    }
     protected void btnDelSel1_Click(object sender, EventArgs e)
     {
 
@@ -463,7 +580,11 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             if (((CheckBox)GridView1.Rows[i].FindControl("chk")).Checked)
             {
                 string mtr_code = ((TextBox)GridView1.Rows[i].FindControl("txtCodeM")).Text;
-                string query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode1.Text + "' and MATER_CODE = '" + mtr_code + "'";
+                string query;
+                if (mtr_code == "")
+                    query = "delete from HT_QA_MATER_FORMULA_DETAIL where id= '" + GridView1.DataKeys[i].Value.ToString() + "'";
+                else
+                    query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode1.Text + "' and MATER_CODE = '" + mtr_code + "'";
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 string log_message = opt.UpDateOra(query) == "Success" ? "删除配方详情成功" : "删除配方详情失败";
                 log_message += ",物料编码：" + txtCode1.Text;
@@ -473,7 +594,28 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         bindGrid1();
 
     }
+    protected void btnDelSel1_2_Click(object sender, EventArgs e)
+    {
 
+        for (int i = 0; i <= GridView1_2.Rows.Count - 1; i++)
+        {
+            if (((CheckBox)GridView1_2.Rows[i].FindControl("chk")).Checked)
+            {
+                string mtr_code = ((TextBox)GridView1_2.Rows[i].FindControl("txtCodeM")).Text;
+                string query;
+                if (mtr_code == "")
+                    query = "delete from HT_QA_MATER_FORMULA_DETAIL where id= '" + GridView1_2.DataKeys[i].Value.ToString() + "'";
+                else
+                    query = "update HT_QA_MATER_FORMULA_DETAIL set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode1.Text + "' and MATER_CODE = '" + mtr_code + "'";
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string log_message = opt.UpDateOra(query) == "Success" ? "删除配方详情成功" : "删除配方详情失败";
+                log_message += ",物料编码：" + txtCode1.Text;
+                InsertTlog(log_message);
+            }
+        }
+        bindGrid1();
+
+    }
     protected void btnGridSave1_Click(object sender, EventArgs e)
     {
         foreach (GridViewRow row in GridView1.Rows)
@@ -482,8 +624,8 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             //  {
             string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            string[] seg = { "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "MATER_FLAG", "IS_DEL" };
-            string[] value = { txtCode1.Text, mtr_code, ((TextBox)row.FindControl("txtAmountM")).Text, ((TextBox)row.FindControl("txtGroupM")).Text, ((DropDownList)row.FindControl("listGridType1")).SelectedValue,"0" };
+            string[] seg = { "ID", "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "CLS_CODE", "IS_DEL", "MATER_FLAG", "IS_VALID" };
+            string[] value = { GridView1.DataKeys[row.RowIndex].Value.ToString(), txtCode1.Text, mtr_code, ((TextBox)row.FindControl("txtAmountM")).Text, ((TextBox)row.FindControl("txtGroupM")).Text, ((DropDownList)row.FindControl("listGridType1")).SelectedValue, "0", "YG", "1" };
             string log_message = opt.MergeInto(seg, value, 2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
             log_message += ",物料编码：" + txtCode1.Text;
             InsertTlog(log_message);
@@ -491,30 +633,62 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         }
         bindGrid1();
     }
-
+    protected void btnGridSave1_2_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow row in GridView1_2.Rows)
+        {
+            // if (((CheckBox)row.FindControl("chk")).Checked)
+            //  {
+            string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string[] seg = { "ID", "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "CLS_CODE", "IS_DEL", "MATER_FLAG", "IS_VALID" };
+            string[] value = { GridView1_2.DataKeys[row.RowIndex].Value.ToString(), txtCode1.Text, mtr_code, ((TextBox)row.FindControl("txtAmountM")).Text, ((TextBox)row.FindControl("txtGroupM")).Text, ((DropDownList)row.FindControl("listGridType1")).SelectedValue, "0", "SP", "1" };
+            string log_message = opt.MergeInto(seg, value, 2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+            log_message += ",物料编码：" + txtCode1.Text;
+            InsertTlog(log_message);
+            //  }
+        }
+        bindGrid1_2();
+    }
     protected void btnSave1_Click(object sender, EventArgs e)
     {
 
         Button btn = (Button)sender;
-        GridViewRow row  = (GridViewRow)btn.NamingContainer;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
         string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
         if (row.RowIndex >= 0)
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-            string[] seg = { "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "MATER_FLAG", "IS_DEL" };
-            string[] value = { txtCode1.Text, mtr_code, ((TextBox)row.FindControl("txtAmountM")).Text, ((TextBox)row.FindControl("txtGroupM")).Text, ((DropDownList)row.FindControl("listGridType1")).SelectedValue ,"0"};
+            string[] seg = { "ID", "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "CLS_CODE", "IS_DEL", "MATER_FLAG", "IS_VALID" };
+            string[] value = { GridView1.DataKeys[row.RowIndex].Value.ToString(), txtCode1.Text, mtr_code, ((TextBox)row.FindControl("txtAmountM")).Text, ((TextBox)row.FindControl("txtGroupM")).Text, ((DropDownList)row.FindControl("listGridType1")).SelectedValue, "0", "YG", "1" };
             string log_message = opt.MergeInto(seg, value, 2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
             log_message += ",物料编码：" + txtCode1.Text;
             InsertTlog(log_message);
 
             bindGrid1();
         }
-
-
-
     }
 
+    protected void btnSave1_2_Click(object sender, EventArgs e)
+    {
+
+        Button btn = (Button)sender;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+        string mtr_code = ((TextBox)row.FindControl("txtCodeM")).Text;
+        if (row.RowIndex >= 0)
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+            string[] seg = { "ID", "FORMULA_CODE", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "CLS_CODE", "IS_DEL", "MATER_FLAG", "IS_VALID" };
+            string[] value = { GridView1_2.DataKeys[row.RowIndex].Value.ToString(), txtCode1.Text, mtr_code, ((TextBox)row.FindControl("txtAmountM")).Text, ((TextBox)row.FindControl("txtGroupM")).Text, ((DropDownList)row.FindControl("listGridType1")).SelectedValue, "0", "SP", "1" };
+            string log_message = opt.MergeInto(seg, value, 2, "ht_qa_mater_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+            log_message += ",物料编码：" + txtCode1.Text;
+            InsertTlog(log_message);
+
+            bindGrid1_2();
+        }
+    }
     protected void btnAddR1_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -537,7 +711,58 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     }
     #endregion
 
-    #region tab3  
+    #region tab3
+    protected void grid2Databind(DataTable data, GridView gv)
+    {
+        gv.DataSource = data;
+        gv.DataBind();
+
+        if (data != null && data.Rows.Count > 0)
+        {
+            for (int i = gv.PageSize * gv.PageIndex; i < gv.PageSize * (gv.PageIndex + 1) && i < data.Rows.Count; i++)
+            {
+                int j = i - gv.PageSize * gv.PageIndex;
+                DataRowView mydrv = data.DefaultView[i];
+                GridViewRow row = gv.Rows[j];
+                ((DropDownList)row.FindControl("listGridName2")).SelectedValue = mydrv["香料种类"].ToString();
+                ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["香料种类"].ToString();
+                ((TextBox)row.FindControl("txtScale")).Text = mydrv["比例"].ToString();
+                ((TextBox)row.FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
+
+            }
+        }
+    }
+  
+    protected DataSet gridHTYbind(String code)   
+    {
+        string s1_1 = code.Replace(",", "','"); //返回结果为：1','2','3','4','5','6
+        code = string.Format("'{0}'", s1_1);
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel where substr(TYPE_CODE,1,4) in (" + code + ") or substr(material_code,1,4) in (" + code + ") and is_del = '0' union select '' as material_code, '' as material_name from dual order by material_code desc");
+    }
+    protected void btnUpdate2_Click(object sender, EventArgs e)//没有实现
+    {
+        bindData2();
+    }
+
+    protected void btnModify2_Click(object sender, EventArgs e)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        hdcode2.Value = txtCode2.Text;
+        {
+            string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
+            string[] value = { txtCode2.Text, txtName2.Text, listPro2.SelectedValue, txtVersion2.Text, txtExeDate2.Text, txtEndDate2.Text, listStatus2.SelectedValue, listCreator2.SelectedValue, txtCrtDate2.Text, listCrtApt2.SelectedValue, txtDscpt2.Text, };
+            List<String> commandlist = new List<string>();
+            commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_coat_formula"));
+            commandlist.Add("update ht_pub_prod_design set coat_formula_code = '" + txtCode2.Text + "' where prod_code = '" + listPro2.SelectedValue + "'");
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "回填夜配方保存成功" : "回填夜配方保存失败";
+            log_message += ",保存参数：" + string.Join(",", value);
+            InsertTlog(log_message);
+        }
+        bindGrid2();
+
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "updatetree", " $('#btnUpdate').click();", true);
+    }
     protected void bindData2()
     {
         string query;
@@ -546,6 +771,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         else
             query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and PROD_CODE = '" + hdcode2.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.UpDateOra("delete from ht_qa_coat_formula_detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -578,125 +804,124 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             ckValid2.Checked = false;
         }
         bindGrid2();
-        
+        bindGrid2_2();
+
     }
+    protected void listGirdName2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DropDownList list = (DropDownList)sender;
+        GridViewRow row = (GridViewRow)list.NamingContainer;
+        ((TextBox)row.FindControl("txtCodeM")).Text = list.SelectedValue;
+    }
+
     protected void bindGrid2()
     {
         string query;
         if (hdcode2.Value.Length == 8)
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode2.Value + "'";
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'HT' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "' order by r.id";
         else
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode2.Value + "'";
+            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'HT' and r.is_del = '0'and t.is_del = '0' and t.PROD_CODE  = '" + hdcode2.Value + "' order by r.id";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null)
-            grid2Databind(data.Tables[0]);
+            grid2Databind(data.Tables[0], GridView2);
+    }
+    protected void bindGrid2_2()
+    {
+        string query;
+        if (hdcode2.Value.Length == 8)
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'LY' and r.is_del = '0'   and r.formula_code  = '" + hdcode2.Value + "'  order by r.id";
+        else
+            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'LY' and r.is_del = '0' and t.is_del = '0' and t.PROD_CODE  = '" + hdcode2.Value + "'  order by r.id";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
+            grid2Databind(data.Tables[0], GridView2_2);
     }
     protected void btnAdd2_Click(object sender, EventArgs e)
     {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string id = opt.GetSegValue(" select CFORMULA_DT_ID_SEQ.nextval as id from dual", "ID");
+        string[] seg = { "id", "IS_VALID", "coat_flag", "FORMULA_CODE" };
+        string[] value = { id, "0", "HT", txtCode2.Text };
+        opt.MergeInto(seg, value, 1, "ht_qa_coat_formula_detail");
 
         string query;
         if (hdcode2.Value.Length == 8)
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode2.Value + "'";
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'HT' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "'  order by r.id";
         else
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode2.Value + "'";
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet set = opt.CreateDataSetOra(query);
-        DataTable data = set.Tables[0];
-        if (data == null)
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'HT' and r.is_del = '0' and t.is_del = '0'  and t.PROD_CODE  = '" + hdcode2.Value + "'  order by r.id";
+
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
         {
-            data = new DataTable();
-            data.Columns.Add("香料种类");
-            data.Columns.Add("比例");
-            data.Columns.Add("每罐调配所需");
-
+            grid2Databind(data.Tables[0], GridView2);
         }
-        object[] value = { "", 0, 0 };
-        data.Rows.Add(value);
-        grid2Databind(data);
-     
+
     }
-
-    protected void grid2Databind(DataTable data)
+    protected void btnAdd2_2_Click(object sender, EventArgs e)
     {
-        GridView2.DataSource = data;
-        GridView2.DataBind();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string id = opt.GetSegValue(" select CFORMULA_DT_ID_SEQ.nextval as id from dual", "ID");
+        string[] seg = { "id", "IS_VALID", "coat_flag", "FORMULA_CODE" };
+        string[] value = { id, "0", "LY", txtCode2.Text };
+        opt.MergeInto(seg, value, 1, "ht_qa_coat_formula_detail");
 
-        if (data != null && data.Rows.Count > 0)
+        string query;
+        if (hdcode2.Value.Length == 8)
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'LY' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "'  order by r.id";
+        else
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'LY' and r.is_del = '0' and t.is_del = '0'  and t.PROD_CODE  = '" + hdcode2.Value + "'  order by r.id";
+
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
         {
-            for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Rows.Count; i++)
-            {
-                int j = i - GridView2.PageSize * GridView2.PageIndex;
-                DataRowView mydrv = data.DefaultView[i];
-                GridViewRow row = GridView2.Rows[j];
-                ((DropDownList)row.FindControl("listGridName2")).SelectedValue = mydrv["香料种类"].ToString();
-                ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["香料种类"].ToString();
-                ((TextBox)row.FindControl("txtScale")).Text = mydrv["比例"].ToString();
-                ((TextBox)row.FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
-
-            }
+            grid2Databind(data.Tables[0], GridView2_2);
         }
+
     }
-    protected DataSet gridXJXLbind()
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel where ( TYPE_CODE like '0410%' or material_code like '0410%') and is_del = '0' union select '' as material_code, '' as material_name from dual order by material_code desc");
-       
-    }
-
-    protected DataSet gridHTYbind()
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel where ( TYPE_CODE like '0410%' or material_code like '0410%') and is_del = '0' union select '' as material_code, '' as material_name from dual order by material_code desc");
-    }
-    protected void btnUpdate2_Click(object sender, EventArgs e)//没有实现
-    {
-        bindData2();
-    }
-
-    protected void btnModify2_Click(object sender, EventArgs e)
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
-        hdcode2.Value = txtCode2.Text;
-
-        {
-
-            string[] seg = { "FORMULA_CODE", "FORMULA_NAME", "PROD_CODE", "STANDARD_VOL", "B_DATE", "E_DATE", "CONTROL_STATUS", "CREATE_ID", "CREATE_DATE", "CREATE_DEPT_ID", "REMARK" };
-            string[] value = { txtCode2.Text, txtName2.Text, listPro2.SelectedValue, txtVersion2.Text, txtExeDate2.Text, txtEndDate2.Text, listStatus2.SelectedValue, listCreator2.SelectedValue, txtCrtDate2.Text, listCrtApt2.SelectedValue, txtDscpt2.Text, };
-            List<String> commandlist = new List<string>();
-            commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_coat_formula"));
-            commandlist.Add("update ht_pub_prod_design set coat_formula_code = '" + txtCode2.Text + "' where prod_code = '" + listPro2.SelectedValue + "'");
-            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "回填夜配方保存成功" : "回填夜配方保存失败";
-            log_message += ",保存参数：" + string.Join(",", value);
-            InsertTlog(log_message);
-        }
-        bindGrid2();
-
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "updatetree", " $('#btnUpdate').click();", true);
-    }
-
-    protected void listGirdName2_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        DropDownList list = (DropDownList)sender;
-        int rowIndex = ((GridViewRow)list.NamingContainer).RowIndex;
-        ((TextBox)GridView2.Rows[rowIndex].FindControl("txtCodeM")).Text = list.SelectedValue;
-    }
-
-   
     protected void btnDel2_Click(object sender, EventArgs e)
     {
         try
         {
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
-            string mtr_code = ((TextBox)GridView2.Rows[Rowindex].FindControl("txtCodeM")).Text;
-            string query = "update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
+            string mtr_code = ((TextBox)GridView2.Rows[Rowindex].FindControl("txtCodeM")).Text;           
+            string query;
+            if(mtr_code == "")
+                query = "delete from ht_qa_coat_formula_detail where id= '" + GridView2.DataKeys[Rowindex].Value.ToString() + "'";
+            else
+                query ="update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
             log_message += ",物料编号：" + txtCode2.Text;
-           InsertTlog(log_message);
+            InsertTlog(log_message);
             bindGrid2();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
+    protected void btnDel2_2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Button btn = (Button)sender;
+            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
+            string mtr_code = ((TextBox)GridView2_2.Rows[Rowindex].FindControl("txtCodeM")).Text;
+            string query;
+            if (mtr_code == "")
+                query = "delete from ht_qa_coat_formula_detail where id= '" + GridView2_2.DataKeys[Rowindex].Value.ToString() + "'";
+            else
+                query = "update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
+            log_message += ",物料编号：" + txtCode2.Text;
+            InsertTlog(log_message);
+            bindGrid2_2();
         }
         catch (Exception ee)
         {
@@ -718,6 +943,21 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
         }
     }
+    protected void btnCkAll2_2_Click(object sender, EventArgs e)
+    {
+        int ckno = 0;
+        for (int i = 0; i < GridView2_2.Rows.Count; i++)
+        {
+            if (((CheckBox)GridView2_2.Rows[i].FindControl("chk")).Checked)
+                ckno++;
+        }
+        bool check = (ckno < GridView2_2.Rows.Count);
+        for (int i = 0; i < GridView2_2.Rows.Count; i++)
+        {
+            ((CheckBox)GridView2_2.Rows[i].FindControl("chk")).Checked = check;
+
+        }
+    }
     protected void btnDelSel2_Click(object sender, EventArgs e)
     {
         try
@@ -727,11 +967,15 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
                 if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
                 {
                     string mtr_code = ((DropDownList)GridView2.Rows[i].FindControl("listGridName2")).SelectedValue;
-                    string query = "update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
+                    string query;
+                    if (mtr_code == "")
+                        query = "delete from ht_qa_coat_formula_detail where id= '" + GridView2.DataKeys[i].Value.ToString() + "'";
+                    else
+                        query = "update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
                     log_message += "，物料编号：" + txtCode2.Text;
-                   InsertTlog(log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid2();
@@ -741,23 +985,74 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             Response.Write(ee.Message);
         }
     }
-
+    protected void btnDelSel2_2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            for (int i = 0; i <= GridView2_2.Rows.Count - 1; i++)
+            {
+                if (((CheckBox)GridView2_2.Rows[i].FindControl("chk")).Checked)
+                {
+                    string mtr_code = ((DropDownList)GridView2_2.Rows[i].FindControl("listGridName2")).SelectedValue;
+                    string query;
+                    if (mtr_code == "")
+                        query = "delete from ht_qa_coat_formula_detail where id= '" + GridView2_2.DataKeys[i].Value.ToString() + "'";
+                    else
+                        query = "update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
+                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                    string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
+                    log_message += "，物料编号：" + txtCode2.Text;
+                    InsertTlog(log_message);
+                }
+            }
+            bindGrid2_2();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
     protected void btnGridSave2_Click(object sender, EventArgs e)
     {
         try
         {
             foreach (GridViewRow row in GridView2.Rows)
-            {         
-                    string mtr_code = ((DropDownList)row.FindControl("listGridName2")).SelectedValue;
-                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL" };
-                    string[] value = { txtCode2.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "XJ","0" };
-                    string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
-                    log_message += "，物料编号:" + txtCode2.Text;
-                   InsertTlog(log_message);
-              
+            {
+                string mtr_code = ((DropDownList)row.FindControl("listGridName2")).SelectedValue;
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string[] seg = {"ID", "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL", "IS_VALID" };
+                string[] value = {GridView2.DataKeys[row.RowIndex].Value.ToString(), txtCode2.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "HT", "0", "1" };
+                string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+                log_message += "，物料编号:" + txtCode2.Text;
+                InsertTlog(log_message);
+
             }
             bindGrid2();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+
+
+    }
+
+    protected void btnGridSave2_2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            foreach (GridViewRow row in GridView2_2.Rows)
+            {
+                string mtr_code = ((DropDownList)row.FindControl("listGridName2")).SelectedValue;
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string[] seg = {"ID", "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL", "IS_VALID" };
+                string[] value = { GridView2_2.DataKeys[row.RowIndex].Value.ToString(), txtCode2.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "LY", "0", "1" };
+                string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+                log_message += "，物料编号:" + txtCode2.Text;
+                InsertTlog(log_message);
+
+            }
+            bindGrid2_2();
         }
         catch (Exception ee)
         {
@@ -771,19 +1066,15 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         try
         {
             Button btn = (Button)sender;
-            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
-            string mtr_code = ((DropDownList)GridView2.Rows[Rowindex].FindControl("listGridName2")).SelectedValue;
-            if (Rowindex >= 0)
-            {
-                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
-                string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag" ,"IS_DEL"};
-                string[] value = { txtCode2.Text, mtr_code, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtScale")).Text, ((TextBox)GridView2.Rows[Rowindex].FindControl("txtPercent")).Text, "XJ" ,"0"};
-                string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
-                log_message += "，物料编号:" + txtCode2.Text;
-                InsertTlog(log_message);
-                bindGrid2();
-            }
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            string mtr_code = ((DropDownList)row.FindControl("listGridName2")).SelectedValue;
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string[] seg = { "ID","FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL", "IS_VALID" };
+            string[] value = { GridView2.DataKeys[row.RowIndex].Value.ToString(), txtCode2.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "HT", "0", "1" };
+            string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+            log_message += "，物料编号:" + txtCode2.Text;
+            InsertTlog(log_message);
+            bindGrid2();
         }
         catch (Exception ee)
         {
@@ -792,7 +1083,28 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
 
     }
- 
+    protected void btnSave2_2_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            string mtr_code = ((DropDownList)row.FindControl("listGridName2")).SelectedValue;
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string[] seg = {"ID", "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL", "IS_VALID" };
+            string[] value = { GridView2_2.DataKeys[row.RowIndex].Value.ToString(), txtCode2.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "LY", "0", "1" };
+            string log_message = opt.MergeInto(seg, value, 2, "ht_qa_coat_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
+            log_message += "，物料编号:" + txtCode2.Text;
+            InsertTlog(log_message);
+            bindGrid2_2();
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+
+
+    }
     protected void GridView2_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         GridView theGrid = sender as GridView;
@@ -830,8 +1142,44 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
         bindGrid2();
     }
-  
-   
+
+    protected void GridView2_2_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid2_2();
+    }
 
 
     protected void btnAddR2_Click(object sender, EventArgs e)
@@ -869,6 +1217,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         else
             query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_FLA_formula where is_del = '0' and PROD_CODE = '" + hdcode3.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.UpDateOra("delete from ht_qa_FLA_formula_detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
@@ -907,9 +1256,9 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     {
         string query;
         if (hdcode3.Value.Length == 8)
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode3.Value + "'";
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0'  and r.formula_code  = '" + hdcode3.Value + "'";
         else
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_FLA_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode3.Value + "'";
+            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_FLA_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and t.is_del = '0' and t.PROD_CODE  = '" + hdcode3.Value + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null)
@@ -917,24 +1266,21 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     }
     protected void btnAdd3_Click(object sender, EventArgs e)  //没有实现
     {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string id = opt.GetSegValue(" select FFORMULA_DT_ID_SEQ.nextval as id from dual", "ID");
+        string[] seg = { "id", "IS_VALID", "coat_flag", "FORMULA_CODE" };
+        string[] value = { id, "0", "XJ", txtCode3.Text };
+        opt.MergeInto(seg, value, 1, "ht_qa_FLA_formula_detail");
         string query;
         if (hdcode3.Value.Length == 8)
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and r.formula_code  = '" + hdcode3.Value + "'";
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'XJ' and r.is_del = '0'   and r.formula_code  = '" + hdcode3.Value + "'";
         else
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需 from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_FLA_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0' and r.is_valid = '1'  and t.PROD_CODE  = '" + hdcode3.Value + "'";
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet set = opt.CreateDataSetOra(query);
-        DataTable data = set.Tables[0];
-        if (data == null)
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.id  from ht_qa_FLA_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_FLA_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'XJ' and r.is_del = '0'   and t.PROD_CODE  = '" + hdcode3.Value + "'";
+        DataSet data = opt.CreateDataSetOra(query);       
+        if (data != null)
         {
-            data = new DataTable();
-            data.Columns.Add("香料种类");
-            data.Columns.Add("比例");
-            data.Columns.Add("每罐调配所需");
-        }
-        object[] value = { "", 0, 0 };
-        data.Rows.Add(value);
-        grid3Databind(data); 
+            grid3Databind(data.Tables[0]);
+        }     
     }
     protected void grid3Databind(DataTable data)
     {
@@ -970,10 +1316,10 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             string[] value = { txtCode3.Text, txtName3.Text, listPro3.SelectedValue, txtVersion3.Text, txtExeDate3.Text, txtEndDate3.Text, listStatus3.SelectedValue, listCreator3.SelectedValue, txtCrtDate3.Text, listCrtApt3.SelectedValue, txtDscpt3.Text, };
             List<String> commandlist = new List<string>();
             commandlist.Add(opt.getMergeStr(seg, value, 1, "ht_qa_FLA_formula"));
-            commandlist.Add("update ht_pub_prod_design set coat_formula_code = '" + txtCode3.Text + "' where prod_code = '" + listPro3.SelectedValue + "'");
+            commandlist.Add("update ht_pub_prod_design set FLA_FORMULA_CODE = '" + txtCode3.Text + "' where prod_code = '" + listPro3.SelectedValue + "'");
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "回填夜配方保存成功" : "回填夜配方保存失败";
             log_message += ",保存参数：" + string.Join(",", value);
-              InsertTlog(log_message);
+            InsertTlog(log_message);
         }
         bindGrid3();
 
@@ -987,7 +1333,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         ((TextBox)GridView3.Rows[rowIndex].FindControl("txtCodeM")).Text = list.SelectedValue;
     }
 
-  
+
     protected void btnDel3_Click(object sender, EventArgs e)
     {
         try
@@ -995,11 +1341,15 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
             string mtr_code = ((TextBox)GridView3.Rows[Rowindex].FindControl("txtCodeM")).Text;
-            string query = "update ht_qa_FLA_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode3.Text + "' and MATER_CODE = '" + mtr_code + "'";
+            string query;
+            if (mtr_code == "")
+                query = "delete from ht_qa_FLA_formula_detail where id = '" + GridView3.DataKeys[Rowindex].Value.ToString() + "'";
+            else
+                query = "update ht_qa_FLA_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode3.Text + "' and MATER_CODE = '" + mtr_code + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
             log_message += ",物料编号：" + txtCode3.Text;
-               InsertTlog(log_message);
+            InsertTlog(log_message);
             bindGrid3();
         }
         catch (Exception ee)
@@ -1031,11 +1381,15 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
                 if (((CheckBox)GridView3.Rows[i].FindControl("chk")).Checked)
                 {
                     string mtr_code = ((DropDownList)GridView3.Rows[i].FindControl("listGridName3")).SelectedValue;
-                    string query = "update ht_qa_FLA_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode3.Text + "' and MATER_CODE = '" + mtr_code + "'";
+                    string query;
+                    if(mtr_code == "")
+                    query = "delete from ht_qa_FLA_formula_detail where id = '" + GridView3.DataKeys[i].Value.ToString() + "'";
+                    else
+                     query = "update ht_qa_FLA_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode3.Text + "' and MATER_CODE = '" + mtr_code + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "物料删除成功" : "物料删除失败";
                     log_message += "，物料编号：" + txtCode3.Text;
-                        InsertTlog(log_message);
+                    InsertTlog(log_message);
                 }
             }
             bindGrid3();
@@ -1052,15 +1406,15 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         {
             foreach (GridViewRow row in GridView3.Rows)
             {
-               
+
                 string mtr_code = ((DropDownList)row.FindControl("listGridName3")).SelectedValue;
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL" };
-                string[] value = { txtCode3.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "XJ","0" };
+                string[] seg = {"ID", "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL","IS_VALID" };
+                string[] value = {GridView3.DataKeys[row.RowIndex].Value.ToString(), txtCode3.Text, mtr_code, ((TextBox)row.FindControl("txtScale")).Text, ((TextBox)row.FindControl("txtPercent")).Text, "XJ", "0" ,"1"};
                 string log_message = opt.MergeInto(seg, value, 2, "ht_qa_FLA_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += "，物料编号:" + txtCode3.Text;
-                   InsertTlog(log_message);
-              
+                InsertTlog(log_message);
+
             }
             bindGrid3();
         }
@@ -1082,11 +1436,11 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             {
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-                string[] seg = { "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL" };
-                string[] value = { txtCode3.Text, mtr_code, ((TextBox)GridView3.Rows[Rowindex].FindControl("txtScale")).Text, ((TextBox)GridView3.Rows[Rowindex].FindControl("txtPercent")).Text, "XJ","0" };
+                string[] seg = { "ID", "FORMULA_CODE", "MATER_CODE", "coat_scale", "need_size", "coat_flag", "IS_DEL","IS_VALID" };
+                string[] value = { GridView3.DataKeys[Rowindex].Value.ToString(), txtCode3.Text, mtr_code, ((TextBox)GridView3.Rows[Rowindex].FindControl("txtScale")).Text, ((TextBox)GridView3.Rows[Rowindex].FindControl("txtPercent")).Text, "XJ", "0" ,"1"};
                 string log_message = opt.MergeInto(seg, value, 2, "ht_qa_FLA_formula_detail") == "Success" ? "物料保存成功" : "物料保存失败";
                 log_message += "，物料编号:" + txtCode3.Text;
-                   InsertTlog(log_message);
+                InsertTlog(log_message);
                 bindGrid3();
             }
         }
@@ -1141,10 +1495,10 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         if (str == "")
             str = "00000000";
         txtCode3.Text = "70309" + (Convert.ToInt16(str.Substring(5)) + 1).ToString().PadLeft(3, '0');
-         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
-         listCreator3.SelectedValue = user.id;
+        MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+        listCreator3.SelectedValue = user.id;
         txtCrtDate3.Text = System.DateTime.Now.ToString("yyyy-MM-dd");
-         listCrtApt3.SelectedValue = user.OwningBusinessUnitId;
+        listCrtApt3.SelectedValue = user.OwningBusinessUnitId;
 
 
         txtName3.Text = "";

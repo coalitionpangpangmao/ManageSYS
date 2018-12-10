@@ -42,10 +42,10 @@
                             <td>
                                 <asp:TextBox ID="txtCodeS" runat="server" class="dfinput1"></asp:TextBox>
                             </td>
-                            <td width="100">是否有效
+                            <td width="100" >是否有效
                             </td>
                             <td width="100">
-                                <asp:CheckBox ID="rdValidS" runat="server" Text=" " />
+                                <asp:CheckBox ID="rdValidS" runat="server" Text=" " Checked="true" />
                             </td>
                         </tr>
                     </tbody>
@@ -227,7 +227,7 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField   HeaderText="路径选择">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="200px"
+                                                                <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="250px"
                                                                     OnSelectedIndexChanged="listpath_SelectedIndexChanged" AutoPostBack="True">
                                                                 </asp:DropDownList>
                                                             </ItemTemplate>

@@ -20,6 +20,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                <li><a href="#">计量设备校准</a></li>
                 <li><a href="#">校准记录查询</a></li>
             </ul>
         </div>
@@ -97,7 +98,7 @@
                     </div>             
            
            <div class="shade">
-                <div  style="width:1000px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
+                <div  style="width:1100px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">
                     <div class="tiphead">
                         <span>校准详情</span><a onclick="$('.shade').fadeOut(100);"></a>
                     </div>

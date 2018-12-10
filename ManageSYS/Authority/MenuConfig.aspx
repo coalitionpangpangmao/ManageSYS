@@ -125,7 +125,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="菜单名称">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="txtMenu" runat="server" DataValueField="菜单名称" DataTextField="菜单名称"
+                                        <asp:TextBox ID="txtMenu" runat="server" DataValueField="菜单名称" DataTextField="菜单名称" Width ="120px"
                                             CssClass="tbinput1"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>

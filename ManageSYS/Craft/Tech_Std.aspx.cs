@@ -178,7 +178,7 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
         if (prccode.Length == 5)
         {
 
-            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,r.UNIT as 单位,s.BUSS_ID  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位,BUSS_ID   from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
+            string query = "select r.PARA_CODE as 参数编码,r.VALUE as 标准值,r.UPPER_LIMIT as 上限,r.LOWER_LIMIT as 下限,r.EER_DEV as 允差,s.para_unit as 单位,s.BUSS_ID  from ht_tech_stdd_code_detail r left join ht_pub_tech_para s on s.para_code = r.para_code  where s.para_type like '__1%' and  r.IS_DEL = '0' and r.tech_code = '" + rcpcode + "' and   substr(r.PARA_CODE,1,5) = '" + prccode + "' union select PARA_CODE as 参数编码,0 as 标准值,0 as 上限,0 as 下限,0 as 允差,'' as 单位,BUSS_ID   from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_code in   (select para_code from ht_pub_tech_para where substr(para_code,1,5) = '" + prccode + "' and para_type like '__1%' and is_del ='0' minus select para_code from ht_tech_stdd_code_detail where IS_DEL = '0' and    tech_code = '" + rcpcode + "' and   substr(PARA_CODE,1,5) = '" + prccode + "')";
 
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
@@ -297,16 +297,17 @@ public partial class Craft_Tech_Std : MSYS.Web.BasePage
     }
     protected void btnCkAll2_Click(object sender, EventArgs e)
     {
-        try
+        int ckno = 0;
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-            {
-                ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = true;
-            }
+            if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
+                ckno++;
         }
-        catch (Exception ee)
+        bool check = (ckno < GridView2.Rows.Count);
+        for (int i = 0; i < GridView2.Rows.Count; i++)
         {
-            Response.Write(ee.Message);
+            ((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked = check;
+
         }
     }
     protected void btnDelSel_Click(object sender, EventArgs e)

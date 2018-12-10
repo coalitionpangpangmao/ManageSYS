@@ -82,12 +82,12 @@
                                         <td class="caption">工艺段
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="listSectionM" runat="server" CssClass ="drpdwnlist"></asp:DropDownList>
+                                            <asp:DropDownList ID="listSectionM" runat="server" CssClass ="drpdwnlist" Width ="200px"></asp:DropDownList>
                                         </td>
                                         <td class="caption">设备类型
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtType" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:TextBox ID="txtType" runat="server" class="dfinput1" Width ="200px"></asp:TextBox>
                                         </td>
                                     </tr>
                                 </tbody>

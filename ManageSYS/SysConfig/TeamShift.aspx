@@ -25,7 +25,7 @@
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
-            <li><a href="#">系统管理</a></li>
+            <li><a href="#">系统配置</a></li>
             <li><a href="#">班组班时配置</a></li>
         </ul>
     </div>

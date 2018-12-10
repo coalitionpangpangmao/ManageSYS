@@ -19,7 +19,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             opt.bindDropDownList(listEditor, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
             opt.bindDropDownList(listApt, "select f_code,f_name  from ht_svr_org_group order by f_code ", "f_name", "f_code");
-            opt.bindDropDownList(listModel, "select pz_code,mt_name from HT_EQ_MCLBR_PLAN where is_model = '1' and is_del = '0' and FLOW_STATUS = '2'", "mt_name", "pz_code");
+            opt.bindDropDownList(listModel, "select pz_code,mt_name from HT_EQ_MCLBR_PLAN where is_model = '1' and is_del = '0' ", "mt_name", "pz_code");
             opt.bindDropDownList(listdspcth, "select ID,name  from ht_svr_user t where is_del ='0' and  t.levelgroupid = '00700700' union select '' as ID,'' as Name from dual ", "name", "ID");
             bindGrid1();
 
@@ -541,8 +541,10 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         string log_message = opt.MergeInto(seg, value, 1, "HT_EQ_MCLBR_PLAN") == "Success" ? "新增校准计划成功" : "新增校准计划失败";
         log_message += "--详情：" + string.Join(",", value);
         InsertTlog(log_message);
-        bindGrid1();
        
+        if(ckModel.Checked)
+            opt.bindDropDownList(listModel, "select pz_code,mt_name from HT_EQ_MCLBR_PLAN where is_model = '1' and is_del = '0' ", "mt_name", "pz_code");
+        bindGrid1();
 
     }
     protected void btngrid2Deal_Click(object sender, EventArgs e)

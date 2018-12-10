@@ -54,12 +54,7 @@
                     </tbody>
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
-                    物料记录 <span style="position: relative; float: right">
-                        <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
-                            Text="新增" />
-                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                    </span>
+                    物料记录 
                 </div>
                 <div id="usual1" class="usual">
                     <div class="itab">
@@ -71,6 +66,14 @@
                 </div>
 
                 <div id="tab1" class="tabson">
+                      <div class="listtitle" style="margin-top: 10px">
+                  <span style="position: relative; float: right">
+                        <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
+                            Text="新增" />
+                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                        <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                    </span>
+                </div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" DataKeyNames="rowid"
@@ -119,9 +122,17 @@
                     </asp:UpdatePanel>
                 </div>
                 <div id="tab2" class="tabson">
+                        <div class="listtitle" style="margin-top: 10px">
+                  <span style="position: relative; float: right">
+                        <asp:Button ID="btnAdd2" CssClass="btnadd auth" runat="server" OnClick="btnAdd2_Click"
+                            Text="新增" />
+                        <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
+                        <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                    </span>
+                </div>
                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView3_PageIndexChanging">
+                            <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView3_PageIndexChanging" DataKeyNames="计划号,section_code,seg_name">
                                 <Columns>
                                     <asp:TemplateField     >
                                         <ItemTemplate>
@@ -154,9 +165,9 @@
                             </asp:GridView>
                         </ContentTemplate>
                         <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="btnAdd" />
-                            <asp:AsyncPostBackTrigger ControlID="btnCkAll" />
-                            <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
+                            <asp:AsyncPostBackTrigger ControlID="btnAdd2" />
+                            <asp:AsyncPostBackTrigger ControlID="btnCkAll2" />
+                            <asp:AsyncPostBackTrigger ControlID="btnDelSel2" />
                             <asp:AsyncPostBackTrigger ControlID="btnModify" />
                             <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         </Triggers>
@@ -174,15 +185,32 @@
                                     <table class="tablelist">
                                         <tbody>
                                             <tr>
-                                                <td width="100">产品名称
+                                                <td width="100">记录类型
+                                 
+                                                </td>
+                                                <td width="100">
+                                                    <asp:RadioButton ID="rd1" runat="server" Text="过程记录" GroupName="RecordStyle"  Enabled ="false" /></td>
+                                                <td  colspan ="2">
+                                                    <asp:RadioButton ID="rd2" runat="server" Text="产品总记录" GroupName="RecordStyle" Enabled="false"   />
+                                                </td>
+                                                 <td width="100">产品名称
                                                 </td>
                                                 <td>
                                                     <asp:DropDownList ID="listProd2" runat="server" CssClass="drpdwnlist" AutoPostBack="true" OnSelectedIndexChanged="ListProd2_SelectedIndexChanged"></asp:DropDownList>
+                                               
+                                            </tr>
+                                            <tr>
+                                               
                                                 </td>
                                                 <td width="100">计划号
                                                 </td>
                                                 <td>
                                                     <asp:DropDownList ID="listPlanno" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+                                                </td>
+                                                 <td width="100">日期
+                                                </td>
+                                                <td width="100">
+                                                    <asp:TextBox ID="txtDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" AutoPostBack="true"></asp:TextBox>
                                                 </td>
                                                 <td width="100">班组
                                                 </td>
@@ -190,20 +218,7 @@
                                                     <asp:DropDownList ID="listTeam2" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td width="100">记录类型
-                                 
-                                                </td>
-                                                <td width="100">
-                                                    <asp:RadioButton ID="rd1" runat="server" Text="过程记录" GroupName="RecordStyle" onclick="$('#listTeam2').attr('disabled',false);$('#listTeam2').removeClass('disableinput');$('#txtDate').removeClass('disableinput');$('#txtDate').attr('disabled',false);" OnCheckedChanged ="rd1_CheckedChanged" AutoPostBack="true"/>
-                                                    <asp:RadioButton ID="rd2" runat="server" Text="产品总记录" GroupName="RecordStyle"  onclick="$('#listTeam2').attr('disabled',true);$('#listTeam2').addClass('disableinput');$('#txtDate').addClass('disableinput');$('#txtDate').attr('disabled',true);"  OnCheckedChanged ="rd2_CheckedChanged" AutoPostBack="true"/>
-                                                </td>
-                                                <td width="100">日期
-                                                </td>
-                                                <td width="100">
-                                                    <asp:TextBox ID="txtDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" AutoPostBack="true"></asp:TextBox>
-                                                </td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                     <div class="listtitle" style="margin-top: 10px">
@@ -237,9 +252,9 @@
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnAdd" />
+                                     <asp:AsyncPostBackTrigger ControlID="btnAdd2" />
                                     <asp:AsyncPostBackTrigger ControlID="btnView" />
-                                    <asp:AsyncPostBackTrigger ControlID ="rd2" />
-                                    <asp:AsyncPostBackTrigger ControlID ="rd1" />
+                                  
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>

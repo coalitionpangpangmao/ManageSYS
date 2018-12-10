@@ -33,6 +33,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                 <li><a href="#">设备维保管理</a></li>
                 <li><a href="#">维保计划与派工</a></li>
             </ul>
         </div>
@@ -342,7 +343,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField      HeaderText="状态">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="70px" Enabled="False" DataSource="<%# statusbind() %>" DataTextField="Name" DataValueField="ID"></asp:DropDownList>
+                                            <asp:DropDownList ID="listGrid2Status" runat="server" CssClass="drpdwnlist" Width="100px" Enabled="False" DataSource="<%# statusbind() %>" DataTextField="Name" DataValueField="ID"></asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                       <asp:BoundField    DataField="执行人" HeaderText="执行人" ControlStyle-Width="60px" />

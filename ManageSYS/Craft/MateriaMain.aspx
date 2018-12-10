@@ -6,19 +6,50 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>物料管理</title>
-    <link href="../css/style.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
-    <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
-    <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
-    <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
+    <link href="/ManageSYS/css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/ManageSYS/js/jquery.js"></script>
+    <link rel="stylesheet" href="/ManageSYS/js/jquery-treeview/jquery.treeview.css" />
+    <link rel="stylesheet" href="/ManageSYS/js/jquery-treeview/screen.css" />
+    <script type="text/javascript" src="/ManageSYS/js/jquery-treeview/jquery.cookie.js"></script>
+    <script src="/ManageSYS/js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
+
 
     <script type="text/javascript">
+       
         $(document).ready(function () {
             initTree();
-           
-        });
-        function initTree() {
+        });    
+       
+        function initTree() {            
+            $.ajax({
+                type: "POST",
+                url: "../Response/TreeviewDataHandler.ashx",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    "table": 'ht_pub_mattree',
+                    "idSeg": 'mattree_code',
+                    "textSeg": 'mattree_name',
+                    "rootSeg": 'PARENT_CODE',
+                    "roottext": "",
+                    "childtable": 'ht_pub_mattree',
+                    "childrootseg": 'PARENT_CODE',
+                    "childidseg": 'mattree_code',
+                    "childtextseg": 'mattree_name',
+                    "type": 'source',
+                }),
+                dataType: "text",
+                success: function (result) {
+                    $('#treeContainer').empty();
+                    $('#treeContainer').html(result);//这儿可以替换异步取数据函数
+                    toggleTree();
+                },
+                error: function (message) {
+                    $("#request-process-patent").html("从服务器获取数据失败！");
+                }
+            });
+        }
+        function toggleTree()
+        {
             $("#browser").treeview({
                 toggle: function () {
                     console.log("%s was toggled.", $(this).find(">span").text());
@@ -26,7 +57,64 @@
                 persist: "cookie",
                 collapsed: true
             });
+            $("li").bind("click", function (e) {
+                var target = event.target;
+
+                if ($(target).hasClass("collapsable-hitarea"))
+                {
+                    $(target).removeClass("expandable-hitarea");
+                    var haschild = $(target).next().attr('hasChild');
+                    var hasDone = $(target).next().attr('hasDone');
+              //  if (hasDone == "True") return;
+                if (haschild == 'True') {
+                    var id =  $(target).next().attr('value');
+                    var ele =  $(target).next().next();
+                    $.ajax({
+                        type: "POST",
+                        url: "../Response/TreeviewDataHandler.ashx",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({
+                            "table": 'ht_pub_mattree',
+                            "idSeg": 'mattree_code',
+                            "textSeg": 'mattree_name',
+                            "rootSeg": 'PARENT_CODE',
+                            "roottext": id,
+                            "childtable": 'ht_pub_mattree',
+                            "childrootseg": 'PARENT_CODE',
+                            "childidseg": 'mattree_code',
+                            "childtextseg": 'mattree_name',
+                            "type": 'root'
+                        }),
+                        dataType: "text",
+                        success: function (result) {
+                            ele.replaceWith(result);//这儿可以替换异步取数据函数
+                            $("#browser").treeview();
+                            $(".folder").bind("click", function () {
+
+                                $('#hdcode').val($(this).attr('value'));
+                                $('#btnUpdate1').click();
+                                $('.folder').removeClass("selectedbold");
+                                $('.file').removeClass("selectedbold");
+                                $(this).addClass("selectedbold");
+                            });
+
+                            $(".file").click(function () {
+                                $('.folder').removeClass("selectedbold");
+                                $('.file').removeClass("selectedbold");
+                                $(this).addClass("selectedbold");
+                            });
+                           
+                        },
+                        error: function (message) {
+                            $("#request-process-patent").html("从服务器获取数据失败！");
+                        }
+                    });
+                }
+                }
+               
+            });
             $(".folder").bind("click", function () {
+               
                 $('#hdcode').val($(this).attr('value'));
                 $('#btnUpdate1').click();
                 $('.folder').removeClass("selectedbold");
@@ -45,11 +133,6 @@
             var y = $("#gridPanel").scrollTop();
             $("#hideY").val(y);
         }
-
-      
-           
-        
-       
     </script>
 </head>
 <body>
@@ -71,7 +154,7 @@
                         <asp:HiddenField ID="hideY" runat="server" />
                         <div class="leftinfo" id="gridPanel"  onscroll="saveScroll()">
                             <div class="listtitle">物料分类</div>
-                            <% = tvHtml %>
+                          <div id ="treeContainer"></div>
                         </div>
                     </ContentTemplate>
                     <Triggers>

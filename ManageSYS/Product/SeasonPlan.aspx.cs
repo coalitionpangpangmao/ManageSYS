@@ -11,19 +11,19 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-    
-            base.PageLoad(sender, e);
-            if (!IsPostBack)
-            {
 
-                bindGrid1();
-            }
+        base.PageLoad(sender, e);
+        if (!IsPostBack)
+        {
+
+            bindGrid1();
+        }
 
     }
 
     protected void bindGrid1()
     {
-        string query = "select g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g4.total as 计划总产量,'吨' as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g  left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' left join (select sum(s.total_output) as total,r.id from ht_prod_season_plan r left join ht_prod_season_plan_detail s on s.quarter_plan_id = r.id  and s.is_del = '0' where r.is_del = '0' group by r.id) g4 on g4.id = g.id where g.is_del = '0'";
+        string query = "select distinct g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g4.total as 计划总产量,'吨' as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g  left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' left join (select sum(s.total_output) as total,r.id from ht_prod_season_plan r left join ht_prod_season_plan_detail s on s.quarter_plan_id = r.id  and s.is_del = '0' where r.is_del = '0' group by r.id) g4 on g4.id = g.id where g.is_del = '0'";
         if (txtYears.Text != "")
             query += " and g.plan_year = '" + txtYears.Text + "'";
         if (listSeason.SelectedValue != "")
@@ -52,7 +52,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                     ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
                     ((Button)GridView1.Rows[i].FindControl("btnGridEdit")).Text = "编制计划";
                 }
-              
+
 
             }
         }
@@ -68,48 +68,93 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         if (Regex.IsMatch(planID, @"^[+-]?/d*$"))
             hidePlanID.Value = planID;
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
-        string query = "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
+        string query = "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value + "order by r.id"; ;
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.UpDateOra("delete from ht_prod_season_plan_Detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
+        if (data != null)
+            datagrid2Bind(data.Tables[0]);
+    }
+
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
+            hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        foreach (GridViewRow row in GridView2.Rows)
+        {
+            if (!(((TextBox)row.FindControl("txtAmount1")).Text == "" && ((TextBox)row.FindControl("txtAmount2")).Text == "" && ((TextBox)row.FindControl("txtAmount3")).Text == ""))
+            {
+                if (((TextBox)row.FindControl("txtAmount1")).Text == "")
+                    ((TextBox)row.FindControl("txtAmount1")).Text = "0";
+                if (((TextBox)row.FindControl("txtAmount2")).Text == "")
+                    ((TextBox)row.FindControl("txtAmount2")).Text = "0";
+                if (((TextBox)row.FindControl("txtAmount3")).Text == "")
+                    ((TextBox)row.FindControl("txtAmount3")).Text = "0";
+                ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
+                string[] seg = { "QUARTER_PLAN_ID", "ID", "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL" };
+                string[] value = { hidePlanID.Value, GridView2.DataKeys[row.RowIndex].Value.ToString(), ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, "0" };
+                opt.MergeInto(seg, value, 2, "ht_prod_season_plan_Detail");
+            }
+
+        }
+
+        string mtr_code = opt.GetSegValue("select seasondt_id_seq.nextval  as id from dual", "id");
+        string[] subseg = { "QUARTER_PLAN_ID", "ID", "IS_VALID" };
+        string[] subvalue = { hidePlanID.Value, mtr_code, "0" };
+        opt.MergeInto(subseg, subvalue, 2, "ht_prod_season_plan_Detail");
+
+
+
+
+        string query = "select  r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value + "order by r.id";
+
+        DataSet set = opt.CreateDataSetOra(query);
+
+        if (set != null)
+        {
+            datagrid2Bind(set.Tables[0]);
+        }
+
+
+    }
+
+    protected void datagrid2Bind(DataTable data)
+    {
         GridView2.DataSource = data;
         GridView2.DataBind();
-        if (data != null && data.Tables[0].Rows.Count > 0)
+        if (data != null && data.Rows.Count > 0)
         {
-           
-            switch(listSeason2.SelectedValue)
-            { 
+            switch (listSeason2.SelectedValue)
+            {
                 case "1":
-                 GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>1月份</td><td width='90px'> 2月份 </td> <td width='90px'>3月份</td></tr></table>";
+                    GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px' align='center'>1月份</td><td width='90px' align='center'> 2月份 </td> <td width='90px' align='center'>3月份</td></tr></table>";
                     break;
                 case "2":
-                     GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>4月份</td><td width='90px'> 5月份 </td> <td width='90px'>6月份</td></tr></table>";
+                    GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px' align='center'>4月份</td><td width='90px' align='center'> 5月份 </td> <td width='90px' align='center'>6月份</td></tr></table>";
                     break;
-                      case "3":
-                     GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>7月份</td><td width='90px'> 8月份 </td> <td width='90px'>9月份</td></tr></table>";
+                case "3":
+                    GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px' align='center'>7月份</td><td width='90px' align='center'> 8月份 </td> <td width='90px' align='center'>9月份</td></tr></table>";
                     break;
-                      case "4":
-                     GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>10月份</td><td width='90px'> 11月份 </td> <td width='90px'>12月份</td></tr></table>";
+                case "4":
+                    GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px' align='center'>10月份</td><td width='90px' align='center'> 11月份 </td> <td width='90px' align='center'>12月份</td></tr></table>";
                     break;
-                default:break;
+                default: break;
             }
-  
             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
-                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                DataRowView mydrv = data.DefaultView[i];
                 ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划数量"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtAmount1")).Text = mydrv["month1"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtAmount2")).Text = mydrv["month2"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtAmount3")).Text = mydrv["month3"].ToString();
 
-
             }
-
         }
-
     }
-
     public DataSet ddlbind()
     {
         string sqlstr = "select prod_name as 产品规格,prod_code from ht_pub_prod_design where is_valid = '1' and is_del  = '0' order by Prod_code DESC";
@@ -146,8 +191,8 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         Button btn = (Button)sender;
         int rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;
-        string id = GridView1.DataKeys[rowindex].Value.ToString();       
-      
+        string id = GridView1.DataKeys[rowindex].Value.ToString();
+
         List<String> commandlist = new List<String>();
         commandlist.Add("update ht_prod_Season_plan set IS_DEL = '1'  where ID = '" + id + "'");
         commandlist.Add("update ht_prod_season_plan_detail set is_del = '1' where QUARTER_PLAN_ID =  '" + id + "'");
@@ -166,7 +211,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         if (GridView2.Columns.Count == 6)
         {
             GridView2.Columns[4].Visible = status;
-            GridView2.Columns[5].Visible = status;          
+            GridView2.Columns[5].Visible = status;
         }
     }
     protected void btnGridEdit_Click(object sender, EventArgs e)//编制计划
@@ -176,7 +221,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string id = GridView1.DataKeys[Rowindex].Value.ToString();
         txtYear.Text = GridView1.Rows[Rowindex].Cells[2].Text;
         listSeason2.SelectedValue = GridView1.Rows[Rowindex].Cells[3].Text;
-       
+
         string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
         bindGrid2(id);
         if (aprvstatus == "未提交")
@@ -230,67 +275,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         }
     }
 
-    protected void btnAdd_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
-                hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-            string query =  "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value;
 
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet set = opt.CreateDataSetOra(query);
-            DataTable data = new DataTable();
-            if (set == null)
-            {
-                data.Columns.Add("产品");
-                data.Columns.Add("计划数量");
-                data.Columns.Add("month1");
-                data.Columns.Add("month2");
-                data.Columns.Add("month3");
-                data.Columns.Add("id");
-            }
-            else
-                data = set.Tables[0];
-            object[] value = { "", 0, 0, 0, 0, 0 };
-            data.Rows.Add(value);
-            GridView2.DataSource = data;
-            GridView2.DataBind();
-            if (data != null && data.Rows.Count > 0)
-            {
-                switch (listSeason2.SelectedValue)
-                {
-                    case "1":
-                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>1月份</td><td width='90px'> 2月份 </td> <td width='90px'>3月份</td></tr></table>";
-                        break;
-                    case "2":
-                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>4月份</td><td width='90px'> 5月份 </td> <td width='90px'>6月份</td></tr></table>";
-                        break;
-                    case "3":
-                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>7月份</td><td width='90px'> 8月份 </td> <td width='90px'>9月份</td></tr></table>";
-                        break;
-                    case "4":
-                        GridView2.HeaderRow.Cells[3].Text = "<table width='270px' align='center'><tr><td colspan='3' align='center'>生产月份</td></tr> <tr><td width='90px'>10月份</td><td width='90px'> 11月份 </td> <td width='90px'>12月份</td></tr></table>";
-                        break;
-                    default: break;
-                }
-                for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
-                {
-                    DataRowView mydrv = data.DefaultView[i];
-                    ((DropDownList)GridView2.Rows[i].FindControl("listProd")).SelectedValue = mydrv["产品"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划数量"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtAmount1")).Text = mydrv["month1"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtAmount2")).Text = mydrv["month2"].ToString();
-                    ((TextBox)GridView2.Rows[i].FindControl("txtAmount3")).Text = mydrv["month3"].ToString();
-
-                }
-            }
-        }
-        catch (Exception ee)
-        {
-            string str = ee.Message;
-        }
-    }
 
     protected void btnModify_Click(object sender, EventArgs e)
     {
@@ -300,8 +285,8 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         opt.UpDateOra("delete from  HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'");
         string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
-         string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新增季度生产计划成功" : "新增季度生产计划失败";      
-        log_message += "--详情:" + string.Join(",",value);
+        string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新增季度生产计划成功" : "新增季度生产计划失败";
+        log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
         hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");
         bindGrid1();
@@ -380,31 +365,27 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
             if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                 hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-            string query = "select * from ht_prod_season_plan_Detail where QUARTER_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'";
+
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra(query);
+
             string log_message;
-            ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
-            if (data != null && data.Tables[0].Rows.Count > 0)
+
+            if (!(((TextBox)row.FindControl("txtAmount1")).Text == "" && ((TextBox)row.FindControl("txtAmount2")).Text == "" && ((TextBox)row.FindControl("txtAmount3")).Text == ""))
             {
-                string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL" };
-                string[] value = { ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, "0" };
-                
-                 log_message = opt.UpDateData(seg, value, "ht_prod_season_plan_Detail", " where QUARTER_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'")== "Success" ? "更新季度生产计划明细成功" : "更新季度生产计划明细失败";
+                if (((TextBox)row.FindControl("txtAmount1")).Text == "")
+                    ((TextBox)row.FindControl("txtAmount1")).Text = "0";
+                if (((TextBox)row.FindControl("txtAmount2")).Text == "")
+                    ((TextBox)row.FindControl("txtAmount2")).Text = "0";
+                if (((TextBox)row.FindControl("txtAmount3")).Text == "")
+                    ((TextBox)row.FindControl("txtAmount3")).Text = "0";
+                ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
+                string[] seg = { "QUARTER_PLAN_ID", "ID", "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL", "IS_VALID" };
+                string[] value = { hidePlanID.Value, GridView2.DataKeys[row.RowIndex].Value.ToString(), ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, "0", "1" };
+
+                log_message = opt.MergeInto(seg, value, 2, "ht_prod_season_plan_Detail") == "Success" ? "保存季度生产计划明细成功" : "保存季度生产计划明细失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
-     
-            }
-
-            else
-            {
-                string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "QUARTER_PLAN_ID" };
-                string[] value = { ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, hidePlanID.Value };
-
-                log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新增季度生产计划明细成功" : "新增季度生产计划明细失败";
-                log_message += "--详情:" + string.Join(",", value);
-                InsertTlog(log_message);
-            }
+            }    
             bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)
@@ -418,43 +399,39 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         {
             foreach (GridViewRow row in GridView2.Rows)
             {
-               
+
                 int Rowindex = row.RowIndex;//获得行号             
                 string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
                 if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
                     hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-                string query = "select * from ht_prod_season_plan_Detail where QUARTER_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'";
+
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                DataSet data = opt.CreateDataSetOra(query);
+
                 string log_message;
-                ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
-                if (data != null && data.Tables[0].Rows.Count > 0)
+                if (!(((TextBox)row.FindControl("txtAmount1")).Text == "" && ((TextBox)row.FindControl("txtAmount2")).Text == "" && ((TextBox)row.FindControl("txtAmount3")).Text == ""))
                 {
-                    string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL" };
-                    string[] value = { ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, "0" };
+                    if (((TextBox)row.FindControl("txtAmount1")).Text == "")
+                        ((TextBox)row.FindControl("txtAmount1")).Text = "0";
+                    if (((TextBox)row.FindControl("txtAmount2")).Text == "")
+                        ((TextBox)row.FindControl("txtAmount2")).Text = "0";
+                    if (((TextBox)row.FindControl("txtAmount3")).Text == "")
+                        ((TextBox)row.FindControl("txtAmount3")).Text = "0";
+                    ((TextBox)row.FindControl("txtOutput")).Text = (Convert.ToDouble(((TextBox)row.FindControl("txtAmount1")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount2")).Text) + Convert.ToDouble(((TextBox)row.FindControl("txtAmount3")).Text)).ToString("0.000");
+                    string[] seg = { "QUARTER_PLAN_ID", "ID", "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "IS_DEL", "IS_VALID" };
+                    string[] value = { hidePlanID.Value, GridView2.DataKeys[row.RowIndex].Value.ToString(), ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, "0", "1" };
 
-                    log_message = opt.UpDateData(seg, value, "ht_prod_season_plan_Detail", " where QUARTER_PLAN_ID = " + hidePlanID.Value + " and id = '" + mtr_code + "'") == "Success" ? "更新季度生产计划明细成功" : "更新季度生产计划明细失败";
+                    log_message = opt.MergeInto(seg, value, 2, "ht_prod_season_plan_Detail") == "Success" ? "保存季度生产计划明细成功" : "保存季度生产计划明细失败";
                     log_message += "--详情:" + string.Join(",", value);
                     InsertTlog(log_message);
-
-                }
-
-                else
-                {
-                    string[] seg = { "prod_code", "TOTAL_OUTPUT", "plan_output_1", "plan_output_2", "plan_output_3", "QUARTER_PLAN_ID" };
-                    string[] value = { ((DropDownList)row.FindControl("listProd")).SelectedValue, ((TextBox)row.FindControl("txtOutput")).Text, ((TextBox)row.FindControl("txtAmount1")).Text, ((TextBox)row.FindControl("txtAmount2")).Text, ((TextBox)row.FindControl("txtAmount3")).Text, hidePlanID.Value };
-
-                    log_message = opt.InsertData(seg, value, "ht_prod_season_plan_Detail") == "Success" ? "新增季度生产计划明细成功" : "新增季度生产计划明细失败";
-                    log_message += "--详情:" + string.Join(",", value);
-                    InsertTlog(log_message);
-                }
-                bindGrid2(hidePlanID.Value);
+                }    
+              
             }
+            bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)
         {
             Response.Write(ee.Message);
         }
     }
-    
+
 }

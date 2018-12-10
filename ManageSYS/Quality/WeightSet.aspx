@@ -17,7 +17,8 @@
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
-            <li><a href="#">质量管理</a></li>
+            <li><a href="#">质量评估与分析</a></li>
+            <li><a href="#">管理与配置</a></li>
             <li><a href="#">考核权重设置</a></li>
         </ul>
     </div>

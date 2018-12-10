@@ -33,6 +33,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">设备管理</a></li>
+                <li><a href="#">设备润滑管理</a></li>
                 <li><a href="#">润滑计划与派工</a></li>
             </ul>
         </div>

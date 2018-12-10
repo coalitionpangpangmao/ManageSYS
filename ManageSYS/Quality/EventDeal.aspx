@@ -17,7 +17,8 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">质量评估</a></li>
+                <li><a href="#">质量评估与分析</a></li>
+                 <li><a href="#">工艺事件管理</a></li>
                 <li><a href="#">工艺事件处理</a></li>
             </ul>
         </div>
@@ -70,7 +71,7 @@
                                  <asp:BoundField    HeaderText="班组" DataField="team_name" />
                                 <asp:TemplateField      HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="处理中"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="60px" Text="处理中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="操作">
@@ -129,7 +130,7 @@
                                  <asp:BoundField    DataField="unit" HeaderText="单位" />
                                 <asp:TemplateField      HeaderText="状态">
                                     <ItemTemplate>
-                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="70px" Text="处理中"> </asp:Label>
+                                        <asp:Label runat="server" ID="labStatus" CssClass="labstatuGreen" Width="60px" Text="处理中"> </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                  <asp:BoundField    DataField="minus_score" HeaderText="扣分" />

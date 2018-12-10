@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StorageMaterIn.aspx.cs" Inherits="Product_StorageMaterOut" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StorageMaterIn.aspx.cs" Inherits="Product_StorageMaterIn" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -278,7 +278,7 @@
 
                                     <asp:TemplateField   HeaderText="类型">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_name" DataTextField="mattree_name">
+                                            <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_code" DataTextField="mattree_name">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>

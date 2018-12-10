@@ -42,7 +42,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">生产管理</a></li>
-                <li><a href="#">生产报表</a></li>
+                <li><a href="#">生产统计表</a></li>
             </ul>
         </div>
 

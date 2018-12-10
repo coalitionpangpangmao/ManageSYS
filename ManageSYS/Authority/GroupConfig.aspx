@@ -28,7 +28,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">权限管理</a></li>
-                <li><a href="#">权限配置</a></li>
+                <li><a href="#">角色管理</a></li>
             </ul>
         </div>
         <div class="formbody">

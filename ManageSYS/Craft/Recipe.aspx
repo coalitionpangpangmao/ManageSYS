@@ -37,8 +37,8 @@
                 $('#hdcode2').attr('value', code);
                 $('#hdcode3').attr('value', code);
                 $('#btnUpdateList').click();
-              
-               
+
+
             });
             $(".file").click(function () {
                 $('.folder').removeClass("selectedbold");
@@ -175,7 +175,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnCkAll" />
                             <asp:AsyncPostBackTrigger ControlID="btnDel" />
                             <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
-                            <asp:AsyncPostBackTrigger ControlID ="GridViewAll" />
+                            <asp:AsyncPostBackTrigger ControlID="GridViewAll" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -279,7 +279,7 @@
                                             <Triggers>
                                                 <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
                                                 <asp:AsyncPostBackTrigger ControlID="btnAddR1" />
-                                                <asp:AsyncPostBackTrigger ControlID ="btnUpdateList" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
                                             </Triggers>
                                         </asp:UpdatePanel>
                                     </div>
@@ -288,7 +288,15 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="margin-top: 10px">
+                                <div id="usuals1" class="usual">
+                                    <div class="itab">
+                                        <ul>
+                                            <li><a href="#tab5" id="tabtop5">长梗原料配方</a></li>
+                                            <li><a href="#tab6" id="tabtop6">碎片原料配方</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div id="tab5" class="tabson">
                                     <div class="listtitle">
                                         配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd1" runat="server"
                                             CssClass="btnadd  auth" Text="新增" OnClick="btnAdd1_Click" />
@@ -301,7 +309,7 @@
                                         <asp:UpdatePanel ID="UpdatePanel1_2" runat="server" UpdateMode="Conditional">
                                             <ContentTemplate>
 
-                                                <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
+                                                <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="ID" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="9">
                                                     <Columns>
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
@@ -310,8 +318,7 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料分类">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged"
-                                                                    AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_name" DataTextField="mattree_name">
+                                                                <asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind("0202")%>' DataValueField="mattree_code" DataTextField="mattree_name">
                                                                 </asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
@@ -377,8 +384,102 @@
                                                 <asp:AsyncPostBackTrigger ControlID="GridView1" />
                                                 <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
                                                 <asp:AsyncPostBackTrigger ControlID="btnGridSave1" />
-                                                  <asp:AsyncPostBackTrigger ControlID ="btnUpdateList" />
-                                                <asp:AsyncPostBackTrigger ControlID ="btnDelSel1" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnDelSel1" />
+                                            </Triggers>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                </div>
+                                <div id="tab6" class="tabson">
+                                    <div class="listtitle">
+                                        配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd1_2" runat="server"
+                                            CssClass="btnadd  auth" Text="新增" OnClick="btnAdd1_2_Click" />
+                                            <asp:Button ID="btnCkAll1_2" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll1_2_Click" />
+                                            <asp:Button ID="btnDelSel1_2" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel1_2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                            <asp:Button ID="btnGridSave1_2" class="btnmodify  auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave1_2_Click" />
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <asp:UpdatePanel ID="UpdatePanel1_3" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+
+                                                <asp:GridView ID="GridView1_2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="ID" OnPageIndexChanging="GridView1_2_PageIndexChanging" PageSize="9">
+                                                    <Columns>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="chk" runat="server" />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="物料分类">
+                                                            <ItemTemplate>
+                                                                <asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind("0204")%>' DataValueField="mattree_code" DataTextField="mattree_name">
+                                                                </asp:DropDownList>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="物料名称" SortExpression="物料名称">
+                                                            <ItemTemplate>
+                                                                <asp:DropDownList ID="listGridName1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName1_SelectedIndexChanged" AutoPostBack="True" Width="300px">
+                                                                </asp:DropDownList>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="物料编码" SortExpression="物料编码">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
+                                                                    CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="批投料量" SortExpression="批投料量">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtAmountM" runat="server" DataValueField="批投料量" DataTextField="批投料量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                                    CssClass="tbinput"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="优先组" SortExpression="优先组">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtGroupM" runat="server" DataValueField="优先组" DataTextField="优先组"
+                                                                    CssClass="tbinput"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:Button ID="btnSave1_2" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave1_2_Click" />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:Button ID="btnDel1_2" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDel1_2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                    <HeaderStyle CssClass="gridheader" />
+                                                    <RowStyle CssClass="gridrow" />
+                                                    <AlternatingRowStyle CssClass="gridalterrow" />
+                                                    <PagerStyle CssClass="gridpager" />
+                                                    <PagerTemplate>
+                                                        <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                                        <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                                        <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                                        <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                                        <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                                        到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                                        页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+                                                    </PagerTemplate>
+                                                </asp:GridView>
+
+                                            </ContentTemplate>
+                                            <Triggers>
+                                                <asp:AsyncPostBackTrigger ControlID="btnAdd1_2" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnCkAll1_2" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                                                <asp:AsyncPostBackTrigger ControlID="GridView1_2" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnUpdate1" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnGridSave1_2" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnDelSel1_2" />
                                             </Triggers>
                                         </asp:UpdatePanel>
                                     </div>
@@ -488,7 +589,7 @@
                                                 <Triggers>
                                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate2" />
                                                     <asp:AsyncPostBackTrigger ControlID="btnAddR2" />
-                                                      <asp:AsyncPostBackTrigger ControlID ="btnUpdateList" />
+                                                    <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
                                                 </Triggers>
                                             </asp:UpdatePanel>
                                         </div>
@@ -497,91 +598,184 @@
                             </tr>
                         </table>
 
-
-                        <div class="listtitle">
-                            配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2" runat="server"
-                                CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" />
-                                <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
-                                <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                                <asp:Button ID="btnGridSave2" class="btnmodify auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave2_Click" />
-                            </span>
+                        <div id="usualc" class="usual">
+                            <div class="itab">
+                                <ul>
+                                    <li><a href="#tab7" id="tabtop7">回填液配方</a></li>
+                                    <li><a href="#tab8" id="tabtop8">料液配方</a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div>
-                            <asp:UpdatePanel ID="UpdatePanel2_1" runat="server" UpdateMode="Conditional">
-                                <ContentTemplate>
-                                    <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="9">
-                                        <Columns>
-                                            <asp:TemplateField>
-                                                <ItemTemplate>
-                                                    <asp:CheckBox ID="chk" runat="server" />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="香料种类">
-                                                <ItemTemplate>
-                                                    <asp:DropDownList ID="listGridName2" runat="server" CssClass="drpdwnlist" DataSource='<%# gridHTYbind()%>' DataValueField="material_code" DataTextField="material_name" AutoPostBack="true" OnSelectedIndexChanged="listGirdName2_SelectedIndexChanged"></asp:DropDownList>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="香料编码" SortExpression="物料编码">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
-                                                        CssClass="tbinput1" Enabled="False"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
+                        <div id="tab7" class="tabson">
+                            <div class="listtitle">
+                                配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2" runat="server"
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" />
+                                    <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
+                                    <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                    <asp:Button ID="btnGridSave2" class="btnmodify auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave2_Click" />
+                                </span>
+                            </div>
+                            <div>
+                                <asp:UpdatePanel ID="UpdatePanel2_1" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView2_PageIndexChanging" PageSize="9" DataKeyNames="ID">
+                                            <Columns>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chk" runat="server" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="回填液类型">
+                                                    <ItemTemplate>
+                                                        <asp:DropDownList ID="listGridName2"  runat="server" CssClass ="drpdwnlist" DataSource='<%# gridHTYbind("0410,0401,0402,0407")%>' DataValueField="material_code" DataTextField="material_name" AutoPostBack="true" OnSelectedIndexChanged="listGirdName2_SelectedIndexChanged"></asp:DropDownList>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="回填液编码" SortExpression="物料编码">
+                                                    <ItemTemplate>
+                                                        <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
+                                                            CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="比例%">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例" onkeyup="value=value.replace(/[^\d\.]/g,'')"
-                                                        CssClass="tbinput"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="每罐调配所需">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需" onkeyup="value=value.replace(/[^\d\.]/g,'')"
-                                                        CssClass="tbinput"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField>
-                                                <ItemTemplate>
-                                                    <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave2_Click" />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField>
-                                                <ItemTemplate>
-                                                    <asp:Button ID="btnDel2" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                        <HeaderStyle CssClass="gridheader" />
-                                        <RowStyle CssClass="gridrow" />
-                                        <AlternatingRowStyle CssClass="gridalterrow" />
-                                        <PagerStyle CssClass="gridpager" />
-                                        <PagerTemplate>
-                                            <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
-                                            <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
-                                            <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
-                                            <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
-                                            <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
-                                            到第
+                                                <asp:TemplateField HeaderText="比例%">
+                                                    <ItemTemplate>
+                                                        <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="每罐调配所需">
+                                                    <ItemTemplate>
+                                                        <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave2_Click" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:Button ID="btnDel2" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                            <HeaderStyle CssClass="gridheader" />
+                                            <RowStyle CssClass="gridrow" />
+                                            <AlternatingRowStyle CssClass="gridalterrow" />
+                                            <PagerStyle CssClass="gridpager" />
+                                            <PagerTemplate>
+                                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                                到第
                                 <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
-                                            页  
+                                                页  
              <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
                  CommandName="Page" Text="跳转" />
-                                        </PagerTemplate>
-                                    </asp:GridView>
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnAdd2" />
-                                    <asp:AsyncPostBackTrigger ControlID="btnCkAll2" />
-                                    <asp:AsyncPostBackTrigger ControlID="btnDelSel2" />
-                                    <asp:AsyncPostBackTrigger ControlID="btnModify2" />
-                                    <asp:AsyncPostBackTrigger ControlID="GridView2" />
-                                    <asp:AsyncPostBackTrigger ControlID="btnUpdate2" />
-                                    <asp:AsyncPostBackTrigger ControlID="btnGridSave2" />
-                                      <asp:AsyncPostBackTrigger ControlID ="btnUpdateList" />
-                                </Triggers>
-                            </asp:UpdatePanel>
+                                            </PagerTemplate>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="btnAdd2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnCkAll2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnDelSel2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnModify2" />
+                                        <asp:AsyncPostBackTrigger ControlID="GridView2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnUpdate2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnGridSave2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
+                            </div>
                         </div>
+                        <div id="tab8" class="tabson">
+                            <div class="listtitle">
+                                配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2_2" runat="server"
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_2_Click" />
+                                    <asp:Button ID="btnCkAll2_2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_2_Click" />
+                                    <asp:Button ID="btnDelSel2_2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                    <asp:Button ID="btnGridSave2_2" class="btnmodify auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave2_2_Click" />
+                                </span>
+                            </div>
+                            <div>
+                                <asp:UpdatePanel ID="UpdatePanel2_2" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="GridView2_2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView2_2_PageIndexChanging" PageSize="9" DataKeyNames="ID">
+                                            <Columns>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chk" runat="server" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="料液名称">
+                                                    <ItemTemplate>
+                                                        <asp:DropDownList ID="listGridName2" runat="server" CssClass="drpdwnlist" DataSource='<%# gridHTYbind("0408,0409")%>' DataValueField="material_code" DataTextField="material_name" AutoPostBack="true" OnSelectedIndexChanged="listGirdName2_SelectedIndexChanged"></asp:DropDownList>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="料液编码" SortExpression="物料编码">
+                                                    <ItemTemplate>
+                                                        <asp:TextBox ID="txtCodeM" runat="server" DataValueField="物料编码" DataTextField="物料编码"
+                                                            CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
 
+                                                <asp:TemplateField HeaderText="比例%">
+                                                    <ItemTemplate>
+                                                        <asp:TextBox ID="txtScale" runat="server" DataValueField="比例" DataTextField="比例" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="每罐调配所需">
+                                                    <ItemTemplate>
+                                                        <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:Button ID="btnSave2_2" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave2_2_Click" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:Button ID="btnDel2_2" runat="server" Text="删除" CssClass="btn1 auth" OnClick="btnDel2_2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                            <HeaderStyle CssClass="gridheader" />
+                                            <RowStyle CssClass="gridrow" />
+                                            <AlternatingRowStyle CssClass="gridalterrow" />
+                                            <PagerStyle CssClass="gridpager" />
+                                            <PagerTemplate>
+                                                <asp:Label ID="lblPage" runat="server" Text='<%# "第" + (((GridView)Container.NamingContainer).PageIndex + 1)  + "页/共" + (((GridView)Container.NamingContainer).PageCount) + "页" %> ' Width="120px"></asp:Label>
+                                                <asp:LinkButton ID="lbnFirst" runat="Server" Text="首页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="First"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbnPrev" runat="server" Text="上一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != 0 %>' CommandName="Page" CommandArgument="Prev"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbnNext" runat="Server" Text="下一页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Next"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbnLast" runat="Server" Text="尾页" Enabled='<%# ((GridView)Container.NamingContainer).PageIndex != (((GridView)Container.NamingContainer).PageCount - 1) %>' CommandName="Page" CommandArgument="Last"></asp:LinkButton>
+                                                到第
+                                <asp:TextBox ID="txtNewPageIndex" runat="server" Width="20px" Text='<%# ((GridView)Container.Parent.Parent).PageIndex + 1 %>' />
+                                                页  
+             <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-2"
+                 CommandName="Page" Text="跳转" />
+                                            </PagerTemplate>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="btnAdd2_2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnCkAll2_2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnDelSel2_2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnModify2" />
+                                        <asp:AsyncPostBackTrigger ControlID="GridView2_2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnUpdate2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnGridSave2_2" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -686,7 +880,7 @@
                                                 <Triggers>
                                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate3" />
                                                     <asp:AsyncPostBackTrigger ControlID="btnAddR3" />
-                                                      <asp:AsyncPostBackTrigger ControlID ="btnUpdateList" />
+                                                    <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
                                                 </Triggers>
                                             </asp:UpdatePanel>
                                         </div>
@@ -707,7 +901,7 @@
                         <div>
                             <asp:UpdatePanel ID="UpdatePanel3_1" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
-                                    <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView3_PageIndexChanging" PageSize="9">
+                                    <asp:GridView ID="GridView3" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False" OnPageIndexChanging="GridView3_PageIndexChanging" PageSize="9" DataKeyNames="ID">
                                         <Columns>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
@@ -716,7 +910,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="香料种类">
                                                 <ItemTemplate>
-                                                    <asp:DropDownList ID="listGridName3" runat="server" CssClass="drpdwnlist" DataSource='<%# gridXJXLbind()%>' DataValueField="material_code" DataTextField="material_name" AutoPostBack="true" OnSelectedIndexChanged="listGirdName3_SelectedIndexChanged"></asp:DropDownList>
+                                                    <asp:DropDownList ID="listGridName3" runat="server" CssClass="drpdwnlist" DataSource='<%# gridHTYbind("0410")%>' DataValueField="material_code" DataTextField="material_name" AutoPostBack="true" OnSelectedIndexChanged="listGirdName3_SelectedIndexChanged"></asp:DropDownList>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="香料编码" SortExpression="物料编码">
@@ -775,7 +969,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="GridView3" />
                                     <asp:AsyncPostBackTrigger ControlID="btnUpdate3" />
                                     <asp:AsyncPostBackTrigger ControlID="btnGridSave3" />
-                                      <asp:AsyncPostBackTrigger ControlID ="btnUpdateList" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnUpdateList" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
@@ -807,6 +1001,8 @@
         <!--mainright end-->
         <script type="text/javascript">
             $("#usual1 ul").idTabs();
+            $("#usuals1 ul").idTabs();
+            $("#usualc ul").idTabs();
         </script>
 
     </form>

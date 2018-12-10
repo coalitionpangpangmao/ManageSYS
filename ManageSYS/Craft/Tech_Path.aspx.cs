@@ -231,6 +231,8 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 DataRowView mydrv = data.DefaultView[k];
                 ((TextBox)GridView1.Rows[k].FindControl("txt_Pathname")).Text = mydrv["路径名称"].ToString();
                 ((TextBox)GridView1.Rows[k].FindControl("txt_Pathcode")).Text = mydrv["路径编码"].ToString();
+                ((TextBox)GridView1.Rows[k].FindControl("txt_Pathname")).Width =250;
+                ((TextBox)GridView1.Rows[k].FindControl("txt_Pathcode")).Width =80;
                 ((TextBox)GridView1.Rows[k].FindControl("txt_Pathcode")).Enabled = false;
                 for (int j = 2; j < data.Columns.Count - 2; j++)
                 {
@@ -263,7 +265,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             customField = new TemplateField();
             customField.ShowHeader = true;
             customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "路径名称", "");
-            customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "Pathname", "TextBox");
+            customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "Pathname", "TextBox");           
             ViewState["txt_Pathname"] = true;
             GridView1.Columns.Add(customField);
             /////增加路径编码

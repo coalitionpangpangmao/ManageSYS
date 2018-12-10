@@ -23,6 +23,7 @@
             <span>位置:</span>
             <ul class="placeul">
                 <li><a href="#">质量分析与评估</a></li>
+                <li><a href="#">在线数据评估</a></li>     
                 <li><a href="#">趋势图分析</a></li>
             </ul>
         </div>
