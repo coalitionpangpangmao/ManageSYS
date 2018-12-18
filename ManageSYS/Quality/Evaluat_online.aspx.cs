@@ -61,7 +61,7 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
 
         StringBuilder str = new StringBuilder();
-        str.Append(" <table class = 'reporttable'>");
+        str.Append(" <table  id = 'Msysexport'  class = 'reporttable'>");
         str.Append("<thead>  <tr><th colspan ='4'> 鑫源再造梗丝线在线评测报告</th></tr></thead>");
         str.Append("<tbody>");
         str.Append(" <tr><th  width ='25%'>产品名称</th><td >");
@@ -140,7 +140,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
         }
         str.Append(" </table>");
         htmltable = str.ToString();
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "showreport", "   $('#tabtop2').parent().show(); $('#tabtop2').click();$('#btnPrint').show();", true);
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "showreport", "   $('#tabtop2').parent().show(); $('#tabtop2').click();$('#btnPrint').show();$('#btnExport').show();", true);
 
 
     } 

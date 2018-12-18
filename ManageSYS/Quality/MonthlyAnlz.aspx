@@ -30,9 +30,8 @@
                         CssClass="dfinput1"></asp:TextBox>
                         <asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" Width="80px">
                         </asp:DropDownList>
-                        <asp:Button ID="btnSearch" runat="server" CssClass="btnview" Text="查询" OnClick="btnSearch_Click" />
-                        &nbsp;&nbsp;
-                    <asp:Button ID="btnExport" runat="server" Text="导出" CssClass="btnpatch auth" />
+                        <asp:Button ID="btnSearch" runat="server" CssClass="btnview" Text="查询" OnClick="btnSearch_Click" />                  
+                  
                     </td>
                 </tr>
                 <tr>

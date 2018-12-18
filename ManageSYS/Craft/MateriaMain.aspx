@@ -6,12 +6,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>物料管理</title>
-    <link href="/ManageSYS/css/style.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="/ManageSYS/js/jquery.js"></script>
-    <link rel="stylesheet" href="/ManageSYS/js/jquery-treeview/jquery.treeview.css" />
-    <link rel="stylesheet" href="/ManageSYS/js/jquery-treeview/screen.css" />
-    <script type="text/javascript" src="/ManageSYS/js/jquery-treeview/jquery.cookie.js"></script>
-    <script src="/ManageSYS/js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
+    <link rel="stylesheet" href="../js/jquery-treeview/screen.css" />
+    <script type="text/javascript" src="../js/jquery-treeview/jquery.cookie.js"></script>
+    <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
 
 
     <script type="text/javascript">

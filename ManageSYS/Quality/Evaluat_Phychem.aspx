@@ -11,33 +11,16 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script type ="text/javascript" src ="../js/jquery.PrintArea.js"></script>
-    
+      <script type="text/javascript" src="../js/msys/export.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tabtop2').parent().hide();
             $('#tabtop3').parent().hide();
             $('#btnPrint').hide();
+            $('#btnExport').hide();
         });   
-        function html2Excel(Area) {
-            try {
-                var oRangeRef = document.body.createTextRange();
-                oRangeRef.moveToElementText(document.getElementById(Area));
-                //oRangeRef.select();
-                oRangeRef.execCommand("Copy");
-
-                var oXL = new ActiveXObject("Excel.Application");
-                var oWB = oXL.Workbooks.Add;
-                var oSheet = oWB.ActiveSheet;
-                oSheet.Paste();
-                oXL.Visible = true;
-                oSheet = null;
-                oWB = null;
-                oXL = null;
-            } catch (e) {
-                alert(e.description)
-            }
-        }
+    
     </script>
 </head>
 <body>
@@ -62,10 +45,10 @@
                         onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp; 
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input id="btnPrint" type="button" value="打印" class ="btnpatch"  onclick ="$('#report').printArea();"/>
-                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <input id="btnExport" type="button" value="导出" class ="btnset"  onclick ="javascript: html2Excel('report');"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input id="btnExport" type="button" value="导出" class ="btnset"  onclick ="MSYS_Export('Msysexport');"/>
                         </td>
 
                     </tr>
@@ -75,7 +58,7 @@
                 <div class="itab">
                     <ul>
                         <li><a href="#tab1" class="selected" id="tabtop1">产品理化得分</a></li>
-                        <li><a href="#tab2" id="tabtop2">产品检测报告</a><span onclick="$('#tabtop1').click();$('#tabtop2').parent().hide();"></span></li>
+                        <li><a href="#tab2" id="tabtop2">产品检测报告</a><span onclick="$('#tabtop1').click();$('#tabtop2').parent().hide(); $('#btnPrint').hide(); $('#btnExport').hide();"></span></li>
                         <li><a href="#tab3" id="tabtop3">检测得分详情</a><span onclick="$('#tabtop1').click();$('#tabtop3').parent().hide(); "></span></li>
                     </ul>
                 </div>

@@ -32,8 +32,8 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
             query += " and t.STATUS  > '1' ";
         else
             query += " and t.Status  = '1' ";
-     
-     //      query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
+
+        //      query += " and t.TEAM_CODE = '" + ((MSYS.Data.SysUser)Session["User"]).TeamCode + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
@@ -81,7 +81,7 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
             txtCode.Text = ID;
             listEq.SelectedValue = row["EQUIPMENT_ID"].ToString();
             txtOpttime.Text = row["EXE_TIME"].ToString();
-            listOptor.SelectedValue = row["RESPONER"].ToString();
+            listOptor.SelectedValue = ((MSYS.Data.SysUser)Session["User"]).id;
             listArea.SelectedValue = row["MECH_AREA"].ToString();
             string ftid = row["FAULT_ID"].ToString();           
             fillFalutData(ftid);

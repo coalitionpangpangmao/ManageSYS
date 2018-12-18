@@ -155,8 +155,7 @@
                 </div>
             </div>
         </div>
-        <div id="tab2" class="tabson">
-            <div class="framelist">
+        <div id="tab2" class="tabson">           
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="listtitle">
@@ -227,7 +226,7 @@
                         </div>
                         
                         <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
-                            DataKeyNames="ID">
+                            DataKeyNames="ID" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
                             <Columns>
                                 <asp:TemplateField     >
                                     <ItemTemplate>
@@ -241,7 +240,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField      HeaderText="设备名称">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" Width ="180px">
+                                        <asp:DropDownList ID="listGridEq" runat="server" CssClass="drpdwnlist" Width ="250px">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -304,8 +303,7 @@
                              <asp:AsyncPostBackTrigger ControlID ="btnDone" />
                     <asp:AsyncPostBackTrigger ControlID = "btnGridNew" />
                     </Triggers>
-                </asp:UpdatePanel>
-            </div>
+                </asp:UpdatePanel>        
         </div>
         <div class="aprvinfo" id="flowinfo">
             <div class="tiptop">
@@ -326,7 +324,7 @@
         </div>
         <div id = "dspcthor"  class = "userbox">
          <div class="tiptop">
-                <span>请选择任务执行人员</span><a onclick="$('#dspcthor').hide()"></a></div>
+                <span>请选择任务执行班组</span><a onclick="$('#dspcthor').hide()"></a></div>
                  <div class="flowinfo">
             <asp:DropDownList ID="listdspcth" runat="server" CssClass = "drpdwnlist">
             </asp:DropDownList>

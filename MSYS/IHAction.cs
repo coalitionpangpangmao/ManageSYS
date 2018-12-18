@@ -17,14 +17,13 @@ namespace MSYS
             public TimeSegType type;//BEGIN 只有任务头，END 只有任务尾，BOTH 头尾都有，ALL生产进行中
             public string planno;
             public string nodecode;
-            public TimeSeg(string a, string b, TimeSegType c, string d, string e)
+            public TimeSeg(string btime, string etime, TimeSegType type, string planno, string paracode)
             {
-                this.starttime = a;
-                this.endtime = b;
-                this.type = c;
-                this.planno = d;
-                this.nodecode = e;
-
+                this.starttime = btime;
+                this.endtime = etime;
+                this.type = type;
+                this.planno = planno;
+                this.nodecode = paracode;
             }
         };
         public struct Gaptime
@@ -257,7 +256,7 @@ namespace MSYS
 
         public TimeSeg GetTimeSeg(string btime, string etime, string nodeid, string planno)//显示一段时间内某一任务号某一批次数据对应时间段    
         {
-            TimeSeg seg;
+            TimeSeg seg = new TimeSeg();
             seg.starttime = btime;
             seg.endtime = etime;
             seg.nodecode = nodeid;
@@ -293,6 +292,45 @@ namespace MSYS
                 seg.type = TimeSegType.ALL;
             }
 
+            return seg;
+        }
+        public TimeSeg GetTimeSegP(string btime, string etime, string nodeid, string prodcode)//显示一段时间内某一任务号某产品数据对应时间段    
+        {
+            TimeSeg seg = new TimeSeg();
+            seg.starttime = btime;
+            seg.endtime = etime;
+            seg.nodecode = nodeid;          
+            DbOperator opt = new DbOperator();
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and  endtime between '" + btime + "' and '" + etime + "' order by rstime";
+            DataSet data = opt.CreateDataSetOra(query);
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                seg.planno = data.Tables[0].Rows[0]["PLANNO"].ToString();
+                if (data.Tables[0].Rows.Count == 1)
+                {
+                    if (data.Tables[0].Rows[0]["tag"].ToString() == "e")
+                    {
+                        seg.endtime = data.Tables[0].Rows[0]["rstime"].ToString();
+                        seg.type = TimeSegType.END;
+                    }
+                    else
+                    {
+                        seg.starttime = data.Tables[0].Rows[0]["rstime"].ToString();
+                        seg.type = TimeSegType.BEGIN;
+                    }
+                }
+                else
+                {
+                    seg.starttime = data.Tables[0].Rows[0]["rstime"].ToString();
+                    seg.endtime = data.Tables[0].Rows[1]["rstime"].ToString();
+                    seg.type = TimeSegType.BOTH;
+                }
+
+            }
+            else
+            {
+                seg.type = TimeSegType.ALL;
+            }
             return seg;
         }
 
@@ -335,10 +373,12 @@ namespace MSYS
             }
             return gaplist;
         }
+
         public List<Gaptime> gaptimes()
         {
             return gaptime;
         }
+
         public List<ParaRes> GetIHOrgDataSet(TimeSeg seg)
         {
             #region    read collection condtion

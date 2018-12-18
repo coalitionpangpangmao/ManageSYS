@@ -97,9 +97,17 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
                 DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listParaName");
                 opt.bindDropDownList(list, "select case when length(r.para_name) <8 then s.eq_name||r.para_name else r.para_name end as para_name,r.para_code  from HT_PUB_TECH_PARA r left join ht_eq_eqp_tbl s on s.idkey = r.equip_code  where  r.para_type like '______1%' and r.is_del = '0' and substr(r.PARA_CODE,1,5) = '" + section + "'", "PARA_NAME", "PARA_CODE");
                 list.SelectedValue = mydrv["参数编码"].ToString();
+                if (list.SelectedValue == "")
+                    list.Enabled = true;
+                else
+                    list.Enabled = false;
                 ((TextBox)GridView1.Rows[i].FindControl("txtLower")).Text = mydrv["下限"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtUpper")).Text = mydrv["上限"].ToString();
                 ((DropDownList)GridView1.Rows[i].FindControl("listtype")).SelectedValue = mydrv["考核类型"].ToString();
+                if (mydrv["考核类型"].ToString() == "")
+                    ((DropDownList)GridView1.Rows[i].FindControl("listtype")).Enabled = true;
+                else
+                    ((DropDownList)GridView1.Rows[i].FindControl("listtype")).Enabled = false;
                 ((TextBox)GridView1.Rows[i].FindControl("txtScore")).Text = mydrv["超限扣分"].ToString();
                 ((TextBox)GridView1.Rows[i].FindControl("txtDscrptM")).Text = mydrv["备注"].ToString();
 
@@ -111,7 +119,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
     protected DataSet typebind()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select * from ht_inner_qlt_type order by ID ");
+        return opt.CreateDataSetOra("select ID,NAME from ht_inner_qlt_type union select '','' from dual order by ID ");
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
@@ -140,7 +148,7 @@ public partial class Quality_QualitySet : MSYS.Web.BasePage
             data.Columns.Add("超限扣分");
             data.Columns.Add("备注");
         }
-        object[] value = { "", 0, 0, "1", 0, "" };
+        object[] value = { "", 0, 0, "", 0, "" };
         data.Rows.Add(value);
 
         bindgrid(data, hideprc.Value);

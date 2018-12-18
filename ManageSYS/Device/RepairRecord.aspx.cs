@@ -43,7 +43,7 @@ public partial class Device_RepairRecord : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
-        GridView1.DataBind();      
+        GridView1.DataBind();     
 
     }
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -114,7 +114,6 @@ public partial class Device_RepairRecord : MSYS.Web.BasePage
         //得到新的值
         theGrid.PageIndex = newPageIndex;
         //重新绑定
-
         bindGrid();
     }
 

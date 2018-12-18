@@ -11,13 +11,14 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script type ="text/javascript" src ="../js/jquery.PrintArea.js"></script>
-    
+      <script type="text/javascript" src="../js/msys/export.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tabtop2').parent().hide();
             $('#tabtop3').parent().hide();
             $('#btnPrint').hide();
+            $('#btnExport').hide();
         });
 
 
@@ -45,9 +46,10 @@
                         onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp; 
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input id="btnPrint" type="button" value="打印" class ="btnpatch"  onclick ="$('#report').printArea();"/>
-                           
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input id="btnExport" type="button" value="导出" class ="btnset"  onclick ="MSYS_Export('Msysexport');"/>
                         </td>
 
                     </tr>
@@ -57,7 +59,7 @@
                 <div class="itab">
                     <ul>
                         <li><a href="#tab1" class="selected" id="tabtop1">感观评测得分</a></li>
-                        <li><a href="#tab2" id="tabtop2">感观评测报告</a><span onclick="$('#tabtop1').click();$('#tabtop2').parent().hide();"></span></li>
+                        <li><a href="#tab2" id="tabtop2">感观评测报告</a><span onclick="$('#tabtop1').click();$('#tabtop2').parent().hide(); $('#btnPrint').hide(); $('#btnExport').hide();"></span></li>
                         <li><a href="#tab3" id="tabtop3">得分详情</a><span onclick="$('#tabtop1').click();$('#tabtop3').parent().hide(); "></span></li>
                     </ul>
                 </div>

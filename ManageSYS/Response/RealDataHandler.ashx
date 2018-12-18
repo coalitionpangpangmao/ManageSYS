@@ -97,7 +97,8 @@ public class RealDataHandler : IHttpHandler
               //   MSYS.IHDataOpt ihopt = new MSYS.IHDataOpt();
                //  DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
                 MSYS.IHAction ihopt = new MSYS.IHAction();
-                List<MSYS.IHAction.ParaInfo> Rows = ihopt.GetData(starttime, endtime, point);
+                MSYS.IHAction.TimeSeg seg = ihopt.GetTimeSegP(starttime, endtime, point, prodcode);
+                List<MSYS.IHAction.ParaRes> Rows = ihopt.GetIHOrgDataSet(seg);
                  if (Rows != null)
                  {
                      datainfo.xAxis = new List<string>();
@@ -107,10 +108,13 @@ public class RealDataHandler : IHttpHandler
                      //    datainfo.xAxis.Add(Convert.ToDateTime(srow[0].ToString()).ToString("HH:mm"));
                      //    datainfo.yAxis.Add(Convert.ToDouble(srow[1].ToString()));
                      //}
-                     foreach (MSYS.IHAction.ParaInfo srow in Rows)
+                     foreach (MSYS.IHAction.ParaRes srow in Rows)
                      {
-                         datainfo.xAxis.Add(Convert.ToDateTime(srow.timestamp).ToString("HH:mm"));
-                         datainfo.yAxis.Add(srow.value);
+                         if (srow.status == "过程值")
+                         {
+                             datainfo.xAxis.Add(Convert.ToDateTime(srow.timestamp).ToString("HH:mm"));
+                             datainfo.yAxis.Add(srow.value);
+                         }
                      }
                      datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
                  }
@@ -124,7 +128,9 @@ public class RealDataHandler : IHttpHandler
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //query prod_code
         string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
-        return getData(prodcode, PostedData.point,PostedData.startTime,PostedData.stopTime);
+        if (prodcode != "NoRecord")
+            return getData(prodcode, PostedData.point, PostedData.startTime, PostedData.stopTime);
+        else return new ResponseData();
      
     }
 

@@ -169,11 +169,15 @@
 
                                                 <asp:TemplateField HeaderText="参数名" SortExpression="参数名">
                                                     <ItemTemplate>
-                                                        <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="220px">
+                                                        <asp:DropDownList ID="listParaName" runat="server" CssClass="drpdwnlist" Width="250px">
                                                         </asp:DropDownList>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-
+                                                  <asp:TemplateField HeaderText="考核类型" SortExpression="考核类型">
+                                                    <ItemTemplate>
+                                                        <asp:DropDownList ID="listtype" runat="server" DataSource="<%#typebind() %>" DataValueField="ID" DataTextField="NAME" CssClass="drpdwnlist" Width="80px"></asp:DropDownList>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="下限">
                                                     <ItemTemplate>
                                                         <asp:TextBox ID="txtLower" runat="server" DataValueField="下限" DataTextField="下限"
@@ -186,11 +190,7 @@
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="考核类型" SortExpression="考核类型">
-                                                    <ItemTemplate>
-                                                        <asp:DropDownList ID="listtype" runat="server" DataSource="<%#typebind() %>" DataValueField="ID" DataTextField="NAME" CssClass="drpdwnlist" Width="80px"></asp:DropDownList>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
+                                              
                                                 <asp:TemplateField HeaderText="超限扣分">
                                                     <ItemTemplate>
                                                         <asp:TextBox ID="txtScore" runat="server" DataValueField="超限扣分" DataTextField="超限扣分"

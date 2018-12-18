@@ -22,6 +22,7 @@ namespace MSYS.Data
             this.UserRoleID = string.Empty;
             UserRights = new SysRightCollection();
             this.UserRole = string.Empty;
+            this.TeamCode = string.Empty;
         }
         //
         // 摘要:
@@ -76,7 +77,7 @@ namespace MSYS.Data
         //     获取所属角色ID
         public SysRightCollection UserRights { get; set; }
         //
-
+        public string TeamCode { get; set; }
 
         // 摘要:
         //     获取指定登陆名称的用户信息
@@ -99,7 +100,7 @@ namespace MSYS.Data
             this.OwningBusinessUnitId = sysUserRow["LEVELGROUPID"].ToString();
             this.UserRoleID = sysUserRow["ROLE"].ToString();
             this.UserRole = sysUserRow["F_ROLE"].ToString();
-           
+            this.TeamCode = sysUserRow["TEAM_CODE"].ToString();
             DbOperator opt = new DbOperator();
              if (this.UserRoleID == "")
             {
