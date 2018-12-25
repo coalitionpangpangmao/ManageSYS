@@ -61,8 +61,8 @@ var app = new Vue({
     url:"../Response/getSchedule.ashx",
     dataType:"json",
     data:{
-    start_time:start_time,
-    end_time:end_time
+        start_time:start_time,
+        end_time:end_time
     }
 }).then((res)=>{
     this.dates = res.data;
@@ -86,14 +86,14 @@ return false;
 console.log(dates);
 }).catch((err)=>{console.log(err.message);});
 },
-        getTitles() {
+getTitles() {
     console.log("getTitles is running");
-            axios({
-                url: "../Response/Inspect.ashx",
-    method: "post",
-}).then((res) => {
-    this.title = res.data.titles;
-console.log(this.title);
+    axios({
+        url: "../Response/Inspect.ashx",
+        method: "post",
+    }).then((res) => {
+        this.title = res.data.titles;
+    console.log(this.title);
 }).catch((err) => {
     console.log(err.message);
 });
@@ -119,8 +119,8 @@ show(dindex){
     time.value="1990-01-01";
     time.value = this.dates[dindex][0];
     setTimeout(()=>{time.value=this.dates[dindex][0];}, 100);
-    //document.getElementById("query").click();
-    tab.click();
+//document.getElementById("query").click();
+tab.click();
 },
 saveAll(){
     console.log(this.dates.length);
@@ -134,7 +134,7 @@ saveAll(){
     }
 this.changed=[];
 setTimeout(this.getRows.bind(this),500);
-    //this.getRows();
+//this.getRows();
 
 },
 
@@ -159,28 +159,28 @@ if(isUpdated){
     this.rows.forEach((val)=>{
         if(val[0]==this.dates[rindex][0] && val[2] == this.dates[rindex][4]){
         recordId = val[val.length-2];        
-    }
-    });
+}
+});
 }
 console.log("isupdate"+isUpdated.toString());
-    axios({
-        method:"post",
-        url:"../Response/InspectSave.ashx",
-        dataType:"json",
-        data:{
-            data:tempData,
-            inspectID:this.id,
-            count:this.id.length,
-            isUpdate:isUpdated?1:0,
-            dates:this.dates[rindex],
-            prod:document.getElementById("prod_code").value,
-            createId:document.getElementById("listEditor").value,
-            recordId:recordId
-        }
-    }).then((res)=>{
-        if(all === false){
-            this.getRows();
-        }
+axios({
+    method:"post",
+    url:"../Response/InspectSave.ashx",
+    dataType:"json",
+    data:{
+        data:tempData,
+        inspectID:this.id,
+        count:this.id.length,
+        isUpdate:isUpdated?1:0,
+        dates:this.dates[rindex],
+        prod:document.getElementById("prod_code").value,
+        createId:document.getElementById("listEditor").value,
+        recordId:recordId
+    }
+}).then((res)=>{
+    if(all === false){
+        this.getRows();
+}
 }).catch((err)=>{console.log(err.message);});
 },
 add(dindex){
@@ -200,11 +200,11 @@ getRows() {
     let prod_code = document.getElementById("prod_code"); 
     let team_code = document.getElementById("team_code");
     let schedule_time = document.getElementById("schedule_time");
-   /* console.log(start_time.value);
-    console.log(end_time.value);
-    console.log(prod_code.value);
-    console.log(team_code.value);
-    console.log(schedule_time.value) */
+    /* console.log(start_time.value);
+     console.log(end_time.value);
+     console.log(prod_code.value);
+     console.log(team_code.value);
+     console.log(schedule_time.value) */
     this.team="";
     if(team_code.value=="01"){
         this.team = "甲班";
@@ -216,9 +216,9 @@ getRows() {
         this.team="丙班"
     }
 
-        this.dates=[];
-       // getAll(start_time.value, end_time.value, this.dates);
-        this.getSchedule(start_time.value, end_time.value, this.dates, team_code, schedule_time);
+    this.dates=[];
+    // getAll(start_time.value, end_time.value, this.dates);
+    this.getSchedule(start_time.value, end_time.value, this.dates, team_code, schedule_time);
 
     console.log(this.dates);
     axios({
@@ -234,10 +234,10 @@ getRows() {
     }).then((res) => {
         this.rowsDates = res.data.rows.map(function(ele){return ele[0].toString();});
     this.prod = prod_code.options[prod_code.selectedIndex].text;
-console.log(this.rowsDates);
-this.rows = res.data.rows;
-console.log(this.rowsDates.indexOf("2018-10-02"));
-        console.log(this.rows[0]);
+    console.log(this.rowsDates);
+    this.rows = res.data.rows;
+    console.log(this.rowsDates.indexOf("2018-10-02"));
+    console.log(this.rows[0]);
     console.log(this.rows);
 }).catch((err) => {
     console.log(err.message);

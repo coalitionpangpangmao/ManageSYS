@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
-public partial class Product_StorageMaterIn : MSYS.Web.BasePage
+public partial class Product_StorageCoatIn : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -14,9 +14,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         if (!IsPostBack)
         {
             initView();
-
         }
-
     }
     protected void initView()
     {
@@ -35,8 +33,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     #region tab1
     protected void bindGrid1()
     {
-        string query = "select distinct g.out_date as 领退日期,r.strg_name as 出入库类型，g.issue_status as 出入库状态,g.order_sn as 单据号 ,g.batchnum as 投料批次,b.prod_name as 产品,g.CABOSUM as 烟梗总量,g.PEICESSUM as 碎片总量,s.name as 审批状态,h.name as 编制人,j.name as 收发人  from ht_strg_materia g  left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id left join ht_prod_month_plan_detail a on a.plan_no = g.monthplanno left join ht_pub_prod_design b on a.prod_code = b.prod_code where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and g.IS_DEL = '0' and g.strg_type = '1'  order by g.order_sn";
-        
+        string query = "select distinct g.out_date as 领退日期,r.strg_name as 出入库类型，g.issue_status as 出入库状态,g.order_sn as 单据号 ,g.batchnum as 投料批次,b.prod_name as 产品,g.CABOSUM as 回填液总量,g.PEICESSUM as 料液总量,s.name as 审批状态,h.name as 编制人,j.name as 收发人  from HT_STRG_COAT g  left join HT_INNER_BOOL_DISPLAY r on r.id = g.strg_type left join ht_inner_Aprv_status s on s.id = g.audit_mark left join ht_svr_user h on h.id = g.creator_id left join ht_svr_user j on j.id = g.issuer_id left join ht_prod_month_plan_detail a on a.plan_no = g.monthplanno left join ht_pub_prod_design b on a.prod_code = b.prod_code where g.out_date between '" + txtStart.Text + "' and '" + txtStop.Text + "'  and g.IS_DEL = '0' and g.strg_type = '1'  order by g.order_sn";       
        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -169,7 +166,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             if (MSYS.AprvFlow.createApproval(subvalue))
             {
-                opt.UpDateOra("update HT_STRG_MATERIA set AUDIT_MARK = '0'  where ORDER_SN = '" + id + "'");
+                opt.UpDateOra("update HT_STRG_COAT set AUDIT_MARK = '0'  where ORDER_SN = '" + id + "'");
             }
             bindGrid1();
         }
@@ -190,7 +187,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         if (aprv == "己通过")
         {
             List<string> commandlist = new List<string>();
-            commandlist.Add("update HT_STRG_MATERIA set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'");
+            commandlist.Add("update HT_STRG_COAT set ISSUE_STATUS = '1'  where ORDER_SN = '" + id + "'");
            // commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and MATER_STATUS = '1'");
             MSYS.Web.StorageOpt st = new MSYS.Web.StorageOpt();
             ////调用接口，变更库存////
@@ -216,7 +213,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         txtCode.Text = GridView1.DataKeys[rowIndex].Value.ToString();
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select * from HT_STRG_MATERIA  where ORDER_SN =  '" + txtCode.Text + "'");
+        DataSet data = opt.CreateDataSetOra("select * from HT_STRG_COAT  where ORDER_SN =  '" + txtCode.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             txtPrdctdate.Text = data.Tables[0].Rows[0]["OUT_DATE"].ToString();
@@ -278,7 +275,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
             {
                 commandlist.Clear();
                 string order_sn = GridView1.DataKeys[i].Value.ToString();
-                commandlist.Add("delete from  HT_STRG_MATERIA  where ORDER_SN = '" + order_sn + "'");
+                commandlist.Add("delete from  HT_STRG_COAT  where ORDER_SN = '" + order_sn + "'");
                 commandlist.Add("delete from ht_pub_aprv_flowinfo where BUSIN_ID = '" + order_sn + "'");
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除出入库计划成功" : "删除出入库计划失败";
                 log_message += "--标识:" + order_sn;
@@ -292,7 +289,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     {
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "SC" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SC" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
@@ -301,10 +298,12 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", " $('#tabtop2').click();", true);
         // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
     }
-    protected DataSet gridTypebind()
+    protected DataSet gridHTYbind(String code)
     {
+        string s1_1 = code.Replace(",", "','"); //返回结果为：1','2','3','4','5','6
+        code = string.Format("'{0}'", s1_1);
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        return opt.CreateDataSetOra("select mattree_name,mattree_code from ht_pub_mattree t where length(mattree_code) = 4 and parent_code = '02' and mattree_code <>'0299' union select '' as mattree_name,'' as mattree_code from dual  order by mattree_code desc");
+        return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel where substr(TYPE_CODE,1,4) in (" + code + ") or substr(material_code,1,4) in (" + code + ") and is_del = '0' union select '' as material_code, '' as material_name from dual order by material_code desc");
     }
 
     #endregion
@@ -313,7 +312,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     protected void bindGrid2()
     {
 
-        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from ht_strg_mater_sub where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
+        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from HT_STRG_COAT_SUB where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -326,12 +325,10 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
                 GridViewRow row = GridView2.Rows[i];
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
                 ((DropDownList)GridView2.Rows[i].FindControl("listGridstrg")).SelectedValue = mydrv["仓库"].ToString();
-                DropDownList list = (DropDownList)row.FindControl("listGridType");
-                list.SelectedValue = mydrv["类型"].ToString();
-                opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料'  and (substr(type_code,1,4) ='" + list.SelectedValue + "' or substr(material_code,1,4) = '" + list.SelectedValue + "')", "material_name", "material_code");
+               
                 ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
                 ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
-                ((DropDownList)GridView2.Rows[i].FindControl("listGridtype")).SelectedValue = mydrv["类型"].ToString(); ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
+                 ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridAmount")).Text = mydrv["领料量"].ToString();
             }
 
@@ -398,10 +395,10 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "RELATION_CODE", "STRG_TYPE" };
         string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, txtPlanno.Text, relationcode, "1" };
 
-            commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_MATERIA"));
-            commandlist.Add("delete from HT_STRG_MATER_SUB where MAIN_CODE = '" + txtCode.Text + "'");
+            commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_COAT"));
+            commandlist.Add("delete from HT_STRG_COAT_SUB where MAIN_CODE = '" + txtCode.Text + "'");
             //根据生产计划对应的配方明细生成原料领用明细           
-            commandlist.Add("insert into HT_STRG_MATER_SUB select strgmater_id_seq.nextval,  r.mater_code,r.storage,r.original_demand,r.real_demand,r.remark,r.unit_code,'0',r.mater_flag,'" + txtCode.Text + "','','','',r.CLS_CODE from ht_strg_mater_sub r where r.main_code = '" + relationcode + "'");
+            commandlist.Add("insert into HT_STRG_COAT_SUB select strgmater_id_seq.nextval,  r.mater_code,r.storage,r.original_demand,r.real_demand,r.remark,r.unit_code,'0',r.mater_flag,'" + txtCode.Text + "','','','',r.CLS_CODE from HT_STRG_COAT_SUB r where r.main_code = '" + relationcode + "'");
             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成原料领用主表记录成功" : "生成原料领用主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
@@ -437,7 +434,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
             if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
             {
                 string ID = GridView2.DataKeys[i].Value.ToString();
-                string query = "update HT_STRG_MATER_SUB set IS_DEL = '1'  where ID = '" + ID + "'";
+                string query = "update HT_STRG_COAT_SUB set IS_DEL = '1'  where ID = '" + ID + "'";
                 MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                 opt.UpDateOra(query);
             }
@@ -455,7 +452,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
                 //生成领用主表记录
                 string[] seg = { "OUT_DATE", "ORDER_SN", "EXPIRED_DATE", "MODIFY_TIME", "DEPT_NAME", "DEPT_ID", "CREATOR", "CREATOR_ID", "STRG_TYPE" };
                 string[] value = { txtPrdctdate.Text, txtCode.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listApt.SelectedItem.Text, listApt.SelectedValue, "cookieName", "cookieID", "0" };
-                opt.InsertData(seg, value, "HT_STRG_MATERIA");
+                opt.InsertData(seg, value, "HT_STRG_COAT");
 
            
 
@@ -470,7 +467,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text == "")
-            txtCode.Text = "SC" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SC" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+            txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         foreach (GridViewRow row in GridView2.Rows)
         {                   
            
@@ -482,12 +479,12 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
             string[] seg = { "ID", "STORAGE", "CLS_CODE", "unit_code", "mater_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
             string[] value = { ID, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue, ((DropDownList)row.FindControl("listGridType")).SelectedValue, ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridcode")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };
 
-            string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_MATER_SUB") == "Success" ? "保存原料领退明细成功" : "保存原料领退明细失败";
+            string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_COAT_SUB") == "Success" ? "保存原料领退明细成功" : "保存原料领退明细失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
         }
         //////计算出入库单总各类型总量
-        DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from ht_strg_mater_sub t  where t.main_code = '" + txtCode.Text + "' group by  t.mater_flag");
+        DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from HT_STRG_COAT_SUB t  where t.main_code = '" + txtCode.Text + "' group by  t.mater_flag");
         if (res != null && res.Tables[0].Rows.Count > 0)
         {
             double CABOSUM = 0, PEICESSUM = 0;
@@ -502,7 +499,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
             txtChipSum.Text = PEICESSUM.ToString("0.00");
             string[] seg1 = { "ORDER_SN", "CABOSUM", "PEICESSUM" };
             string[] value1 = { txtCode.Text, txtStemSum.Text, txtChipSum.Text };
-            opt.MergeInto(seg1, value1, 1, "HT_STRG_MATERIA");
+            opt.MergeInto(seg1, value1, 1, "HT_STRG_COAT");
         }
         bindGrid2();
 
@@ -511,7 +508,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     protected void listPrdct_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listStrgOut, "select order_sn from ht_strg_materia t left join ht_prod_month_plan_detail r on r.plan_no = t.monthplanno where r.prod_code = '" + listPrdct.SelectedValue + "' and t.strg_type = '0' and t.out_date between '" + System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd HH:mm:ss") + "' and '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "order_sn", "order_sn");           
+        opt.bindDropDownList(listStrgOut, "select order_sn from HT_STRG_COAT t left join ht_prod_month_plan_detail r on r.plan_no = t.monthplanno where r.prod_code = '" + listPrdct.SelectedValue + "' and t.strg_type = '0' and t.out_date between '" + System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd HH:mm:ss") + "' and '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "order_sn", "order_sn");           
        
       
     }
@@ -519,7 +516,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-       txtPlanno.Text = opt.GetSegValue("select t.monthplanno from ht_strg_materia t where t.order_sn = '" + listStrgOut.SelectedValue + "'","monthplanno");
+       txtPlanno.Text = opt.GetSegValue("select t.monthplanno from HT_STRG_COAT t where t.order_sn = '" + listStrgOut.SelectedValue + "'","monthplanno");
 
 
     }

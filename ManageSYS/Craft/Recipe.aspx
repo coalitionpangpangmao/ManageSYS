@@ -649,6 +649,12 @@
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
+                                                 <asp:TemplateField HeaderText="每批用量">
+                                                 <ItemTemplate>
+                                                        <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave2_Click" />
@@ -731,6 +737,12 @@
                                                 <asp:TemplateField HeaderText="每罐调配所需">
                                                     <ItemTemplate>
                                                         <asp:TextBox ID="txtPercent" runat="server" DataValueField="每罐调配所需" DataTextField="每罐调配所需" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                  <asp:TemplateField HeaderText="每批用量">
+                                                 <ItemTemplate>
+                                                        <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -932,6 +944,12 @@
                                                         CssClass="tbinput"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                              <asp:TemplateField HeaderText="每批用量">
+                                                 <ItemTemplate>
+                                                        <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnSave3" runat="server" Text="保存" CssClass="btn1 auth" OnClick="btnSave3_Click" />
