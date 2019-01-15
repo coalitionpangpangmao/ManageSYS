@@ -166,7 +166,7 @@
                                                 <asp:DropDownList ID="listTechStd" runat="server" CssClass="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
-                                            <td width="110">标准值
+                                            <td width="110">产品基础分
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtValue" runat="server" class="dfinput1"></asp:TextBox>

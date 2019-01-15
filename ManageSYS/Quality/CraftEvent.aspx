@@ -57,9 +57,9 @@
                             <span style="position: relative; float: right">
                                 <asp:Button ID="btnSelAll1" runat="server" Text="全选" CssClass="btnview auth" OnClick="btnSelAll1_Click" />
                                 <asp:Button ID="btnIgnore1" runat="server" Text="忽略" CssClass="btndel auth" OnClick="btnIgnore1_Click" />
-                                <asp:Button ID="btnConfirm1" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm1_Click" />
-                                   <asp:Button ID="btnFeed1" runat="server" Text="反馈" CssClass="btnmodify auth" OnClick="btnFeed1_Click" />
-                                <asp:Button ID="btnDone1" runat="server" Text="完成" CssClass="btndone auth" OnClick="btnDone1_Click" />
+                                <asp:Button ID="btnConfirm1" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm1_Click"  />
+                                   <asp:Button ID="btnFeed1" runat="server" Text="反馈" CssClass="btnmodify auth" OnClick="btnFeed1_Click"  Visible ="false"/>
+                                <asp:Button ID="btnDone1" runat="server" Text="完成" CssClass="btndone auth" OnClick="btnDone1_Click" Visible ="false"/>
                             </span>
                         </div>
 
@@ -133,8 +133,8 @@
                                 <asp:Button ID="btnSelAll" runat="server" Text="全选" CssClass="btnview auth" OnClick="btnSelAll_Click" />
                                 <asp:Button ID="btnIgnore" runat="server" Text="忽略" CssClass="btndel auth" OnClick="btnIgnore_Click" />
                                 <asp:Button ID="btnConfirm" runat="server" Text="确认" CssClass="btnpatch auth" OnClick="btnConfirm_Click" />
-                                 <asp:Button ID="btnFeed" runat="server" Text="反馈" CssClass="btnmodify auth" OnClick="btnFeed_Click" />
-                                <asp:Button ID="btnDone" runat="server" Text="完成" CssClass="btndone auth" OnClick="btnDone_Click" />
+                                 <asp:Button ID="btnFeed" runat="server" Text="反馈" CssClass="btnmodify auth" OnClick="btnFeed_Click"  Visible ="false"/>
+                                <asp:Button ID="btnDone" runat="server" Text="完成" CssClass="btndone auth" OnClick="btnDone_Click"  Visible ="false"/>
                             </span>
                         </div>
 

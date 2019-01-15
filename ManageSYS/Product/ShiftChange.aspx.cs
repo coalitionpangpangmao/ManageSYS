@@ -176,11 +176,13 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "新生产交接班记录失败";
         log_message += ",交接班ID：" + hdID.Value;
         InsertTlog(log_message);
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
+        bindGrid1();
 
     }
     protected void btnExport_Click(object sender, EventArgs e)
     {
-        ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02", ".xls", "", DateTime.Now, false);
+        ExportExcel("再造梗丝车间交接班记录", "",txtDate.Text, "", listTeam.SelectedValue, ".xls", "", DateTime.Now, false);
 
     }
     public DataSet bindpara()

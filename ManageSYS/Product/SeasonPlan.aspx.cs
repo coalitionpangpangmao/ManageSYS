@@ -57,7 +57,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             }
         }
     }
-
+  
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         bindGrid1();
@@ -203,16 +203,18 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         InsertTlog(log_message);
         bindGrid1();
     }
-    protected void SetEnable(bool status)
+    protected void SetEnable(bool status, string adjust)
     {
         btnAdd.Visible = status;
         btnDelSel.Visible = status;
         btnGrid2Modify.Visible = status;
+        btnModify.Visible = status;
         if (GridView2.Columns.Count == 6)
         {
             GridView2.Columns[4].Visible = status;
             GridView2.Columns[5].Visible = status;
         }
+        hideAdjust.Value = adjust;
     }
     protected void btnGridEdit_Click(object sender, EventArgs e)//编制计划
     {
@@ -225,17 +227,43 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
         bindGrid2(id);
         if (aprvstatus == "未提交")
-            SetEnable(true);
+            SetEnable(true, "0");
         else
-            SetEnable(false);
+            SetEnable(false,"0");
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
 
 
     }
+    protected void btnGridAlter_Click(object sender, EventArgs e)//调整计划
+    {
+        try
+        {
+            Button btn = (Button)sender;
+            int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号  
+            string id = GridView1.DataKeys[Rowindex].Value.ToString();
+            txtYear.Text = GridView1.Rows[Rowindex].Cells[2].Text;
+            listSeason2.SelectedValue = GridView1.Rows[Rowindex].Cells[3].Text;
+
+            string aprvstatus = ((Label)GridView1.Rows[Rowindex].FindControl("labAprv")).Text;
+            bindGrid2(id);
+          
+                SetEnable(true,"1");
+           
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
+
+
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+
+        }
+        catch (Exception ee)
+        {
+            Response.Write(ee.Message);
+        }
+    }
 
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
-        SetEnable(true);
+        SetEnable(true,"0");
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
     }
 
@@ -313,19 +341,29 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         try
         {
+            List<string> commandlist = new List<string>();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string planlist = "";
             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
                 {
                     string mtr_code = GridView2.DataKeys[i].Value.ToString();
                     string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
-                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    string log_message = opt.UpDateOra(query) == "Success" ? "删除季度生产计划明细成功" : "删除季度生产计划明细失败";
-                    log_message += "--标识:" + mtr_code;
-                    InsertTlog(log_message);
-                }
+                    commandlist.Add(query);
+                    planlist += mtr_code + ",";                   
+                }   
             }
-            bindGrid2(hidePlanID.Value);
+            if (commandlist.Count > 0)
+            {
+                if (hideAdjust.Value == "1")
+                    commandlist.Add("update HT_PROD_SEASON_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
+                string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除季度生产计划明细成功" : "删除季度生产计划明细失败";
+                log_message += "--标识:" + planlist;
+                InsertTlog(log_message);
+                bindGrid2(hidePlanID.Value);
+                bindGrid1();
+            }
         }
         catch (Exception ee)
         {
@@ -337,17 +375,19 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         try
         {
+            List<string> commandlist = new List<string>();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             Button btn = (Button)sender;
             int Rowindex = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号             
             string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
-            string query = "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
-
-            string log_message = opt.UpDateOra(query) == "Success" ? "删除季度生产计划明细成功" : "删除季度生产计划明细失败";
+            commandlist.Add( "update HT_PROD_SEASON_PLAN_DETAIL set IS_DEL = '1'  where id = '" + mtr_code + "'");
+            if (hideAdjust.Value == "1")
+                commandlist.Add("update HT_PROD_SEASON_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除季度生产计划明细成功" : "删除季度生产计划明细失败";
             log_message += "--标识:" + ID;
             InsertTlog(log_message);
             bindGrid2(hidePlanID.Value);
+            bindGrid1();
         }
         catch (Exception ee)
         {
@@ -385,8 +425,11 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 log_message = opt.MergeInto(seg, value, 2, "ht_prod_season_plan_Detail") == "Success" ? "保存季度生产计划明细成功" : "保存季度生产计划明细失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
+                if (hideAdjust.Value == "1")
+                    opt.UpDateOra("update HT_PROD_SEASON_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
             }    
             bindGrid2(hidePlanID.Value);
+            bindGrid1();
         }
         catch (Exception ee)
         {
@@ -397,17 +440,13 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         try
         {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             foreach (GridViewRow row in GridView2.Rows)
             {
-
                 int Rowindex = row.RowIndex;//获得行号             
                 string mtr_code = GridView2.DataKeys[Rowindex].Value.ToString();
                 if (!Regex.IsMatch(hidePlanID.Value, @"^[+-]?/d*$"))
-                    hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);
-
-                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
-                string log_message;
+                    hidePlanID.Value = hidePlanID.Value.Substring(hidePlanID.Value.LastIndexOf(',') + 1);                string log_message;
                 if (!(((TextBox)row.FindControl("txtAmount1")).Text == "" && ((TextBox)row.FindControl("txtAmount2")).Text == "" && ((TextBox)row.FindControl("txtAmount3")).Text == ""))
                 {
                     if (((TextBox)row.FindControl("txtAmount1")).Text == "")
@@ -426,7 +465,10 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                 }    
               
             }
+            if (hideAdjust.Value == "1")
+                opt.UpDateOra("update HT_PROD_SEASON_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
             bindGrid2(hidePlanID.Value);
+            bindGrid1();
         }
         catch (Exception ee)
         {

@@ -23,24 +23,49 @@
         </div>
 
         <div class="mainbox">
-
+              <div class="listtitle">
+                        查询条件<span style="position: relative; float: right">
+                               <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
+                        </span>
+                    </div>
+              <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
             <table class="tablelist" style="margin-bottom: 5px">
                 <tbody>
                     <tr>
-                        <td colspan="7" align="center">
-                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                <ContentTemplate>
-                                    时间     
+                        <td >                          
+                                    时间  
+                            </td>
+                        <td>   
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
-                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtBtime_TextChanged" AutoPostBack="true"></asp:TextBox>至
+                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtBtime_TextChanged" AutoPostBack="true" Width ="90px"></asp:TextBox>至
                                     <asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"
-                                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtEtime_TextChanged"  AutoPostBack="true"></asp:TextBox>
-
-                                    产品：<asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
-                                    工艺段：<asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-                                    数据点：<asp:DropDownList ID="listPoint" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
-                                    &nbsp;                         
-                            <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
+                                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" OnTextChanged="txtEtime_TextChanged"  AutoPostBack="true" Width ="90px"></asp:TextBox>
+                            </td>
+                        <td>
+                                    产品：
+                            </td>
+                        <td><asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist" Width ="200px"></asp:DropDownList></td>
+                        <td>
+                                    工艺段：</td>
+                        <td><asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listSection_SelectedIndexChanged" AutoPostBack="true" Width ="200px"></asp:DropDownList>
+                                  </td></tr>
+                    <tr>
+                        <td>  批次：</td>
+                        <td><asp:DropDownList ID="listBatch" runat="server" CssClass="drpdwnlist" Width ="200px"></asp:DropDownList>
+                                                    
+                          </td>
+                        <td>  班组：</td>
+                        <td><asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" Width ="200px"></asp:DropDownList>
+                                                    
+                          </td>
+                        <td>  数据点：</td>
+                        <td><asp:DropDownList ID="listPoint" runat="server" CssClass="drpdwnlist" Width ="200px"></asp:DropDownList>
+                                                    
+                          </td>
+                    </tr>
+                </tbody>
+            </table>
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="txtBtime" />
@@ -48,10 +73,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="listSection" />
                                 </Triggers>
                             </asp:UpdatePanel>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                      
             <div>
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>

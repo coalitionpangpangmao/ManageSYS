@@ -57,6 +57,10 @@ namespace MSYS.DAL
         {
             return dboperator.ExecProcedures( procedure,  seg, value);
         }
+        public string ExecProcedures(string procedure, string[] seg, object[] value, string result)
+        {
+            return dboperator.ExecProcedures(procedure, seg, value, result);
+        }
         public string UpDateData(string[] seg, string[] value, string table, string condition)
         {
             string query = UpdateStr(seg, value, table, condition);

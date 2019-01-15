@@ -84,7 +84,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from ht_prod_month_plan_detail where is_valid = '0'");
-        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + planID + " order by plan_Sort";
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 原料状态,(case t.coat_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 回填液状态 ,(case t.FLAVOR_STATUS when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 香精香料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + planID + " order by plan_Sort";
 
        
         DataSet data = opt.CreateDataSetOra(query);
@@ -155,7 +155,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
             GridView2.Columns[11].Visible = !status;
             GridView2.Columns[12].Visible = !status;
             GridView2.Columns[13].Visible = !status;
-           
+            GridView2.Columns[14].Visible = !status;
+            GridView2.Columns[15].Visible = !status;
         }
         hideAdjust.Value = adjust;
     }
@@ -261,8 +262,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
       
         string[] seg = { "plan_no", "MONTH_PLAN_ID", "plan_Sort",  "is_del","is_valid" };
         string[] value = { mtr_code, hidePlanID.Value, order,  "0","0" };
-        opt.MergeInto(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL");  
-        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 来料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
+        opt.MergeInto(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL");
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 原料状态,(case t.coat_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 回填液状态,(case t.FLAVOR_STATUS when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 香精香料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + hidePlanID.Value + " order by plan_Sort";
        
         DataSet set = opt.CreateDataSetOra(query);
         if (set != null)
@@ -287,7 +288,9 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 ((TextBox)GridView2.Rows[i].FindControl("txtOutput")).Text = mydrv["计划产量"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtPathCode")).Text = mydrv["路径编码"].ToString();
                 ((Label)GridView2.Rows[i].FindControl("labexe")).Text = mydrv["生产状态"].ToString();
-                ((Label)GridView2.Rows[i].FindControl("labmater")).Text = mydrv["来料状态"].ToString();
+                ((Label)GridView2.Rows[i].FindControl("labmater")).Text = mydrv["原料状态"].ToString();
+                ((Label)GridView2.Rows[i].FindControl("labcoat")).Text = mydrv["回填液状态"].ToString();
+                ((Label)GridView2.Rows[i].FindControl("labflavor")).Text = mydrv["香精香料状态"].ToString();
                 if (mydrv["生产状态"].ToString() == "未下发" || mydrv["生产状态"].ToString() == "")
                 {
                     ((Button)GridView2.Rows[i].FindControl("btnGrid2Save")).Visible = true;
@@ -375,7 +378,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             if (commandlist.Count > 0)
             {
                 if (hideAdjust.Value == "1")
-                    commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+                    commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
                 string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除生产计划明细成功" : "删除生产计划明细失败";
                 log_message += "--标识:" + planlist;
                 InsertTlog(log_message);
@@ -399,7 +402,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             List<string> commandlist = new List<string>();
             commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set IS_DEL = '1'  where PLAN_NO = '" + mtr_code + "'");
             if (hideAdjust.Value == "1")
-                commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+                commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除月度生产计划明细成功" : "删除月度生产计划明细失败";
             log_message += "--标识:" + mtr_code;
             InsertTlog(log_message);
@@ -439,7 +442,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code ,"0"};
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL"));
             if (hideAdjust.Value == "1")
-                commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+                commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' ,MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
 
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "保存生产计划详情成功" : "生产计划详情失败";
             log_message += "--详情:" + string.Join(",", value);
@@ -484,7 +487,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
                     string[] value = { mtr_code, hidePlanID.Value, ((TextBox)row.FindControl("txtOrder")).Text, prod_code, ((TextBox)row.FindControl("txtOutput")).Text, path_code, "0" };
                     commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_PROD_MONTH_PLAN_DETAIL"));
                     if (hideAdjust.Value == "1")
-                        commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1' where ID = '" + hidePlanID.Value + "'");
+                        commandlist.Add("update HT_PROD_MONTH_PLAN set ADJUST_STATUS = '1',MODIFY_ID = '" + ((MSYS.Data.SysUser)Session["User"]).id + "' where ID = '" + hidePlanID.Value + "'");
 
                     string log_message = opt.TransactionCommand(commandlist) == "Success" ? "保存生产计划详情成功" : "生产计划详情失败";
                     log_message += "--详情:" + string.Join(",", value);
@@ -558,7 +561,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
            
                   List<string> commandlist = new List<string>();
           //  commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set EXE_STATUS = '4',MATER_STATUS = '1' where PLAN_NO = '" + planno + "' and EXE_STATUS = '2'");
-            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '1' where PLAN_NO = '" + planno + "' and EXE_STATUS <> '3'");
+                  commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '1',COAT_STATUS = '1',Flavor_status = '1' where PLAN_NO = '" + planno + "' and EXE_STATUS <> '3'");
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "申请物料成功" : "申请物料失败";
             log_message += "--详情:" + planno;
             InsertTlog(log_message);
@@ -584,6 +587,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
             List<string> commandlist = new List<string>();
           //  commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set EXE_STATUS = '2',MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and EXE_STATUS = '4'");
             commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '3' where PLAN_NO = '" + planno + "' and MATER_STATUS = '2'");
+            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  COAT_STATUS = '3'  where PLAN_NO = '" + planno + "' and COAT_STATUS = '2'");
+            commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  FLAVOR_STATUS = '3'  where PLAN_NO = '" + planno + "' and FLAVOR_STATUS = '2'");
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "确认到料" : "确认到料";
             log_message += "--详情:" + planno;
             InsertTlog(log_message);

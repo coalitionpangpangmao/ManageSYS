@@ -9,6 +9,8 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+     <script type="text/javascript" src="../js/jquery.PrintArea.js"></script>
+   
 
 </head>
 <body>
@@ -149,6 +151,7 @@
 
             </div>
             <div id="tab2" class="tabson">
+                <div id ="report">
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
@@ -156,7 +159,9 @@
                                 原料领用管理<span style="position: relative; float: right" class="click2">
                                    
                                     <asp:Button ID="btnReset" runat="server" Text="重置" CssClass="btnset" OnClick="btnReset_Click" />
-                                    <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
+                                    <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />
+                                       <input id="btnPrint" type="button" value="打印" class="btnpatch" onclick="$('#report').printArea();" />
+                            
                                 </span>
                             </div>
 
@@ -255,7 +260,7 @@
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
                                 领用明细<span style="position: relative; float: right">
-                                    <asp:Button ID="btnCreate" runat="server" CssClass="btnview auth" Text="按明细生成领退单"
+                                    <asp:Button ID="btnCreate" runat="server" CssClass="btnview auth" Text="按明细生成领退单" Visible ="false"
                                         OnClick="btnCreate_Click" Width="160px" />
                                     <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
@@ -339,6 +344,7 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
+                    </div>
             </div>
 
 

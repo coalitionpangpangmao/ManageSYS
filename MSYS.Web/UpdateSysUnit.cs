@@ -7,9 +7,9 @@ using System.Xml;
 using System.Collections;
 namespace MSYS.Web
 {
-    public class UpdateSysUnit : UpdateFromMaster
+    public class UpdateSysConfig : UpdateFromMaster
     {
-        public UpdateSysUnit()
+        public UpdateSysConfig()
         {
 
         }
@@ -42,9 +42,12 @@ namespace MSYS.Web
         protected override void InsertLocalFromMasterAsyn()
         {
             MSYS.Web.MateriaService.WsBaseDataInterfaceService service = new MSYS.Web.MateriaService.WsBaseDataInterfaceService();
-
             service.getUnitListCompleted += new getUnitListCompletedEventHandler(service_Completed);
             service.getUnitListAsync();
+
+            MSYS.Web.StoreService.StoreServiceInterfaceService storeservice = new StoreService.StoreServiceInterfaceService();
+
+           
 
         }
 

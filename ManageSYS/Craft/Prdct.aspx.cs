@@ -146,7 +146,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             listFla.SelectedValue = data.Tables[0].Rows[0]["FLA_FORMULA_CODE"].ToString();
             listcoat.SelectedValue = data.Tables[0].Rows[0]["Coat_FORMULA_CODE"].ToString();
             listqlt.SelectedValue = data.Tables[0].Rows[0]["QLT_CODE"].ToString();
-            txtValue.Text = data.Tables[0].Rows[0]["STANDARD_VALUE"].ToString();
+            txtValue.Text = data.Tables[0].Rows[0]["SENSOR_SCORE"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
             txtPathcode.Text = data.Tables[0].Rows[0]["PATH_CODE"].ToString();
             bindGrid4();
@@ -223,7 +223,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "FLA_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "STANDARD_VALUE", "REMARK", "CREATE_TIME", "PATH_CODE" };
+        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "FLA_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "SENSOR_SCORE", "REMARK", "CREATE_TIME", "PATH_CODE" };
         string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listFla.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text ,System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),txtPathcode.Text};
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
         log_message += ",产品信息：" + string.Join(",", value);

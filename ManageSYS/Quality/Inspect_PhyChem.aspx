@@ -27,7 +27,8 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">质量管理</a></li>
+                  <li><a href="#">质量评估与分析</a></li>
+                  <li><a href="#">离线数据评估</a></li>
                 <li><a href="#">理化检验</a></li>   
             </ul>
         </div>

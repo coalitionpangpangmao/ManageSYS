@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div id="tab2" class="tabson">
-                <div class="framelist">
+               
                     <div>
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
@@ -186,7 +186,7 @@
                                 <asp:HiddenField ID="hidePzcode" runat="server" />
                                 <asp:HiddenField ID="hideAdjust" runat="server" />
                                 <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
-                                    DataKeyNames="计划号">
+                                    DataKeyNames="计划号" HeaderStyle-Wrap="False">
                                     <Columns>
                                         <asp:TemplateField  >
                                             <ItemTemplate>
@@ -250,9 +250,19 @@
                                                 <asp:Label ID="labexe" runat="server" CssClass="labstatu" Width="60" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                          <asp:TemplateField   HeaderText="来料状态">
+                                          <asp:TemplateField   HeaderText="原料状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labmater" runat="server" CssClass="labstatu" Width="60" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField   HeaderText="回填液状态">
+                                            <ItemTemplate>
+                                                <asp:Label ID="labcoat" runat="server" CssClass="labstatu" Width="60" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                          <asp:TemplateField   HeaderText="香精香料状态">
+                                            <ItemTemplate>
+                                                <asp:Label ID="labflavor" runat="server" CssClass="labstatu" Width="60" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField  >
@@ -280,8 +290,7 @@
                                 <asp:AsyncPostBackTrigger ControlID ="btnGrid2Modify" />
                             </Triggers>
                         </asp:UpdatePanel>
-                    </div>
-                </div>
+                    </div>               
 
             </div>
 

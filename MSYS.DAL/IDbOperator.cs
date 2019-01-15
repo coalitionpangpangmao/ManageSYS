@@ -10,5 +10,6 @@ namespace MSYS.DAL
         DataSet CreateDataSet(string query);  
         string TransactionCommand(List<String> commandStringList);
         string ExecProcedures(string procedure, string[] seg, object[] value);
+        string ExecProcedures(string procedure, string[] seg, object[] value, string result);
     }
 }

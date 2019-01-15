@@ -16,7 +16,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tabtop2').parent().hide();
-            $('#tabtop3').parent().hide();
+         
             $('#btnPrint').hide();
             $('#btnExport').hide();
         });
@@ -44,13 +44,13 @@
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
                         onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp; 
+                            班组：<asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" Width ="80px"></asp:DropDownList>
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input id="btnPrint" type="button" value="打印" class ="btnpatch"  onclick ="$('#report').printArea();"/>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <input id="btnExport" type="button" value="导出" class ="btnset"  onclick ="MSYS_Export('Msysexport');"/>
                         </td>
-
                     </tr>
                 </tbody>
             </table>
@@ -67,17 +67,16 @@
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
 
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="True">
+                        <asp:GridView ID="GridView1" runat="server" class="grid" OnRowCreated ="GridView1_RowCreated" DataKeyNames="prod_code,team">
                             <Columns>
-                                <asp:TemplateField      HeaderText="操作"  HeaderStyle-Width="220px">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click" Width="100px" />
-                                      
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                <asp:TemplateField      HeaderText="操作" >                                    <ItemTemplate>
+                                        <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click" Width="100px" />  
+                                    </ItemTemplate>                                 
+                                </asp:TemplateField>                              
+                             
                             </Columns>
-                            <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
+                            <HeaderStyle CssClass="gridheader" Wrap="False" />
+                            <RowStyle CssClass="gridrow" Wrap="False" BorderStyle="Solid" BorderWidth="1px" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
                     </ContentTemplate>

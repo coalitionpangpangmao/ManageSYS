@@ -120,6 +120,11 @@
                                         <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btn1 auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除该季度生产计划吗？');" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                   <asp:TemplateField  >
+                                            <ItemTemplate>
+                                                <asp:Button ID="btnGridAlter" runat="server" Text="调整计划" class="btn1 auth" OnClick="btnGridAlter_Click" Width="75" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
@@ -130,6 +135,9 @@
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
                         <asp:AsyncPostBackTrigger ControlID="btnModify" />
                         <asp:AsyncPostBackTrigger ControlID="Gridview1" />
+                         <asp:AsyncPostBackTrigger ControlID="Gridview2" />
+                         <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
+                         <asp:AsyncPostBackTrigger ControlID="btnGrid2Modify" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
@@ -185,6 +193,7 @@
                                 </span>
                             </div>
                             <asp:HiddenField ID="hidePlanID" runat="server" />
+                             <asp:HiddenField ID="hideAdjust" runat="server" />
                             <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
                                 DataKeyNames="id">
                                 <Columns>

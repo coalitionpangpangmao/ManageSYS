@@ -151,6 +151,11 @@ public partial class Craft_Model : MSYS.Web.BasePage
                 tvHtml = InitTree();
                 opt.bindDropDownList(listSection_2, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
                 opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
+              
+                    string[] procseg = { };
+                    object[] procvalues = { };
+                    opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);
+              
                 ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('保存成功');", true);
             }
             else
@@ -174,6 +179,9 @@ public partial class Craft_Model : MSYS.Web.BasePage
             tvHtml = InitTree();
             opt.bindDropDownList(listSection_2, "select section_code,section_name from ht_pub_tech_section where is_del = '0' and is_valid = '1' order by section_code", "section_name", "section_code");
             opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
+            string[] procseg = { };
+            object[] procvalues = { };
+            opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);
             ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('删除成功');", true);
         }
         else
@@ -363,12 +371,17 @@ public partial class Craft_Model : MSYS.Web.BasePage
             type += "1";
         else
             type += "0";
+
+        if (ckProdOut.Checked)
+            type += "1";
+        else
+            type += "0";
         return type;
     }
     protected void setType(string Type)
     {
-        Type = Type.PadRight(8, '0');
-        if (Type.Length >= 8)
+        Type = Type.PadRight(9, '0');
+        if (Type.Length >= 9)
         {
             ckCenterCtrl.Checked = ("1" == Type.Substring(0, 1));
             ckRecipePara.Checked = ("1" == Type.Substring(1, 1));
@@ -378,6 +391,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
             ckEqpara.Checked = ("1" == Type.Substring(5, 1));
             ckQuaAnalyze.Checked = ("1" == Type.Substring(6, 1));
             ckCalibrate.Checked = ("1" == Type.Substring(7, 1));
+            ckProdOut.Checked = ("1" == Type.Substring(8, 1));
         }
         if (ckQuality.Checked)
             ckSetPara.Enabled = false;
@@ -386,6 +400,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
             ckSetPara.Enabled = false;
             ckQuality.Enabled = false;
         }
+        if (ckManul.Checked || ckProdOut.Checked)
+            ckSetPara.Enabled = false;
     }
     protected void btnModify_Click(object sender, EventArgs e)
     {
@@ -400,6 +416,9 @@ public partial class Craft_Model : MSYS.Web.BasePage
             {
                 log_message = "保存参数点成功";
                 tvHtml = InitTree();
+                string[] procseg = { };
+                object[] procvalues = { };
+                opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);
                 ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('保存成功');", true);
             }
             else
@@ -422,6 +441,9 @@ public partial class Craft_Model : MSYS.Web.BasePage
         {
             log_message = "删除工艺参数点成功";
             tvHtml = InitTree();
+            string[] procseg = { };
+            object[] procvalues = { };
+            opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);
             ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('删除成功');", true);
         }
         else
@@ -482,6 +504,19 @@ public partial class Craft_Model : MSYS.Web.BasePage
         }
     }
     
-    #endregion
+  
 
+    protected void ckProdOut_CheckedChanged(object sender, EventArgs e)
+    {
+        if (ckProdOut.Checked)
+        {
+            ckCenterCtrl.Checked = true;
+            ckCenterCtrl.Enabled = false;
+        }
+        else
+        {
+            ckCenterCtrl.Enabled = true;
+        }
+    }
+    #endregion
 }

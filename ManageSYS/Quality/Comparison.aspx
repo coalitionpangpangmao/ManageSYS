@@ -93,6 +93,8 @@
                 </div>
                 <div id="container" style="height: 320px; min-width: 800px; margin: 0 auto">
                 </div>
+                 <div id="statics" >
+                        </div>   
                 <!--mainright end-->
             </div>
         </div>

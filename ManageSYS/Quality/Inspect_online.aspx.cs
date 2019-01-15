@@ -25,6 +25,8 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
         opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,10) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or substr(t.endtime,1,7) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (t.starttime > '" + txtBtime.Text + "' and t.endtime < '" + txtEtime.Text + "') and t.prod_code is not null  and r.prod_name is not null", "prod_name", "prod_code");
         opt.bindDropDownList(listSection, "select section_code,section_name from ht_pub_tech_section  where is_valid = '1' and is_del = '0' order by section_code", "section_name", "section_code");
         opt.bindDropDownList(listPoint, "select para_code,para_name from ht_pub_tech_para t where  para_type like '___1%' and is_del = '0'", "para_name", "para_code");
+        opt.bindDropDownList(listBatch, "select distinct plan_id from ht_qlt_data_record t where b_time between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'", "plan_id", "plan_id");
+        opt.bindDropDownList(listTeam, "select t.team_code,t.team_name from ht_sys_team t where t.is_del = '0' order by t.team_code", "team_name", "team_code");
         bindgrid();
     }
     protected string getQuerystr()
@@ -42,14 +44,23 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
             query1 += " and t.para_code = '" + listPoint.SelectedValue + "'";
             query2 += " and t.para_code = '" + listPoint.SelectedValue + "'";
         }
-        else
+        if (listTeam.SelectedValue != "")
         {
+            query1 += " and t.team = '" + listTeam.SelectedValue + "'";
+            query2 += " and t.team = '" + listTeam.SelectedValue + "'";
+        }
+        if (listBatch.SelectedValue != "")
+        {
+            query1 += " and t.plan_id = '" + listBatch.SelectedValue + "'";
+            query2 += " and t.plan_id = '" + listBatch.SelectedValue + "'";
+        }
+        
             if (listSection.SelectedValue != "")
             {
                 query1 += " and substr(t.para_code,1,5) = '" + listSection.SelectedValue + "'";
                 query2 += " and substr(t.para_code,1,5) = '" + listSection.SelectedValue + "'";
             }
-        }
+       
 
         query1 += "group by (t.plan_id,t.para_code,t.prod_code)  ";
         query2 += ") g left join ht_pub_prod_design h on h.prod_code = g.prod_code left join ht_pub_tech_para j on j.para_code = g.para_code left join ht_sys_team k on k.team_code = g.team order by h.prod_name,j.para_name,g.e_time,k.team_name,g.count";
@@ -188,6 +199,7 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,10) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or substr(t.endtime,1,7) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (t.starttime > '" + txtBtime.Text + "' and t.endtime < '" + txtEtime.Text + "') and t.prod_code is not null and r.prod_name is not null", "prod_name", "prod_code");
+        opt.bindDropDownList(listBatch, "select distinct plan_id from ht_qlt_data_record t where b_time between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'", "plan_id", "plan_id");
     }
 
     protected void listSection_SelectedIndexChanged(object sender, EventArgs e)
@@ -199,5 +211,6 @@ public partial class Quality_Inspect_online : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listProd, "select distinct t.prod_code,r.prod_name from ht_prod_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.is_valid = '1' and r.is_del = '0' and  substr(t.starttime,1,10) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or substr(t.endtime,1,7) between '" + txtBtime.Text + "' and '" + txtEtime.Text + "' or (t.starttime > '" + txtBtime.Text + "' and t.endtime < '" + txtEtime.Text + "') and t.prod_code is not null  and r.prod_name is not null", "prod_name", "prod_code");
+        opt.bindDropDownList(listBatch, "select distinct plan_id from ht_qlt_data_record t where b_time between '" + txtBtime.Text + "' and '" + txtEtime.Text + "'", "plan_id", "plan_id");
     }
 }

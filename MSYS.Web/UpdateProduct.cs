@@ -30,29 +30,32 @@ namespace MSYS.Web
 
             foreach (productEntity prod in prods)
             {
-                commandlist.Clear();
-                string[] value = { prod.prodCode, prod.prodName, prod.packName, prod.handMode, prod.techStddId, prod.materFormulaId, prod.auxFormulaId, prod.coatFormulaId, prod.remark, prod.createorId, prod.createTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.modifyId, prod.modifyTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.standardValue, prod.xyProdCode, prod.isValid, prod.isDel };
-
-                string temp = opt.getMergeStr(matseg, value, 1, "HT_PUB_PROD_DESIGN");
-                commandlist.Add(temp);
-                if (opt.UpDateOra(temp) != "Success")
-                    System.Diagnostics.Debug.Write(temp);
-                getTechstdd_SQL(prod.techStddId, prod.prodCode); // java.math.BigInteger cannot be cast to java.lang.String
-                getMaterFormalu_SQL(prod.materFormulaId, prod.prodCode);
-                getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode); //java.math.BigDecimal cannot be cast to java.lang.Double
-                getCoatFormalu_SQL(prod.coatFormulaId, prod.prodCode);
-                if (opt.TransactionCommand(commandlist) == "Success")
+                if (prod.prodCode.Substring(0, 3) == "703")
                 {
                     commandlist.Clear();
-                    commandlist.Add("update ht_pub_prod_design t set tech_stdd_code = (select r.tech_code from ht_tech_stdd_code r where substr(t.tech_stdd_code,0,3)<>'TCH' and  r.id = to_number( t.tech_stdd_code)),mater_formula_code = (select s.formula_code from ht_qa_mater_formula s where  t.mater_formula_code is not null and  s.id = to_number( t.mater_formula_code)),aux_formula_code = (select  q.formula_code from ht_qa_aux_formula q where  t.aux_formula_code is not null and  q.id = to_number( t.aux_formula_code)),coat_formula_code = (select p.formula_code from ht_qa_coat_formula p where  t.coat_formula_code is not null and  p.id = to_number( t.coat_formula_code)) where t.prod_code = '" + prod.prodCode + "'");
-                    commandlist.Add("update ht_qa_mater_formula_detail r set formula_code = (select t.formula_code from ht_qa_mater_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.materFormulaId + "'");
-                    commandlist.Add("update ht_qa_aux_formula_detail r set formula_code = (select t.formula_code from ht_qa_aux_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.auxFormulaId + "'");
-                    commandlist.Add("update ht_qa_coat_formula_detail r set formula_code = (select t.formula_code from ht_qa_coat_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.coatFormulaId + "'");
-                    commandlist.Add("update ht_tech_stdd_code_detail r set tech_code = (select t.tech_code from ht_tech_stdd_code t where t.id = r.tech_code) where r.tech_code = '" + prod.techStddId + "'");
-                    commandlist.Add("update ht_qa_mater_formula_detail t set t.mater_flag = (select r.mat_type from ht_pub_materiel r  where r.material_code = t.mater_code)");
-                    opt.TransactionCommand(commandlist);
-                    System.Diagnostics.Debug.Write("产品更新成功" + prod.prodCode + prod.prodName);
-                    SucCount++;
+                    string[] value = { prod.prodCode, prod.prodName, prod.packName, prod.handMode, prod.techStddId, prod.materFormulaId, prod.auxFormulaId, prod.coatFormulaId, prod.remark, prod.createorId, prod.createTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.modifyId, prod.modifyTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.standardValue, prod.xyProdCode, prod.isValid, prod.isDel };
+
+                    string temp = opt.getMergeStr(matseg, value, 1, "HT_PUB_PROD_DESIGN");
+                    commandlist.Add(temp);
+                    if (opt.UpDateOra(temp) != "Success")
+                        System.Diagnostics.Debug.Write(temp);
+                    getTechstdd_SQL(prod.techStddId, prod.prodCode); // java.math.BigInteger cannot be cast to java.lang.String
+                    getMaterFormalu_SQL(prod.materFormulaId, prod.prodCode);
+                    getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode); //java.math.BigDecimal cannot be cast to java.lang.Double
+                    getCoatFormalu_SQL(prod.coatFormulaId, prod.prodCode);
+                    if (opt.TransactionCommand(commandlist) == "Success")
+                    {
+                        commandlist.Clear();
+                        commandlist.Add("update ht_pub_prod_design t set tech_stdd_code = (select r.tech_code from ht_tech_stdd_code r where substr(t.tech_stdd_code,0,3)<>'TCH' and  r.id = to_number( t.tech_stdd_code)),mater_formula_code = (select s.formula_code from ht_qa_mater_formula s where  t.mater_formula_code is not null and  s.id = to_number( t.mater_formula_code)),aux_formula_code = (select  q.formula_code from ht_qa_aux_formula q where  t.aux_formula_code is not null and  q.id = to_number( t.aux_formula_code)),coat_formula_code = (select p.formula_code from ht_qa_coat_formula p where  t.coat_formula_code is not null and  p.id = to_number( t.coat_formula_code)) where t.prod_code = '" + prod.prodCode + "'");
+                        commandlist.Add("update ht_qa_mater_formula_detail r set formula_code = (select t.formula_code from ht_qa_mater_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.materFormulaId + "'");
+                        commandlist.Add("update ht_qa_aux_formula_detail r set formula_code = (select t.formula_code from ht_qa_aux_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.auxFormulaId + "'");
+                        commandlist.Add("update ht_qa_coat_formula_detail r set formula_code = (select t.formula_code from ht_qa_coat_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.coatFormulaId + "'");
+                        commandlist.Add("update ht_tech_stdd_code_detail r set tech_code = (select t.tech_code from ht_tech_stdd_code t where t.id = r.tech_code) where r.tech_code = '" + prod.techStddId + "'");
+                        commandlist.Add("update ht_qa_mater_formula_detail t set t.mater_flag = (select r.mat_type from ht_pub_materiel r  where r.material_code = t.mater_code)");
+                        opt.TransactionCommand(commandlist);
+                        System.Diagnostics.Debug.Write("产品更新成功" + prod.prodCode + prod.prodName);
+                        SucCount++;
+                    }
                 }
 
             }
@@ -249,11 +252,11 @@ namespace MSYS.Web
                         }
                     }
                 }
-              
+
             }
             catch (Exception ee)
             {
-               
+
             }
         }
 

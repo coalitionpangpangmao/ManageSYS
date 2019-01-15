@@ -7,9 +7,7 @@ namespace MSYS.Web
 {
     public abstract class UpdateFromMaster
     {
-        protected string[] seg = null;
-        protected string rootname;
-        protected string tablename;
+      
         public UpdateFromMaster()
         {
 

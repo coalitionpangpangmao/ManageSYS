@@ -19,7 +19,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
            opt.bindDropDownList(listEditor, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
             opt.bindDropDownList(listApt, "select f_code,f_name  from ht_svr_org_group ", "f_name", "f_code");
             opt.bindDropDownList(listModel, "select pz_code,mt_name from ht_eq_mt_plan where is_model = '1' and is_del = '0' and FLOW_STATUS = '2'", "mt_name", "pz_code");
-            opt.bindDropDownList(listdspcth, "select ID,name  from ht_svr_user t where is_del ='0' and  t.levelgroupid = '00700700' union select '' as ID,'' as Name from dual ", "name", "ID");
+            opt.bindDropDownList(listdspcth, "select team_code,team_name from ht_sys_team t where t.is_del = '0'  order by team_code  ", "team_name", "team_code");
             opt.bindDropDownList(listEq, "select IDKEY,EQ_NAME from ht_eq_eqp_tbl where is_del = '0' and is_valid = '1' order by IDKEY", "EQ_NAME", "IDKEY");
             opt.bindDropDownList(listOptor, "select ID,name  from ht_svr_user t where is_del ='0' ", "name", "ID");
             opt.bindDropDownList(listArea, "select r.section_code,r.section_name from ht_pub_tech_section r  where r.is_del = '0' and r.is_valid = '1'  union select '' as section_code,'' as section_name from dual order by section_code", "section_name", "section_code");
@@ -634,7 +634,7 @@ public partial class Device_MtncPlan : MSYS.Web.BasePage
             {
                 ck = true;
                 string ID = GridView2.DataKeys[i].Value.ToString();
-                string query = "update ht_eq_mt_plan_detail set STATUS = '1' ,RESPONER = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "' and status <= '1'";
+                string query = "update ht_eq_mt_plan_detail set STATUS = '1' ,TEAM_CODE = '" + listdspcth.SelectedValue + "' where ID = '" + ID + "' and status <= '1'";
 
                 string log_message = opt.UpDateOra(query) == "Success" ? "下派维保计划成功" : "下派维保计划失败";
                 log_message += "--标识:" + ID;

@@ -42,10 +42,9 @@
                 <tbody>
                     <tr>
                         <td colspan="7" align="center"> 
-                  请选择时间：     
+                 请选择月度：     
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
-                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>至 <asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1"
-                        onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                        onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
                             &nbsp;&nbsp;&nbsp; 
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -68,13 +67,13 @@
             <div id="tab1" class="tabson" style="margin-top: 0px; padding-top: 0px;">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="True">
+                        <div style="width: 100%; height: 100%; overflow-x: scroll">
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="True" OnRowCreated="GridView1_RowCreated" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
                             <Columns>
                                 <asp:TemplateField      HeaderText="操作"   HeaderStyle-Width="220px">
                                     <ItemTemplate>
-                                        <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click" Width="100px" />
-                                        <asp:Button ID="btngridDetail" runat="server" Text="查看详情" CssClass="btn1" OnClick="btngridDetail_Click" Width="100px" />
+                                       <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click"  Width="100px"  OnClientClick=" $('#tabtop2').parent().show(); $('#tabtop2').click();$('#btnPrint').show();$('#btnExport').show();"/>
+                                            <asp:Button ID="btngridDetail" runat="server" Text="查看详情" CssClass="btn1" OnClick="btngridDetail_Click" Width="100px" OnClientClick =" $('#tabtop3').parent().show(); $('#tabtop3').click();"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -82,6 +81,7 @@
                             <RowStyle CssClass="gridrow" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>
+                            </div>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
@@ -106,14 +106,15 @@
             <div id="tab3" class="tabson" style="margin-top: 0px; padding-top: 0px;">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-
-
-                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True">
-
+                         <asp:HiddenField ID ="hideprod" runat="server" />
+                        <asp:HiddenField ID ="hideteam" runat="server" />
+                        <div style="width: 100%; height: 100%; overflow-x: scroll">
+                        <asp:GridView ID="GridView2" runat="server" class="grid"  AutoGenerateColumns="true" OnRowCreated="GridView2_RowCreated" HeaderStyle-Wrap="False" RowStyle-Wrap="False" >
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
-                            <AlternatingRowStyle CssClass="gridalterrow" />
+                            <AlternatingRowStyle CssClass="gridalterrow" />                            
                         </asp:GridView>
+                            </div>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="GridView1" />

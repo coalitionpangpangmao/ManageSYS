@@ -96,10 +96,16 @@
                                                 <asp:DropDownList ID="listSection" runat="server" CssClass="drpdwnlist" AutoPostBack="True" Width="300px" OnSelectedIndexChanged="listSection_SelectedIndexChanged">
                                                 </asp:DropDownList>
                                             </td>
-                                            <td width="100px">权重：
+                                           <td>数据点类型
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtWeight" runat="server" CssClass="dfinput1" Width="300px"></asp:TextBox>
+                                                <asp:DropDownList ID="listStyle" runat="server" CssClass="drpdwnlist" Width="300px">
+                                                    <asp:ListItem></asp:ListItem>
+                                                    <asp:ListItem>水份</asp:ListItem>
+                                                    <asp:ListItem>温度</asp:ListItem>
+                                                    <asp:ListItem>流量</asp:ListItem>
+                                                    <asp:ListItem>其它</asp:ListItem>
+                                                </asp:DropDownList>
                                             </td>
                                         </tr>
                                         <tr>
@@ -116,17 +122,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>数据点类型
-                                            </td>
-                                            <td>
-                                                <asp:DropDownList ID="listStyle" runat="server" CssClass="drpdwnlist" Width="300px">
-                                                    <asp:ListItem></asp:ListItem>
-                                                    <asp:ListItem>水份</asp:ListItem>
-                                                    <asp:ListItem>温度</asp:ListItem>
-                                                    <asp:ListItem>流量</asp:ListItem>
-                                                    <asp:ListItem>其它</asp:ListItem>
-                                                </asp:DropDownList>
-                                            </td>
+                                            
 
                                             <td>断流监控点：
                                             </td>
@@ -134,11 +130,10 @@
                                                 <asp:RadioButton ID="rdYes" runat="server" Text="是" GroupName="gapnode" onclick="$('.gapinfo').hide();" />
                                                 <asp:RadioButton ID="rdNo" runat="server" Text="否" GroupName="gapnode" onclick="$('.gapinfo').show();" Checked="True" />
                                             </td>
-                                        </tr>
-                                        <tr class="gapinfo">
-                                            <td>断流判定点：
+                                      
+                                            <td class="gapinfo">断流判定点：
                                             </td>
-                                            <td colspan="4">
+                                            <td class="gapinfo">
                                                 <asp:DropDownList ID="listGappoint" runat="server" CssClass="drpdwnlist" Width="300px">
                                                 </asp:DropDownList>
                                             </td>

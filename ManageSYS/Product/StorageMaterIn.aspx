@@ -9,7 +9,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
-
+     <script type="text/javascript" src="../js/jquery.PrintArea.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -148,6 +148,7 @@
 
             </div>
             <div id="tab2" class="tabson">
+                  <div id ="report">
                 <div>
                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
@@ -155,7 +156,7 @@
                                 原料领退管理<span style="position: relative; float: right" class="click2">
                                    
                                     <asp:Button ID="btnReset" runat="server" Text="重置" CssClass="btnset" OnClick="btnReset_Click" />
-                                    <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />&nbsp;
+                                    <asp:Button ID="btnModify" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify_Click" />   <input id="btnPrint" type="button" value="打印" class="btnpatch" onclick="$('#report').printArea();" />
                                 </span>
                             </div>
 
@@ -337,6 +338,7 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
+                       </div>
             </div>
 
 

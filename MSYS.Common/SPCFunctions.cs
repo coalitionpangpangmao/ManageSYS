@@ -333,9 +333,9 @@ namespace MSYS.Common
         public double SPC_Cpk()
         {
             if (this.Cpu > this.Cpl)
-                return this.Cpl;
+                return this.Cpl > 0 ? this.Cpl : 0;
             else
-                return this.Cpu;
+                return this.Cpu > 0 ? this.Cpu : 0;
         }
         public double SPC_Cpm()
         {

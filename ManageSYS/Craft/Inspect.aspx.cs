@@ -124,9 +124,33 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
         string[] value = { txtCode.Text, listSection2.SelectedValue, txtName.Text, listType2.SelectedValue, txtRemark.Text, listCreator.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtUnit.Text };
 
         string log_message = opt.MergeInto(seg, value, 1, "ht_qlt_inspect_proj") == "Success" ? "保存工艺检查项目成功" : "保存工艺检查项目失败";
+        if (log_message == "保存工艺检查项目成功")
+        {
+            if (listSection2.SelectedValue == "4")
+            {
+                string[] procseg = { };
+                object[] procvalues = { };
+                opt.ExecProcedures("Create_Sensor_Report", procseg, procvalues);
+            }
+            else if (listSection2.SelectedValue.Length == 1 && listSection2.SelectedValue != "4")
+            {
+                string[] procseg = { };
+                object[] procvalues = { };
+                opt.ExecProcedures("Create_phechem_Report", procseg, procvalues);
+            }
+            else
+            {
+                string[] procseg = { };
+                object[] procvalues = { };
+                opt.ExecProcedures("Create_process_Report", procseg, procvalues);
+            }
+        }
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
+
+       
         bindGrid();
+
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", " $('.shade').fadeOut(100);", true);
     }
 
@@ -159,8 +183,30 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                     string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where INSPECT_CODE = '" + projcode + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查项目成功" : "删除工艺检查项目失败";
+                    if (log_message == "删除工艺检查项目成功")
+                    {
+                        if (GridView1.Rows[i].Cells[2].Text == "感观评测")
+                        {
+                            string[] procseg = { };
+                            object[] procvalues = { };
+                            opt.ExecProcedures("Create_Sensor_Report", procseg, procvalues);
+                        }
+                        else if (GridView1.Rows[i].Cells[1].Text == "成品检验" && GridView1.Rows[i].Cells[2].Text != "感观评测")
+                        {
+                            string[] procseg = { };
+                            object[] procvalues = { };
+                            opt.ExecProcedures("Create_phechem_Report", procseg, procvalues);
+                        }
+                        else
+                        {
+                            string[] procseg = { };
+                            object[] procvalues = { };
+                            opt.ExecProcedures("Create_process_Report", procseg, procvalues);
+                        }
+                    }
                     log_message += "--标识:" + projcode;
                     InsertTlog(log_message);
+                   
                 }
             }
             bindGrid();

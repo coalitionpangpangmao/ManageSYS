@@ -15,33 +15,63 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            initView();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team where is_del = '0' order by team_code", "team_name", "team_code");
+            txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
+            bindgrid();
         }
     }
 
 
     protected void bindgrid()
-    {
-        string query = createSql(txtBtime.Text);
+    {        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       string query ;
+       if (listTeam.SelectedValue != "")
+           query = "select r.prod_name as 产品,s.team_name as 班组,  t.*,t.基础分-t.工艺扣分 as 实际得分 from hv_qlt_online_month_scoreT t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team where t.month =  '" + txtBtime.Text + "' and t.team = '" + listTeam.SelectedValue + "' order by t.prod_code,t.team";
+       else
+           query = "select * from (select  r.prod_name as 产品,s.team_name as 班组,  t.*,t.基础分-t.工艺扣分 as 实际得分 from hv_qlt_online_month_Score t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team where t.month = '" + txtBtime.Text + "' union  select  r.prod_name as 产品,s.team_name as 班组, t.*,t.基础分-t.工艺扣分 as 实际得分 from hv_qlt_online_month_scoreT t left join ht_pub_prod_design r on r.prod_code = t.prod_code left join ht_sys_team s on s.team_code = t.team where t.month = '" + txtBtime.Text + "' ) order by prod_code,team ";
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
+         if (data == null || data.Tables[0].Rows.Count <= 1)
+        {
+            return;
+        }
+                TableCell oldtc = GridView1.Rows[0].Cells[1];
+                oldtc.RowSpan = 1;
+                for (int j = 1; j < GridView1.Rows.Count; j++)
+                {
+                    TableCell newtc = GridView1.Rows[j].Cells[1];
+                    if (newtc.Text == oldtc.Text)
+                    {
+                        newtc.Visible = false;
+                        oldtc.RowSpan = oldtc.RowSpan + 1;
+                        oldtc.VerticalAlign = VerticalAlign.Middle;
+                    }
+                    else
+                    {
+                        oldtc = newtc;
+                        oldtc.RowSpan = 1;
+                    }
+                }
+           
+    
 
+    }
+    protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
+    {
+        e.Row.Cells[3].Visible = false; 
+        e.Row.Cells[4].Visible = false; 
+        e.Row.Cells[5].Visible = false; 
+       
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         bindgrid();
-
     }
 
-    protected void initView()
-    {
-        createView();
-        txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
-        bindgrid();
-
-    }
+   
 
     protected void btngridview_Click(object sender, EventArgs e)
     {
@@ -49,14 +79,17 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         initTable(row);
     }
-
   
     protected void initTable(GridViewRow row)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string prod_code = opt.GetSegValue("select prod_name,prod_code from ht_pub_prod_design where prod_name = '" + row.Cells[1].Text + "'", "prod_code");
-        string team_code = opt.GetSegValue("select team_name,team_code from ht_sys_team where team_name = '" + row.Cells[2].Text + "'", "team_code");
-        string query = "select distinct s.section_name,r.para_code,r.para_name,h.quarate,h.stddev,h.absdev,h.cpk from  ( select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code) s left join ht_pub_tech_para r on s.section_code = substr(r.para_code,1,5) left join hv_qlt_online_score h on h.para_code = r.para_code and substr(h.prodday,1,7) = '" + txtBtime.Text + "' and h.prod_code = '" + prod_code + "' and h.team = '" + team_code + "'  where r.para_type like '______1%' and r.is_del = '0' order by  s.section_name,r.para_code";       
+        string prod_code = GridView1.DataKeys[row.RowIndex].Values[0].ToString();
+        string team_code = GridView1.DataKeys[row.RowIndex].Values[1].ToString();
+        string query;
+        if (team_code != "")         
+         query = "select t.section_name,t.para_code,t.para_name,t.quarate,t.stddev,t.absdev,t.cpk from hv_qlt_online_month_trep t where t.month = '" + txtBtime.Text + "' and t.team = '" + team_code + "' and t.prod_code = '" + prod_code + "'";
+        else
+            query = "select t.section_name,t.para_code,t.para_name,t.quarate,t.stddev,t.absdev,t.cpk from hv_qlt_online_month_report t where t.month = '" + txtBtime.Text + "' and t.prod_code = '" + prod_code + "'";
 
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
 
@@ -73,7 +106,7 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         str.Append("<tr><th>评分</th><td >");
         str.Append(row.Cells[row.Cells.Count - 1].Text);
         str.Append("</td>");
-        str.Append("<th  width ='25%'>检测日期</th><td >");
+        str.Append("<th  width ='25%'>检测月份</th><td >");
         str.Append(txtBtime.Text);
         str.Append("</td>");
         str.Append("</tr>");
@@ -114,7 +147,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                     str.Append(item[0]);
                     str.Append("</td>");
                     str.Append("<td style=' border-bottom-style: none'>");
-                    str.Append(row.Cells[j+3].Text);
+                    str.Append(row.Cells[j+6].Text);
                     str.Append("</td>");
                 }
                 str.Append("<td >");
@@ -143,150 +176,8 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "showreport", "   $('#tabtop2').parent().show(); $('#tabtop2').click();$('#btnPrint').show();$('#btnExport').show();", true);
 
 
-    } 
-
-  
-    private string createSql( string month)
-    {      
-
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct r.section_code ,r.section_name,r.remark,r.weight  from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code";
-        DataSet data = opt.CreateDataSetOra(query);
-
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            int i = 1;
-            StringBuilder sql = new StringBuilder();
-            StringBuilder str = new StringBuilder();
-            StringBuilder temp = new StringBuilder();
-            sql.Append("select  p.prod_name as 产品,t.team_name as 班组 ");
-            temp.Append("round(exp(");
-            foreach (DataRow row in data.Tables[0].Rows)
-            {
-                string name = row["remark"].ToString();
-                string code = row["section_code"].ToString();
-                string weight = row["WEIGHT"].ToString();
-                sql.Append(",g");
-                sql.Append(i.ToString());
-                sql.Append(".score*100 as ");
-                sql.Append(name);
-                if (i > 1)
-                {
-                    str.Append(" left join ");
-                    temp.Append("+");
-                }
-               
-                temp.Append("round(ln(power((case g");
-                temp.Append(i.ToString());
-                temp.Append(".score when 0 then 0.01 else g");
-                temp.Append(i.ToString());
-                temp.Append(".score end),");
-                temp.Append(weight);
-                temp.Append(")),3)");
-
-
-                str.Append("(select a.prod_code,a.team,a.section, round(exp(sum(ln(power((case a.quarate when 0 then 0.01 else a.quarate end ),a.weight)))),4) as score from hv_qlt_online_score a  left join ht_pub_tech_para b on a.para_code = b.para_code   where b.para_type like '______1%' and  substr(a.prodday,1,7) = '");
-                str.Append(txtBtime.Text);
-                str.Append("' and a.section = '");
-                str.Append(code);
-                str.Append("'  group by a.prod_code,a.team,a.section) g");             
-                str.Append(i.ToString());
-                if (i > 1)
-                {
-                    str.Append(" on g1.prod_code = g");
-                    str.Append(i.ToString());
-                    str.Append(".prod_code  and g1.team = g");
-                    str.Append(i.ToString());
-                    str.Append(".team ");
-                }
-                i++;
-            }
-          
-
-            temp.Append(")*100,2)- nvl(q.score,0) as 总分");
-            sql.Append(",q.score as 考核扣分,");
-            sql.Append(temp);
-            sql.Append(" from ");
-            sql.Append(str.ToString());
-            sql.Append(" left join (select sum(s.score) as score,t.team,r.prod_code,substr(t.b_time,1,7) as prodday from ht_qlt_auto_event s left join ht_qlt_data_record t on t.id = s.record_id left join ht_prod_month_plan_detail r on r.plan_no = t.plan_id where substr(t.b_time,1,7) = '" + txtBtime.Text + "' group by t.team,r.prod_code,substr(t.b_time,1,7) )q on g1.prod_code = q.prod_code  and g1.team = q.team   ");
-
-            sql.Append("left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team ");
-
-          
-            return sql.ToString();
-        }
-        else return null;
-
     }
 
+   
 
-    private void createView()
-    {
-
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct r.section_code ,r.section_name ,r.remark,r.weight from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code";
-        DataSet data = opt.CreateDataSetOra(query);
-
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            int i = 1;
-            StringBuilder sql = new StringBuilder();
-            StringBuilder str = new StringBuilder();
-            StringBuilder temp = new StringBuilder();
-            sql.Append("select  p.prod_name as 产品,t.team_name as 班组,g1.prodday as 时间");
-            temp.Append("round(exp(");
-            foreach (DataRow row in data.Tables[0].Rows)
-            {
-                string name = row["remark"].ToString();
-                string code = row["section_code"].ToString();
-                string weight = row["WEIGHT"].ToString();
-                weight = weight == "" ? "0" : weight;
-                sql.Append(",g");
-                sql.Append(i.ToString());
-                sql.Append(".score*100 as ");
-                sql.Append(name);
-                if (i > 1)
-                {
-                    str.Append(" left join ");
-                    temp.Append("+");
-                }
-                temp.Append("round(ln(power((case g");
-                temp.Append(i.ToString());
-                temp.Append(".score when 0 then 0.01 else g");
-                temp.Append(i.ToString());
-                temp.Append(".score end),");
-                temp.Append(weight);
-                temp.Append(")),3)");
-
-
-                str.Append("(select a.prod_code,a.team,a.section, a.prodday,round(exp(sum(ln(power((case a.quarate when 0 then 0.01 else quarate end),a.weight)))),4) as score from hv_qlt_online_score a left join ht_pub_tech_para b on a.para_code = b.para_code   where b.para_type like '______1%' and   a.section = '");
-                str.Append(code);
-                str.Append("'  group by a.prod_code,a.team,a.section,a.prodday) g");
-                str.Append(i.ToString());
-                if (i > 1)
-                {
-                    str.Append(" on g1.prod_code = g");
-                    str.Append(i.ToString());
-                    str.Append(".prod_code  and g1.team = g");
-                    str.Append(i.ToString());
-                    str.Append(".team and g1.prodday = g");
-                    str.Append(i.ToString());
-                    str.Append(".prodday ");
-                }
-                i++;
-            }
-            temp.Append(")*100,2)- nvl(q.score,0) as 总分");
-            sql.Append(",q.score as 考核扣分,");
-            sql.Append(temp);
-            sql.Append(" from ");
-            sql.Append(str.ToString());
-            sql.Append(" left join (select sum(s.score) as score,t.team,r.prod_code,substr(t.b_time,1,10) as prodday from ht_qlt_auto_event s left join ht_qlt_data_record t on t.id = s.record_id left join ht_prod_month_plan_detail r on r.plan_no = t.plan_id  group by t.team,r.prod_code,substr(t.b_time,1,10) )q on g1.prod_code = q.prod_code  and g1.team = q.team and g1.prodday = q.prodday  ");
-            sql.Append("left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team ");
-            opt.UpDateOra("create or replace view hv_online_Daily_report as " + sql.ToString());
-
-          
-        }
-       
-
-    }  
 }

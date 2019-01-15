@@ -51,7 +51,17 @@ namespace MSYS
             public string status;
         }
         private List<Gaptime> gaptime = null;
-   
+        public struct paraSeginfo
+        {
+            public  string batchBtime ;
+            public string batchEtime ;//电子秤参与后判定的批头批尾时间
+            public string tailBtime ;
+            public string tailEtime ;//电子秤参与后判定的料头料尾时间
+            public string tagname;
+            public string interval;
+            public List<Gaptime> gapinfo;
+            public List<ParaInfo> paralist;
+        }
         public IHAction()
         {
 
@@ -262,7 +272,7 @@ namespace MSYS
             seg.nodecode = nodeid;
             seg.planno = planno;
             DbOperator opt = new DbOperator();
-            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and planno = '" + planno + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and planno = '" + planno + "' and  endtime between '" + btime + "' and '" + etime + "' order by rstime";
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and planno = '" + planno + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and planno = '" + planno + "' and  endtime between '" + btime + "' and '" + etime + "'  union select endtime as rstime,'a' as tag,PLANNO  from ht_prod_report t where t.section_code =  '" + nodeid.Substring(0, 5) + "' and planno = '" + planno + "'  and  starttime <  '" + btime + "' and endtime > '" + etime + "' order by rstime";
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -273,11 +283,14 @@ namespace MSYS
                         seg.endtime = data.Tables[0].Rows[0]["rstime"].ToString();
                         seg.type = TimeSegType.END;
                     }
-                    else
+
+                    else if (data.Tables[0].Rows[0]["tag"].ToString() == "b")
                     {
                         seg.starttime = data.Tables[0].Rows[0]["rstime"].ToString();
                         seg.type = TimeSegType.BEGIN;
                     }
+                    else
+                        seg.type = TimeSegType.ALL;
                 }
                 else
                 {
@@ -301,7 +314,7 @@ namespace MSYS
             seg.endtime = etime;
             seg.nodecode = nodeid;          
             DbOperator opt = new DbOperator();
-            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and  endtime between '" + btime + "' and '" + etime + "' order by rstime";
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and  endtime between '" + btime + "' and '" + etime + "'   union select endtime as rstime,'a' as tag,PLANNO  from ht_prod_report t where t.section_code =  '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "'  and  starttime <  '" + btime + "' and endtime > '" + etime + "' order by rstime";
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
@@ -313,11 +326,14 @@ namespace MSYS
                         seg.endtime = data.Tables[0].Rows[0]["rstime"].ToString();
                         seg.type = TimeSegType.END;
                     }
-                    else
+
+                    else if (data.Tables[0].Rows[0]["tag"].ToString() == "b")
                     {
                         seg.starttime = data.Tables[0].Rows[0]["rstime"].ToString();
                         seg.type = TimeSegType.BEGIN;
                     }
+                    else
+                        seg.type = TimeSegType.ALL;
                 }
                 else
                 {
@@ -340,35 +356,46 @@ namespace MSYS
             if (paralist == null || paralist.Count < 20)
                 return null;
             List<Gaptime> gaplist = null;
-            string starttime = paralist.ToArray()[0].timestamp;
-            string endtime = paralist.ToArray()[paralist.Count - 1].timestamp;
+            DateTime starttime =Convert.ToDateTime( paralist.ToArray()[0].timestamp);
+            DateTime endtime = Convert.ToDateTime( paralist.ToArray()[paralist.Count - 1].timestamp);
           List<ParaInfo> reslist =  paralist.FindAll(s => s.value < Convert.ToDouble(tagvalue));
+         
             if (reslist != null && reslist.Count > gaptime/5)
             {
                 gaplist = new List<Gaptime>();
-                while (string.Compare(starttime,endtime)<0)
+                while (starttime<endtime && reslist.Count >gaptime/5)
                 {
-                    string GapStarttime = "";
-                    string GapEndtime = "";
-                  
-                    GapStarttime = reslist.ToArray()[0].timestamp;
-                    GapEndtime = paralist.Find(s => String.Compare(s.timestamp, GapStarttime) > 0 && s.value > Convert.ToDouble(tagvalue)).timestamp;
-                   
-                    if (Convert.ToDateTime(GapEndtime) - Convert.ToDateTime(GapStarttime) >TimeSpan.FromSeconds(gaptime))
-                    {                       
+                    DateTime  GapStarttime;
+                    DateTime GapEndtime;
+                    reslist = paralist.FindAll(s => s.value < Convert.ToDouble(tagvalue) && Convert.ToDateTime(s.timestamp)>starttime);
+                    if (reslist.Count > 0)
+                        GapStarttime = Convert.ToDateTime(reslist.ToArray()[0].timestamp);
+                    else
+                        return gaplist;
+                    List<ParaInfo> info = paralist.FindAll(s => Convert.ToDateTime(s.timestamp) > GapStarttime && s.value > Convert.ToDouble(tagvalue));
+                    if (info.Count > 0)
+                        GapEndtime = Convert.ToDateTime(info.ToArray()[0].timestamp);
+                    else
+                        GapEndtime = endtime;
+                    if (GapStarttime != null && GapEndtime != null)
+                    {
+                        if (Convert.ToDateTime(GapEndtime) - Convert.ToDateTime(GapStarttime) > TimeSpan.FromSeconds(gaptime))
+                        {
                             Gaptime gap;
-                            gap.starttime = Convert.ToDateTime(GapStarttime).AddSeconds(headdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                            gap.endtime = Convert.ToDateTime(GapEndtime).AddSeconds(taildelay).ToString("yyyy-MM-dd HH:mm:ss");
-                            gap.gaptime = (Convert.ToDateTime(GapEndtime) - Convert.ToDateTime(GapStarttime)).Seconds; 
+                            gap.starttime = GapStarttime.AddSeconds(headdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            gap.endtime = GapEndtime.AddSeconds(taildelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            gap.gaptime = (GapEndtime - GapStarttime).Seconds+ headdelay - taildelay;                          
                             gaplist.Add(gap);
-                      
-                        starttime = Convert.ToDateTime(GapEndtime).AddSeconds(taildelay).ToString("yyyy-MM-dd HH:mm:ss");
+
+                            starttime = GapEndtime.AddSeconds(taildelay);
+                        }
+                        else
+                        {
+                            starttime = GapEndtime;
+                        }
                     }
                     else
-                    {
-                        starttime = endtime;
-                    }
-
+                        return gaplist;
                 }
             }
             return gaplist;
@@ -379,13 +406,14 @@ namespace MSYS
             return gaptime;
         }
 
-        public List<ParaRes> GetIHOrgDataSet(TimeSeg seg)
+        public paraSeginfo GetParaSegInfo(TimeSeg seg)
         {
-            #region    read collection condtion
+            paraSeginfo info = new paraSeginfo() ;
+              #region    read collection condtion
             DbOperator opt = new DbOperator();
             DataSet data = opt.CreateDataSetOra("select t.value_tag,r.gap_hdelay,r.gap_tdelay,r.ctrl_point,r.is_gap_judge,r.periodic,r.rst_value,r.gap_time,r.head_delay,r.tail_delay,r.batch_head_delay,r.batch_tail_delay from   HT_QLT_COLLECTION  r left join ht_pub_tech_para t on r.para_code = t.para_code where r.PARA_CODE = '" + seg.nodecode + "'");
             if (data == null || data.Tables[0].Rows.Count == 0)
-                return null;
+                return info;
             DataRow row = data.Tables[0].Rows[0];
             ////////////////////工艺点标签//////////////////////////////////////////////
             string tagname = row["value_tag"].ToString();
@@ -404,53 +432,106 @@ namespace MSYS
             int gap_tdelay = Convert.ToInt32(row["gap_tdelay"].ToString());//断流后
             #endregion
             #region   //////////////////////寻找数据批头尾、料头尾  以及断流信息///////////////////////////////////////////////////////////////////////
-         
-            string batchBtime = "", batchEtime = "";//电子秤参与后判定的批头批尾时间
-            string tailBtime = "", tailEtime = "";//电子秤参与后判定的料头料尾时间
+
+          
             List<ParaInfo> paralist = getParaRecord(tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(seg.endtime));
             if (gapctrl)
             {
                 if (tagname != "" && tailRst != "" && interval != "")
                 {
 
-                    batchBtime = tailBtime = seg.starttime;//初始化料头时间
-                    batchEtime = tailEtime = seg.endtime;//初始化料尾时间
-                  
+                    info.batchBtime = info.tailBtime = seg.starttime;//初始化料头时间
+                    info.batchEtime = info.tailEtime = seg.endtime;//初始化料尾时间
+
                     /////////自动寻找批头批尾/////////
                     if (seg.type == TimeSegType.BEGIN || seg.type == TimeSegType.BOTH)//寻找批头
                     {
 
-                        batchBtime = Convert.ToDateTime(paralist.Find(s => s.value < Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss") ;                     
+                        info.batchBtime = Convert.ToDateTime(paralist.Find(s => s.value < Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
                     }
                     if (seg.type == TimeSegType.END || seg.type == TimeSegType.BOTH)//寻找批尾
                     {
-                      
-                        double temp = paralist.ToArray()[paralist.Count-1].value;
 
-                        if (temp >= Convert.ToDouble(tailRst))                        
+                        double temp = paralist.ToArray()[paralist.Count - 1].value;
+
+                        if (temp >= Convert.ToDouble(tailRst))
                         {
-                            paralist = getParaRecord(tagname,"5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(seg.endtime).AddHours(1));
-                            batchEtime = Convert.ToDateTime(paralist.Find(s => s.value > Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss") ;  
+                            paralist = getParaRecord(tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(seg.endtime).AddHours(1));
+                            info.batchEtime = Convert.ToDateTime(paralist.Find(s => s.value > Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
                         }
                         else
-                            batchEtime = Convert.ToDateTime(paralist.FindLast(s => s.value > Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                        
+                            info.batchEtime = Convert.ToDateTime(paralist.FindLast(s => s.value > Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
+
                     }
                     ////////////////////////////////自动寻找料头料尾////////////////////////////////////////////////////////////////
                     if (seg.type == TimeSegType.BEGIN || seg.type == TimeSegType.BOTH)//寻找料头
-                    {                     
-                        tailBtime = Convert.ToDateTime(paralist.Find(s => s.value > Convert.ToDouble(tailRst) &&String.Compare( s.timestamp , batchBtime) >=0 &&String.Compare( s.timestamp , batchEtime) <=0).timestamp).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss") ; 
+                    {
+                        info.tailBtime = Convert.ToDateTime(paralist.Find(s => (s.value > Convert.ToDouble(tailRst) && Convert.ToDateTime(s.timestamp) - Convert.ToDateTime(info.batchBtime) >= new TimeSpan(0) && Convert.ToDateTime(s.timestamp) - Convert.ToDateTime(info.batchEtime) <= new TimeSpan(0))).timestamp).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");
+
                     }
                     if (seg.type == TimeSegType.END || seg.type == TimeSegType.BOTH)//寻找料尾
-                    {                       
-                        tailEtime = Convert.ToDateTime(paralist.FindLast(s => s.value > Convert.ToDouble(tailRst) && String.Compare(s.timestamp, batchBtime) > 00 && String.Compare(s.timestamp, batchEtime) <= 0).timestamp).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss"); 
+                    {
+                        info.tailEtime = Convert.ToDateTime(paralist.FindLast(s => s.value > Convert.ToDouble(tailRst) && Convert.ToDateTime(s.timestamp) - Convert.ToDateTime(info.batchBtime) >= new TimeSpan(0) && Convert.ToDateTime(s.timestamp) - Convert.ToDateTime(info.batchEtime) <= new TimeSpan(0)).timestamp).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");
                     }
+
+                    ////////////////////选取数据/判断是否断料,并记录下相应的断料时间//////              
+                    info.paralist = paralist;
+                    info.gapinfo = GetGapTime(paralist, tailRst, gap_hdelay, gap_tdelay, timegap);
+                    info.tagname = tagname;
+                    info.interval = interval;
+
+                }
+            }
+            else
+            {
+                //如果不是断流判定点，则读取该工艺段判定点的信息，获取批头批尾、料头料尾，以及断流区间信息
+                string ctrlpoint = row["ctrl_point"].ToString();
+                seg.nodecode = ctrlpoint;
+                info = GetParaSegInfo(seg);
+                info.paralist = paralist;
+                info.tagname = tagname;
+                info.interval = interval;
+            }
+            #endregion
+            return info;
+              
+        }
+        public List<ParaRes> GetIHOrgDataSet(TimeSeg seg)
+        {
+            #region    read collection condtion
+            DbOperator opt = new DbOperator();
+            DataSet data = opt.CreateDataSetOra("select t.value_tag,r.gap_hdelay,r.gap_tdelay,r.ctrl_point,r.is_gap_judge,r.periodic,r.rst_value,r.gap_time,r.head_delay,r.tail_delay,r.batch_head_delay,r.batch_tail_delay from   HT_QLT_COLLECTION  r left join ht_pub_tech_para t on r.para_code = t.para_code where r.PARA_CODE = '" + seg.nodecode + "'");
+            if (data == null || data.Tables[0].Rows.Count == 0)
+                return null;
+            DataRow row = data.Tables[0].Rows[0];
+            ////////////////////工艺点标签//////////////////////////////////////////////
+            string tagname = row["value_tag"].ToString();
+            string interval = row["periodic"].ToString();
+            int timegap = Convert.ToInt32(row["gap_time"].ToString());
+            string tailRst = row["rst_value"].ToString();
+            ////////////////////是否为工艺段断流判定点/////////////////////////////////////////////
+            bool gapctrl = ("1" == row["is_gap_judge"].ToString());
+
+           
+            #endregion
+            #region   //////////////////////寻找数据批头尾、料头尾  以及断流信息///////////////////////////////////////////////////////////////////////
+         
+            string batchBtime = "", batchEtime = "";//电子秤参与后判定的批头批尾时间
+            string tailBtime = "", tailEtime = "";//电子秤参与后判定的料头料尾时间
+            List<ParaInfo> paralist = getParaRecord(tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(seg.endtime));
+            if (gapctrl)
+            {
+                paraSeginfo info = GetParaSegInfo(seg);
+                 batchBtime = info.batchBtime;
+                batchEtime = info.batchEtime;
+                tailBtime = info.tailBtime;
+                tailEtime = info.tailEtime;                    
                     string[] bseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "BATCH_BTIME", "BATCH_ETIME", "GAP_BTIME", "GAP_ETIME", "TYPE", };
                     string[] bvalue = { "0", seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), batchBtime, batchEtime, tailBtime, tailEtime, "0" };
                     opt.MergeInto(bseg, bvalue, 5, "HT_QLT_GAP_COLLECTION");
                     ////////////////////选取数据/判断是否断料,并记录下相应的断料时间//////              
                    
-                    gaptime = GetGapTime(paralist, tailRst, gap_hdelay, gap_tdelay, timegap);
+                    gaptime = info.gapinfo;
                     int orderno = 1;
                     string[] gapseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "GAPTIME ", "GAP_BTIME", "GAP_ETIME", "TYPE" };
                     if (gaptime != null)
@@ -460,15 +541,19 @@ namespace MSYS
                             string[] gapvalue = { (orderno++).ToString(), seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), time.gaptime.ToString(), time.starttime, time.endtime, "1" };
                             opt.MergeInto(gapseg, gapvalue, 5, "HT_QLT_GAP_COLLECTION");
                         }
-                    }
-                }
-                else
-                    return null;
+                    }              
             }
             else
             {
                 //如果不是断流判定点，则读取该工艺段判定点的信息，获取批头批尾、料头料尾，以及断流区间信息
                 string ctrlpoint = row["ctrl_point"].ToString();
+                //////////////////////偏移/////////////////////////////////////////////               
+                int headDelay = Convert.ToInt32(row["head_delay"].ToString());//料头
+                int tailDelay = Convert.ToInt32(row["tail_delay"].ToString());//料尾
+                int batchheadDelay = Convert.ToInt32(row["batch_head_delay"].ToString());//批头
+                int batchtailDelay = Convert.ToInt32(row["batch_tail_delay"].ToString());//批尾
+                int gap_hdelay = Convert.ToInt32(row["gap_hdelay"].ToString());//断流前
+                int gap_tdelay = Convert.ToInt32(row["gap_tdelay"].ToString());//断流后
                 if (ctrlpoint != "")
                 {
                     DataSet gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '1' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
@@ -489,10 +574,10 @@ namespace MSYS
                     if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
                     {
                         DataRow brow = gapdata.Tables[0].Rows[0];
-                        batchBtime = brow["BATCH_BTIME"].ToString();
-                        batchEtime = brow["BATCH_ETIME"].ToString();
-                        tailBtime = brow["GAP_BTIME"].ToString();
-                        tailEtime = brow["GAP_ETIME"].ToString();
+                        batchBtime = Convert.ToDateTime(brow["BATCH_BTIME"].ToString()).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                        batchEtime = Convert.ToDateTime(brow["BATCH_ETIME"].ToString()).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                        tailBtime = Convert.ToDateTime(brow["GAP_BTIME"].ToString()).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                        tailEtime = Convert.ToDateTime(brow["GAP_ETIME"].ToString()).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             }
@@ -552,6 +637,66 @@ namespace MSYS
             else
                 return null;
             #endregion
+        }
+
+        public List<ParaRes> GetIHRealDataSet(TimeSeg seg)
+        {
+            
+             paraSeginfo info = GetParaSegInfo(seg);          
+           
+            if (info.batchBtime == "" || info.batchEtime == "")
+                return null;
+            if (string.Compare(seg.endtime, info.batchEtime) < 0)
+                info.paralist = getParaRecord(info.tagname, "5", Convert.ToDateTime(info.batchBtime), Convert.ToDateTime(info.batchEtime));
+
+            if (info.paralist != null && info.paralist.Count > 20)
+            {
+
+                int count = info.paralist.Count;
+                List<ParaRes> reslist = new List<ParaRes>();
+                int countN = 0;
+                foreach (ParaInfo res in info.paralist)
+                {
+
+                    if (countN == Convert.ToInt16(info.interval) / 5)
+                    {
+                        ParaRes para = new ParaRes();
+                        para.timestamp = res.timestamp;
+                        para.value = res.value;
+                        string tempstr = Convert.ToDateTime(res.timestamp).ToString("yyyy-MM-dd HH:mm:ss");
+                        if (string.Compare(tempstr, info.tailBtime) < 0)
+                        {
+                            para.status = "料头";
+                        }
+                        else if (info.tailEtime != seg.starttime && string.Compare(tempstr, info.tailEtime) > 0)
+                        {
+                            para.status = "料尾";
+                        }
+                        else
+                        {
+                            para.status = "过程值";
+                            if (info.gapinfo != null)
+                            {
+                                int h = 0;
+                                while (h < info.gapinfo.Count)
+                                {
+                                    if (string.Compare(tempstr, ((Gaptime)info.gapinfo[h]).starttime) > 0 && string.Compare(tempstr, ((Gaptime)info.gapinfo[h]).endtime) < 0)
+                                        para.status = "断流值";
+                                    h++;
+                                }
+                            }
+                        }
+                        countN = 0;
+                        reslist.Add(para);
+                    }
+                    else
+                        countN++;
+                }
+                return reslist;
+            }
+            else
+                return null;
+           
         }
 
         public List<ParaInfo> GetData(string btime, string etime, string nodeid, string planno)

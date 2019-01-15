@@ -146,9 +146,7 @@
                         string v = dt.Rows[j][i].ToString();
                         if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
                         {
-                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).NumberFormatLocal = "@";
-                            //   Microsoft.Office.Interop.Excel.Range r2 = xlSheet.get_Range(xlSheet.Cells[2, 1], xlSheet.Cells[2, i + 1]);
-                            //   r2.NumberFormatLocal = "@";
+                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).NumberFormatLocal = "@";                           
                         }
                         ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).Value2 = v;
 
@@ -160,7 +158,64 @@
             }
         }
 
+        public void WriteDataRerangeWithCaption(int x, int y, System.Data.DataTable dt)
+        {
+            try
+            {
+                int colnum = dt.Columns.Count;
+                int rownum = dt.Rows.Count;
+                for (int i = 0; i < colnum; i++)
+                {
+                    string h = dt.Columns[i].ColumnName;
+                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[x, i + y]).Value2 = h;
+                    string old = dt.Rows[0][i].ToString();
+                    int range = 0;
+                    for (int j = 0; j < rownum; j++)
+                    {
+                        if (i == 0)
+                        {
+                            if (range == 0)
+                            {
+                                if (IsOnlyNumber(old) && Convert.ToDouble(old) > 100000000000)
+                                {
+                                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).NumberFormatLocal = "@";
+                                }
+                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).Value2 = old;
+                            }
+                            string cur = dt.Rows[j][i].ToString();
+                            if (j != 0 && cur == old)
+                                range++;
+                            else
+                            {
+                                if (range > 0)
+                                {
+                                    RangeBuild(xlSheet, xlSheet.Cells[j + x - range, i + y], xlSheet.Cells[j  + x, i + y], old);
+                                }
+                                old = cur;
+                                range = 0;
+                            }
+                            if (j == rownum - 1 && range > 0)
+                                RangeBuild(xlSheet, xlSheet.Cells[j + x+1 - range, i + y], xlSheet.Cells[j + x+1, i + y], old);
+                        }
+                        else
+                        {
+                            string v = dt.Rows[j][i].ToString();
+                            if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
+                            {
+                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).NumberFormatLocal = "@";
+                                //   Microsoft.Office.Interop.Excel.Range r2 = xlSheet.get_Range(xlSheet.Cells[2, 1], xlSheet.Cells[2, i + 1]);
+                                //   r2.NumberFormatLocal = "@";
+                            }
+                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).Value2 = v;
+                        }
 
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
 
         public void WriteDataRerange(int x, int y, System.Data.DataTable dt)
         {

@@ -73,8 +73,8 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     protected void Save_Click(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string[] seg = { "PARA_CODE", "PARA_TYPE", "WEIGHT", "PERIODIC", "RST_VALUE", "HEAD_DELAY", "TAIL_DELAY", "BATCH_HEAD_DELAY", "BATCH_TAIL_DELAY", "IS_GAP_JUDGE", "DESCRIPT", "SYNCHRO_TIME", "CTRL_POINT", "GAP_HDELAY", "GAP_TDELAY","GAP_TIME" };
-        string[] value = { txtID.Text, listStyle.SelectedValue, txtWeight.Text, txtPeriodic.Text, txtRstValue.Text, txtHeadDelay.Text, txtTailDelay.Text, txtBatchHDelay.Text, txtBatchTDelay.Text, Convert.ToInt16(rdYes.Checked).ToString(), txtDescript.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listGappoint.SelectedValue, txtGapHeadDelay.Text, txtGapTailDelay.Text,txtGapTime.Text };
+        string[] seg = { "PARA_CODE", "PARA_TYPE",  "PERIODIC", "RST_VALUE", "HEAD_DELAY", "TAIL_DELAY", "BATCH_HEAD_DELAY", "BATCH_TAIL_DELAY", "IS_GAP_JUDGE", "DESCRIPT", "SYNCHRO_TIME", "CTRL_POINT", "GAP_HDELAY", "GAP_TDELAY","GAP_TIME" };
+        string[] value = { txtID.Text, listStyle.SelectedValue,  txtPeriodic.Text, txtRstValue.Text, txtHeadDelay.Text, txtTailDelay.Text, txtBatchHDelay.Text, txtBatchTDelay.Text, Convert.ToInt16(rdYes.Checked).ToString(), txtDescript.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listGappoint.SelectedValue, txtGapHeadDelay.Text, txtGapTailDelay.Text,txtGapTime.Text };
 
         string log_message = opt.MergeInto(seg, value, 1, "ht_qlt_collection") == "Success" ? "保存质量采集条件成功" : "保存质量采集条件失败";
         log_message += "--详情:" + string.Join(",", value);
@@ -103,8 +103,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         listPointname.SelectedValue = txtID.Text;
         DataSet data = opt.CreateDataSetOra("select * from ht_qlt_collection g1  where g1.is_del = '0' and g1.is_valid = '1' and  g1.para_code = '" + txtID.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            txtWeight.Text = data.Tables[0].Rows[0]["WEIGHT"].ToString();
+        {            
             listStyle.SelectedValue = data.Tables[0].Rows[0]["PARA_TYPE"].ToString();           
             txtPeriodic.Text = data.Tables[0].Rows[0]["PERIODIC"].ToString();
             txtRstValue.Text = data.Tables[0].Rows[0]["RST_VALUE"].ToString();         
@@ -148,7 +147,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
     }
     protected void setBlank()
     {
-        txtWeight.Text = "";
+      
         listStyle.SelectedValue = "";
     
         txtPeriodic.Text = "0";

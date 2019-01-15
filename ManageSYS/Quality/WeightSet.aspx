@@ -26,12 +26,54 @@
         <div id="usual1" class="usual">
             <div class="itab">
                 <ul>
-                    <li><a href="#tab1" class="selected" id="tabtop1">工艺段权重</a></li>
-                    <li><a href="#tab2" id="tabtop2">月度考核权重</a></li>
+                    <li><a href="#tab1" class="selected" id="tabtop1">月度考核权重</a></li>
+                    <li><a href="#tab2" id="tabtop2">工艺段权重</a></li>
+                    <li><a href="#tab3" id="tabtop3">工艺点权重</a></li>
                 </ul>
             </div>
         </div>
         <div id="tab1" class="tabson">
+           <div class="framelist"> 
+                <div class="listtitle">
+                                <span style="position: relative; float: right">
+                                    <asp:Button ID="btnGrid2Save" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnGrid2Save_Click" />
+                               </span>
+                            </div>
+               <div>
+                <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
+                            DataKeyNames="ID">
+                            <Columns>
+                                
+                                 <asp:BoundField    DataField="NAME" HeaderText="考核项" />
+                                
+                                <asp:TemplateField      HeaderText = "权重">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField      HeaderText = "备注">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                              
+                            </Columns>
+                            <HeaderStyle CssClass="gridheader" />
+                            <RowStyle CssClass="gridrow" />
+                            <AlternatingRowStyle CssClass="gridalterrow" />
+                        </asp:GridView>
+                    </ContentTemplate>
+                    <Triggers>                      
+                        <asp:AsyncPostBackTrigger ControlID="btnGrid2Save" />                     
+                    </Triggers>
+                </asp:UpdatePanel>
+             </div>
+        </div>
+        
+    </div>
+        <div id="tab2" class="tabson">
             <div class="framelist"> 
                  <div class="listtitle">
                                <span style="position: relative; float: right">
@@ -69,28 +111,32 @@
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>                      
-                        <asp:AsyncPostBackTrigger ControlID="GridView1" />                     
+                        <asp:AsyncPostBackTrigger ControlID="btnGrid1Save" />                     
                     </Triggers>
                 </asp:UpdatePanel>
               </div>
         </div>
         </div>
-        <div id="tab2" class="tabson">
-           <div class="framelist"> 
-                <div class="listtitle">
-                                <span style="position: relative; float: right">
-                                    <asp:Button ID="btnGrid2Save" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnGrid2Save_Click" />
+        <div id="tab3" class="tabson">
+            <div class="framelist"> 
+                 <div class="listtitle">
+                     工艺段：<asp:DropDownList ID ="listSection" runat="server" CssClass="drpdwnlist" AutoPostBack ="true" OnSelectedIndexChanged="listSection_SelectedIndexChanged" ></asp:DropDownList>
+                               <span style="position: relative; float: right">
+                                    <asp:Button ID="btnGrid3Save" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnGrid3Save_Click" />
+                                  
                                </span>
                             </div>
-               <div>
-                <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                <div>
+                <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
-                            DataKeyNames="ID">
+                        <asp:GridView ID="GridView3" runat="server" class="grid" AutoGenerateColumns="False"
+                            DataKeyNames="para_code">
                             <Columns>
-                                
-                                 <asp:BoundField    DataField="NAME" HeaderText="考核项" />
-                                
+                                <asp:TemplateField      HeaderText = "工艺点">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="txtPara" runat="server" CssClass = 'tbinput1' Width ="250px"></asp:TextBox>  
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField      HeaderText = "权重">
                                     <ItemTemplate>
                                         <asp:TextBox ID="txtWeight" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
@@ -101,7 +147,7 @@
                                         <asp:TextBox ID="txtRemark" runat="server" CssClass = 'tbinput1'></asp:TextBox>  
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                              
+                             
                             </Columns>
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />
@@ -109,13 +155,13 @@
                         </asp:GridView>
                     </ContentTemplate>
                     <Triggers>                      
-                        <asp:AsyncPostBackTrigger ControlID="GridView2" />                     
+                        <asp:AsyncPostBackTrigger ControlID="listSection" />       
+                        <asp:AsyncPostBackTrigger ControlID ="btnGrid3Save" />              
                     </Triggers>
                 </asp:UpdatePanel>
-             </div>
+              </div>
         </div>
-        
-    </div>
+        </div>
     <script type="text/javascript">
         $("#usual1 ul").idTabs(); 
     </script>

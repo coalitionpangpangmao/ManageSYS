@@ -410,20 +410,19 @@
                     </asp:UpdatePanel>
                 </div>
             </div>
-            <div id="dspcthor" class="userbox">
-                <div class="tiptop">
-                    <span>请选择任务执行人员</span><a onclick="$('#dspcthor').hide()"></a>
-                </div>
-                <div class="flowinfo">
-                    <asp:DropDownList ID="listdspcth" runat="server" CssClass="drpdwnlist">
-                    </asp:DropDownList>
-                </div>
-                <div style="margin-top: 10px;" align="center">
-                    <asp:Button ID="btnDspcth" runat="server" CssClass="sure" Text="确定" OnClick="btnDspcth_Click" Height="30px" Width="80px" />
-                    <input name="" type="button" class="cancel" value="取消"
-                        style="width: 80px; height: 30px" onclick="$('#dspcthor').hide()" />
-                </div>
+          <div id = "dspcthor"  class = "userbox">
+         <div class="tiptop">
+                <span>请选择任务执行班组</span><a onclick="$('#dspcthor').hide()"></a></div>
+                 <div class="flowinfo">
+            <asp:DropDownList ID="listdspcth" runat="server" CssClass = "drpdwnlist">
+            </asp:DropDownList>
             </div>
+              <div style=" margin-top: 10px;" align="center" >
+               <asp:Button ID="btnDspcth" runat="server" CssClass="sure" Text="确定" OnClick="btnDspcth_Click"  Height="30px" Width="80px" />               
+                <input name="" type="button" class="cancel" value="取消" 
+                      style="width: 80px; height: 30px" onclick="$('#dspcthor').hide()"/>
+            </div>
+        </div>
 
             <div class="shade">
                 <div  style="width:900px; height:380px; position:absolute;top:6%; left:8%;background:#fcfdfd;box-shadow:1px 8px 10px 1px #9b9b9b;border-radius:1px;behavior:url(js/pie.htc); ">

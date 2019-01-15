@@ -73,12 +73,31 @@ namespace MSYS.Web
                 return "Falied";
         }
 
-        public void queryStorage()
+        public DataTable queryStorage(string year, string matername, string category, string matertype, string place, string warehouse)
         {
             MSYS.Web.StoreService.StoreServiceInterfaceService service = new MSYS.Web.StoreService.StoreServiceInterfaceService();
-           // service.getMatOnhandNoPageList();
-           // service.getCategoryListAsync();
-           // service.getMaterialWarehouseListAsync;
+            tWaOnhand[] lists = service.getMatOnhandNoPageList(year, matername, category, matertype, place, warehouse);
+            DataTable data = new DataTable();
+            
+            data.Columns.Add("物料名称");
+            data.Columns.Add("物料编码");
+            data.Columns.Add("仓库");
+            data.Columns.Add("货位号");
+            data.Columns.Add("类别");
+            data.Columns.Add("类型");
+             data.Columns.Add("产地");
+            data.Columns.Add("库存(kg)");
+            data.Columns.Add("使用叶组");
+            data.Columns.Add("件数");
+            data.Columns.Add("单重(kg)");
+         
+            foreach (tWaOnhand mat in lists)
+            {
+                string[] paras = new string[] { mat.materName, mat.materCode, mat.warehouseName, mat.clocationid, mat.typeCode, mat.categoryCode, mat.provinceCode, mat.pkOnhandnum, mat.formulaName, mat.matPack, mat.pack };
+                data.Rows.Add(paras);                
+            }
+            return data;
+         
         }
 
         protected  void updateWarehouse()
@@ -99,7 +118,7 @@ namespace MSYS.Web
 
             foreach (hashMap list in lists)
             {
-                string[] value = { };
+                string[] value = {};
              //   string temp = opt.getMergeStr(seg, value, 1, "HT_PUB_MATTREE");
                 //  commandlist.Add(temp);
                 //if (opt.UpDateOra(temp) != "Success")

@@ -74,22 +74,22 @@
                         <tbody>
                             <tr>
                                 <td width="100">
-                                    物料编码
+                                    年份
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtStart" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtYear" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
                                  <td width="100">
                                     物料名称
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="TextBox3" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtname" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
                                   <td width="100">
                                     类别
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="TextBox4" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtcatgory" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
@@ -97,19 +97,19 @@
                                     类型
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="TextBox5" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txttype" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
                                  <td width="100">
                                     产地
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="TextBox6" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtprovince" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
                                   <td width="100">
                                     仓库
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="TextBox7" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtwarehouse" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
                             </tr>
                         </tbody>

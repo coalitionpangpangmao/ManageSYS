@@ -76,6 +76,14 @@ namespace MSYS
                         // lb.DataBinding += new EventHandler(lb_DataBinding);
                         container.Controls.Add(lb);
                     }
+                    else if (P_ColumnType.ToUpper() == "DropDownList".ToUpper())
+                    {
+                        System.Web.UI.WebControls.DropDownList list = new DropDownList();
+                        list.ID = "list_" + P_ColumnName;
+                        list.EnableViewState = true;
+                        list.CssClass = "drpdwnlist";
+                        container.Controls.Add(list);
+                    }
                     else if (P_ColumnType.ToUpper() == "CheckBox".ToUpper())
                     {
                         System.Web.UI.WebControls.CheckBox ck = new CheckBox();

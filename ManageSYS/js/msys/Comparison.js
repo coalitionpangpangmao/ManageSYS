@@ -10,6 +10,7 @@ $(document).ready(function () {
     showtempchart();
     // activate the button
     $('#btnCompare').click(function () {
+        $('#statics').empty();
         showPointPlot();
     });
 });
@@ -19,6 +20,7 @@ function showPointPlot() {
     while (chart.series.length) {
         chart.series[0].remove(false);
     }
+   
     $("#cklistPara tbody").find("tr").each(function () {      
         var item = $(this).find('label').text();;
         var json = {

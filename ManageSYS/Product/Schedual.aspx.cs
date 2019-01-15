@@ -74,13 +74,13 @@ public partial class Product_Schedual : MSYS.Web.BasePage
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        if (listPrdline.SelectedValue == "" || txtStartDate.Text == "" || txtEndDate.Text == "")
-        {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请选择排班车间与时间段!!')", true);
-            return;
-        }
         DateTime startdate = Convert.ToDateTime(txtStartDate.Text);
         DateTime enddate = Convert.ToDateTime(txtEndDate.Text);
+        if (listPrdline.SelectedValue == "" || txtStartDate.Text == "" || txtEndDate.Text == "" ||startdate - enddate > new  TimeSpan(0) || enddate - System.DateTime.Now <new  TimeSpan(0))
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请选择正确的排班车间与时间段!!')", true);
+            return;
+        }     
         DateTime tempdate = GetMondayDate(startdate).AddDays(7);
         if (GridView1.Rows.Count > 0)
         {
@@ -88,7 +88,8 @@ public partial class Product_Schedual : MSYS.Web.BasePage
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             List<TeamSchedula> schedules = getTeamSchedule();
             int h = 0;
-            
+            if (startdate - System.DateTime.Now < new TimeSpan(0))
+                startdate = System.DateTime.Now;
             while (startdate < enddate)
             {
                 if (h == 3)
@@ -265,18 +266,20 @@ public partial class Product_Schedual : MSYS.Web.BasePage
     {
         try
         {
+            List<string> commandlist = new List<string>();
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
                 {
                     string id = GridView2.DataKeys[i].Value.ToString();
                     string query = "update ht_prod_schedule set work_staus = '" + ((DropDownList)GridView2.Rows[i].FindControl("listStatus2")).SelectedValue + "'  where ID = '" + id + "'";
-                    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-                    string log_message = opt.UpDateOra(query) == "Success" ? "更新排班状态成功" : "更新排班状态失败";
-                    log_message += "--标识:" + id;
-                    InsertTlog(log_message);
+                    commandlist.Add(query);                 
                 }
             }
+            string log_message = opt.TransactionCommand(commandlist) == "Success" ? "更新排班状态成功" : "更新排班状态失败";            
+            InsertTlog(log_message);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "msg", "alert('" + log_message + "')", true);
         }
         catch (Exception ee)
         {

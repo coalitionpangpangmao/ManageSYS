@@ -365,13 +365,18 @@ namespace MSYS.Web
                                     DataTable dt = set.Tables[0];
                                     openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
                                     if (merge)
-                                        openXMLExcel.WriteDataRerange(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
-                                    else
                                     {
                                         if(hasCaption)
+                                            openXMLExcel.WriteDataRerangeWithCaption(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                        else
+                                        openXMLExcel.WriteDataRerange(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                    }
+                                    else
+                                    {
+                                        if (hasCaption)
                                             openXMLExcel.WriteDataIntoWorksheetWithCaption(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
                                         else
-                                        openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
+                                            openXMLExcel.WriteDataIntoWorksheet(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
                                     }
                                 }
 

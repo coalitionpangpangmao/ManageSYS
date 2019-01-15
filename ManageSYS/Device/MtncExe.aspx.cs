@@ -32,7 +32,7 @@ public partial class Device_MtncExe : MSYS.Web.BasePage
     protected void bindGrid()
     {
         string query = "select t.mech_area as 区域,t1.eq_name as 设备名称,t.reason as 维保原因,t.content as 维保内容,t.exp_finish_time as 期望完成时间,t.STATUS as 状态,t.remark as 备注 ,t.ID,t.MAIN_ID  from ht_eq_mt_plan_detail t left join Ht_Eq_Eqp_Tbl t1 on t1.idkey = t.equipment_id left join ht_eq_mt_plan t2 on t.main_id = t2.pz_code  where  t.is_del = '0' and t.exp_finish_time between '" + txtStart.Text + "' and '" + txtStop.Text + "'   and t2.FLOW_STATUS = '2' and t2.is_del = '0' ";
-      //  query += " and t.RESPONER = '" + ((MSYS.Data.SysUser)Session["User"]).id + "'";
+        //  query += " and t.TEAM_CODE = '" + ((MSYS.Data.SysUser)Session["User"]).TeamCode + "'";
 
         if (ckDone.Checked)
             query += " and t.STATUS  > '1' ";

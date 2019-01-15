@@ -146,7 +146,7 @@ public partial class Product_Report : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string filename = opt.GetSegValue("select F_NAME from ht_sys_excel_book where f_id = '" + hidebookid.Value + "'", "F_NAME");
-        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xls", txtMonth.Text, DateTime.Now, hideMerge.Value == "0");
+        ExportExcel(filename, listProd.SelectedValue, txtStartTime.Text, txtEndTime.Text, listTeam.SelectedValue, ".xls", txtMonth.Text, DateTime.Now, hideMerge.Value != "0");
         //ExportExcel("再造梗丝车间交接班记录", "", "2018-08-21", "", "02", ".xlsx");
     }
 

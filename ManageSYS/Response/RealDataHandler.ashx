@@ -98,7 +98,7 @@ public class RealDataHandler : IHttpHandler
                //  DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
                 MSYS.IHAction ihopt = new MSYS.IHAction();
                 MSYS.IHAction.TimeSeg seg = ihopt.GetTimeSegP(starttime, endtime, point, prodcode);
-                List<MSYS.IHAction.ParaRes> Rows = ihopt.GetIHOrgDataSet(seg);
+                List<MSYS.IHAction.ParaRes> Rows = ihopt.GetIHRealDataSet(seg);
                  if (Rows != null)
                  {
                      datainfo.xAxis = new List<string>();

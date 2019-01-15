@@ -286,6 +286,7 @@
                                                         <asp:CheckBox ID="ckEqpara" runat="server" Text="设备记录" CssClass="ckfloat" Visible="False" />
                                                         <asp:CheckBox ID="ckQuaAnalyze" runat="server" Text="质量考核" OnCheckedChanged="ckQuaAnalyze_CheckedChanged" AutoPostBack="True" CssClass="ckfloat" />
                                                         <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" CssClass="ckfloat" />
+                                                          <asp:CheckBox ID="ckProdOut" runat="server" Text="产量统计" CssClass="ckfloat" OnCheckedChanged="ckProdOut_CheckedChanged" />
 
                                                     </p>
 
@@ -323,6 +324,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="ckQuaAnalyze" />
                                     <asp:AsyncPostBackTrigger ControlID="btnModify1" />
                                     <asp:AsyncPostBackTrigger ControlID="ckManul" />
+                                    <asp:AsyncPostBackTrigger ControlID ="ckProdOut" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
