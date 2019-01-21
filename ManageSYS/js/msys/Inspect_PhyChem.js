@@ -39,6 +39,7 @@ function getAll(begin, end, dates) {
 var app = new Vue({
     el: "#view",
     data: {
+        isAdd:false,
         title: [],
         rows: [],
         id:[],
@@ -47,15 +48,26 @@ var app = new Vue({
         prod:"产品",
         team:"",
         t:"中班",
-        changed:[]
+        changed:[],
+        deleteList:[],
+        addData:[],
+        addTime:"",
+        addTeam:"",
+        addSchedule:"",
+        addProduct:"",
+        productInfo:[]
+
     },
     mounted: function () {
         console.log("mounted finished");
+        this.getProductInfo();
         this.getTitles();
 
     },
     methods: {
-        getSchedule(start_time, end_time, dates,  team_code, schedule_time){
+
+        //获得排班
+    getSchedule(start_time, end_time, dates,  team_code, schedule_time){
         axios({
     method:"post",
     url:"../Response/getSchedule.ashx",
@@ -122,13 +134,127 @@ show(dindex){
 //document.getElementById("query").click();
 tab.click();
 },
-saveAll(){
+
+deleteA(){
+    /*this.deleteList.forEach((ele)=>{
+        var temp = this.rows[ele];
+    temp.forEach((ele,index,list)=>{
+        list[index] = 0;
+    });
+        this.$set(this.rows, ele, temp);
+});*/
+        //this.changed.push(this.deleteList);
+        this.saveAll(true);
+        
+},
+
+getProductInfo(){
+    axios({
+        method:"POST",
+        url:"../Response/getProductInfo.ashx",
+        dataType:"json",
+
+    }).then((res)=>{
+        console.log("获取产品信息成功");
+    this.productInfo = res.data;
+    });
+},
+
+    changeDeleteList(index){
+
+        //this.getProductInfo();
+    var deleteL = [];
+    deleteL = this.deleteList;
+    var add = deleteL.indexOf(index);
+    if(add!=-1){
+       deleteL.splice(add, 1);
+    }else{
+        deleteL.push(index);
+    }
+    this.deleteList = deleteL;
+    console.log(deleteL);
+    console.log(this.deleteList);
+},
+
+initAdd(){
+    let tr = document.getElementById("addtr")
+    let tempData = [];
+    for(let i=0; i<this.id.length; i++){
+        tempData.push(0);
+    }
+    this.addData = tempData;
+    this.addTeam = null;
+    this.addTime = null;
+    this.addSchedule = null;
+    this.addProduct = null;
+},
+
+getTrData(tr){
+    let result=[];
+    for(let i=1; i<=4; i++){
+        console.log(tr.children[i].children[0].value);
+        result.push(tr.children[i].children[0].value.toString());
+    }
+    return result;
+},
+
+    softDeleteAll(){
+        console.log(this.deleteList);
+        for(let i=0; i<this.deleteList.length; i++){
+        let tr = document.getElementById(this.deleteList[i]);
+        let tempData = this.getTrData(tr);
+        this.softDelete(tempData);
+    }
+},
+
+softDelete(Data){
+    let tempData = Data.splice(3,);
+    if(Data[2] == "甲班"){
+        Data[2] = "01";
+    }
+    if(Data[2] == "乙班"){
+        Data[2] = "02";
+    }
+    if(Data[2] == "丙班"){
+        Data[2] = "03";
+    }
+    let date = Data;
+    axios({
+        method:"post",
+        url:"../Response/Inspect_Process_Delete.ashx",
+        dataType:"json",
+        data:{
+            data:tempData,
+            inspectID:this.id,
+            count:this.id.length,
+            dates:date,
+            prod:document.getElementById("prod_code").value,
+            createId:document.getElementById("listEditor").value,
+        }
+    }).then((res)=>{
+        console.log("删除成功");
+    this.deleteList = [];
+    this.getRows();
+    }).catch((err)=>{
+        console.log("删除失败");
+        console.log(err.message);
+    });
+},
+
+saveAll(isDelete=false){
     console.log(this.dates.length);
-    this.changed = Array.from(new Set(this.changed))
+    console.log(this.changed);
+    var changed = Array.from(new Set(this.changed))
+    console.log(changed);
+    if(isDelete == true){
+        changed = this.deleteList;
+    }
     let ss = this.save.bind(this);
-    for(let i=0;i<this.changed.length; i++)
+    console.log("delete list");
+    console.log(changed);
+    for(let i=0;i<changed.length; i++)
     {
-        this.save(this.changed[i], true);
+        this.save(changed[i], true, isDelete);
 
         //setTimeout(()=>{ss(i, true);},1000)
     }
@@ -138,27 +264,36 @@ setTimeout(this.getRows.bind(this),500);
 
 },
 
-save(rindex, all=false){
+save(rindex, all=false, isDelete=false){
     let tempData = [];
-    for(let i=0;i<this.title.length; i++){
-       tempData.push(document.getElementById(rindex.toString()+i.toString()).value.toString());
-       console.log(tempData[i]);
+    if(isDelete == true){
+        for(let i=0;i<this.title.length; i++){
+           tempData.push(0);
+           console.log(tempData[i]);
+        }
     }
-console.log(tempData);
-let flag = tempData.some((value)=>{
-    return value!=0;
-});
-if(!flag){
-    return;
+for(let i=0;i<this.title.length; i++){
+   tempData.push(document.getElementById(rindex.toString()+i.toString()).value.toString());
+   console.log(tempData[i]);
 }
+console.log(tempData);
+    /*let flag = tempData.some((value)=>{
+        return value!=0;
+    });
+    if(!flag){
+        return;
+    }*/
 let isUpdated = this.rows.some((val)=>{
-    return val[0]==this.dates[rindex][0] && this.dates[rindex][4] == val[2];
+console.log("judgeupdate");
+console.log(this.dates[rindex][0]);
+console.log(this.dates[rindex][4]);
+return val[0]==this.dates[rindex][0] && this.dates[rindex][4] == val[2];
 });
 let recordId="";
 if(isUpdated){
-    this.rows.forEach((val)=>{
-        if(val[0]==this.dates[rindex][0] && val[2] == this.dates[rindex][4]){
-        recordId = val[val.length-2];        
+this.rows.forEach((val)=>{
+    if(val[0]==this.dates[rindex][0] && val[2] == this.dates[rindex][4]){
+    recordId = val[val.length-2];        
 }
 });
 }
@@ -168,32 +303,87 @@ axios({
     url:"../Response/InspectSave.ashx",
     dataType:"json",
     data:{
-        data:tempData,
-        inspectID:this.id,
-        count:this.id.length,
-        isUpdate:isUpdated?1:0,
-        dates:this.dates[rindex],
-        prod:document.getElementById("prod_code").value,
-        createId:document.getElementById("listEditor").value,
-        recordId:recordId
-    }
+    data:tempData,
+    inspectID:this.id,
+    count:this.id.length,
+    isUpdate:isUpdated?1:0,
+    dates:this.dates[rindex],
+    prod:document.getElementById("prod_code").value,
+    createId:document.getElementById("listEditor").value,
+    recordId:recordId
+}
 }).then((res)=>{
-    if(all === false){
-        this.getRows();
+if(all === false){
+    this.getRows();
 }
 }).catch((err)=>{console.log(err.message);});
 },
 add(dindex){
-    console.log("add+"+dindex);
-    this.changed.push(dindex);
+console.log("add+"+dindex);
+this.changed.push(dindex);
 },
+
+    //加入更细队列
 change(dindex,rindex,index,data){
-    this.changed.push(dindex);
-    let tem = this.rows[rindex].splice(0);
-    tem[index] = parseInt(data);
-    this.$set(this.rows, rindex, tem);
-    console.log(this.rows[rindex]);
+this.changed.push(dindex);
+    //let tem = this.rows[rindex].splice(0);
+    //tem[index] = parseInt(data);
+    //this.$set(this.rows, rindex, tem);
+    //console.log(this.rows[rindex]);
+console.log("the dindex is"+ dindex);
 },
+
+    //显示新增数据框
+showAddRecord(){
+    //this.getProductInfo();
+    this.initAdd();
+    this.isAdd = true;
+
+},
+
+hiddenAddRecord(){
+    this.isAdd = false;
+    this.initAdd();
+},
+
+    //新增数据
+    addRecord(){
+
+    this.addTime = document.getElementById("addtime").value;
+    let index_in_dates = this.dates.indexOf(this.addTime);
+    let dates = this.dates.find((val)=>{
+        return val[0] == this.addTime && val[3] == document.getElementById("addteam").value.toString();
+
+    });
+    console.log(this.dates);
+    //let shift = this.dates[index_in_dates][1];
+    // dates = [this.addTime, document.getElementById("addschedule").value.toString(), 01, document.getElementById("addteam").value.toString(), 01];
+    //dates = [this.addTime, shift, 01, document.getElementById("addteam").value.toString(), 01];
+    axios({
+    method:"post",
+    url:"../Response/InspectSave.ashx",
+    dataType:"json",
+    data:{
+    data:this.addData,
+    inspectID:this.id,
+    count:this.id.length,
+    isUpdate:0,
+    dates:dates,
+    prod:document.getElementById("addproduct").value.toString(),
+    createId:document.getElementById("listEditor").value,
+    recordId:null
+}
+}).then((res)=>{
+    this.hiddenAddRecord();
+    this.getRows();
+
+
+}).catch((err)=>{console.log(err.message);});
+},
+
+
+
+    //获取数据
 getRows() {
     let start_time = document.getElementById("start_time");
     let end_time = document.getElementById("end_time");
@@ -208,13 +398,13 @@ getRows() {
     this.team="";
     if(team_code.value=="01"){
         this.team = "甲班";
-    }
+}
     if(team_code.value=="02"){
         this.team = "乙班";
-    }
+}
     if(team_code.value=="03"){
         this.team="丙班"
-    }
+}
 
     this.dates=[];
     // getAll(start_time.value, end_time.value, this.dates);
@@ -222,16 +412,16 @@ getRows() {
 
     console.log(this.dates);
     axios({
-        url: "../Response/InspectRows.ashx",
-        method: "post",
-        data: {
-            start_time: start_time.value,
-            end_time: end_time.value,
-            prod_code: prod_code.value,
-            team_code: team_code.value,
-            schedule_time: "00"
-        }
-    }).then((res) => {
+    url: "../Response/InspectRows.ashx",
+    method: "post",
+    data: {
+    start_time: start_time.value,
+    end_time: end_time.value,
+    prod_code: prod_code.value,
+    team_code: team_code.value,
+    schedule_time: "00"
+}
+}).then((res) => {
         this.rowsDates = res.data.rows.map(function(ele){return ele[0].toString();});
     this.prod = prod_code.options[prod_code.selectedIndex].text;
     console.log(this.rowsDates);

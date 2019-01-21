@@ -9,14 +9,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript">
-        function GridClick(code) {
-
-            $('#tabtop2').click();
-            $('#hdcode').attr('value', code.substr(4));
-            $('#btnUpdate').click();
-        }
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">

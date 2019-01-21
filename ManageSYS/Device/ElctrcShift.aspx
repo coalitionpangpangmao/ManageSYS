@@ -74,7 +74,7 @@
                                     <asp:BoundField    DataField="结束时间" HeaderText="结束时间" />
                                     <asp:TemplateField      HeaderText="操作">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click" />
+                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click"  OnClientClick ="$('#tabtop2').click();"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

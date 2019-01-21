@@ -41,7 +41,7 @@ namespace MSYS.Web
                         System.Diagnostics.Debug.Write(temp);
                     getTechstdd_SQL(prod.techStddId, prod.prodCode); // java.math.BigInteger cannot be cast to java.lang.String
                     getMaterFormalu_SQL(prod.materFormulaId, prod.prodCode);
-                    getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode); //java.math.BigDecimal cannot be cast to java.lang.Double
+                   // getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode); //java.math.BigDecimal cannot be cast to java.lang.Double
                     getCoatFormalu_SQL(prod.coatFormulaId, prod.prodCode);
                     if (opt.TransactionCommand(commandlist) == "Success")
                     {
@@ -50,6 +50,7 @@ namespace MSYS.Web
                         commandlist.Add("update ht_qa_mater_formula_detail r set formula_code = (select t.formula_code from ht_qa_mater_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.materFormulaId + "'");
                         commandlist.Add("update ht_qa_aux_formula_detail r set formula_code = (select t.formula_code from ht_qa_aux_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.auxFormulaId + "'");
                         commandlist.Add("update ht_qa_coat_formula_detail r set formula_code = (select t.formula_code from ht_qa_coat_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.coatFormulaId + "'");
+                        commandlist.Add("update ht_qa_Fla_formula_detail r set formula_code = (select t.formula_code from ht_qa_Fla_formula t where t.id = r.formula_code) where r.formula_code = '" + prod.coatFormulaId + "'");
                         commandlist.Add("update ht_tech_stdd_code_detail r set tech_code = (select t.tech_code from ht_tech_stdd_code t where t.id = r.tech_code) where r.tech_code = '" + prod.techStddId + "'");
                         commandlist.Add("update ht_qa_mater_formula_detail t set t.mater_flag = (select r.mat_type from ht_pub_materiel r  where r.material_code = t.mater_code)");
                         opt.TransactionCommand(commandlist);
@@ -220,6 +221,7 @@ namespace MSYS.Web
                 string temp;
                 if (info != null)
                 {
+                    //插入回填液
                     string[] seg = { "ID", "FORMULA_CODE", "FORMULA_NAME", "B_DATE", "CONTROL_STATUS", "CREATE_DATE", "CREATE_DEPT_ID", "CREATE_ID", "E_DATE", "IS_DEL", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "PROD_CODE", "REMARK", "STANDARD_VOL", "FORMULA_TPY", "FORMULA_XJ", "W_TOTAL" };
                     string[] value = { id, "703" + info.formulaCode, info.formulaName, info.BDate.ToString("yyyy-MM-dd HH:mm:ss"), info.controlStatus, info.createDate, info.createDept, info.createId, info.EDate.ToString("yyyy-MM-dd HH:mm:ss"), info.isDel, info.isValid, info.modifyId, info.modifyTime, prodCode, info.remark, info.standardVol, info.formulaTpy.ToString(), info.formulaXj.ToString(), info.WTotal.ToString() };
                     temp = opt.getMergeStr(seg, value, 2, "HT_QA_COAT_FORMULA");
@@ -239,13 +241,20 @@ namespace MSYS.Web
                                 System.Diagnostics.Debug.Write(temp);
                         }
                     }
+                    //插入香精香料
+                    string[] segX = { "ID", "FORMULA_CODE", "FORMULA_NAME", "B_DATE", "CONTROL_STATUS", "CREATE_DATE", "CREATE_DEPT_ID", "CREATE_ID", "E_DATE", "IS_DEL", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "PROD_CODE", "REMARK", "STANDARD_VOL", "FORMULA_TPY", "FORMULA_XJ", "W_TOTAL" };
+                    string[] valueX = { id, "703" + info.formulaCode, info.formulaName, info.BDate.ToString("yyyy-MM-dd HH:mm:ss"), info.controlStatus, info.createDate, info.createDept, info.createId, info.EDate.ToString("yyyy-MM-dd HH:mm:ss"), info.isDel, info.isValid, info.modifyId, info.modifyTime, prodCode, info.remark, info.standardVol, info.formulaTpy.ToString(), info.formulaXj.ToString(), info.WTotal.ToString() };
+                    temp = opt.getMergeStr(seg, value, 2, "HT_QA_Fla_FORMULA");
+                    commandlist.Add(temp);
+                    if (opt.UpDateOra(temp) != "Success")
+                        System.Diagnostics.Debug.Write(temp);
                     if (info.coatXJSubList != null && info.coatXJSubList.Length > 0)
                     {
                         string[] subseg = { "ID", "MATER_CODE", "CLASS_NAME", "COAT_FLAG", "FORMULA_CODE", "COAT_SCALE", "COAT_SORT", "IS_DEL", "IS_VALID", "NEED_SIZE", "REMARK" };
                         foreach (tQaCoatFormulaDetail detail in info.coatXJSubList)
                         {
                             string[] subvalue = { detail.id.ToString(), detail.classCode, detail.className, detail.coatFlag, id, detail.coatScale, detail.coatSort.ToString(), detail.isDel, detail.isValid, detail.needSize.ToString(), detail.remark };
-                            temp = opt.getMergeStr(subseg, subvalue, 2, "HT_QA_COAT_FORMULA_DETAIL");
+                            temp = opt.getMergeStr(subseg, subvalue, 2, "HT_QA_Fla_FORMULA_DETAIL");
                             commandlist.Add(temp);
                             if (opt.UpDateOra(temp) != "Success")
                                 System.Diagnostics.Debug.Write(temp);

@@ -8,21 +8,7 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" /> 
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-
-        function GridClick() {
-            $('#tabtop2').click();
-
-        }
-
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -53,8 +39,9 @@
                         AutoPostBack="True">
                     </asp:DropDownList>
                     <span style="position: relative; float: right" class="click2">
+                          <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid1CkAll_Click" />
                         <asp:Button ID="btnGrid1Add" runat="server" CssClass="btnadd auth" Text="新增" OnClick="btnGrid1Add_Click" />
-                        <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid1CkAll_Click" />
+                      
                         <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid1DelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         
                     </span>
@@ -90,8 +77,9 @@
                         AutoPostBack="True">
                     </asp:DropDownList>
                     <span style="position: relative; float: right">
+                         <asp:Button ID="btnGrid2CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid2CkAll_Click" />
                         <asp:Button ID="btnGrid2Add" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnGrid2Add_Click" />
-                        <asp:Button ID="btnGrid2CkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnGrid2CkAll_Click" />
+                       
                         <asp:Button ID="btnGrid2DelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnGrid2DelSel_Click" OnClientClick="javascript:return confirm('确认删除？');"/>
                     </span>
                 </div>
@@ -165,24 +153,7 @@
                 </div>
             </div>
         </div>
-        <div class="aprvinfo" id="flowinfo">
-            <div class="tiptop">
-                <span>审批流程详情</span><a onclick="Aprvlisthide()"></a></div>
-            <div class="flowinfo">
-                <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <asp:GridView ID="GridView3" runat="server" class="grid">
-                            <HeaderStyle CssClass="gridheader" />
-                            <RowStyle CssClass="gridrow" />
-                             <AlternatingRowStyle CssClass="gridalterrow" />
-                        </asp:GridView>
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="GridView1" />
-                    </Triggers>
-                </asp:UpdatePanel>
-            </div>
-        </div>
+        
         <script type="text/javascript">
             $("#usual1 ul").idTabs(); 
         </script>

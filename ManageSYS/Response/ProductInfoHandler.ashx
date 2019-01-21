@@ -68,12 +68,12 @@ public class ProductInfoHandler : IHttpHandler
     protected DataInfo getPlanDoneInfo(string date)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select distinct t.prod_code,t.plan_output,t2.prod_name from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id and t1.is_del = '0' left join ht_pub_prod_design t2 on t2.prod_code = t.prod_code where t.is_del = '0' and  t1.plan_time = '" + date.Substring(0, 7) + "'";
+        string query = "select distinct t.prod_code,t.plan_output*1000 as plan_output,t2.prod_name from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id and t1.is_del = '0' left join ht_pub_prod_design t2 on t2.prod_code = t.prod_code where t.is_del = '0' and  t1.plan_time = '" + date.Substring(0, 7) + "'";
         DataSet data = opt.CreateDataSetOra(query);
         DataInfo res = new DataInfo();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            double total = Convert.ToDouble(opt.GetSegValue("select sum(t.plan_output) as total from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id and t1.is_del = '0' left join ht_pub_prod_design t2 on t2.prod_code = t.prod_code where t.is_del = '0' and  t1.plan_time = '" + date.Substring(0, 7) + "'", "total"));
+            double total = Convert.ToDouble(opt.GetSegValue("select sum(t.plan_output*1000) as total from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id and t1.is_del = '0' left join ht_pub_prod_design t2 on t2.prod_code = t.prod_code where t.is_del = '0' and  t1.plan_time = '" + date.Substring(0, 7) + "'", "total"));
             List<ProductInfo> prdinfo = new List<ProductInfo>();
             List<ProductSeries> prdserie = new List<ProductSeries>();  
             foreach (DataRow row in data.Tables[0].Rows)
@@ -141,7 +141,7 @@ public class ProductInfoHandler : IHttpHandler
     protected string getStatics(string date)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select g3.prod_name,g1.plan_output, g2.realout,g1.plan_output-g2.realout from (select t.prod_code,t.plan_output from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id  where t1.plan_time = '" + date.Substring(0, 7) + "') g1 left join(select prod_code ,sum(outweight) as realout from hv_prod_inout_ratio t where substr(datetime,0,7) = '" + date.Substring(0, 7) + "' group by prod_code) g2 on g1.prod_code = g2.prod_code left join ht_pub_prod_design g3 on g3.prod_code = g1.prod_code");
+        DataSet data = opt.CreateDataSetOra("select g3.prod_name,g1.plan_output*1000 as plan_output, g2.realout,g1.plan_output*1000-g2.realout from (select t.prod_code,t.plan_output from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id  where t1.plan_time = '" + date.Substring(0, 7) + "') g1 left join(select prod_code ,sum(outweight) as realout from hv_prod_inout_ratio t where substr(datetime,0,7) = '" + date.Substring(0, 7) + "' group by prod_code) g2 on g1.prod_code = g2.prod_code left join ht_pub_prod_design g3 on g3.prod_code = g1.prod_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             StringBuilder str = new StringBuilder("");

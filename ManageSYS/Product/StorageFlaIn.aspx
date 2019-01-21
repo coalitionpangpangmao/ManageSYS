@@ -10,6 +10,9 @@
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
      <script type="text/javascript" src="../js/jquery.PrintArea.js"></script>
+     <style type="text/css" media="print">
+@page { size: landscape; }
+</style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -53,9 +56,9 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     香精香料退库表<span style="position: relative; float: right">
-
-                        <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
-                        <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                          <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                        <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click"  OnClientClick ="$('#tabtop2').click();"/>
+                      
                         <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>
@@ -111,7 +114,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField  >
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75"
+                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75" OnClientClick ="$('#tabtop2').click();"
                                                 OnClick="btnGridview_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -139,6 +142,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnModify" />                          
                             <asp:AsyncPostBackTrigger ControlID="btnGridDel" />
                             <asp:AsyncPostBackTrigger ControlID="btnCkAll1" />
+                              <asp:AsyncPostBackTrigger ControlID="btnGrid2Save" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -175,7 +179,7 @@
                                         <td>
                                             <asp:TextBox ID="txtValiddate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                         </td>
-                                        <td width="100">领用部门
+                                        <td width="100">退库部门
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="listApt" runat="server" CssClass="drpdwnlist"
@@ -221,16 +225,12 @@
                                             <asp:DropDownList ID="listStorage" runat="server" CssClass="drpdwnlist">
                                             </asp:DropDownList>
                                         </td>
-                                        <td width="100">烟梗总量
+                                        <td width="100">香精香料总量
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtStemSum" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox>
                                         </td>
-                                        <td width="100">碎片总量
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtChipSum" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox>
-                                        </td>
+                                       
                                         <td width="100">创建人
                                         </td>
                                         <td>
@@ -272,15 +272,15 @@
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>                                  
-                                    <asp:TemplateField   HeaderText="原料名称" SortExpression="物料名称">
+                                    <asp:TemplateField   HeaderText="物料名称" SortExpression="物料名称">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGridName_SelectedIndexChanged" AutoPostBack="True" Width="230px"  DataSource='<%# gridHTYbind("0410")%>' DataValueField="material_code" DataTextField="material_name">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderText="原料编码" SortExpression="物料编码">
+                                    <asp:TemplateField   HeaderText="物料编码" SortExpression="物料编码">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridcode" runat="server" DataValueField="原料编码" DataTextField="原料编码"
+                                            <asp:TextBox ID="txtGridcode" runat="server" DataValueField="物料编码" DataTextField="物料编码"
                                                 CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>

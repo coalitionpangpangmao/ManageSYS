@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>无标题文档</title>
     <link href="css/default.css" rel="stylesheet" type="text/css" />
-     <script type="text/javascript" src="../js/jquery.js"></script>
+     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">

@@ -57,7 +57,7 @@
                     </table>
                     <div class="listtitle" style="margin-top: 10px">
                         感观评测记录列表<span style="position: relative; float: right">
-                            <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click" />
+                            <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click"  OnClientClick ="$('#tabtop2').click()"/>
                                    <asp:Button ID="btnDel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除所选生产计划吗？');" />
                         </span>
                     </div>
@@ -80,7 +80,7 @@
                                           <asp:BoundField    DataField="record_time" HeaderText="录入时间" />
                                         <asp:TemplateField  >
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridEdit" runat="server" Text="编制" CssClass="btn1" Width="60px"
+                                                <asp:Button ID="btnGridEdit" runat="server" Text="编制" CssClass="btn1" Width="60px" OnClientClick ="$('#tabtop2').click()"
                                                     OnClick="btnGridEdit_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>                                      

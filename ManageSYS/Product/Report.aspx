@@ -68,7 +68,7 @@
                           <asp:Button ID="btnUpdate" runat="server" class="btnhide" OnClick="btnUpdate_Click" />
                       </span>
                 </div>
-                <div>
+                <div style="position: relative; height:60px; width: 100%">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:HiddenField ID="hideMerge" runat="server" Value="0" />
@@ -100,10 +100,10 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-                <div>
+                <div style="position: relative; top:-30px; bottom:30px; width: 100%">
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <iframe id="Frame1" name="Frame1" height="400"
+                            <iframe id="Frame1" name="Frame1" height="90%"
                                 style="width: 100%; position: relative;"></iframe>
                         </ContentTemplate>
                         <Triggers>

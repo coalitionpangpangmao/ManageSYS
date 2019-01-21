@@ -112,10 +112,12 @@
                             <asp:Button ID="btnAdd1" CssClass="btnadd auth" runat="server" OnClick="btnAdd1_Click"
                                 Text="新增" />
                             &nbsp; &nbsp;
-                    <asp:Button ID="btnModify1" CssClass="btnmodify  auth" runat="server" OnClick="btnModify1_Click"
-                        Text="保存" />
-                            &nbsp; &nbsp;
+                  
                     <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                              &nbsp; &nbsp;
+                              <asp:Button ID="btnModify1" CssClass="btnmodify  auth" runat="server" OnClick="btnModify1_Click"
+                        Text="保存" />
+                          
                             <asp:Button ID="btnUpdate1" runat="server" CssClass="btnhide" OnClick="btnUpdate1_Click" />
                         </div>
                         <div class="framelist">
@@ -158,10 +160,12 @@
                             <asp:Button ID="btnAdd2" CssClass="btnadd auth" runat="server" OnClick="btnAdd2_Click"
                                 Text="新增" />
                             &nbsp; &nbsp;
+                               <asp:Button ID="btnDel2" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                             &nbsp; &nbsp;
                     <asp:Button ID="btnModify2" CssClass="btnmodify  auth" runat="server" OnClick="btnModify2_Click"
                         Text="保存" />
-                            &nbsp; &nbsp;
-                    <asp:Button ID="btnDel2" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                           
+                 
                             <asp:Button ID="btnUpdate2" runat="server" CssClass="btnhide" OnClick="btnUpdate2_Click" />
                         </div>
                         <div class="framelist">
@@ -230,10 +234,12 @@
                             <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
                                 Text="新增" />
                             &nbsp; &nbsp;
+                              <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                                  &nbsp; &nbsp;
                     <asp:Button ID="btnModify" CssClass="btnmodify  auth" runat="server" OnClick="btnModify_Click"
                         Text="保存" />
-                            &nbsp; &nbsp;
-                    <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                      
+                  
 
                             <asp:Button ID="btnUpdate3" runat="server" CssClass="btnhide" OnClick="btnUpdate3_Click" />
                         </div>
@@ -286,7 +292,7 @@
                                                         <asp:CheckBox ID="ckEqpara" runat="server" Text="设备记录" CssClass="ckfloat" Visible="False" />
                                                         <asp:CheckBox ID="ckQuaAnalyze" runat="server" Text="质量考核" OnCheckedChanged="ckQuaAnalyze_CheckedChanged" AutoPostBack="True" CssClass="ckfloat" />
                                                         <asp:CheckBox ID="ckCalibrate" runat="server" Text="计量检查" CssClass="ckfloat" />
-                                                          <asp:CheckBox ID="ckProdOut" runat="server" Text="产量统计" CssClass="ckfloat" OnCheckedChanged="ckProdOut_CheckedChanged" />
+                                                          <asp:CheckBox ID="ckProdOut" runat="server" Text="产量统计" CssClass="ckfloat" OnCheckedChanged="ckProdOut_CheckedChanged"  AutoPostBack="True"/>
 
                                                     </p>
 
@@ -324,6 +330,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="ckQuaAnalyze" />
                                     <asp:AsyncPostBackTrigger ControlID="btnModify1" />
                                     <asp:AsyncPostBackTrigger ControlID="ckManul" />
+                                    <asp:AsyncPostBackTrigger ControlID ="ckProdOut" />
                                     <asp:AsyncPostBackTrigger ControlID ="ckProdOut" />
                                 </Triggers>
                             </asp:UpdatePanel>

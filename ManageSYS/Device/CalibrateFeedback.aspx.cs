@@ -115,7 +115,7 @@ public partial class Device_CalibrateFeedback : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         txtCode.Value = GridView1.DataKeys[rowIndex].Value.ToString();
         bindGrid2(txtCode.Value);
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+     
     }
     protected void btngrid2Deal_Click(object sender, EventArgs e)
     {

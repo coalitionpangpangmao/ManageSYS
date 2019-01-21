@@ -39,14 +39,15 @@ namespace DataCollect
             return readlist;
         }
 
-        public static void ProdRecord(string time)
+        public static void ProdRecord(string time,string team_code)
         {
             //从数据库中读取需要定时记录过程信息的数据点
             List<PointProperty> readlist = getParaList();
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             MSYS.DAL.DbOperator ihopt = new MSYS.DAL.DbOperator(new MSYS.DAL.OledbOperator());
             string[] seg = { "SECTION_CODE", "PLANNO", "TIME", "PARA_CODE", "PROD_CODE", "TEAM", "VALUE" };
-            string teamcode = opt.GetSegValue("select team_code  from ht_prod_schedule where date_begin <='" + time + "' and date_end >='" + time + "' and work_staus = '1'", "team_code");
+            if(team_code == "")
+                team_code = opt.GetSegValue("select team_code  from ht_prod_schedule where date_begin <='" + time + "' and date_end >='" + time + "' and work_staus = '1'", "team_code");
 
            
             foreach (PointProperty p in readlist)
@@ -54,9 +55,12 @@ namespace DataCollect
                 string planno = opt.GetSegValue("select planno  from ht_prod_report where section_code = '" + p.para_code.Substring(0, 5) + "' and starttime < '" + time + "' and endtime  > '" + time + "'", "planno");
                 if (planno != "NoRecord")
                 {
-                    string Y = ihopt.GetSegValue("SELECT  timestamp,tagname,value  FROM ihrawdata  where  tagname = '" + p.tag + "' and timestamp = '" + time + "'","value");
+                    string Y = ihopt.GetSegValue("SELECT  timestamp,tagname,value  FROM ihrawdata  where  tagname = '" + p.tag + "' and timestamp between '" + Convert.ToDateTime(time).AddMinutes(-1).ToString("yyyy/MM/dd HH:mm:ss") + "' and '" + Convert.ToDateTime(time).AddMinutes(1).ToString("yyyy/MM/dd HH:mm:ss") + "'", "value");
                     Y = (Y == "NoRecord" ? "0" : Y);
-                    string[] value = { p.para_code.Substring(0, 5), planno, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), p.para_code, planno.Substring(8, 7), teamcode, Y };
+                    if (p.para_code == "7030500029" || p.para_code == "7030500030")
+                        Y = Convert.ToDouble("12.23").ToString("0"); 
+                  
+                    string[] value = { p.para_code.Substring(0, 5), planno, time, p.para_code, planno.Substring(8, 7), team_code, Y };
                     opt.InsertData(seg, value, "HT_PROD_REPORT_DETAIL");
                 }
             }

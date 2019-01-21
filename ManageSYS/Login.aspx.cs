@@ -19,6 +19,7 @@ public partial class Login : MSYS.Web.BasePage
             HttpCookie cookie = HttpContext.Current.Request.Cookies["#$MsysUser$#"];
             if (cookie != null) 
              RemoteCheck(cookie);
+           
         }
     
     }

@@ -22,6 +22,9 @@ public class InspectSave : IHttpHandler {
         System.Diagnostics.Debug.WriteLine(j["data"][0]);
         System.Diagnostics.Debug.WriteLine(j["inspectID"]);
         System.Diagnostics.Debug.WriteLine(j["isUpdate"]);
+        System.Diagnostics.Debug.WriteLine(j["dates"]);
+        System.Diagnostics.Debug.WriteLine(j["createId"]);
+        System.Diagnostics.Debug.WriteLine(j["prod"]);
        // string sql = "select prod_code from ht_pub_prod_design where is_del=0 and prod_name='" + j["data"][1] + "'";
         //DataSet code = opt.CreateDataSetOra(sql);
         //string prod_code = code.Tables[0].Rows[0][0].ToString();

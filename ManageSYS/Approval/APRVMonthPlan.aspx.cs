@@ -178,7 +178,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
         strsql = strsql.Replace("@BUZ_ID", ID);
         GridView2.DataSource = opt.CreateDataSetOra(strsql);
         GridView2.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "DetailClick();", true);
+     
   
     }
     //
@@ -191,7 +191,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+        
     }
     //查看审批单
     protected void btnTable_Click(object sender, EventArgs e)
@@ -200,7 +200,7 @@ public partial class Approval_APRVMonthPlan : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
          string ID = GridView1.DataKeys[rowIndex].Values[1].ToString();
          AprvtableHtml = initAprvtalbe(ID);
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "AprvTable();", true);
+      
     }
     //
  

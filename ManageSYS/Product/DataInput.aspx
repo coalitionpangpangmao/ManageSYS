@@ -68,9 +68,10 @@
                 <div id="tab1" class="tabson">
                       <div class="listtitle" style="margin-top: 10px">
                   <span style="position: relative; float: right">
+                       <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                         <asp:Button ID="btnAdd" CssClass="btnadd auth" runat="server" OnClick="btnAdd_Click"
                             Text="新增" />
-                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                       
                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>
@@ -124,9 +125,10 @@
                 <div id="tab2" class="tabson">
                         <div class="listtitle" style="margin-top: 10px">
                   <span style="position: relative; float: right">
+                       <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
                         <asp:Button ID="btnAdd2" CssClass="btnadd auth" runat="server" OnClick="btnAdd2_Click"
                             Text="新增" />
-                        <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
+                       
                         <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>

@@ -9,13 +9,16 @@ using System.Text;
 public partial class Quality_Evaluat_PhyChem : MSYS.Web.BasePage
 {
     protected string htmltable;
+    private string currentTableId;
     protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
             txtBtime.Text = System.DateTime.Now.ToString("yyyy-MM");
-
+            MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList(listProd, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
             bindgrid();
         }
     }
@@ -23,7 +26,11 @@ public partial class Quality_Evaluat_PhyChem : MSYS.Web.BasePage
 
     protected void bindgrid()
     {
-        string query = "select r.prod_name as 产品,t.* from hv_qlt_phychem_month_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where t.month =  '" + txtBtime.Text + "' order by t.prod_code";
+        string query;
+        if(listProd.SelectedValue == "")
+         query = "select r.prod_name as 产品,t.* from hv_qlt_phychem_month_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where t.month =  '" + txtBtime.Text + "' order by t.prod_code";
+        else
+            query = "select r.prod_name as 产品,t.* from hv_qlt_phychem_month_report t left join ht_pub_prod_design r on r.prod_code = t.prod_code where r.prod_code = '" + listProd.SelectedValue + "' and t.month =  '" + txtBtime.Text + "' order by t.prod_code";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query.ToString());
         GridView1.DataSource = data;

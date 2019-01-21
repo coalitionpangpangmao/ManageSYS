@@ -9,38 +9,7 @@
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
    <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
-   <script type="text/javascript">
-       $(document).ready(function () {
-           $(".click1").click(function () {
-               $("#addtip").fadeIn(200);
-           });
-
-           $(".click2").click(function () {
-               $("#mdftip").fadeIn(200);
-           });
-
-           $(".click3").click(function () {
-               $("#deltip").fadeIn(200);
-           });
-
-           $(".tiptop a").click(function () {
-               $(".tip").fadeOut(200);
-           });
-
-           $(".sure").click(function () {
-               $(".tip").fadeOut(100);
-           });
-
-           $(".cancel").click(function () {
-               $(".tip").fadeOut(100);
-           });
-
-       });
-       function GridClick(code) {
-           $('#tabtop2').click();
-          
-       }
-    </script>
+  
 </head>
 <body>
     <form id="form1" runat="server">

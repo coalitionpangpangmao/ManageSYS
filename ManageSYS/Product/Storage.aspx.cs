@@ -14,7 +14,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         base.PageLoad(sender, e);
         if (!IsPostBack)
         {
-            bindGrid1();
+          
 
         }
 

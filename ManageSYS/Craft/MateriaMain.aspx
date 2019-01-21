@@ -169,13 +169,13 @@
                     类型查询与维护<span style="position: relative; float: right">
                         <asp:Button ID="btnAdd1" CssClass="btnadd auth" runat="server" OnClick="btnAdd1_Click"
                             Text="新增"  />
-                        &nbsp; &nbsp;
+                       
+                         <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
+                       
                     <asp:Button ID="btnModify1" CssClass="btnmodify auth" runat="server" OnClick="btnModify1_Click"
                         Text="保存"  />
-                        &nbsp; &nbsp;
-                    <asp:Button ID="btnDel1" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                        &nbsp; &nbsp;    
-                          <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>     
+                      
+                          <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="90px"/>     
                 <asp:Button ID="btnSearch1" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch1_Click" />
                         <asp:Button ID="btnUpdate1" runat="server" OnClick="btnUpdate1_Click" CssClass="btnhide" />
                        

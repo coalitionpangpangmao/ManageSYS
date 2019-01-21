@@ -70,7 +70,7 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" OnRowCreated ="GridView1_RowCreated" DataKeyNames="prod_code,team">
                             <Columns>
                                 <asp:TemplateField      HeaderText="操作" >                                    <ItemTemplate>
-                                        <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click" Width="100px" />  
+                                        <asp:Button ID="btngridview" runat="server" Text="检测报告" CssClass="btn1" OnClick="btngridview_Click" Width="100px" OnClientClick ="$('#tabtop2').parent().show(); $('#tabtop2').click();$('#btnPrint').show();$('#btnExport').show();" />  
                                     </ItemTemplate>                                 
                                 </asp:TemplateField>                              
                              

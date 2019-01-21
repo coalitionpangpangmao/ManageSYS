@@ -82,7 +82,7 @@ public partial class Device_RepairFeedback : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         txtCode.Value = GridView1.DataKeys[rowIndex].Value.ToString();
         bindGrid2(txtCode.Value);
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+    
     }
 
     protected void GridView2_PageIndexChanging(object sender, GridViewPageEventArgs e)

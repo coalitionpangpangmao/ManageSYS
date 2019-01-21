@@ -89,7 +89,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField      HeaderText="操作" ItemStyle-Width="80">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btn1 auth" Width="75"
+                                            <asp:Button ID="btnGrid1View" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClientClick ="$('#tabtop2').click();"
                                                 OnClick="btnGrid1View_Click" />
                                         </ItemTemplate>
                                         <ItemStyle Width="80px" />

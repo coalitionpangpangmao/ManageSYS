@@ -9,29 +9,7 @@
 
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".click1").click(function () {
-                $("#addtip").fadeIn(200);
-            });
-            $(".tiptop a").click(function () {
-                $(".tip").fadeOut(200);
-            });
-
-            $(".sure").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-            $(".cancel").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-        });
-        function GridClick(code) {
-            $('#tabtop2').click();
-
-        }
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -160,6 +138,11 @@
                             <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID" AllowPaging="true" OnPageIndexChanging="GridView2_PageIndexChanging"
                                 AutoGenerateColumns="False" PageSize="9">
                                 <Columns>
+                                     <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:CheckBox ID="chk" runat="server" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:BoundField DataField="日期" HeaderText="日期" />
                                     <asp:BoundField DataField="班组" HeaderText="班组" />
                                     <asp:BoundField DataField="班时" HeaderText="班时" />
@@ -174,11 +157,7 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField>
-                                        <ItemTemplate>
-                                            <asp:CheckBox ID="chk" runat="server" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                   
                                 </Columns>
                                 <HeaderStyle CssClass="gridheader" />
                                 <RowStyle CssClass="gridrow" />

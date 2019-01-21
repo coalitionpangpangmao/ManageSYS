@@ -16,9 +16,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         if (!IsPostBack)
         {
             bindGrid1();
-
         }
-
     }
     protected void bindGrid1()
     {
@@ -69,7 +67,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
         SetEnable(true,"0");
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+       
     }
 
     //查
@@ -176,7 +174,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             else
                 SetEnable(false,"0");
 
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+          
            
         }
         catch (Exception ee)
@@ -200,7 +198,6 @@ public partial class Product_Plan : MSYS.Web.BasePage
                 SetEnable(true,"1");
            
 
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
           
         }
         catch (Exception ee)
@@ -592,7 +589,6 @@ public partial class Product_Plan : MSYS.Web.BasePage
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "确认到料" : "确认到料";
             log_message += "--详情:" + planno;
             InsertTlog(log_message);
-
             bindGrid2(hidePlanID.Value);
         }
         catch (Exception ee)

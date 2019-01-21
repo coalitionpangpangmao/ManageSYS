@@ -21,17 +21,8 @@
             $("#dspcthor").css({ "position": "fix", "top": y + "px", "left": x + "px" });
             $('#dspcthor').show();
         }
-        function GridClick() {
-            $('#tabtop2').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
+       
+      
     </script>
 </head>
 <body>
@@ -77,8 +68,8 @@
                     </table>
                     <div class="listtitle" style="margin-top: 10px">
                         校准计划列表<span style="position: relative; float: right">
-                            <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                            <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
+                           
+                            <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click"  OnClientClick ="$('#tabtop2').click();"/> <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                         </span>
                     </div>
                     <div>
@@ -112,13 +103,13 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField      ItemStyle-Width="80">
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
+                                                <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75" OnClientClick="$('#flowinfo').fadeIn(200);"
                                                     OnClick="btnGridIssue_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField      ItemStyle-Width="80">
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" />
+                                                <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" OnClientClick ="$('#tabtop2').click();" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -228,8 +219,9 @@
                                  </asp:DropDownList>
                                  <asp:Button ID="btnCreate" runat="server" CssClass="btn" Text="从模版生成明细" OnClick="btnCreate_Click" /></span>
                                 <span style="position: relative; float: right">
+                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                     <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                    <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                   
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                     <asp:Button ID="btnDispatch" runat="server" CssClass="btnpatch auth" Text="派工" OnClientClick="patchClick()" />
                                     <asp:Button ID="btnTrack" runat="server" CssClass="btnview auth" Text="跟踪" OnClick="btnTrack_Click" />
@@ -315,7 +307,7 @@
             </div>
             <div class="aprvinfo" id="flowinfo">
                 <div class="tiptop">
-                    <span>审批流程详情</span><a onclick="Aprvlisthide()"></a>
+                    <span>审批流程详情</span><a onclick="$('#flowinfo').fadeOut(100);"></a>
                 </div>
                 <div class="flowinfo">
                     <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">

@@ -39,9 +39,12 @@
             <table class="tablelist" style="margin-bottom: 5px">
                 <tbody>
                     <tr>
+                        
                         <td colspan="7" align="center">请选择月度：     
                     <asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1"
                         onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
+                          &nbsp;&nbsp;产品：
+                            <asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
                             <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input id="btnPrint" type="button" value="打印" class="btnpatch" onclick="$('#report').printArea();" />

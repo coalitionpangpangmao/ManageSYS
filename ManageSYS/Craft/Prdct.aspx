@@ -61,7 +61,18 @@
                         <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="产品编码" AllowPaging="True"  PageSize="14"
                             AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging">
                             <Columns>
-                                <asp:TemplateField  >
+                                <asp:TemplateField   HeaderText="审批状态">
+                                    <ItemTemplate>
+                                        <asp:Label ID="labGrid1Status" runat="server" CssClass="labstatu" Width="60px" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField    DataField="产品编码" HeaderText="产品编码" />
+                                <asp:BoundField    DataField="产品名称" HeaderText="产品名称" />
+                                <asp:BoundField    DataField="包装规格" HeaderText="包装规格" />
+                                <asp:BoundField    DataField="加工方式" HeaderText="加工方式" />
+                                <asp:BoundField    DataField="是否有效" HeaderText="是否有效" />
+                               
+                                 <asp:TemplateField  >
                                     <ItemTemplate>
                                         <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1 auth" Width="100px"
                                             OnClick="btnSubmit_Click" />
@@ -77,16 +88,6 @@
                                     <ItemTemplate>
                                         <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="100px"
                                             OnClick="btnFLow_Click" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:BoundField    DataField="产品编码" HeaderText="产品编码" />
-                                <asp:BoundField    DataField="产品名称" HeaderText="产品名称" />
-                                <asp:BoundField    DataField="包装规格" HeaderText="包装规格" />
-                                <asp:BoundField    DataField="加工方式" HeaderText="加工方式" />
-                                <asp:BoundField    DataField="是否有效" HeaderText="是否有效" />
-                                <asp:TemplateField   HeaderText="审批状态">
-                                    <ItemTemplate>
-                                        <asp:Label ID="labGrid1Status" runat="server" CssClass="labstatu" Width="60px" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField  >

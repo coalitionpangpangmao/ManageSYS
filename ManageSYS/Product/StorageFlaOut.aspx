@@ -10,6 +10,10 @@
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
      <script type="text/javascript" src="../js/jquery.PrintArea.js"></script>
+    <style type="text/css" media="print">
+@page { size: landscape; }
+</style>
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -53,9 +57,9 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     香精香料领用表<span style="position: relative; float: right">
-
-                        <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
-                        <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                         <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                        <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" OnClientClick ="$('#tabtop2').click();" />
+                       
                         <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>
@@ -90,8 +94,7 @@
                                       <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                   
                                      <asp:BoundField    DataField="领用日期" HeaderText="领用日期" />                                   
                                     
-                                     <asp:BoundField    DataField="香精香料总量" HeaderText="香精香料总量" />
-                                     <asp:BoundField    DataField="料液总量" HeaderText="料液总量" />
+                                     <asp:BoundField    DataField="香精香料总量" HeaderText="香精香料总量" />                                    
                                      <asp:BoundField    DataField="编制人" HeaderText="编制人" />
                                      <asp:BoundField    DataField="收发人" HeaderText="收发人" />
                                     <asp:TemplateField  >
@@ -114,7 +117,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField  >
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75"
+                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75" OnClientClick ="$('#tabtop2').click();"
                                                 OnClick="btnGridview_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -228,11 +231,7 @@
                                         <td>
                                             <asp:TextBox ID="txtStemSum" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox>
                                         </td>
-                                        <td width="100">料液总量
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtChipSum" runat="server" class="dfinput1" Enabled ="false"></asp:TextBox>
-                                        </td>
+                                      
                                         <td width="100">创建人
                                         </td>
                                         <td>
@@ -249,6 +248,7 @@
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID="listPrdctPlan" />
                             <asp:AsyncPostBackTrigger ControlID="btnReset" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnModify" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -259,8 +259,9 @@
                                 领用明细<span style="position: relative; float: right">
                                     <asp:Button ID="btnCreate" runat="server" CssClass="btnhide" Text="按明细生成领退单"
                                         OnClick="btnCreate_Click" Width="160px" />
-                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                    <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                      <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnhide" Text="新增" OnClick="btnAdd_Click" />
+                                  
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                 </span>
                             </div>
@@ -275,15 +276,15 @@
                                     </asp:TemplateField>
                                     
                                    
-                                    <asp:TemplateField   HeaderText="原料名称" SortExpression="物料名称">
+                                    <asp:TemplateField   HeaderText="物料名称" SortExpression="物料名称">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGridName_SelectedIndexChanged" AutoPostBack="True" Width="230px" DataSource='<%# gridHTYbind("0410")%>' DataValueField="material_code" DataTextField="material_name">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField   HeaderText="原料编码" SortExpression="物料编码">
+                                    <asp:TemplateField   HeaderText="物料编码" SortExpression="物料编码">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridcode" runat="server" DataValueField="原料编码" DataTextField="原料编码"
+                                            <asp:TextBox ID="txtGridcode" runat="server" DataValueField="物料编码" DataTextField="物料编码"
                                                 CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>

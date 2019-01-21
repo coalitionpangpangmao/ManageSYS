@@ -9,36 +9,7 @@
  
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $(".click2").click(function () {
-                $("#mdftip").fadeIn(200);
-            });
-            $(".tiptop a").click(function () {
-                $(".tip").fadeOut(200);
-            });
-            $(".sure").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-            $(".cancel").click(function () {
-                $(".tip").fadeOut(100);
-            });
-
-        });
-        function GridClick() {
-            $('#tabtop2').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>   
@@ -91,7 +62,8 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     备件领退表<span style="position: relative; float: right">
-                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>                       <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
+                          <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click"   OnClientClick ="$('#tabtop2').click()"/>
+                        <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>                     
                     </span>
                 </div>
                 <div>                						
@@ -120,7 +92,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField      ItemStyle-Width="80">
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
+                                        <asp:Button ID="btnGridIssue" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75" OnClientClick="$('#flowinfo').fadeIn(200);"
                                             OnClick="btnGridIssue_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -132,7 +104,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField      ItemStyle-Width="80">
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75"
+                                        <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75"  OnClientClick ="$('#tabtop2').click()"
                                             OnClick="btnGridview_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -208,9 +180,10 @@
                 </table>               
               
                 <div class="listtitle" style="margin-top: 10px">
-                    领退明细<span style="position: relative; float: right">                   
+                    领退明细<span style="position: relative; float: right">     
+                          <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />              
                     <asp:Button ID="btnAdd" runat="server"  CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                      
                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                        
                     </span>
@@ -402,7 +375,7 @@
             </div>
         <div class="aprvinfo" id="flowinfo">
             <div class="tiptop">
-                <span>审批流程详情</span><a onclick="Aprvlisthide()"></a></div>
+                <span>审批流程详情</span><a onclick="$('#flowinfo').fadeOut(100)"></a></div>
             <div class="flowinfo">
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>

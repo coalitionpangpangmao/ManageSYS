@@ -141,7 +141,7 @@
                                             Width="200px" CssClass="tbinput"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField      HeaderText="操作" >
+                                <asp:TemplateField      HeaderText="操作"  ItemStyle-Wrap="False">
                                     <ItemTemplate>
                                         <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn1  auth" OnClick="btnSave_Click" />
                                         <asp:Button ID="btnDelete" runat="server" Text="删除" CssClass="btn1  auth" OnClick="btnDelete_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>

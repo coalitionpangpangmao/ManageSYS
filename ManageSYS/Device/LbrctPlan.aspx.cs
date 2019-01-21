@@ -144,8 +144,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
         listEditor.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
         bindGrid2("");
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#tabtop2').click();", true);
-      
+       
     }
     protected void btnGridIssue_Click(object sender, EventArgs e)//查看审批流程
     {
@@ -200,7 +199,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
               string aprvstatus = ((Label)GridView1.Rows[rowIndex].FindControl("labAprv")).Text;
             SetEnable(aprvstatus);
          }
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "$('#tabtop2').click();", true);     
+       
     }
 
     protected void bindGrid4()
@@ -314,8 +313,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
         listEditor.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
         bindGrid2("");
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#tabtop2').click();", true);
-       
+      
     }
     protected void btnGridIssue4_Click(object sender, EventArgs e)//查看审批流程
     {
@@ -370,7 +368,7 @@ public partial class Device_LbrctPlan : MSYS.Web.BasePage
             string aprvstatus = ((Label)GridView4.Rows[rowIndex].FindControl("labAprv")).Text;
             SetEnable(aprvstatus);
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+       
     }   
     protected void SetEnable(string aprvstatus)
     {

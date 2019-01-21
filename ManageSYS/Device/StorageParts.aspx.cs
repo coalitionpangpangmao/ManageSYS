@@ -87,7 +87,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+       
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
@@ -119,8 +119,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         txtPzcode.Text = "PK" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select nvl(max(substr(PZ_CODE,3,11)),0) as ordernum from HT_EQ_STG_PICKUP where substr(PZ_CODE,1,10) ='PK" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
 
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+      
     }
 
     protected void btnGridopt_Click(object sender, EventArgs e)//领用，调用接口，变更库存情况
@@ -163,8 +162,7 @@ public partial class Device_StorageParts : MSYS.Web.BasePage
            
             bindGrid2();
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+       
     }    
 
     /// <summary>

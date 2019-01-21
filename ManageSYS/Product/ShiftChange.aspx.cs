@@ -164,7 +164,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
 
         }
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
+       
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {
@@ -173,7 +173,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK", "OUTPLUS" };
         string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, listPlanno.SelectedValue, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id, listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
 
-        string log_message = opt.InsertData(seg, value, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "新生产交接班记录失败";
+        string log_message = opt.MergeInto(seg, value,1, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "生产交接班记录失败";
         log_message += ",交接班ID：" + hdID.Value;
         InsertTlog(log_message);
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);

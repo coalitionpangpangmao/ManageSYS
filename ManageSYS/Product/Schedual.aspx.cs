@@ -74,18 +74,20 @@ public partial class Product_Schedual : MSYS.Web.BasePage
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        DateTime startdate = Convert.ToDateTime(txtStartDate.Text);
-        DateTime enddate = Convert.ToDateTime(txtEndDate.Text);
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string Btime = opt.GetSegValue("select begin_time from ht_sys_shift t where shift_name = '早班'", "begin_time");
+        DateTime startdate = Convert.ToDateTime(txtStartDate.Text + " " + Btime );
+        DateTime enddate = Convert.ToDateTime(txtEndDate.Text + " " + Btime).AddDays(1);
         if (listPrdline.SelectedValue == "" || txtStartDate.Text == "" || txtEndDate.Text == "" ||startdate - enddate > new  TimeSpan(0) || enddate - System.DateTime.Now <new  TimeSpan(0))
         {
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请选择正确的排班车间与时间段!!')", true);
             return;
         }     
-        DateTime tempdate = GetMondayDate(startdate).AddDays(7);
+        DateTime tempdate = GetMondayDate(startdate).AddDays(7); 
         if (GridView1.Rows.Count > 0)
         {
             List<string> commandlist = new List<string>();
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            
             List<TeamSchedula> schedules = getTeamSchedule();
             int h = 0;
             if (startdate - System.DateTime.Now < new TimeSpan(0))
@@ -95,20 +97,25 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                 if (h == 3)
                     h = 0;
                 TeamSchedula schedule = schedules.ToArray()[h];
-                while (startdate < tempdate && startdate < enddate)
+                while (startdate <= tempdate && startdate <= enddate)
                 {
 
                     for (int i = 0; i < GridView1.Rows.Count; i++)
                     {
                         string endtime = startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
                         if (((CheckBox)GridView1.Rows[i].FindControl("ckInter")).Checked)
-                            endtime = startdate.AddDays(1).ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;
+                        {
+                            endtime = startdate.AddDays(1).ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtEndtime")).Text;                            
+                        }
                         string[] seg = { "WORK_DATE", "WORK_SHOP_CODE", "SHIFT_CODE", "TEAM_CODE", "WORK_STAUS", "CREATE_TIME", "MODIFY_TIME", "DATE_BEGIN", "DATE_END", "is_del" };
                         string[] value = { startdate.ToString("yyyy-MM-dd"), listPrdline.SelectedValue, GridView1.DataKeys[i].Value.ToString(), schedule.team.ToArray()[i], "1", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), startdate.ToString("yyyy-MM-dd") + " " + ((TextBox)GridView1.Rows[i].FindControl("txtStarttime")).Text, endtime, "0" };
-
+                        if (((CheckBox)GridView1.Rows[i].FindControl("ckInter")).Checked)
+                        {                            
+                            startdate = startdate.AddDays(1);
+                        }
                         commandlist.Add(opt.getMergeStr(seg, value, 3, "HT_PROD_SCHEDULE"));
                     }
-                    startdate = startdate.AddDays(1);
+                   
                 }
                 h++;
                 tempdate = tempdate.AddDays(7);
@@ -182,7 +189,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         GridView2.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            TableCell oldtc = GridView2.Rows[0].Cells[0];
+            TableCell oldtc = GridView2.Rows[0].Cells[1];
             oldtc.RowSpan = 1;
             for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
@@ -192,8 +199,8 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                 ((DropDownList)row.FindControl("listStatus2")).SelectedValue = mydrv["状态"].ToString();
                 if (j > 0)
                 {
-                    TableCell newtc = GridView2.Rows[j].Cells[0];
-                    TableCell restc = GridView2.Rows[j].Cells[0];
+                    TableCell newtc = GridView2.Rows[j].Cells[1];
+                    TableCell restc = GridView2.Rows[j].Cells[1];
                     if (newtc.Text == oldtc.Text)
                     {
                         newtc.Visible = false;

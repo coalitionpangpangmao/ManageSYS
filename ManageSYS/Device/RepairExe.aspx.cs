@@ -94,8 +94,7 @@ public partial class Device_RepairExe : MSYS.Web.BasePage
                 btnSave.Visible = true;
             }
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", " $('#tabtop2').click();", true);
-
+    
     }
 
     protected void btnShow_Click(object sender, EventArgs e)

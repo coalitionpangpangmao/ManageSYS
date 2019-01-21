@@ -139,9 +139,10 @@
             <td >
                 <div style="margin-top: 10px">
                     <div class="listtitle">
-                        配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
+                        配方详情<span style="position: relative; float: right">
+                              <asp:Button ID="btnCkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll_Click" /><asp:Button ID="btnAdd" runat="server"
                             CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                            <asp:Button ID="btnCkAll" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll_Click" />
+                          
                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                               <asp:Button ID="btnGridSave" class="btnmodify  auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave_Click" />
                         </span>

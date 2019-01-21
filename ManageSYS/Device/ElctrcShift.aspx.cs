@@ -151,7 +151,7 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
 
         }
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "$('#tabtop2').click();", true);
+     
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {

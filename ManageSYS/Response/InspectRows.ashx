@@ -94,7 +94,7 @@ public class InspectRows : IHttpHandler {
                 str.Append("(select a.id, a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as ");
                 //str.Append("(select   a.prod_code,a.team_id,a.shift_ID,a.record_time , nvl(a.inspect_value,0) as ");
                 str.Append(name);
-                str.Append("  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '");
+                str.Append("  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.is_del = '0' and a.inspect_code = '");
                 //str.Append("  from ht_qlt_inspect_record a where a.inspect_code = '");
                 str.Append(code);
                 str.Append("' and substr(a.record_time,1,10) >= '" + startTime + "' and substr(a.record_time,1,10)<'" + endTime + "'");// 添加参数

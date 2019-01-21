@@ -259,13 +259,12 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
         else
             SetEnable(false);
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "$('#tabtop2').click();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+     
     }
     private void SetEnable(bool enable)
     {
-        btnCreate.Visible = enable;
-        btnAdd.Visible = enable;
+        //btnCreate.Visible = enable;
+      //  btnAdd.Visible = enable;
         btnCkAll.Visible = enable;
         btnDelSel.Visible = enable;
         btnModify.Visible = enable;
@@ -305,8 +304,7 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
         listApt.SelectedValue = user.OwningBusinessUnitId;
         bindGrid2();
         SetEnable(true);
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", " $('#tabtop2').click();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+      
     }
     protected DataSet gridTypebind()
     {

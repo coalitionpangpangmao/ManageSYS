@@ -86,6 +86,7 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
        MSYS.Data.SysUser user =  (MSYS.Data.SysUser)Session["User"];
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(prod_code, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
+        opt.bindDropDownList(DropDownList1, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
         opt.bindDropDownList(listProd, "select prod_code,prod_name from ht_pub_prod_design where is_del= '0'", "prod_name", "prod_code");
         opt.bindDropDownList(listTeam, "select team_code,team_name from ht_sys_team where is_del = '0' order by team_code", "team_name", "team_code");
         opt.bindDropDownList(listShift, "select shift_code,shift_name from ht_sys_shift where is_del = '0'", "shift_name", "shift_code");

@@ -107,7 +107,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
           {             
                   string[] procseg = { };
                   object[] procvalues = { };
-                  opt.ExecProcedures("Create_phechem_Report", procseg, procvalues);             
+                  opt.ExecProcedures("Create_phychem_Report", procseg, procvalues);             
           }
           InsertTlog(log_message);
           bindGrid1();
@@ -144,7 +144,7 @@ public partial class Craft_InspectStd : MSYS.Web.BasePage
                 {
                     string[] procseg = { };
                     object[] procvalues = { };
-                    opt.ExecProcedures("Create_phechem_Report", procseg, procvalues);
+                    opt.ExecProcedures("Create_phychem_Report", procseg, procvalues);
                 }
                 log_message += "--标识:" + projcode;
                 InsertTlog(log_message);

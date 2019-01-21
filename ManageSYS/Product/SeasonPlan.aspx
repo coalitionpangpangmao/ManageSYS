@@ -9,20 +9,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript">
-
-        function GridClick(code) {
-            $('#tabtop2').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -77,7 +64,7 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     生产计划表<span style="position: relative; float: right">
-                        <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click" />
+                        <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click"   OnClientClick ="$('#tabtop2').click()"/>
                     </span>
                 </div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -99,7 +86,7 @@
                                 <asp:BoundField DataField="编制人" HeaderText="编制人"    />
                                 <asp:TemplateField     >
                                     <ItemTemplate>
-                                        <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1 auth" Width="75"
+                                        <asp:Button ID="btnGridEdit" runat="server" Text="编制计划" CssClass="btn1 auth" Width="75"  OnClientClick ="$('#tabtop2').click()"
                                             OnClick="btnGridEdit_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -111,7 +98,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField     >
                                     <ItemTemplate>
-                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75"
+                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1 auth" Width="75" OnClientClick="$('#flowinfo').fadeIn(200);"
                                             OnClick="btnFLow_Click" />
                                     </ItemTemplate>
                                 </asp:TemplateField>                             
@@ -122,7 +109,7 @@
                                 </asp:TemplateField>
                                    <asp:TemplateField  >
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridAlter" runat="server" Text="调整计划" class="btn1 auth" OnClick="btnGridAlter_Click" Width="75" />
+                                                <asp:Button ID="btnGridAlter" runat="server" Text="调整计划" class="btn1 auth" OnClick="btnGridAlter_Click" Width="75" OnClientClick ="$('#tabtop2').click();" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                             </Columns>
@@ -185,9 +172,10 @@
                                 </tbody>
                             </table>
                             <div class="listtitle" style="margin-top: 10px">
-                                生产任务编制<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
-                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                    <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                生产任务编制<span style="position: relative; float: right">
+                                      <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                    <asp:Button ID="btnAdd" runat="server"
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />  
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                                         <asp:Button ID="btnGrid2Modify" class="btnmodify auth" runat="server" Text="全部保存" Width ="90px" OnClick="btnGrid2Modify_Click" />
                                 </span>
@@ -275,6 +263,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnAddPlan" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -282,7 +271,7 @@
         </div>
         <div class="aprvinfo" id="flowinfo">
             <div class="tiptop">
-                <span>审批流程详情</span><a onclick="Aprvlisthide()"></a></div>
+                <span>审批流程详情</span><a onclick="$('#flowinfo').fadeOut(100)"></a></div>
             <div class="flowinfo">
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>

@@ -145,8 +145,7 @@ public partial class Device_RepairPlan : MSYS.Web.BasePage
         listEditor.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
         bindGrid2("");
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+     
     }
 
     protected void btnGridIssue_Click(object sender, EventArgs e)//查看审批流程
@@ -158,7 +157,7 @@ public partial class Device_RepairPlan : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+       
     }
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批
     {
@@ -202,8 +201,7 @@ public partial class Device_RepairPlan : MSYS.Web.BasePage
             string aprvstatus = ((Label)GridView1.Rows[rowIndex].FindControl("labAprv")).Text;
             SetEnable(aprvstatus);
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);
-    }
+      }
 
     protected void SetEnable(string aprvstatus)
     {

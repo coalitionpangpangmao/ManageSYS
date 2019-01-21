@@ -52,7 +52,7 @@ public partial class Quality_Evaluat_Sensor : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         hideMonth.Value = row.Cells[1].Text;
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+      
 
     }
 

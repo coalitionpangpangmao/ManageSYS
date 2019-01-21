@@ -86,10 +86,10 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         string prod_code = GridView1.DataKeys[row.RowIndex].Values[0].ToString();
         string team_code = GridView1.DataKeys[row.RowIndex].Values[1].ToString();
         string query;
-        if (team_code != "")         
-         query = "select t.section_name,t.para_code,t.para_name,t.quarate,t.stddev,t.absdev,t.cpk from hv_qlt_online_month_trep t where t.month = '" + txtBtime.Text + "' and t.team = '" + team_code + "' and t.prod_code = '" + prod_code + "'";
+        if (team_code != "")
+            query = "select t.section_name,t.para_code,t.para_name,t.quarate,t.avg,t.stddev,t.absdev,t.cpk from hv_qlt_online_month_trep t where t.month = '" + txtBtime.Text + "' and t.team = '" + team_code + "' and t.prod_code = '" + prod_code + "'";
         else
-            query = "select t.section_name,t.para_code,t.para_name,t.quarate,t.stddev,t.absdev,t.cpk from hv_qlt_online_month_report t where t.month = '" + txtBtime.Text + "' and t.prod_code = '" + prod_code + "'";
+            query = "select t.section_name,t.para_code,t.para_name,t.quarate,t.avg,t.stddev,t.absdev,t.cpk from hv_qlt_online_month_report t where t.month = '" + txtBtime.Text + "' and t.prod_code = '" + prod_code + "'";
 
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
 
@@ -115,10 +115,11 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
         str.Append(" <table class = 'reporttable'>");
         str.Append("<tbody>");
         str.Append("<tr >");
-        str.Append("<th width ='25%'>工艺段</th>");
+        str.Append("<th width ='20%'>工艺段</th>");
         str.Append("<th width ='10%'>得分</th>");
-        str.Append("<th width ='25%'>工艺点</th>");
+        str.Append("<th width ='20%'>工艺点</th>");
         str.Append("<th width ='10%'>合格率</th>");
+        str.Append("<th width ='10%'>均值</th>");
         str.Append("<th  width ='10%'>标准差</th>");
         str.Append("<th  width ='10%'>绝对差</th>");
         str.Append("<th  width ='10%'>CPK</th>");
@@ -166,6 +167,9 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
                 str.Append("<td >");
                 str.Append(subitem[6].ToString());
                 str.Append("</td>");
+                str.Append("<td >");
+                str.Append(subitem[7].ToString());
+                str.Append("</td>");
                 str.Append(" </tr>");
                 i++;
             }
@@ -173,7 +177,7 @@ x.Field<String>("section_name")).Select(x => x.First()).ToList();
         }
         str.Append(" </table>");
         htmltable = str.ToString();
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "showreport", "   $('#tabtop2').parent().show(); $('#tabtop2').click();$('#btnPrint').show();$('#btnExport').show();", true);
+       
 
 
     }

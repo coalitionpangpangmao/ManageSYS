@@ -31,14 +31,14 @@
         <div class="mainbox">
             <div class="gridtools  auth">
                 <ul class="toolbar">
-                    <asp:Button ID="btnAdd" CssClass="btnadd  auth" runat="server" OnClick="btnAdd_Click"
-                        Text="添加" />
-                    &nbsp; &nbsp;
-                <asp:Button ID="btnView" CssClass="btnmodify  auth" runat="server" OnClick="btnView_Click"
+                     <asp:Button ID="btnView" CssClass="btnmodify  auth" runat="server" OnClick="btnView_Click"
                     Text="查看" />
-                    &nbsp; &nbsp;
+                     &nbsp;
+                    <asp:Button ID="btnAdd" CssClass="btnadd  auth" runat="server" OnClick="btnAdd_Click"
+                        Text="新增" />  
+                    &nbsp;
                 <asp:Button ID="btnDel" CssClass="btndel  auth" runat="server" Text="删除" OnClick="btnDel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
-                             &nbsp; &nbsp;
+                             &nbsp; 
     <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
                 </ul>
             </div>

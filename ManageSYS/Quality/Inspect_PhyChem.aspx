@@ -38,6 +38,7 @@
                     <ul>
                         <li><a href="#tab2" class="selected" id="tabtop2">批量检验详情</a></li>
                         <li><a href="#tab1"  id="tabtop1">检验详情</a></li>
+                        <li><a href="#tab3" id="tabtop3">新增</a></li>
                         
                   
                     </ul>
@@ -274,9 +275,14 @@
                             
                             <div style="display:inline-block; float:right" class="btn1"  @click="saveAll">全部保存</div>
                              </div>
+
+                            <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="softDeleteAll">删除</div>
+                            <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="showAddRecord">新增</div>
+                            <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="batchAddRecord">批量新增</div>
                            <table class="grid" cellspacing="0" rules="all" id="grid" style="border-collapse:collapse">
                                <tbody>
                                    <tr class="gridheader">
+                                       <th scope ="col">选择</th>
                                        <th scope="col">记录时间</th>
                                        <th scope="col">产品</th>
                                        <th  scope="col">班组</th>
@@ -284,7 +290,30 @@
                                        <th v-for="ti in title"  scope="col">{{ti}}</th>
                                        <th scope="col">操作</th>
                                     </tr>
-                                    <tr v-for="(date , dindex) in dates" class="gridrow">
+                                   <tr class="gridrow" v-show="isAdd" id="addtr">
+                                       <td><input type="checkbox"></td>
+                                       <td><input id="addtime" class="tbinput1" type="text"  onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" /></td>
+                                       <td><!--<input id="addproduct" class="tbinput1" type="text" v-model="addProduct"  />-->
+                                           <select id="addproduct" v-model="addProduct">
+                                               <option v-for="(item, index) in productInfo" :value="item.prodCode">{{item.prodName}}</option>
+                                            </select>
+                                       </td>
+                                       <td><select id="addteam" v-model="addTeam">
+                                           <option value="01">甲班</option>
+                                           <option value="02">乙班</option>
+                                           <option value="03">丙班</option>
+                                           </select></td>
+                                       <td><select disabled="true" id="addschedule" v-model="addSchedule">
+                                           <option value="01">早班</option>
+                                           <option value="02">中班</option>
+                                           <option value="03">晚班</option>
+                                           </select></td>
+                                       <td v-for="(ti, index) in title"><input :id="ti" class="tbinput1" type="text" v-model="addData[index]"/></td>
+                                       <td><div class="btn1" @click="addRecord">保存</div></td>
+                                   </tr>
+                                   <tr :id="dindex" v-for="(date , dindex) in dates" class="gridrow"  v-if="rowsDates.indexOf(date[0])!=-1 && -1!= rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}}) || isBatchInsert">
+                                        <!--<tr :id="dindex" v-for="(date , dindex) in dates" class="gridrow"> -->
+                                        <td><input type="checkbox" @change="changeDeleteList(dindex)"></td>
                                          <td><input class="tbinput1" id="Text1" type="text" :value="date[0]"></td>
                                          <td><input class="tbinput1" id="Text2" type="text" :value="prod"></td>
                                          <td><input class="tbinput1" id="Text3" type="text" :value="date[4]"></td>
@@ -306,6 +335,66 @@
                            </table>
                             </div>
                         </div>
+                 </div>
+            </div>
+
+             <div id="tab3" class="tabson">
+                <div class="framelist">
+                    <div class="listtitle">
+                新增数据 <span style="position: relative; float: right">
+                    </span>
+
+                </div>
+                    <table class="tablelist">
+                <tbody>
+                    <tr>
+                           <td width="100">起始时间：
+                        </td>
+                        <td>
+                            <asp:TextBox ID="TextBox1" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>  
+                        </td>
+                                                   <td width="100">结束时间：
+                        </td>
+                        <td>
+                            <asp:TextBox ID="TextBox2" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>  
+                        </td>
+                        <td width="100">产品：
+                        </td>
+                        <td><asp:DropDownList ID="DropDownList1" runat="server" CssClass="drpdwnlist">
+                            </asp:DropDownList>
+                            
+                        </td> 
+                       
+                        </tr>
+                    <tr>
+
+                       <td width="100">班组：
+                        </td>
+                        <td>
+                            <asp:DropDownList ID="DropDownList2" runat="server" CssClass="drpdwnlist">
+                                <asp:ListItem Value="00">全选</asp:ListItem>
+                                <asp:ListItem Value="01">甲班</asp:ListItem>
+                                <asp:ListItem Value="02">乙班</asp:ListItem>
+                                <asp:ListItem Value="03">丙班</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                         <td width="100">班时：
+                        </td>
+                        <td>
+                            <asp:DropDownList ID="DropDownList3" runat="server" CssClass="drpdwnlist">
+                                <asp:ListItem Value="00">全时段</asp:ListItem>
+                                <asp:ListItem Value="01">早班</asp:ListItem>
+                                <asp:ListItem Value="02">中班</asp:ListItem>
+                                <asp:ListItem Value="03">晚班</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+              
                  </div>
             </div>
         </div>

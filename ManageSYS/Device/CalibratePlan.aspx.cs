@@ -142,8 +142,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         listApt.SelectedValue = user.OwningBusinessUnitId;
         listEditor.SelectedValue = user.id;
         bindGrid2("");
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "GridClick();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+      
     }
 
     protected void btnGridIssue_Click(object sender, EventArgs e)//查看审批流程
@@ -203,7 +202,7 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
             SetEnable(aprvstatus);
            
         }
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "", "GridClick();", true);
+       
     }
     protected void SetEnable(string aprvstatus)
     {

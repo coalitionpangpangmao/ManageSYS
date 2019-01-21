@@ -91,8 +91,9 @@
                     </table>
                     <div class="listtitle">
                         模版流程表<span style="position: relative; float: right">
+                             <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                <asp:Button ID="btnAdd" runat="server" CssClass="btnadd" Text="新增" OnClick="btnAdd_Click" />
-                            <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                           
                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/>
                         </span>
                     </div>

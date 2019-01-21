@@ -38,7 +38,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
     }
     protected void bindGrid()
     {
-        string query = "select r.rowid, r.planno as 计划号,t.prod_name as 产品,q.para_name as 记录项目,r.value as 记录值,s.team_name as 班组,r.time as 记录时间,r.creator as 记录人 from HT_PROD_REPORT_DETAIL r left join ht_pub_prod_design t on t.prod_code = r.prod_code left join ht_sys_team s on s.team_code = r.team left join ht_pub_tech_para q on q.para_code = r.para_code where r.is_del = '0'";
+        string query = "select r.rowid, r.planno as 计划号,t.prod_name as 产品,q.para_name as 记录项目,round(r.value,0) as 记录值,s.team_name as 班组,r.time as 记录时间,r.creator as 记录人 from HT_PROD_REPORT_DETAIL r left join ht_pub_prod_design t on t.prod_code = r.prod_code left join ht_sys_team s on s.team_code = r.team left join ht_pub_tech_para q on q.para_code = r.para_code where r.is_del = '0'";
 
         if (listProd.SelectedValue != "")
             query += " and r.prod_code = '" + listProd.SelectedValue + "'";

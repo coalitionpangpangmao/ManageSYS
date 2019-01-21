@@ -74,7 +74,7 @@
                                         <asp:BoundField DataField="editor" HeaderText="评吸人" />
                                         <asp:TemplateField>
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridEdit" runat="server" Text="查看详情" CssClass="btn1" Width="90px"
+                                                <asp:Button ID="btnGridEdit" runat="server" Text="查看详情" CssClass="btn1" Width="90px" OnClientClick ="$('#tabtop2').click()"
                                                     OnClick="btnGridEdit_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>

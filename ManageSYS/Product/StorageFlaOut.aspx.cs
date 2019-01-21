@@ -167,7 +167,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
             int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Values[0].ToString();
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
-            string[] subvalue = { "仓储" + ((Label)GridView1.Rows[index].FindControl("labStrg")).Text + id, "08", id, Page.Request.UserHostName.ToString() };
+            string[] subvalue = { "仓储" + ((Label)GridView1.Rows[index].FindControl("labStrg")).Text + id, "18", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             if (MSYS.AprvFlow.createApproval(subvalue))
             {
@@ -250,7 +250,6 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
             txtValiddate.Text = data.Tables[0].Rows[0]["EXPIRED_DATE"].ToString();
           
           
-            txtChipSum.Text = data.Tables[0].Rows[0]["PEICESSUM"].ToString();
             txtStemSum.Text = data.Tables[0].Rows[0]["CABOSUM"].ToString();
             listCreator.SelectedValue = data.Tables[0].Rows[0]["CREATOR_ID"].ToString();
         }
@@ -259,13 +258,12 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
         else
             SetEnable(false);
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "$('#tabtop2').click();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+       
     }
     private void SetEnable(bool enable)
     {
-        btnCreate.Visible = enable;
-        btnAdd.Visible = enable;
+        //btnCreate.Visible = enable;
+        //btnAdd.Visible = enable;
         btnCkAll.Visible = enable;
         btnDelSel.Visible = enable;
         btnModify.Visible = enable;
@@ -305,8 +303,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
         listApt.SelectedValue = user.OwningBusinessUnitId;
         bindGrid2();
         SetEnable(true);
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", " $('#tabtop2').click();", true);
-       
+      
     }
     protected DataSet gridHTYbind(String code)
     {
@@ -322,7 +319,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
     protected void bindGrid2()
     {
 
-        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from HT_STRG_FLAVOR_SUB where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
+        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as  物料编码,original_demand as   领料量,ID  from HT_STRG_FLAVOR_SUB where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -335,9 +332,9 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
                 GridViewRow row = GridView2.Rows[i];
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
                 ((DropDownList)GridView2.Rows[i].FindControl("listGridstrg")).SelectedValue = mydrv["仓库"].ToString();
-             
-                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
-                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
+
+                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["物料编码"].ToString();
+                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridAmount")).Text = mydrv["领料量"].ToString();
             }
@@ -360,7 +357,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
         listPrdctPlan.SelectedValue = "";
         txtBatchNum.Text = "";
         listPrdct.SelectedValue = "";
-        txtChipSum.Text = "";
+       
         txtStemSum.Text = "";
         txtValiddate.Text = "";
         bindGrid2();
@@ -415,18 +412,17 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
             DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from HT_STRG_FLAVOR_SUB t  where t.main_code = '" + txtCode.Text + "' group by  t.mater_flag");
             if (res != null && res.Tables[0].Rows.Count > 0)
             {
-                double CABOSUM=0, PEICESSUM=0;
+                double CABOSUM=0;
                 foreach (DataRow row in res.Tables[0].Rows)
                 {
-                    if (row["mater_flag"].ToString() == "HT")
+                    
                         CABOSUM += Convert.ToDouble(row["amount"].ToString());
-                    if (row["mater_flag"].ToString() == "LY")
-                        PEICESSUM += Convert.ToDouble(row["amount"].ToString());
+                   
                 }
                 txtStemSum.Text = CABOSUM.ToString("0.00");
-                txtChipSum.Text = PEICESSUM.ToString("0.00");
-                string[] seg1 = { "ORDER_SN", "CABOSUM", "PEICESSUM" };
-                string[] value1 = { txtCode.Text, txtStemSum.Text,txtChipSum.Text};
+                
+                string[] seg1 = { "ORDER_SN", "CABOSUM"};
+                string[] value1 = { txtCode.Text, txtStemSum.Text};
                 opt.MergeInto(seg1, value1, 1, "HT_STRG_FLAVOR");
             }
       
@@ -437,7 +433,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
 
-        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from HT_STRG_FLAVOR_SUB where main_code = '" + txtCode.Text + "'  and IS_DEL = '0'";
+        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   物料编码,original_demand as   领料量,ID  from HT_STRG_FLAVOR_SUB where main_code = '" + txtCode.Text + "'  and IS_DEL = '0'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = new DataTable();
@@ -449,7 +445,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
             data.Columns.Add("仓库");
             data.Columns.Add("类型");
             data.Columns.Add("计量单位");
-            data.Columns.Add("原料编码");
+            data.Columns.Add("物料编码");
             data.Columns.Add("领料量");
             data.Columns.Add("ID");
         }
@@ -468,8 +464,8 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
                 DropDownList list = (DropDownList)row.FindControl("listGridType");
                 list.SelectedValue = mydrv["类型"].ToString();
                 opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and  substr(type_code,1,4) ='" + list.SelectedValue + "' or substr(mater_code,1,4) = '" + list.SelectedValue + "'", "material_name", "material_code");
-                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
-                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
+                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["物料编码"].ToString();
+                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridAmount")).Text = mydrv["领料量"].ToString();
 

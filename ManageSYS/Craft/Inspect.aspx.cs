@@ -126,22 +126,18 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
         string log_message = opt.MergeInto(seg, value, 1, "ht_qlt_inspect_proj") == "Success" ? "保存工艺检查项目成功" : "保存工艺检查项目失败";
         if (log_message == "保存工艺检查项目成功")
         {
+            string[] procseg = { };
+            object[] procvalues = { };
             if (listSection2.SelectedValue == "4")
-            {
-                string[] procseg = { };
-                object[] procvalues = { };
+            {               
                 opt.ExecProcedures("Create_Sensor_Report", procseg, procvalues);
             }
             else if (listSection2.SelectedValue.Length == 1 && listSection2.SelectedValue != "4")
-            {
-                string[] procseg = { };
-                object[] procvalues = { };
-                opt.ExecProcedures("Create_phechem_Report", procseg, procvalues);
+            {                
+                opt.ExecProcedures("Create_phychem_Report", procseg, procvalues);
             }
             else
-            {
-                string[] procseg = { };
-                object[] procvalues = { };
+            {               
                 opt.ExecProcedures("Create_process_Report", procseg, procvalues);
             }
         }
@@ -180,27 +176,23 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
                 if (((CheckBox)GridView1.Rows[i].FindControl("ck")).Checked)
                 {
                     string projcode = GridView1.DataKeys[i].Value.ToString();
-                    string query = "update ht_qlt_inspect_proj set IS_DEL = '1'  where INSPECT_CODE = '" + projcode + "'";
+                    string query = "delete from  ht_qlt_inspect_proj   where INSPECT_CODE = '" + projcode + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺检查项目成功" : "删除工艺检查项目失败";
                     if (log_message == "删除工艺检查项目成功")
                     {
+                        string[] procseg = { };
+                        object[] procvalues = { };
                         if (GridView1.Rows[i].Cells[2].Text == "感观评测")
-                        {
-                            string[] procseg = { };
-                            object[] procvalues = { };
+                        {                            
                             opt.ExecProcedures("Create_Sensor_Report", procseg, procvalues);
                         }
                         else if (GridView1.Rows[i].Cells[1].Text == "成品检验" && GridView1.Rows[i].Cells[2].Text != "感观评测")
-                        {
-                            string[] procseg = { };
-                            object[] procvalues = { };
-                            opt.ExecProcedures("Create_phechem_Report", procseg, procvalues);
+                        {                           
+                            opt.ExecProcedures("Create_phychem_Report", procseg, procvalues);
                         }
                         else
-                        {
-                            string[] procseg = { };
-                            object[] procvalues = { };
+                        {                           
                             opt.ExecProcedures("Create_process_Report", procseg, procvalues);
                         }
                     }

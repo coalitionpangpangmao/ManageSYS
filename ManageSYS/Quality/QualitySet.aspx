@@ -57,8 +57,7 @@
                                         OnSelectedIndexChanged="listVersion_SelectedIndexChanged">
                                     </asp:DropDownList>
                                     <span style="position: relative; float: right">审批状态：<asp:DropDownList ID="listAprv" runat="server" CssClass="drpdwnlist" Width="80px" Enabled="False"></asp:DropDownList>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1  auth" Width="80px" OnClick="btnSubmit_Click" />
-                                        &nbsp;   
+                                        <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btn1  auth" Width="80px" OnClick="btnSubmit_Click" />                                        
                                        <asp:Button ID="btnFLow" runat="server" Text="审批进度" CssClass="btn1" Width="80px" OnClick="btnFLow_Click" />
                                         <asp:Button ID="btnNew" runat="server" Text="新增" class="btnadd auth" OnClick="btnNew_Click" />
                                         <asp:Button ID="btnDel" runat="server" Text="删除" class="btndel auth" OnClick="btnDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
@@ -150,9 +149,9 @@
                             <ContentTemplate>
                                 <div style="position: relative; margin-top: 10px; margin-left: 10px; width: 98%;">
                                     <div class="listtitle">
-                                        质量标准参数表<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server"
+                                        质量标准参数表<span style="position: relative; float: right"> <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                            <asp:Button ID="btnAdd" runat="server"
                                             CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                            <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                             <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                             <asp:HiddenField ID="hideprc" runat="server" Value="" />
                                             <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />

@@ -47,7 +47,7 @@ public partial class Quality_Inspect_Sensor : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
      
         hideID.Value = opt.GetSegValue("select sensor_record_id_seq.nextval as id from dual", "ID");
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+      
     }
     protected void btnDel_Click(object sender, EventArgs e)//计划删除
     {
@@ -84,8 +84,7 @@ public partial class Quality_Inspect_Sensor : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from HT_QLT_SENSOR_RECORD_SUB where is_valid = '0'");
         bindGrid2(id);
-        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
-
+      
 
     }
 

@@ -93,9 +93,11 @@
                                 </tbody>
                             </table>
                             <div class="listtitle" style="margin-top: 10px">
-                                设备列表<span style="position: relative; float: right"><asp:Button ID="btnAdd" runat="server" Visible ="false"
+                                设备列表<span style="position: relative; float: right">
+                                     <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                    <asp:Button ID="btnAdd" runat="server" Visible ="false"
                                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                    <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                   
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  Visible ="false" OnClientClick="javascript:return confirm('确认删除？');"/>
                                 </span>
                             </div>

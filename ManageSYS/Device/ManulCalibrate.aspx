@@ -70,7 +70,7 @@
 
                                         <asp:TemplateField      ItemStyle-Width="80">
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridview" runat="server" Text="编辑" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" />
+                                                <asp:Button ID="btnGridview" runat="server" Text="编辑" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click"  OnClientClick ="$('#tabtop2').click();"/>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

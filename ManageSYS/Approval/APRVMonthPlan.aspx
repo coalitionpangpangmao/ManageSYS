@@ -9,23 +9,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript">
-        function DetailClick() {
-            $('#tabtop2').click();
-
-        }
-        function AprvTable() {
-            $('#tabtop3').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -104,10 +88,10 @@
                                     <asp:TemplateField      HeaderText="操作" >
                                         <ItemTemplate>
                                             <asp:Button ID="btnDetail" runat="server" Text="业务明细" CssClass="btn1 auth" Width="80px"
-                                                OnClick="btnDetail_Click" />
-                                            <asp:Button ID="btnFLow" runat="server" Text="审批流程" CssClass="aprvclickbtn" OnClick="btnFLow_Click" />
+                                                OnClick="btnDetail_Click"  OnClientClick ="$('#tabtop2').click();"/>
+                                            <asp:Button ID="btnFLow" runat="server" Text="审批流程" CssClass="aprvclickbtn" OnClick="btnFLow_Click"  OnClientClick=" $('#flowinfo').fadeIn(200);"/>
                                             <asp:Button ID="btnTable" runat="server" Text="查看审批单" CssClass="btn1 auth" Width="80px"
-                                                OnClick="btnTable_Click" />
+                                                OnClick="btnTable_Click"  OnClientClick ="$('#tabtop3').click();"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -206,7 +190,7 @@
     </div>
     <div class="aprvinfo" id="flowinfo">
         <div class="tiptop">
-            <span>审批流程详情</span><a onclick="Aprvlisthide()"></a></div>
+            <span>审批流程详情</span><a onclick="$('#flowinfo').fadeOut(200);"></a></div>
         <div class="flowinfo">
             <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>

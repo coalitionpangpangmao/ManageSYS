@@ -230,8 +230,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
             SetEnable(true, "0");
         else
             SetEnable(false,"0");
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
-
+       
 
     }
     protected void btnGridAlter_Click(object sender, EventArgs e)//调整计划
@@ -249,10 +248,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
           
                 SetEnable(true,"1");
            
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
-
-
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "$('#tabtop2').click();", true);
+          
 
         }
         catch (Exception ee)
@@ -263,8 +259,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
     protected void btnAddPlan_Click(object sender, EventArgs e)//新增计划
     {
-        SetEnable(true,"0");
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "Detail", "GridClick();", true);
+        SetEnable(true,"0");     
     }
 
     //查看审批单
@@ -277,7 +272,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         GridView3.DataSource = opt.CreateDataSetOra(query);
         GridView3.DataBind();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Aprvlist();", true);
+       
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)//提交审批

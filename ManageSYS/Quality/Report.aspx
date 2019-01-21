@@ -65,14 +65,13 @@
                           <asp:Button ID="btnUpdate" runat="server" class="btnhide" OnClick="btnUpdate_Click" />
                       </span>
                 </div>
-                <div>
+               <div style="position: relative; height:60px; width: 100%">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:HiddenField ID="hideMerge" runat="server" Value="0" />
                             <asp:HiddenField ID="hideParaset" runat="server" Value="1" />
                             <table class="tablelist">
                                 <tr>
-
                                     <td>
                                         <asp:Label ID="lab2" runat="server" Text="开始时间" Width="70px" CssClass="labinfo" />
                                         <asp:TextBox ID="txtStartTime" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
@@ -80,14 +79,13 @@
                                         <asp:Label ID="lab3" runat="server" Text="结束时间" Width="70px" CssClass="labinfo" />
                                         <asp:TextBox ID="txtEndTime" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox></td>
                                     <td>
-                                        <asp:Label ID="lab1" runat="server" Text="产品" Width="50px" CssClass="labinfo" /><asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+                                        <asp:Label ID="lab1" runat="server" Text="产品" Width="50px" CssClass="labinfo" /><asp:DropDownList ID="listProd" runat="server" CssClass="drpdwnlist" AutoPostBack="true"></asp:DropDownList>
                                     </td>
                                     <td>
-                                        <asp:Label ID="lab4" runat="server" Text="班组" Width="50px" CssClass="labinfo" /><asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist"></asp:DropDownList>
+                                        <asp:Label ID="lab4" runat="server" Text="班组" Width="50px" CssClass="labinfo" /><asp:DropDownList ID="listTeam" runat="server" CssClass="drpdwnlist" AutoPostBack="true"></asp:DropDownList>
                                     </td>
-                                    <td>
-                                        <asp:Label ID="lab5" runat="server" Text="月度" Width="50px" CssClass="labinfo" />
-                                        <asp:TextBox ID="txtMonth" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
+                                      <td>
+                                        <asp:Label ID="lab5" runat="server" Text="月度" Width="50px" CssClass="labinfo" />  <asp:TextBox ID="txtMonth" class="dfinput1" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM'})"></asp:TextBox>
                                     </td>
                                 </tr>
                             </table>
@@ -99,10 +97,10 @@
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
-                <div>
+                <div style="position: relative; top:-30px; bottom:30px; width: 100%">
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <iframe id="Frame1" name="Frame1" height="400"
+                            <iframe id="Frame1" name="Frame1" height="90%"
                                 style="width: 100%; position: relative;"></iframe>
                         </ContentTemplate>
                         <Triggers>

@@ -8,39 +8,8 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#case").hide();
-        });
-        function GridClick() {
-            $('#tabtop2').click();
-            var ck = $("#ckFault").attr("checked");
-            if (ck) {
-                $("#case").show();
-            }
-            else {
-                $("#case").hide();
-            }
-        }
-
-        function ckFaultClick() {
-            var ck = $("#ckFault").attr("checked");
-            if (ck) {
-                $("#case").show();
-            }
-            else {
-                $("#case").hide();
-            }
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+  
+    
 </head>
 <body>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>

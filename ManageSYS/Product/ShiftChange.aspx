@@ -10,20 +10,7 @@
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
       <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>    <script type ="text/javascript" src ="../js/jquery.PrintArea.js"></script>
-    <script type="text/javascript">
-
-        function GridClick() {
-            $('#tabtop2').click();
-
-        }
-        function Aprvlist() {
-            $("#flowinfo").fadeIn(200);
-        };
-
-        function Aprvlisthide() {
-            $("#flowinfo").fadeOut(100);
-        };
-    </script>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -82,7 +69,7 @@
                                      <asp:BoundField    DataField="结束时间" HeaderText="结束时间" />
                                     <asp:TemplateField      HeaderText="操作">
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click" />
+                                            <asp:Button ID="btnGrid1Edit" runat="server" Text="填写" CssClass="btn1 auth" OnClick="btnGrid1Edit_Click"   OnClientClick ="$('#tabtop2').click()"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -106,6 +93,7 @@
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnSearch" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnSave" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

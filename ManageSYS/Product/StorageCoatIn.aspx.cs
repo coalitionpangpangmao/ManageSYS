@@ -162,7 +162,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
             int index = ((GridViewRow)btn.NamingContainer).RowIndex;//获得行号                 
             string id = GridView1.DataKeys[index].Value.ToString();
             /*启动审批TB_ZT标题,TBR_ID填报人id,TBR_NAME填报人name,TB_BM_ID填报部门id,TB_BM_NAME填报部门name,TB_DATE申请时间创建日期,MODULENAME审批类型编码,URL 单独登录url,BUSIN_ID业务数据id*/
-            string[] subvalue = { "仓储" + ((Label)GridView1.Rows[index].FindControl("labStrg")).Text + id, "08", id, Page.Request.UserHostName.ToString() };
+            string[] subvalue = { "仓储" + ((Label)GridView1.Rows[index].FindControl("labStrg")).Text + id, "09", id, Page.Request.UserHostName.ToString() };
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             if (MSYS.AprvFlow.createApproval(subvalue))
             {
@@ -249,8 +249,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
         else
             SetEnable(false);
         bindGrid2();
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "$('#tabtop2').click();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+      
     }
     private void SetEnable(bool enable)
     {
@@ -295,8 +294,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
         listApt.SelectedValue = user.OwningBusinessUnitId;
         bindGrid2();
         SetEnable(true);
-        ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", " $('#tabtop2').click();", true);
-        // this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>GridClick();</script>", true);
+      
     }
     protected DataSet gridHTYbind(String code)
     {
@@ -312,7 +310,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
     protected void bindGrid2()
     {
 
-        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from HT_STRG_COAT_SUB where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
+        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   物料编码,original_demand as   领料量,ID  from HT_STRG_COAT_SUB where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -325,9 +323,9 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
                 GridViewRow row = GridView2.Rows[i];
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
                 ((DropDownList)GridView2.Rows[i].FindControl("listGridstrg")).SelectedValue = mydrv["仓库"].ToString();
-               
-                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
-                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
+
+                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["物料编码"].ToString();
+                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["物料编码"].ToString();
                  ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridAmount")).Text = mydrv["领料量"].ToString();
             }
@@ -476,8 +474,8 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
             {
                 ID = opt.GetSegValue("select STRGMATER_ID_SEQ.nextval as id from dual", "ID");
             }
-            string[] seg = { "ID", "STORAGE", "CLS_CODE", "unit_code", "mater_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
-            string[] value = { ID, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue, ((DropDownList)row.FindControl("listGridType")).SelectedValue, ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridcode")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };
+            string[] seg = { "ID", "mater_code", "STORAGE",  "unit_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
+            string[] value = { ID, ((TextBox)row.FindControl("txtGridcode")).Text, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue,  ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };
 
             string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_COAT_SUB") == "Success" ? "保存原料领退明细成功" : "保存原料领退明细失败";
             log_message += "--详情:" + string.Join(",", value);
@@ -490,9 +488,9 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
             double CABOSUM = 0, PEICESSUM = 0;
             foreach (DataRow row in res.Tables[0].Rows)
             {
-                if (row["mater_flag"].ToString() == "YG")
+                if (row["mater_flag"].ToString() == "HT")
                     CABOSUM += Convert.ToDouble(row["amount"].ToString());
-                if (row["mater_flag"].ToString() == "SP")
+                if (row["mater_flag"].ToString() == "LY")
                     PEICESSUM += Convert.ToDouble(row["amount"].ToString());
             }
             txtStemSum.Text = CABOSUM.ToString("0.00");
@@ -502,6 +500,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
             opt.MergeInto(seg1, value1, 1, "HT_STRG_COAT");
         }
         bindGrid2();
+        bindGrid1();
 
     }
 

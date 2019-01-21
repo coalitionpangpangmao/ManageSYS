@@ -10,7 +10,9 @@
     <script type="text/javascript" src="../js/jquery.idTabs.min.js"></script>
     <script language="javascript" type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
      <script type="text/javascript" src="../js/jquery.PrintArea.js"></script>
-   
+    <style type="text/css" media="print">
+@page { size: landscape; }
+</style>
 
 </head>
 <body>
@@ -55,9 +57,9 @@
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
                     原料领用表<span style="position: relative; float: right">
-
-                        <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
-                        <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                         <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll1_Click" />
+                        <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" OnClientClick ="$('#tabtop2').click();" />
+                       
                         <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                     </span>
                 </div>
@@ -116,7 +118,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField  >
                                         <ItemTemplate>
-                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75"
+                                            <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1" Width="75" OnClientClick ="$('#tabtop2').click();"
                                                 OnClick="btnGridview_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -260,10 +262,9 @@
                         <ContentTemplate>
                             <div class="listtitle" style="margin-top: 10px">
                                 领用明细<span style="position: relative; float: right">
-                                    <asp:Button ID="btnCreate" runat="server" CssClass="btnview auth" Text="按明细生成领退单" Visible ="false"
-                                        OnClick="btnCreate_Click" Width="160px" />
-                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                    <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                    <asp:Button ID="btnCreate" runat="server" CssClass="btnview" Text="按明细生成领退单" Visible ="false"                                        OnClick="btnCreate_Click" Width="160px" />  <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" Visible ="false"/>
+                                  
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                 </span>
                             </div>

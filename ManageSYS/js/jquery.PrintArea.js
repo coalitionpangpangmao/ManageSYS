@@ -28,9 +28,11 @@
         doc.write('<div class="' + $(ele).attr("class") + '">' + $(ele).html()
                 + '</div>');
         doc.close();
-        
+        $('iframe#printArea').contents().find("input[type='submit']").remove();
+        $('iframe#printArea').contents().find("input[type='button']").remove();
         //var frameWindow = document.getElementById(iframeId).contentWindow;
         var frameWindow = document.getElementById("printArea").contentWindow;
+       
         frameWindow.close();
         frameWindow.focus();
         setTimeout(function () { frameWindow.print(); }, 500);

@@ -76,8 +76,9 @@
                     <div id="tab3" class="tabson">
                         <div class="listtitle">
                             <span style="position: relative; float: right">
+                                <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click"  OnClientClick ="$('#tabtop2').click();"/>
                                 <asp:Button ID="btnGridDel" runat="server" Text="删除" class="btndel auth" OnClick="btnGridDel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                                <asp:Button ID="btnGridNew" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGridNew_Click" />
+                                
                             </span>
                         </div>
                         <div>
@@ -118,7 +119,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
-                                                    <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" />
+                                                    <asp:Button ID="btnGridview" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview_Click" OnClientClick ="$('#tabtop2').click();" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -156,8 +157,9 @@
                     <div id="tab4" class="tabson">
                         <div class="listtitle">
                             <span style="position: relative; float: right">
+                                  <asp:Button ID="btnGrid4New" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGrid4New_Click" OnClientClick ="$('#tabtop2').click();" />
                                 <asp:Button ID="btnGrid4Del" runat="server" Text="删除" class="btndel auth" OnClick="btnGrid4Del_Click" OnClientClick="javascript:return confirm('确认删除？');" />
-                                <asp:Button ID="btnGrid4New" runat="server" Text="新增" class="btnadd  auth" OnClick="btnGrid4New_Click" />
+                              
                             </span>
                         </div>
                         <div>
@@ -194,7 +196,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField      ItemStyle-Width="80">
                                                 <ItemTemplate>
-                                                    <asp:Button ID="btnGridview4" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview4_Click" />
+                                                    <asp:Button ID="btnGridview4" runat="server" Text="查看" CssClass="btn1 auth" Width="75" OnClick="btnGridview4_Click"  OnClientClick ="$('#tabtop2').click();"/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -295,8 +297,9 @@
                                     <asp:DropDownList ID="listModel" runat="server" CssClass="drpdwnlist">
                                     </asp:DropDownList>
                                     <asp:Button ID="btnCreate" runat="server" CssClass="btn" Text="从模版生成明细" OnClick="btnCreate_Click" /></span><span style="position: relative; float: right">
+                                          <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
                                         <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
-                                        <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
+                                      
                                         <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                         <asp:Button ID="btnDispatch" runat="server" CssClass="btnpatch auth" Text="派工" OnClientClick="patchClick()" />
                                         <asp:Button ID="btnTrack" runat="server" CssClass="btnview auth" Text="跟踪" OnClick="btnTrack_Click" />

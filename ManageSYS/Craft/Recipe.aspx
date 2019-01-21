@@ -132,7 +132,17 @@
                                                         <asp:CheckBox ID="chk" runat="server" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField>
+                                                <asp:TemplateField HeaderText="审批状态">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60px" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:BoundField DataField="配方编码" HeaderText="配方编码" />
+                                                <asp:BoundField DataField="配方名称" HeaderText="配方名称" />
+                                                <asp:BoundField DataField="启用时间" HeaderText="启用时间" />
+                                                <asp:BoundField DataField="编辑人员" HeaderText="编辑人员" />
+                                               
+                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:Button ID="btnGridDetail" runat="server" Text="配方详情" CssClass="btn1" Width="100px"
                                                             OnClick="btnGridDetail_Click" />
@@ -152,15 +162,6 @@
                                                             OnClick="btnFLow_Click" />
                                                     </ItemTemplate>
                                                     <ItemStyle Width="110px" />
-                                                </asp:TemplateField>
-                                                <asp:BoundField DataField="配方编码" HeaderText="配方编码" />
-                                                <asp:BoundField DataField="配方名称" HeaderText="配方名称" />
-                                                <asp:BoundField DataField="启用时间" HeaderText="启用时间" />
-                                                <asp:BoundField DataField="编辑人员" HeaderText="编辑人员" />
-                                                <asp:TemplateField HeaderText="审批状态">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60px" />
-                                                    </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
                                             <HeaderStyle CssClass="gridheader" />
@@ -298,9 +299,9 @@
                                 </div>
                                 <div id="tab5" class="tabson">
                                     <div class="listtitle">
-                                        配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd1" runat="server"
-                                            CssClass="btnadd  auth" Text="新增" OnClick="btnAdd1_Click" />
-                                            <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll1_Click" />
+                                        配方详情<span style="position: relative; float: right">
+                                              <asp:Button ID="btnCkAll1" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll1_Click" />
+                                            <asp:Button ID="btnAdd1" runat="server"                                            CssClass="btnadd  auth" Text="新增" OnClick="btnAdd1_Click" />                                          
                                             <asp:Button ID="btnDelSel1" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel1_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                             <asp:Button ID="btnGridSave1" class="btnmodify  auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave1_Click" />
                                         </span>
@@ -392,9 +393,10 @@
                                 </div>
                                 <div id="tab6" class="tabson">
                                     <div class="listtitle">
-                                        配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd1_2" runat="server"
-                                            CssClass="btnadd  auth" Text="新增" OnClick="btnAdd1_2_Click" />
-                                            <asp:Button ID="btnCkAll1_2" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll1_2_Click" />
+                                        配方详情<span style="position: relative; float: right"> 
+                                             <asp:Button ID="btnCkAll1_2" runat="server" CssClass="btnset  auth" Text="全选" OnClick="btnCkAll1_2_Click" />
+                                            <asp:Button ID="btnAdd1_2" runat="server"
+                                            CssClass="btnadd  auth" Text="新增" OnClick="btnAdd1_2_Click" /> 
                                             <asp:Button ID="btnDelSel1_2" runat="server" CssClass="btndel  auth" Text="删除" OnClick="btnDelSel1_2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                             <asp:Button ID="btnGridSave1_2" class="btnmodify  auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave1_2_Click" />
                                         </span>
@@ -608,9 +610,10 @@
                         </div>
                         <div id="tab7" class="tabson">
                             <div class="listtitle">
-                                配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2" runat="server"
-                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" />
-                                    <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
+                                配方详情<span style="position: relative; float: right">
+                                     <asp:Button ID="btnCkAll2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_Click" />
+                                    <asp:Button ID="btnAdd2" runat="server"
+                                    CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_Click" /> 
                                     <asp:Button ID="btnDelSel2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                     <asp:Button ID="btnGridSave2" class="btnmodify auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave2_Click" />
                                 </span>
@@ -699,9 +702,10 @@
                         </div>
                         <div id="tab8" class="tabson">
                             <div class="listtitle">
-                                配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd2_2" runat="server"
+                                配方详情<span style="position: relative; float: right">
+                                       <asp:Button ID="btnCkAll2_2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_2_Click" />
+                                    <asp:Button ID="btnAdd2_2" runat="server"
                                     CssClass="btnadd  auth" Text="新增" OnClick="btnAdd2_2_Click" />
-                                    <asp:Button ID="btnCkAll2_2" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll2_2_Click" />
                                     <asp:Button ID="btnDelSel2_2" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel2_2_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                     <asp:Button ID="btnGridSave2_2" class="btnmodify auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave2_2_Click" />
                                 </span>
@@ -903,9 +907,9 @@
 
 
                         <div class="listtitle">
-                            配方详情<span style="position: relative; float: right"><asp:Button ID="btnAdd3" runat="server"
-                                CssClass="btnadd  auth" Text="新增" OnClick="btnAdd3_Click" />
-                                <asp:Button ID="btnCkAll3" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll3_Click" />
+                            配方详情<span style="position: relative; float: right"> <asp:Button ID="btnCkAll3" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll3_Click" />
+                                <asp:Button ID="btnAdd3" runat="server"
+                                CssClass="btnadd  auth" Text="新增" OnClick="btnAdd3_Click" /> 
                                 <asp:Button ID="btnDelSel3" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel3_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                 <asp:Button ID="btnGridSave3" class="btnmodify auth" runat="server" Text="全部保存" Width="90px" OnClick="btnGridSave3_Click" />
                             </span>

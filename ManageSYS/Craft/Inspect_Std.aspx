@@ -63,16 +63,17 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="下限">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtLower" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="上限">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtUpper" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="下限">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtLower" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                   
                                     <asp:TemplateField HeaderText="单次扣分">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtScore" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
@@ -208,16 +209,17 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="下限">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtLower" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="上限">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtUpper" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="下限">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtLower" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                   
                                     <asp:TemplateField HeaderText="单次扣分">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtScore" runat="server" onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass='tbinput'></asp:TextBox>
