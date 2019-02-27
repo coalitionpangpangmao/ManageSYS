@@ -72,10 +72,7 @@
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="业务名" HeaderText="业务名"  />
-                                    <asp:BoundField DataField="申请人" HeaderText="申请人"  />
-                                    <asp:BoundField DataField="申请部门" HeaderText="申请部门"  />
-                                    <asp:TemplateField      HeaderText="主业务审批状态">
+                                     <asp:TemplateField      HeaderText="主业务审批状态">
                                         <ItemTemplate>
                                             <asp:Label ID="labStatus1" runat="server" CssClass="labstatu" Text="" Width="60px"></asp:Label>
                                         </ItemTemplate>
@@ -85,6 +82,10 @@
                                             <asp:Label ID="labStatus2" runat="server" CssClass="labstatu" Text="" Width="60px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:BoundField DataField="业务名" HeaderText="业务名"  />
+                                    <asp:BoundField DataField="申请人" HeaderText="申请人"  />
+                                    <asp:BoundField DataField="申请部门" HeaderText="申请部门"  />
+                                   
                                     <asp:TemplateField      HeaderText="操作" >
                                         <ItemTemplate>
                                             <asp:Button ID="btnDetail" runat="server" Text="业务明细" CssClass="btn1 auth" Width="80px"

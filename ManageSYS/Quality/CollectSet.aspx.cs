@@ -79,6 +79,10 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         string log_message = opt.MergeInto(seg, value, 1, "ht_qlt_collection") == "Success" ? "保存质量采集条件成功" : "保存质量采集条件失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
+        if (rdYes.Checked)
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "hide", "$('.gapinfo').hide();alert('" + log_message + "')", true);
+        else
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "hide", "$('.gapinfo').show();alert('" + log_message + "')", true);
 
     }
     protected void Delete_Click(object sender, EventArgs e)
@@ -99,7 +103,7 @@ public partial class Quality_CollectSet : MSYS.Web.BasePage
         txtID.Text = hidecode.Value;
         listSection.SelectedValue = txtID.Text.Substring(0, 5);
         opt.bindDropDownList(listPointname, "select * from ht_pub_tech_para where is_del = '0' and is_valid = '1' and  para_type like '___1%' and  substr(para_code,1,5) = '" + listSection.SelectedValue + "' order by para_code", "PARA_NAME", "PARA_CODE");
-        opt.bindDropDownList(listGappoint, "select r.para_code,s.para_name from ht_qlt_collection r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0' and r.is_gap_judge = '1'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
+        opt.bindDropDownList(listGappoint, "select distinct r.para_code,s.para_name from ht_qlt_collection r left join ht_pub_tech_para s on r.para_code = s.para_code where  r.is_del = '0' and r.is_gap_judge = '1'   and   substr(r.para_code,1,5) = '" + listSection.SelectedValue + "' order by r.para_code", "PARA_NAME", "PARA_CODE");
         listPointname.SelectedValue = txtID.Text;
         DataSet data = opt.CreateDataSetOra("select * from ht_qlt_collection g1  where g1.is_del = '0' and g1.is_valid = '1' and  g1.para_code = '" + txtID.Text + "'");
         if (data != null && data.Tables[0].Rows.Count > 0)

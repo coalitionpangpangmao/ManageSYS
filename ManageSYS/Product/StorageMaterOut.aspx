@@ -175,7 +175,7 @@
                                         <td>
                                             <asp:TextBox ID="txtCode" runat="server" class="dfinput1" Enabled="false"></asp:TextBox>
                                         </td>
-                                        <td width="100">生产日期
+                                        <td width="100">领用日期
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtPrdctdate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>

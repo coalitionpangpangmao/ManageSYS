@@ -58,24 +58,23 @@ public partial class Craft_Inspect : MSYS.Web.BasePage
     {
         string query = "";
         if (listtype.SelectedValue == "")
-            query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0' union select h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
+            query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0' union select h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1'" ;
         else
         {
             if (listtype.SelectedValue == "0")
-                query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0'";
+                query = "select distinct h.inspect_type as 检查类型,s.section_name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.INspect_Group and r.inspect_type = '0'  left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '0' ";
             else
                 query = "select distinct h.inspect_type as 检查类型,t.name as 分组, r.inspect_code as 检查项目编码,r.inspect_name as 检查项目,r.remark as 备注 from ht_qlt_inspect_proj r  left join ht_INner_INSPECT_GROUP t on t.id = r.INspect_Group and r.inspect_type = '1' left join ht_inner_bool_display h on h.id = r.inspect_type  where r.is_del = '0' and r.is_valid = '1' and r.inspect_type = '1' ";
             if (listSection.SelectedValue != "")
                 query += " and  r.INspect_Group = '" + listSection.SelectedValue + "'";
         }
 
+        query += " order by r.inspect_code";
+        System.Diagnostics.Debug.WriteLine(query);
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
-
-
-
     }
     protected void initView()
     {

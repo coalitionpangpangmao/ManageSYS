@@ -180,13 +180,7 @@
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtOutput" runat="server" class="dfinput1"></asp:TextBox>
-                                        </td>
-                                           <td width="100">
-                                            零头重量(kg)
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtOutPlus" runat="server" class="dfinput1"></asp:TextBox>
-                                        </td>
+                                       
                                         </tr>
                                     <tr>
                                         <td width="100" height="55">
@@ -194,7 +188,7 @@
                                         </td>
                                         <td colspan="7">
                                             <asp:TextBox ID="txtDevice" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="500px"></asp:TextBox>
+                                                Width="800px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr class="btnhide">
@@ -203,7 +197,7 @@
                                         </td>
                                         <td colspan="7">
                                             <asp:TextBox ID="txtQlt" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="500px"></asp:TextBox>
+                                                Width="800px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -212,7 +206,7 @@
                                         </td>
                                         <td colspan="7">
                                             <asp:TextBox ID="txtScean" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="500px"></asp:TextBox>
+                                                Width="800px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -221,7 +215,7 @@
                                         </td>
                                         <td colspan="7">
                                             <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="500px"></asp:TextBox>
+                                                Width="800px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>

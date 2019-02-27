@@ -54,6 +54,41 @@ public class RealDataHandler : IHttpHandler
         if (PostedData.type == "Para")
         {
             datainfo.Add(handleParaData(PostedData));
+            //ResponseData rdata = new ResponseData();
+            //if(PostedData.point == "7030100002")
+            //{ 
+                 
+            //    rdata.errdev = 20;
+            //    rdata.value = Convert.ToDouble( PostedData.startTime.Substring(11,2));
+            //    rdata.lower = rdata.value-5;
+            //    rdata.upper = rdata.value + 5;
+               
+            //    rdata.pointname = "test1";
+            //    rdata.xAxis = new List<string>();
+            //    rdata.yAxis = new List<double>();
+            //    for (int i = 0; i < 100; i++)
+            //    {
+            //        rdata.xAxis.Add(i.ToString());
+            //        rdata.yAxis.Add(rdata.value * (Math.Sin(i) + 1));
+            //    }  
+            //}
+            // if(PostedData.point == "7030100007")
+            //{
+            //    rdata.errdev =30;
+            //    rdata.lower = 30;
+            //    rdata.upper = 50;
+            //    rdata.value = 40;
+            //    rdata.pointname = "test2";
+            //    rdata.xAxis = new List<string>();
+            //    rdata.yAxis = new List<double>();
+            //    for (int i = 0; i < 100; i++)
+            //    {
+            //        rdata.xAxis.Add(i.ToString());
+            //        rdata.yAxis.Add(15 * Math.Cos(i)+40);
+            //    }  
+            //}
+            // datainfo.Add(rdata);             
+             
         }
         else
             datainfo = handleEquipData(PostedData);
@@ -73,23 +108,29 @@ public class RealDataHandler : IHttpHandler
     {
         ResponseData datainfo = new ResponseData();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet pointinfo;
-        if (prodcode != "NoRecord")
-            pointinfo = opt.CreateDataSetOra("select t.para_name,s.upper_limit,s.lower_limit,s.value,s.eer_dev,t.value_tag from ht_pub_prod_design q left join ht_tech_stdd_code r on q.tech_stdd_code = r.tech_code   left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code  left join ht_pub_tech_para t on s.para_code = t.para_code where q.prod_code = '" + prodcode + "' and t.para_code = '" + point + "'");
-        else
+        DataSet pointinfo;       
+      
+     
             pointinfo = opt.CreateDataSetOra("select t.para_name,t.value_tag from    ht_pub_tech_para t where t.para_code = '" + point + "'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
         {
             DataRow row = pointinfo.Tables[0].Rows[0];
             string tag = row["value_tag"].ToString();
             datainfo.pointname = row["para_name"].ToString();
-            if (pointinfo.Tables[0].Columns.Count >2 )
-            {    
-                if( ! (row["upper_limit"].ToString() == "" || row["lower_limit"].ToString() ==""|| row["value"].ToString()==""||row["eer_dev"].ToString() ==""))
-                datainfo.upper = Convert.ToDouble(row["upper_limit"].ToString());
-                datainfo.lower = Convert.ToDouble(row["lower_limit"].ToString());
-                datainfo.value = Convert.ToDouble(row["value"].ToString());
-                datainfo.errdev = Convert.ToDouble(row["eer_dev"].ToString());
+            if (prodcode != "NoRecord")
+            {
+                DataSet stdinfo = opt.CreateDataSetOra("select s.upper_limit,s.lower_limit,s.value,s.eer_dev from ht_pub_prod_design q left join ht_tech_stdd_code r on q.tech_stdd_code = r.tech_code   left join Ht_Tech_Stdd_Code_Detail s on r.tech_code = s.tech_code   where q.prod_code = '" + prodcode + "' and s.para_code = '" + point + "'");
+                if (stdinfo != null && stdinfo.Tables[0].Rows.Count > 0)
+                {
+                    row = stdinfo.Tables[0].Rows[0];
+                    if (!(row["upper_limit"].ToString() == "" || row["lower_limit"].ToString() == "" || row["value"].ToString() == "" || row["eer_dev"].ToString() == ""))
+                    {
+                        datainfo.upper = Convert.ToDouble(row["upper_limit"].ToString());
+                        datainfo.lower = Convert.ToDouble(row["lower_limit"].ToString());
+                        datainfo.value = Convert.ToDouble(row["value"].ToString());
+                        datainfo.errdev = Convert.ToDouble(row["eer_dev"].ToString());
+                    }
+                }       
             }
             if(tag != "")
             {

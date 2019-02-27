@@ -15,14 +15,14 @@ public class getEvaluatLeaveData : IHttpHandler {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         var resultData = new JObject();
         JObject requestData = getJsonData(context);
-        string tableQuery = "SELECT id, factory_address, factory_time, inspect_time, produce_time, product_code, product_name FROM ht_qlt_inspect_factory WHERE id='"+requestData["factoryId"]+"'";
+        string tableQuery = "SELECT id, factory_address, factory_time, inspect_time, produce_time, product_code, product_name, produce_time1_s, produce_time1_e,produce_time2_s,produce_time2_e,produce_time3_s,produce_time3_e FROM ht_qlt_inspect_factory WHERE id='" + requestData["factoryId"] + "'";
         string tableDetailQuery = "SELECT inspect_code, inspect_value FROM ht_qlt_inspect_factory_detail WHERE factory_id = '" + requestData["factoryId"] + "' ORDER BY inspect_code";
         
         System.Diagnostics.Debug.WriteLine(tableQuery);
         System.Diagnostics.Debug.WriteLine(tableDetailQuery);
         DataSet tableData = opt.CreateDataSetOra(tableQuery);
        var resultTable = new JArray();
-       for (int i = 0; i < 7; i++)
+       for (int i = 0; i < tableData.Tables[0].Columns.Count; i++)
        {
            resultTable.Add(tableData.Tables[0].Rows[0][i].ToString());
        }

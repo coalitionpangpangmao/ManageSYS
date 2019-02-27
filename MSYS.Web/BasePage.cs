@@ -444,7 +444,7 @@ namespace MSYS.Web
                 Response.Write("文件下载出错！！");
             }
         }
-        private void KillProcess(string processname)
+        public void KillProcess(string processname)
         {
             Process[] allProcess = Process.GetProcesses();
             foreach (Process p in allProcess)
@@ -463,7 +463,7 @@ namespace MSYS.Web
             }
         }
 
-        private int getColumn(string Col)
+        public int getColumn(string Col)
         {
             int ColNum;
             switch (Col.Trim())

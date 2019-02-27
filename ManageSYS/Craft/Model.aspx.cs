@@ -304,7 +304,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
                 listEquip.SelectedValue = row["EQUIP_CODE"].ToString();
                 listSection.SelectedValue = paracode.Substring(0, 5);
                 listApt.SelectedValue = row["BUSS_ID"].ToString();
-
+                opt.bindDropDownList(listPathnode, "select nodename,id from ht_pub_path_node t where section_code = '" + listSection.SelectedValue + "' and is_del = '0'", "nodename", "id");
+                listPathnode.SelectedValue = row["PATH_NODE"].ToString();
             }
         }
         catch (Exception error)
@@ -408,8 +409,8 @@ public partial class Craft_Model : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text.Length == 10 && txtCode.Text.Substring(0, 5) == listSection.SelectedValue)
         {
-            string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG" ,"BUSS_ID"};
-            string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text,listApt.SelectedValue };
+            string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG", "BUSS_ID", "PATH_NODE" };
+            string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text,listApt.SelectedValue,listPathnode.SelectedValue };
             
             string log_message;
             if (opt.MergeInto(seg, value, 1, "HT_PUB_TECH_PARA") == "Success")
@@ -418,12 +419,12 @@ public partial class Craft_Model : MSYS.Web.BasePage
                 tvHtml = InitTree();
                 string[] procseg = { };
                 object[] procvalues = { };
-                opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);
-                ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('保存成功');", true);
+                opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);               
             }
             else
                 log_message = "保存参数点失败";
             log_message += "--数据详情:" + string.Join(",", value);
+            ScriptManager.RegisterStartupScript(UpdatePanel4, this.Page.GetType(), "sucess", "initTree();alert('"+ log_message + "');", true);
             InsertTlog(log_message);
            
         }
@@ -464,6 +465,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.bindDropDownList(listEquip, "select EQ_NAME,IDKEY from ht_eq_eqp_tbl t where t.Section_code = '" + listSection.SelectedValue + "' and t.is_del = '0'", "EQ_NAME", "IDKEY");
+        opt.bindDropDownList(listPathnode, "select nodename,id from ht_pub_path_node t where section_code = '" + listSection.SelectedValue + "' and is_del = '0'", "nodename", "id");
         txtCode.Text = "";
     }
     protected void ckQuality_CheckedChanged(object sender, EventArgs e)

@@ -75,15 +75,14 @@
                     <div>
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="8">
+                                <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="PZ_CODE" AutoGenerateColumns="False" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="12">
                                     <Columns>
                                         <asp:TemplateField     >
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chk" runat="server" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField    DataField="校准计划" HeaderText="校准计划" />
-                                        <asp:TemplateField      HeaderText="审批状态">
+                                         <asp:TemplateField      HeaderText="审批状态">
                                             <ItemTemplate>
                                                 <asp:Label ID="labAprv" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
                                             </ItemTemplate>
@@ -93,6 +92,8 @@
                                                 <asp:Label ID="labexe" runat="server" CssClass="labstatu" Width="60px"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:BoundField    DataField="校准计划" HeaderText="校准计划" />
+                                       
                                         <asp:BoundField    DataField="校准方式" HeaderText="校准方式" />
                                         <asp:BoundField    DataField="备注" HeaderText="备注" />
                                         <asp:TemplateField      ItemStyle-Width="80">

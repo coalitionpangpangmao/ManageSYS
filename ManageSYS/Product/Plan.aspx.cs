@@ -142,7 +142,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         btnAdd.Visible = status;
         btnDelSel.Visible = status;
         btnGrid2Modify.Visible = status;
-        if (GridView2.Columns.Count == 14)
+        if (GridView2.Columns.Count == 16)
         {
             GridView2.Columns[1].Visible = status;
             GridView2.Columns[2].Visible = status;

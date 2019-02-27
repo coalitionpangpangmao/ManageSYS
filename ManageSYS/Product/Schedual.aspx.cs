@@ -83,7 +83,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请选择正确的排班车间与时间段!!')", true);
             return;
         }     
-        DateTime tempdate = GetMondayDate(startdate).AddDays(7); 
+        DateTime tempdate = GetMondayDate(startdate).AddDays(6); 
         if (GridView1.Rows.Count > 0)
         {
             List<string> commandlist = new List<string>();

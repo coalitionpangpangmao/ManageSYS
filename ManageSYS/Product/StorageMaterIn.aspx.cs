@@ -204,7 +204,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         }
         else
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('请通过审批后再下发');", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('请通过审批后再入库');", true);
         }
 
 
@@ -509,7 +509,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
     protected void listPrdct_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listStrgOut, "select order_sn from ht_strg_materia t left join ht_prod_month_plan_detail r on r.plan_no = t.monthplanno where r.prod_code = '" + listPrdct.SelectedValue + "' and t.strg_type = '0' and t.out_date between '" + System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd HH:mm:ss") + "' and '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "order_sn", "order_sn");           
+        opt.bindDropDownList(listStrgOut, "select order_sn from ht_strg_materia t left join ht_prod_month_plan_detail r on r.plan_no = t.monthplanno where r.prod_code = '" + listPrdct.SelectedValue + "' and t.strg_type = '0'  and t.ISSUE_STATUS = '1'  and t.out_date between '" + System.DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd HH:mm:ss") + "' and '" + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'", "order_sn", "order_sn");           
        
       
     }

@@ -84,14 +84,14 @@ function showPointPlot() {
     });
 };
 function DrawPicture(result) {
-    debugger;
+    
     var upper = result["upper"];
     var lower = result["lower"];
     var value = result["value"];
     var errdev = result["errdev"];
     var xAxis = result["xAxis"];
     var yAxis = result["yAxis"];
-    var para_name = result["para_name"];
+    var para_name = result["pointname"];
     if (xAxis == null) {
         alert('没有从数据库获取数据，请查看质量采集设置是否正确，或IH实时数据库是否正常！！');
         return;

@@ -41,7 +41,7 @@ public partial class Quality_Evaluat_Leave : MSYS.Web.BasePage
         if (tim == "") {
             tim = "%";
         }
-        string query = "SELECT id as 编码, f.* from hv_qlt_inspect_factory f where product_code LIKE '"+prod+"' AND 地址 LIKE '"+add+"' AND 日期 LIKE '"+tim+"'";
+        string query = "SELECT id as 编码, f.* from hv_qlt_inspect_factory f where product_code LIKE '"+prod+"' AND 地址 LIKE '"+add+"' AND 出厂时间 LIKE '"+tim+"'";
         System.Diagnostics.Debug.WriteLine(query);
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query.ToString());
@@ -110,6 +110,17 @@ public partial class Quality_Evaluat_Leave : MSYS.Web.BasePage
         return tableData.Tables[0].Rows[0];
     }
 
+    protected int getRowSpanNum(DataRow tableData) {
+        int num = 1;
+        if(tableData[12].ToString()!="" || tableData[13].ToString()!=""){
+            num++;
+        }
+        if(tableData[14].ToString()!="" || tableData[15].ToString()!=""){
+            num++;
+        }
+        return num;
+    }
+
     protected void initTable(GridViewRow row)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -128,20 +139,35 @@ public partial class Quality_Evaluat_Leave : MSYS.Web.BasePage
         //str.Append(row.Cells[5].Text);
         str.Append(tableData[4].ToString());
         str.Append("</td></tr>");
-        str.Append("<tr><th>生产日期</th><td>");
+        str.Append("<tr><th rowspan='"+getRowSpanNum(tableData)+"'>生产日期</th><td>");
         //str.Append(row.Cells[3].Text);
-        str.Append(tableData[6].ToString());
+        str.Append(tableData[10].ToString()+" -  "+tableData[11].ToString());
         str.Append("</td>");
-        str.Append("<th  width ='25%'>检测日期</th><td>");
+        str.Append("<th rowspan='"+getRowSpanNum(tableData)+"'  width ='25%'>检测日期</th><td rowspan='"+getRowSpanNum(tableData)+"'>");
         //str.Append(txtBtime.Text);
         str.Append(tableData[3].ToString());
         str.Append("</td>");
         str.Append("</tr>");
-        str.Append("<tr><th>出厂日期</th><td>");
-        str.Append(tableData[1].ToString());
-        str.Append("</td><th width='25%'>出厂地址</th><td>");
-        str.Append(tableData[2].ToString());
-        str.Append("</td></tr>");
+        //str.Append("<tr><td>");
+        //str.Append(tableData[10].ToString() +" - "+tableData[11]).ToString();
+        //str.Append("</td></tr>");
+        if(tableData[12].ToString()!="" || tableData[13].ToString()!="")
+        {
+            str.Append("<tr><td>");
+            str.Append(tableData[12].ToString() + " - " + tableData[13]).ToString();
+            str.Append("</td></tr>");
+        }
+         if(tableData[14].ToString()!="" || tableData[15].ToString()!="")
+         {
+            str.Append("<tr><td>");
+            str.Append(tableData[14].ToString() + " - " + tableData[15]).ToString();
+            str.Append("</td></tr>");
+         }
+        //str.Append("<tr><th>出厂日期</th><td>");
+        //str.Append(tableData[1].ToString());
+        //str.Append("</td><th width='25%'>发货地址</th><td>");
+        //str.Append(tableData[2].ToString());
+        //str.Append("</td></tr>");
         str.Append("</tr>");
         str.Append("<tr >");
         str.Append("<th width ='25%'>检查类型</th>");

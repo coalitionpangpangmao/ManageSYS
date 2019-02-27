@@ -135,24 +135,35 @@
                                     <input class="dfinput1" id="factoryaddress" type="text" v-model="editData.table[1]"/>
                                  </td>
 
-                                  <td>产品:
-                                      <select id="prod" v-model="product" v-if="products.length>0">
+                                  <td>出厂产品:
+                                      <select class="drpdwnlist" id="prod" v-model="product" v-if="products.length>0">
                                           <option v-for="(prod, index) in products" :value="prod">{{prod.prodName}}</option>
                                        </select>
                                  </td>
-                                  <td>出厂日期:
-                                    <input class="dfinput1" id="factorytime" type="text"  :value="editData.table[2]"  onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
-                                 </td>
+
                                 </tr>
                                 <tr>
+                                                       <td>出厂日期:
+                                    <input class="dfinput1" id="factorytime" type="text"  :value="editData.table[2]||getInputValue('factorytime')"  onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
+                                 </td>
                                   <td>
                                       检测日期:
-                                      <input class="dfinput1" id="inspecttime" :value="editData.table[3]"  onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
+                                      <input class="dfinput1" id="inspecttime" :value="editData.table[3]||getInputValue('inspecttime')"  onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
                                    </td>
-                                     <td>生产日期:
-                                         <input class="dfinput1" id="producetime" :value="editData.table[4]"   onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
+                                     <td style="display:none">生产日期:
+                                         <input class="dfinput1" id="producetime" :value="editData.table[4]||getInputValue('producetime')"   onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
                                          </td>
                             </tr>
+                                       <tr><td>生产周期1：<input class="dfinput1" id="producetime1_s" :value="editData.table[7]||getInputValue('producetime1_s')" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+                                            <input class="dfinput1" id="producetime1_e" :value="editData.table[8]||getInputValue('producetime1_e')" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/></td>
+                                       </tr>
+                                                                              <tr><td>生产周期2：<input class="dfinput1" id="producetime2_s" :value="editData.table[9]||getInputValue('producetime2_s')" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
+                                            <input class="dfinput1" id="producetime2_e" :value="editData.table[10]||getInputValue('producetime2_e')" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/></td>
+                                       </tr>
+                                                                              <tr><td>生产周期3:<input class="dfinput1" id="producetime3_s" :value="editData.table[11]||getInputValue('producetime3_s')" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/>
+                                            <input class="dfinput1" id="producetime3_e" :value="editData.table[12]||getInputValue('producetime3_e')" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"/></td>
+                                       </tr>
+                                       </table>
                             <table class="tablelist" style="margin-bottom: 5px">
                                <thead>
                                    <th colspan="2">参数信息</th>

@@ -135,11 +135,12 @@ public partial class Device_MtncFeedback : MSYS.Web.BasePage
          GridView2.DataBind();
          if (data != null && data.Tables[0].Rows.Count > 0)
          {
-             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+             for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
              {
-                 DataRowView mydrv = data.Tables[0].DefaultView[i];               
-                 ((DropDownList)GridView2.Rows[i].FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
-                 ((TextBox)GridView2.Rows[i].FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
+                 DataRowView mydrv = data.Tables[0].DefaultView[i];
+                 GridViewRow row = GridView2.Rows[i - GridView2.PageSize * GridView2.PageIndex];            
+                 ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
+                 ((TextBox)row.FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
 
              }
 

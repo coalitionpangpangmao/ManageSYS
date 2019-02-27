@@ -100,8 +100,8 @@
                 <div style="position: relative; top:-30px; bottom:30px; width: 100%">
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <iframe id="Frame1" name="Frame1" height="90%"
-                                style="width: 100%; position: relative;"></iframe>
+                            <iframe id="Frame1" name="Frame1"  
+                                style="width: 100%; height:90%; min-height :450px;position: relative;"></iframe>
                         </ContentTemplate>
                         <Triggers>
                             <asp:PostBackTrigger ControlID="btnSearch" />

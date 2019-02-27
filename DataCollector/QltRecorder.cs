@@ -64,31 +64,54 @@ namespace DataCollect
         }
 
 
+        //private static void InsertSectionQuaReport(string starttime, string endtime)
+        //{
+        //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        //    DataSet data = opt.CreateDataSetOra("select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '___1%'   order by r.section_code");
+        //  //  IHDataOpt ihopt = new IHDataOpt();
+        //    IHAction ihopt = new IHAction();
+        //    foreach (DataRow row in data.Tables[0].Rows)
+        //    {
+        //        //判断该工艺段是否有批次报告记录
+        //        int count = Convert.ToInt16(opt.GetSegValue("select count(rowid) as count from ht_qlt_data_record t where substr(para_code,1,5) = '" + row["section_code"].ToString() + "' and b_time <= '" + starttime + "' and e_time >= '" + endtime + "'", "count"));
+        //        string query = "select r.para_code from ht_pub_tech_para r where substr(r.para_code,1,5) = '" + row["section_code"].ToString() + "' and r.para_type like '___1%'";
+        //        DataSet pointsets = opt.CreateDataSetOra(query);
+        //        if (count < pointsets.Tables[0].Rows.Count && ihopt.TaskShiftNum(starttime, endtime, row["section_code"].ToString()) > 0)
+        //        {
+        //            foreach (DataRow prow in pointsets.Tables[0].Rows)
+        //            {
+        //                insertPointQuaReport(starttime, endtime, prow["para_code"].ToString());
+        //            }
+        //        }
+        //    }
+        //}
+
         private static void InsertSectionQuaReport(string starttime, string endtime)
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra("select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '___1%'   order by r.section_code");
-          //  IHDataOpt ihopt = new IHDataOpt();
+            DataSet data = opt.CreateDataSetOra("select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '___1%'   order by r.section_code");           
             IHAction ihopt = new IHAction();
             foreach (DataRow row in data.Tables[0].Rows)
             {
-                //判断该工艺段是否有批次报告记录
-                int count = Convert.ToInt16(opt.GetSegValue("select count(rowid) as count from ht_qlt_data_record t where substr(para_code,1,5) = '" + row["section_code"].ToString() + "' and b_time <= '" + starttime + "' and e_time >= '" + endtime + "'", "count"));
-                string query = "select r.para_code from ht_pub_tech_para r where substr(r.para_code,1,5) = '" + row["section_code"].ToString() + "' and r.para_type like '___1%'";
-                DataSet pointsets = opt.CreateDataSetOra(query);
-                if (count < pointsets.Tables[0].Rows.Count && ihopt.TaskShiftNum(starttime, endtime, row["section_code"].ToString()) > 0)
+                List<IHAction.SectionTimeSeg> segs = ihopt.sectionTimeCut(starttime, endtime, row["section_code"].ToString());
+                foreach (IHAction.SectionTimeSeg seg in segs)
                 {
-                    foreach (DataRow prow in pointsets.Tables[0].Rows)
+                    int count = Convert.ToInt16(opt.GetSegValue("select count(rowid) as count from ht_qlt_data_record t where substr(para_code,1,5) = '" + row["section_code"].ToString() + "' and b_time <= '" + starttime + "' and e_time >= '" + endtime + "'", "count"));
+                    DataSet pointsets = opt.CreateDataSetOra("select r.pathname,s.nodename,t.para_name,t.para_code from ht_pub_path_section r left join ht_pub_path_node s on s.section_code = r.section_code and substr(r.pathcode,s.orders,1) = '1' left join ht_pub_tech_para t on t.path_node = s.id  where r.section_code = '" + seg.sectioncode + "' and r.is_del = '0' and r.pathcode = '" + seg.pathcode + "'");
+                    if (count < pointsets.Tables[0].Rows.Count)
                     {
-                        insertPointQuaReport(starttime, endtime, prow["para_code"].ToString());
+                        foreach (DataRow prow in pointsets.Tables[0].Rows)
+                        {
+                            insertPointQuaReport(seg, prow["para_code"].ToString());
+                        }
                     }
                 }
             }
+           
         }
 
         private static void insertPointQuaReport(string starttime, string endtime, string para_code)
-        {
-         
+        {         
             IHAction ihopt = new IHAction();
             List<IHAction.TimeSeg> timesegs = ihopt.TimeCut(starttime, endtime, para_code);
             foreach (IHAction.TimeSeg seg in timesegs)
@@ -96,13 +119,20 @@ namespace DataCollect
                 InsertRecord(seg);
             }
         }
+
+        private static void insertPointQuaReport(IHAction.SectionTimeSeg seg, string para_code)
+        {
+            IHAction ihopt = new IHAction();
+            IHAction.TimeSeg timeseg = new IHAction.TimeSeg(seg.starttime, seg.endtime, seg.type, seg.planno, para_code);
+            InsertRecord(timeseg);
+           
+        }
         /// <summary>
         /// 插入某工艺点质量统计报告
         /// </summary>
         /// <param name="seg">开始、结束时间、数据点code、计划号</param>     
         protected static void InsertRecord(MSYS.IHAction.TimeSeg seg)
         {
-
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             int recordnum = Convert.ToInt16(opt.GetSegValue("select count(rowid) as count  from ht_qlt_data_record  where plan_id = '" + seg.planno + "' and para_code = '" + seg.nodecode + "'  and b_time = '" + seg.starttime + "' and e_time = '" + seg.endtime + "'", "count"));
             //if (recordnum > 0)

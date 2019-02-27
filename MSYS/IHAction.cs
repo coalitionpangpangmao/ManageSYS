@@ -26,6 +26,25 @@ namespace MSYS
                 this.nodecode = paracode;
             }
         };
+
+        public struct SectionTimeSeg
+        {
+            public string starttime;
+            public string endtime;
+            public TimeSegType type;//BEGIN 只有任务头，END 只有任务尾，BOTH 头尾都有，ALL生产进行中
+            public string planno;
+            public string sectioncode;
+            public string pathcode;
+            public SectionTimeSeg(string btime, string etime, TimeSegType type, string planno, string sectioncode,string pathcode)
+            {
+                this.starttime = btime;
+                this.endtime = etime;
+                this.type = type;
+                this.planno = planno;
+                this.sectioncode = sectioncode;
+                this.pathcode = pathcode;
+            }
+        };
         public struct Gaptime
         {
             public string starttime;
@@ -198,13 +217,15 @@ namespace MSYS
                 {
                     TimeSeg seg;
                     seg.nodecode = nodeid;
+                    seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
+                    
                     if (i == 0)
                     {
                         if (data.Tables[0].Rows[i]["tag"].ToString() == "e")
                         {
                             seg.starttime = btime;
                             seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();
-                            seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
+                           // seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.END;
                             listTimeseg.Add(seg);
                         }
@@ -212,7 +233,7 @@ namespace MSYS
                         {
                             seg.starttime = data.Tables[0].Rows[i]["rstime"].ToString();
                             seg.endtime = etime;
-                            seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
+                           // seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.BEGIN;
                             listTimeseg.Add(seg);
 
@@ -225,7 +246,7 @@ namespace MSYS
                         {
                             seg.starttime = data.Tables[0].Rows[i]["rstime"].ToString();
                             seg.endtime = etime;
-                            seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
+                           // seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.BEGIN;
                             listTimeseg.Add(seg);
 
@@ -240,7 +261,7 @@ namespace MSYS
                         {
                             seg.starttime = data.Tables[0].Rows[i - 1]["rstime"].ToString();
                             seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();
-                            seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
+                          //  seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.BOTH;
                             listTimeseg.Add(seg);
 
@@ -256,6 +277,86 @@ namespace MSYS
                 if (data != null && data.Tables[0].Rows.Count > 0)
                 {
                     TimeSeg seg = new TimeSeg(btime, etime, TimeSegType.ALL, data.Tables[0].Rows[0]["PLANNO"].ToString(), nodeid);
+                    listTimeseg.Add(seg);
+                }
+
+            }
+
+            return listTimeseg;
+        }
+
+        public List<SectionTimeSeg> sectionTimeCut(string btime, string etime, string section)
+        {
+            List<SectionTimeSeg> listTimeseg = new List<SectionTimeSeg>();
+            DbOperator opt = new DbOperator();
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + section + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + section + "' and endtime between '" + btime + "' and '" + etime + "'  order by rstime";
+            DataSet data = opt.CreateDataSetOra(query);
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+                {
+                    SectionTimeSeg seg;
+                    seg.sectioncode = section;
+                    seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
+                    String pathcode = opt.GetSegValue("select t.prod_code,s.path_code from ht_prod_month_plan_detail t left join ht_pub_prod_design s on s.prod_code = t.prod_code where t.plan_no = '" + seg.planno + "'", "path_code");
+                    int index = Convert.ToInt16(section.Substring(3, 2));
+                    seg.pathcode = (String)(pathcode.Split('-').GetValue(index));                   
+                    if (i == 0)
+                    {
+                        if (data.Tables[0].Rows[i]["tag"].ToString() == "e")
+                        {
+                            seg.starttime = btime;
+                            seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();  
+                            seg.type = TimeSegType.END;
+                            listTimeseg.Add(seg);
+                        }
+                        else
+                        {
+                            seg.starttime = data.Tables[0].Rows[i]["rstime"].ToString();
+                            seg.endtime = etime;
+                            seg.type = TimeSegType.BEGIN;
+                            listTimeseg.Add(seg);
+
+                        }
+
+                    }
+                    else if (i == data.Tables[0].Rows.Count - 1)
+                    {
+                        if (data.Tables[0].Rows[i]["tag"].ToString() == "b")
+                        {
+                            seg.starttime = data.Tables[0].Rows[i]["rstime"].ToString();
+                            seg.endtime = etime;
+                            seg.type = TimeSegType.BEGIN;
+                            listTimeseg.Add(seg);
+                        }
+
+                    }
+                    else
+                    {
+                        if (data.Tables[0].Rows[i - 1]["tag"].ToString() == "e" && data.Tables[0].Rows[i]["tag"].ToString() == "b")
+                            continue;
+                        if (data.Tables[0].Rows[i - 1]["tag"].ToString() == "b" && data.Tables[0].Rows[i]["tag"].ToString() == "e")
+                        {
+                            seg.starttime = data.Tables[0].Rows[i - 1]["rstime"].ToString();
+                            seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();
+                            seg.type = TimeSegType.BOTH;
+                            listTimeseg.Add(seg);
+
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                query = "select * from ht_prod_report where (starttime < '" + btime + "' and  endtime > '" + etime + "') or (starttime < '" + btime + "' and  endtime is null)";
+                data = opt.CreateDataSetOra(query);
+                if (data != null && data.Tables[0].Rows.Count > 0)
+                {
+                    String pathcode = opt.GetSegValue("select t.prod_code,s.path_code from ht_prod_month_plan_detail t left join ht_pub_prod_design s on s.prod_code = t.prod_code where t.plan_no = '" + data.Tables[0].Rows[0]["PLANNO"].ToString() + "'", "path_code");
+                    int index = Convert.ToInt16(section.Substring(3, 2));
+                     pathcode = (String)(pathcode.Split('-').GetValue(index));
+                     SectionTimeSeg seg = new SectionTimeSeg(btime, etime, TimeSegType.ALL, data.Tables[0].Rows[0]["PLANNO"].ToString(), section, pathcode);
                     listTimeseg.Add(seg);
                 }
 
@@ -751,6 +852,8 @@ namespace MSYS
             }
             return SampleByGroup;
         }
+
+        
     }
 }
 

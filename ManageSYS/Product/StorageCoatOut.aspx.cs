@@ -206,7 +206,7 @@ public partial class Product_StorageCoatOut : MSYS.Web.BasePage
         }
         else
         {
-            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('请通过审批后再下发');", true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('请通过审批后再出库');", true);
         }
 
 

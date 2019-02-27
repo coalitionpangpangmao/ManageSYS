@@ -54,7 +54,7 @@ public class updateEvaluatLeave : IHttpHandler {
     
     public void insertData(JObject requestData) {
         MSYS.DAL.DbOperator opt = getDbOperator();
-        string insertTable = "INSERT INTO HT_QLT_INSPECT_FACTORY(id, factory_time, factory_address, inspect_time, product_name, product_code, produce_time, create_time, is_valid, is_del) VALUES('" + requestData["id"] + "', '" + requestData["factoryTime"] + "', '" + requestData["factoryAddress"] + "', '" + requestData["inspectTime"] + "', '" + requestData["productName"] + "', '" + requestData["productCode"] + "', '" + requestData["productTime"] + "', '" + getCurrentTime() + "', '1', '0')";
+        string insertTable = "INSERT INTO HT_QLT_INSPECT_FACTORY(id, factory_time, factory_address, inspect_time, product_name, product_code, produce_time, create_time, is_valid, is_del, produce_time1_s, produce_time1_e, produce_time2_s, produce_time2_e, produce_time3_s, produce_time3_e) VALUES('" + requestData["id"] + "', '" + requestData["factoryTime"] + "', '" + requestData["factoryAddress"] + "', '" + requestData["inspectTime"] + "', '" + requestData["productName"] + "', '" + requestData["productCode"] + "', '" + requestData["productTime"] + "', '" + getCurrentTime() + "', '1', '0', '" + requestData["produceTime1S"] + "','" + requestData["produceTime1E"] + "','" + requestData["produceTime2S"] + "','" + requestData["produceTime2E"] + "','" + requestData["produceTime3S"] + "','" + requestData["produceTime3E"] + "')";
         System.Diagnostics.Debug.WriteLine("insertTable "+insertTable);
         opt.CreateDataSetOra(insertTable);
         insertDataDetail(opt, requestData);
@@ -81,7 +81,7 @@ public class updateEvaluatLeave : IHttpHandler {
 
     public void updateData(JObject requestData) {
         MSYS.DAL.DbOperator opt = getDbOperator();
-        string updateTable ="UPDATE HT_QLT_INSPECT_FACTORY SET factory_time='"+requestData["factoryTime"]+"', factory_address='"+requestData["factoryAddress"]+"', inspect_time='"+requestData["inspectTime"]+"', product_name='"+requestData["productName"]+"', product_code='"+requestData["productCode"]+"', produce_time='"+requestData["produceTime"]+"' WHERE id='"+requestData["id"]+"'";
+        string updateTable = "UPDATE HT_QLT_INSPECT_FACTORY SET factory_time='" + requestData["factoryTime"] + "', factory_address='" + requestData["factoryAddress"] + "', inspect_time='" + requestData["inspectTime"] + "', product_name='" + requestData["productName"] + "', product_code='" + requestData["productCode"] + "', produce_time='" + requestData["produceTime"] + "', produce_time1_s='" + requestData["produceTime1S"] + "',  produce_time1_e='" + requestData["produceTime1E"] + "',  produce_time2_s='" + requestData["produceTime2S"] + "',  produce_time2_e='" + requestData["produceTime2E"] + "',  produce_time3_s='" + requestData["produceTime3S"] + "',  produce_time3_e='" + requestData["produceTime3E"] + "' WHERE id='" + requestData["id"] + "'";
         System.Diagnostics.Debug.WriteLine("updateTable "+updateTable);
         opt.CreateDataSetOra(updateTable);
         updateDataDetail(opt, requestData);

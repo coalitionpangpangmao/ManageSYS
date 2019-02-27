@@ -91,7 +91,7 @@
                     <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="false" AutoGenerateColumns="False"
                             DataKeyNames="inspect_code" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
                             <Columns>
                                 <asp:BoundField DataField="insgroup" HeaderText="类型" />
@@ -271,15 +271,16 @@
                         </asp:GridView>
                         <div id="view">
                             <div style="text-align:left">
+                                       <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="softDeleteAll">删除</div>
                             <div style="display:inline-block; float:right; margin-left:3px; text-align:center" class="btn1"  @click="getRows">查询</div>
                             
-                            <div style="display:inline-block; float:right" class="btn1"  @click="saveAll">全部保存</div>
+                            <div style="display:inline-block; float:right; margin-left:3px" class="btn1"  @click="saveAll">全部保存</div>
                              </div>
 
-                            <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="softDeleteAll">删除</div>
+                     
                             <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="showAddRecord">新增</div>
                             <div style="display:inline-block; float:right; margin-left:3px;" class="btn1" @click="batchAddRecord">批量新增</div>
-                           <table class="grid" cellspacing="0" rules="all" id="grid" style="border-collapse:collapse">
+                           <table class="grid" cellspacing="0" rules="all" id="grid" style="border-collapse:collapse" @keydown="keyDown($event)">
                                <tbody>
                                    <tr class="gridheader">
                                        <th scope ="col">选择</th>
@@ -324,7 +325,7 @@
                                             <input :id="dindex.toString()+(index-4).toString()" class="tbinput1" @change="change(dindex,rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}}),index, $event.target.value)" type="text" :value="item">
                                         </td>
                                         <td v-if="rowsDates.indexOf(date[0])==-1||-1== rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}})"  v-for="(item, index) in title">
-                                            <input class="tbinput1" @change="add(dindex)" :id="dindex.toString()+index.toString()" type="text" value="0">
+                                            <input class="tbinput1" @change="add(dindex)" :id="dindex.toString()+index.toString()" type="text" value="">
                                         </td>
                                         <td>
                                             <div class="btn1" @click="show(dindex)">详情</div>
@@ -405,6 +406,34 @@
     </script>
     <script type="text/javascript">
         $('.tablelist tbody tr:odd').addClass('odd');
+
+        function keyDown(event) {
+            var inputs = document.getElementById("grid").getElementsByTagName("input");
+            alert("keydown");
+            var focus = document.activeElement;
+            if (!document.getElementById("grid").contains(focus)) return;
+            console.log("keydownrun");
+            var event = window.event || event;
+            var key = event.keyCode;
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i] === focus) break;
+            }
+            switch (key) {
+                case 37:
+                    if (i > 0) inputs[i - 1].focus();
+                    break;
+                case 38:
+                    if (i - 4 >= 0) inputs[i - 4].focus();
+                    break;
+                case 39:
+                    if (i < inputs.length - 1) inputs[i + 1].focus();
+                    break;
+                case 40:
+                    if (i + 4 < inputs.length) inputs[i + 4].focus();
+                    break;
+            }
+        }
+
     </script>
     <script type="text/javascript" src="../js/msys/Inspect_PhyChem.js"></script>
 

@@ -84,9 +84,7 @@
                                             <asp:CheckBox ID="chk" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:BoundField    DataField="维修计划" HeaderText="维修计划" />
-                                     <asp:BoundField    DataField="部门" HeaderText="部门" />
-                                      <asp:TemplateField       HeaderText ="审批状态">
+                                     <asp:TemplateField       HeaderText ="审批状态">
                                         <ItemTemplate>
                                             <asp:Label ID="labAprv" runat="server"  CssClass="labstatu" Width ="60px"></asp:Label>
                                         </ItemTemplate>
@@ -95,7 +93,9 @@
                                         <ItemTemplate>
                                             <asp:Label ID="labexe" runat="server"  CssClass="labstatu" Width ="60px"></asp:Label>
                                         </ItemTemplate>
-                                    </asp:TemplateField>                                   
+                                    </asp:TemplateField>      
+                                     <asp:BoundField    DataField="维修计划" HeaderText="维修计划" />
+                                     <asp:BoundField    DataField="部门" HeaderText="部门" />
                                      <asp:BoundField    DataField="备注" HeaderText="备注" />
                                     <asp:TemplateField      ItemStyle-Width="80">
                                         <ItemTemplate>

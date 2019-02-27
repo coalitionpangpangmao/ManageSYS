@@ -170,8 +170,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         // hdID.Value = hdID.Value.Substring(0, hdID.Value.IndexOf(','));
-        string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK", "OUTPLUS" };
-        string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, listPlanno.SelectedValue, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id, listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text, txtOutPlus.Text };
+        string[] seg = { "SHIFT_MAIN_ID", "INSPECT_DATE", "SHIFT_CODE", "TEAM_CODE", "PROD_CODE", "PLAN_NO", "OUTPUT_VL", "CREATE_ID", "SHIFT_ID", "SUCC_ID", "DEVICESTATUS", "QLT_STATUS", "SCEAN_STATUS", "REMARK" };
+        string[] value = { hdID.Value, txtDate.Text, listShift.SelectedValue, listTeam.SelectedValue, listProd.SelectedValue, listPlanno.SelectedValue, txtOutput.Text, ((MSYS.Data.SysUser)Session["User"]).id, listOlder.SelectedValue, listNewer.SelectedValue, txtDevice.Text, txtQlt.Text, txtScean.Text, txtRemark.Text };
 
         string log_message = opt.MergeInto(seg, value,1, "HT_PROD_SHIFTCHG") == "Success" ? "生产交接班记录成功" : "生产交接班记录失败";
         log_message += ",交接班ID：" + hdID.Value;

@@ -97,7 +97,7 @@
                             <div style="display:inline-block; text-align:center; margin-left:3px; float:right" class="btn1"  @click="getRows">查询</div>
                             <div style="display:inline-block; float:right" class="btn1"  @click="saveAll">全部保存</div>
                              </div>
-                           <table class="grid" cellspacing="0" rules="all" id="grid" style="border-collapse:collapse">
+                           <table class="grid" cellspacing="0" rules="all" id="grid" style="border-collapse:collapse" @keydown="keyDown($event)">
                                <tbody>
                                    <tr class="gridheader">
                                        <th scope="col">记录时间</th>
@@ -118,7 +118,7 @@
                                             <input :id="dindex.toString()+(index-4).toString()" class="tbinput1" @change="change(dindex, rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}}),index, $event.target.value)" type="text" :value="item">
                                         </td>
                                         <td v-if="rowsDates.indexOf(date[0])==-1||-1== rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}})"  v-for="(item, index) in title">
-                                            <input class="tbinput1" @change="add(dindex)" :id="dindex.toString()+index.toString()" type="text" value="0">
+                                            <input class="tbinput1" @change="add(dindex)" :id="dindex.toString()+index.toString()" type="text" value="">
                                         </td>
                                         <td>
                                             <div class="btn1" @click="show(dindex)">详情</div>
@@ -177,7 +177,7 @@
             <div>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="false" AutoGenerateColumns="False"
                             DataKeyNames="inspect_code">
                             <Columns>
                                 <asp:BoundField DataField="section_name" HeaderText="工艺段" />

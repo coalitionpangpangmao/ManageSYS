@@ -40,6 +40,7 @@ var app = new Vue({
     el: "#view",
     data: {
         isAdd:false,
+        isBatchInsert: false,
         title: [],
         rows: [],
         id:[],
@@ -65,6 +66,9 @@ var app = new Vue({
 
     },
     methods: {
+        batchAddRecord(){
+        this.isBatchInsert = true;
+},
 
         //获得排班
     getSchedule(start_time, end_time, dates,  team_code, schedule_time){
@@ -338,6 +342,7 @@ showAddRecord(){
     //this.getProductInfo();
     this.initAdd();
     this.isAdd = true;
+    this.isBatchInsert = false;
 
 },
 
@@ -354,7 +359,7 @@ hiddenAddRecord(){
     let dates = this.dates.find((val)=>{
         return val[0] == this.addTime && val[3] == document.getElementById("addteam").value.toString();
 
-    });
+});
     console.log(this.dates);
     //let shift = this.dates[index_in_dates][1];
     // dates = [this.addTime, document.getElementById("addschedule").value.toString(), 01, document.getElementById("addteam").value.toString(), 01];
@@ -385,6 +390,7 @@ hiddenAddRecord(){
 
     //获取数据
 getRows() {
+    this.isBatchInsert = false;
     let start_time = document.getElementById("start_time");
     let end_time = document.getElementById("end_time");
     let prod_code = document.getElementById("prod_code"); 

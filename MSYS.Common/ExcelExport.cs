@@ -7,6 +7,7 @@
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
+    using System.Collections.Generic;
 
     public class ExcelExport
     {
@@ -146,7 +147,7 @@
                         string v = dt.Rows[j][i].ToString();
                         if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
                         {
-                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).NumberFormatLocal = "@";                           
+                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).NumberFormatLocal = "@";
                         }
                         ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).Value2 = v;
 
@@ -178,9 +179,9 @@
                             {
                                 if (IsOnlyNumber(old) && Convert.ToDouble(old) > 100000000000)
                                 {
-                                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).NumberFormatLocal = "@";
+                                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).NumberFormatLocal = "@";
                                 }
-                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).Value2 = old;
+                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).Value2 = old;
                             }
                             string cur = dt.Rows[j][i].ToString();
                             if (j != 0 && cur == old)
@@ -189,24 +190,24 @@
                             {
                                 if (range > 0)
                                 {
-                                    RangeBuild(xlSheet, xlSheet.Cells[j + x - range, i + y], xlSheet.Cells[j  + x, i + y], old);
+                                    RangeBuild(xlSheet, xlSheet.Cells[j + x - range, i + y], xlSheet.Cells[j + x, i + y], old);
                                 }
                                 old = cur;
                                 range = 0;
                             }
                             if (j == rownum - 1 && range > 0)
-                                RangeBuild(xlSheet, xlSheet.Cells[j + x+1 - range, i + y], xlSheet.Cells[j + x+1, i + y], old);
+                                RangeBuild(xlSheet, xlSheet.Cells[j + x + 1 - range, i + y], xlSheet.Cells[j + x + 1, i + y], old);
                         }
                         else
                         {
                             string v = dt.Rows[j][i].ToString();
                             if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
                             {
-                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).NumberFormatLocal = "@";
+                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).NumberFormatLocal = "@";
                                 //   Microsoft.Office.Interop.Excel.Range r2 = xlSheet.get_Range(xlSheet.Cells[2, 1], xlSheet.Cells[2, i + 1]);
                                 //   r2.NumberFormatLocal = "@";
                             }
-                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x+1, i + y]).Value2 = v;
+                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x + 1, i + y]).Value2 = v;
                         }
 
                     }
@@ -215,64 +216,145 @@
             catch
             {
             }
+        }
+
+        //public void WriteDataRerange(int x, int y, System.Data.DataTable dt)
+        //{
+        //    try
+        //    {
+        //        int colnum = dt.Columns.Count;
+        //        int rownum = dt.Rows.Count;
+        //        for (int i = 0; i < colnum; i++)
+        //        {
+        //            string old = dt.Rows[0][i].ToString();
+        //            int range = 0;
+        //            for (int j = 0; j < rownum; j++)
+        //            {
+        //                if (i == 0)
+        //                {
+        //                    if (range == 0)
+        //                    {
+        //                        if (IsOnlyNumber(old) && Convert.ToDouble(old) > 100000000000)
+        //                        {
+        //                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).NumberFormatLocal = "@";
+        //                        }
+        //                        ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).Value2 = old;
+        //                    }
+        //                    string cur = dt.Rows[j][i].ToString();
+        //                    if (j != 0 && cur == old)
+        //                        range++;
+        //                    else
+        //                    {
+        //                        if (range > 0)
+        //                        {
+        //                            RangeBuild(xlSheet, xlSheet.Cells[j - 1 + x - range, i + y], xlSheet.Cells[j - 1 + x, i + y], old);
+        //                        }
+        //                        old = cur;
+        //                        range = 0;
+        //                    }
+        //                    if (j == rownum - 1 && range > 0)
+        //                        RangeBuild(xlSheet, xlSheet.Cells[j + x - range, i + y], xlSheet.Cells[j + x, i + y], old);
+        //                }
+        //                else
+        //                {
+        //                    string v = dt.Rows[j][i].ToString();
+        //                    if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
+        //                    {
+        //                        ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).NumberFormatLocal = "@";
+        //                        //   Microsoft.Office.Interop.Excel.Range r2 = xlSheet.get_Range(xlSheet.Cells[2, 1], xlSheet.Cells[2, i + 1]);
+        //                        //   r2.NumberFormatLocal = "@";
+        //                    }
+        //                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).Value2 = v;
+        //                }
+
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+        //    }
+        //}
+
+        public List<string> GetParaList(System.Data.DataTable dt, int column, int brow, int erow)
+        {
+            try
+            {
+                List<string> paralist = new List<string>();
+                if (column < dt.Columns.Count && brow <= dt.Rows.Count && erow <= dt.Rows.Count)
+                {
+                    for (int i = brow; i < erow; i++)
+                    {
+                        paralist.Add(dt.Rows[i][column].ToString());
+                    }
+                }
+                return paralist;
+            }
+            catch (Exception ee)
+            {
+                return null;
+            }
+        }
+
+        public void WriteColunmRerange(int x, int y, System.Data.DataTable dt,int col,int brow,int erow)
+        {
+            List<string> paralist = GetParaList(dt, col, brow, erow);
+            int rownum = paralist.Count;
+           
+            if (rownum > 0&& x>0 && y>0)
+            {                
+                string old = paralist.ToArray()[0].ToString();
+                int range = 0;
+                
+                for (int j = 0; j < rownum; j++)
+                {
+                    if (range == 0)
+                    {
+                        if (IsOnlyNumber(old) && Convert.ToDouble(old) > 100000000000)
+                        {
+                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, y]).NumberFormatLocal = "@";
+                        }
+                        ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, y]).Value2 = paralist.ToArray()[j].ToString();
+                    }
+                    string cur = paralist.ToArray()[j].ToString();
+                    if (j != 0 && cur == old)
+                        range++;                    
+                    else
+                    {
+                        if (range > 0)
+                        {
+                            RangeBuild(xlSheet, xlSheet.Cells[j - 1 + x - range, y], xlSheet.Cells[j - 1 + x, y], old);        
+                            if(col<dt.Columns.Count-1)
+                            WriteColunmRerange(j - 1 + x - range,y+1,dt,col+1,j-1-range+brow,j+brow);
+                        }
+                        if(cur != old)                        
+                        WriteColunmRerange(j - 1 + x , y + 1, dt, col + 1, j - 1  + brow, j + brow);
+                        old = cur;
+                        range = 0;
+                    }
+                    if (j == rownum - 1)
+                    {
+                        if (range > 0)
+                            RangeBuild(xlSheet, xlSheet.Cells[j + x - range, y], xlSheet.Cells[j + x, y], old);
+                        if (col < dt.Columns.Count-1)
+                            WriteColunmRerange(j + x - range, y + 1, dt, col + 1, j - range + brow, j + 1 + brow);
+                    }
+                    
+                }
+            }
+
+
         }
 
         public void WriteDataRerange(int x, int y, System.Data.DataTable dt)
         {
-            try
-            {
-                int colnum = dt.Columns.Count;
-                int rownum = dt.Rows.Count;
-                for (int i = 0; i < colnum; i++)
-                {
-                    string old = dt.Rows[0][i].ToString();
-                    int range = 0;
-                    for (int j = 0; j < rownum; j++)
-                    {
-                        if (i == 0)
-                        {
-                            if (range == 0)
-                            {
-                                if (IsOnlyNumber(old) && Convert.ToDouble(old) > 100000000000)
-                                {
-                                    ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).NumberFormatLocal = "@";
-                                }
-                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).Value2 = old;
-                            }
-                            string cur = dt.Rows[j][i].ToString();
-                            if (j != 0 && cur == old)
-                                range++;
-                            else
-                            {
-                                if (range > 0)
-                                {
-                                    RangeBuild(xlSheet, xlSheet.Cells[j - 1 + x - range, i + y], xlSheet.Cells[j - 1 + x, i + y], old);
-                                }
-                                old = cur;
-                                range = 0;
-                            }
-                            if (j == rownum - 1 && range > 0)
-                                RangeBuild(xlSheet, xlSheet.Cells[j + x - range, i + y], xlSheet.Cells[j + x, i + y], old);
-                        }
-                        else
-                        {
-                            string v = dt.Rows[j][i].ToString();
-                            if (IsOnlyNumber(v) && Convert.ToDouble(v) > 100000000000)
-                            {
-                                ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).NumberFormatLocal = "@";
-                                //   Microsoft.Office.Interop.Excel.Range r2 = xlSheet.get_Range(xlSheet.Cells[2, 1], xlSheet.Cells[2, i + 1]);
-                                //   r2.NumberFormatLocal = "@";
-                            }
-                            ((Microsoft.Office.Interop.Excel.Range)xlSheet.Cells[j + x, i + y]).Value2 = v;
-                        }
-
-                    }
-                }
-            }
-            catch
-            {
+            int rownum = dt.Rows.Count;
+            int colnum = dt.Columns.Count;
+            if (rownum > 0 && colnum > 0)
+            {                
+                WriteColunmRerange(x, y,  dt,0,0,rownum);
             }
         }
+
         public string WriteData(int x, int y, string data)
         {
             try
@@ -349,7 +431,7 @@
             }
             if (xlApp != null)
             {
-                
+
                 xlApp.Quit();
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
                 xlApp = null;

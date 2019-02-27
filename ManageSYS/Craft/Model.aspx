@@ -318,6 +318,13 @@
                                                     <asp:TextBox ID="txtDscrp" runat="server" class="dfinput1"
                                                         Width="300px"></asp:TextBox></td>
                                             </tr>
+                                            <tr>
+                                                <td>所属节点路径</td>
+                                                <td colspan="3">
+                                                    <asp:DropDownList ID="listPathnode" runat="server" CssClass="drpdwnlist" Width="300px"></asp:DropDownList>
+                                                </td>
+                                               
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </ContentTemplate>
@@ -328,9 +335,8 @@
                                     <asp:AsyncPostBackTrigger ControlID="listSection" />
                                     <asp:AsyncPostBackTrigger ControlID="ckQuality" />
                                     <asp:AsyncPostBackTrigger ControlID="ckQuaAnalyze" />
-                                    <asp:AsyncPostBackTrigger ControlID="btnModify1" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnModify" />
                                     <asp:AsyncPostBackTrigger ControlID="ckManul" />
-                                    <asp:AsyncPostBackTrigger ControlID ="ckProdOut" />
                                     <asp:AsyncPostBackTrigger ControlID ="ckProdOut" />
                                 </Triggers>
                             </asp:UpdatePanel>

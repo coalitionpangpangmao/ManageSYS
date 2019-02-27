@@ -42,25 +42,25 @@ public partial class Device_CalibratePlan : MSYS.Web.BasePage
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            int i = 0;
-            foreach (DataRow row in data.Tables[0].Rows)
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
-                ((Label)GridView1.Rows[i].FindControl("labAprv")).Text = row["审批状态"].ToString();
-                ((Label)GridView1.Rows[i].FindControl("labexe")).Text = row["执行状态"].ToString();
-                if (!(row["审批状态"].ToString() == "未提交" || row["审批状态"].ToString() == "未通过"))
+                DataRowView mydrv = data.Tables[0].DefaultView[i];
+                GridViewRow row = GridView1.Rows[i - GridView1.PageSize * GridView1.PageIndex];
+                ((Label)row.FindControl("labAprv")).Text = mydrv["审批状态"].ToString();
+                ((Label)row.FindControl("labexe")).Text = mydrv["执行状态"].ToString();
+                if (!(mydrv["审批状态"].ToString() == "未提交" || mydrv["审批状态"].ToString() == "未通过"))
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = false;
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btngrey";
-                    ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "查看计划";
+                    ((Button)row.FindControl("btnSubmit")).Enabled = false;
+                    ((Button)row.FindControl("btnSubmit")).CssClass = "btngrey";
+                    ((Button)row.FindControl("btnGridview")).Text = "查看计划";
                 }
                 else
                 {
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).Enabled = true;
-                    ((Button)GridView1.Rows[i].FindControl("btnSubmit")).CssClass = "btn1 auth";
-                    ((Button)GridView1.Rows[i].FindControl("btnGridview")).Text = "编制计划";
+                    ((Button)row.FindControl("btnSubmit")).Enabled = true;
+                    ((Button)row.FindControl("btnSubmit")).CssClass = "btn1 auth";
+                    ((Button)row.FindControl("btnGridview")).Text = "编制计划";
                 }
                
-                i++;
             }
         }
 

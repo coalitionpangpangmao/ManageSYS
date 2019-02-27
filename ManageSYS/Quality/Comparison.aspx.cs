@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Web.Services;
+using System.IO;
 public partial class Quality_Comparison : MSYS.Web.BasePage
 {
     protected string tvHtml;
@@ -82,7 +83,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
         {
             cklistPara.Items.Remove(item);
             item = cklistPara.Items.FindByValue(hidecode.Value);
-        }     
+        }
 
 
     }
@@ -114,6 +115,98 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "del", "$(\"input[value$='" + hidecode.Value + "']\").attr('checked', false);", true);
     }
 
+
+
+    protected void btnExport_Click(object sender, EventArgs e)
+    {
+
+        MSYS.Common.ExcelExport openXMLExcel = null;
+
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        string basedir = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+        string strFolderPath = basedir + @"\TEMP";
+        if (!System.IO.Directory.Exists(strFolderPath))
+        {
+            // 目录不存在，建立目录 
+            System.IO.Directory.CreateDirectory(strFolderPath);
+        }
+
+        DirectoryInfo dyInfo = new DirectoryInfo(strFolderPath);
+        //获取文件夹下所有的文件
+        foreach (FileInfo feInfo in dyInfo.GetFiles())
+        {
+            //判断文件日期是否小于今天，是则删除
+            if (feInfo.CreationTime < DateTime.Now.AddMinutes(-2))
+                feInfo.Delete();
+        }
+        foreach (DirectoryInfo dir in dyInfo.GetDirectories())
+        {
+            if (dir.CreationTime < DateTime.Now.AddMinutes(-2))
+                dir.Delete(true);
+        }
+        //导出文件模板所在位置
+        string filename = "原始数据" + System.DateTime.Now.ToString("HHmmss") + ".xls";
+        String sourcePath = basedir + @"templates\原始数据.xls" ;
+        String filepath = basedir + @"TEMP\" + filename;
+
+        try
+        {
+            //申明一个ExcelSaveAs对象，该对象完成将数据写入Excel的操作           
+            openXMLExcel = new MSYS.Common.ExcelExport(sourcePath, false);
+            MSYS.IHAction ihopt = new MSYS.IHAction();
+            List<MSYS.IHAction.ParaInfo> paralist = ihopt.GetData(txtBtime.Text, txtEtime.Text, listpara.SelectedValue);
+            DataTable dt = new DataTable();
+            dt.Columns.Add("时间");
+            dt.Columns.Add("值");
+           
+           
+            foreach (MSYS.IHAction.ParaInfo info in paralist)
+            {               
+                    var values = new object[2];
+                    values[0] = info.timestamp;
+                    values[1] = info.value;
+                    dt.Rows.Add(values);                  
+            }
+            openXMLExcel.SetCurrentSheet(0);
+          
+            openXMLExcel.WriteData(2, 2,  listpara.SelectedItem.Text);
+            openXMLExcel.WriteData(3, 2,  txtBtime.Text + "~" + txtEtime.Text);
+            openXMLExcel.WriteDataIntoWorksheet(5,1, dt);
+
+
+            ///客户端再下载该文件，在客户端进行浏览
+            FileInfo fi = new FileInfo(filepath);
+            if (fi.Exists)     //判断文件是否已经存在,如果存在就删除!
+            {
+                fi.Delete();
+            }
+            openXMLExcel.SaveAs(filepath);
+            
+            openXMLExcel.Dispose();
+            openXMLExcel = null;
+            KillProcess("EXCEL.EXE");
+
+            Response.Clear();
+            Response.Buffer = true;
+
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filename, System.Text.Encoding.UTF8));
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.TransmitFile(filepath);
+
+          //  Response.End();
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
+        }
+        catch(Exception ee)
+        {
+            if (openXMLExcel != null)
+            {
+                openXMLExcel.Dispose();
+            }
+
+        }
+      
+    }
 
 
 }

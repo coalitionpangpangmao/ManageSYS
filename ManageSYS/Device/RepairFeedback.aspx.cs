@@ -136,16 +136,17 @@ public partial class Device_RepairFeedback : MSYS.Web.BasePage
         GridView2.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
+            for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
-                ((DropDownList)GridView2.Rows[i].FindControl("listGridarea")).SelectedValue = mydrv["区域"].ToString();
-                ((DropDownList)GridView2.Rows[i].FindControl("listGridEq")).SelectedValue = mydrv["设备名称"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtGridReason")).Text = mydrv["维修原因"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtGridcntnt")).Text = mydrv["维修内容"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtGridExptime")).Text = mydrv["期望完成时间"].ToString();
-                ((DropDownList)GridView2.Rows[i].FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
-                ((TextBox)GridView2.Rows[i].FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
+                GridViewRow row = GridView2.Rows[i - GridView2.PageSize * GridView2.PageIndex];
+                ((DropDownList)row.FindControl("listGridarea")).SelectedValue = mydrv["区域"].ToString();
+                ((DropDownList)row.FindControl("listGridEq")).SelectedValue = mydrv["设备名称"].ToString();
+                ((TextBox)row.FindControl("txtGridReason")).Text = mydrv["维修原因"].ToString();
+                ((TextBox)row.FindControl("txtGridcntnt")).Text = mydrv["维修内容"].ToString();
+                ((TextBox)row.FindControl("txtGridExptime")).Text = mydrv["期望完成时间"].ToString();
+                ((DropDownList)row.FindControl("listGrid2Status")).SelectedValue = mydrv["状态"].ToString();
+                ((TextBox)row.FindControl("txtGridremark")).Text = mydrv["备注"].ToString();
 
             }
 

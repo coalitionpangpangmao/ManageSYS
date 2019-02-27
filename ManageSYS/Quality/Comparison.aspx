@@ -61,8 +61,9 @@
                                     时间：<asp:TextBox ID="txtBtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                                         至：<asp:TextBox ID="txtEtime" runat="server" CssClass="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                                         &nbsp;
-                                    <asp:Button ID="btnAddtime" runat="server" Text="添加" OnClick="btnAddtime_Click" CssClass="btn1 auth" />
-                                        <asp:Button ID="btnDeltime" runat="server" Text="删除" OnClick="btnDeltime_Click" CssClass="btn1 auth"  />
+                                    <asp:Button ID="btnAddtime" runat="server" Text="添加" OnClick="btnAddtime_Click" CssClass="btnadd auth" />
+                                        <asp:Button ID="btnDeltime" runat="server" Text="删除" OnClick="btnDeltime_Click" CssClass="btndel auth"  />
+                                        <asp:Button ID="btnExport" runat="server" Text="导出" class="btnset" OnClick="btnExport_Click" />
                                     </th>
                                 </tr>
                                 <tbody>
@@ -82,6 +83,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnDel" />                          
                             <asp:AsyncPostBackTrigger ControlID="btnAddtime" />
                             <asp:AsyncPostBackTrigger ControlID="btnDeltime" />
+                         <asp:PostBackTrigger ControlID ="btnExport" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
