@@ -210,9 +210,9 @@
                                             <td>
                                                 <asp:TextBox ID="txtDscpt" runat="server" class="dfinput1" ></asp:TextBox>
                                             </td>
-                                            <td>路径编码</td>
+                                            <td>路径选择</td>
                                             <td>
-                                                <asp:TextBox ID="txtPathcode" runat="server"  Enabled="false" class="dfinput1" ></asp:TextBox>
+                                                 <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack="true" OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
                                             </td>
                                         </tr>
                                         <tr>
@@ -228,8 +228,7 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField   HeaderText="路径选择">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="250px"
-                                                                    OnSelectedIndexChanged="listpath_SelectedIndexChanged" AutoPostBack="True">
+                                                                <asp:DropDownList ID="listpath" runat="server" CssClass="drpdwnlist" Width="250px" Enabled="false">
                                                                 </asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
@@ -257,6 +256,7 @@
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                                <asp:AsyncPostBackTrigger ControlID="listPathAll" />
                                 <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             </Triggers>
                         </asp:UpdatePanel>

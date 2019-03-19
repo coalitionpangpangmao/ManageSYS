@@ -9,8 +9,7 @@ using MSYS.DAL;
 using MSYS;
 using MSYS.Common;
 namespace DataCollect
-{
-    
+{    
     public class QltRecoder
     {
         public struct PointProperty
@@ -21,26 +20,7 @@ namespace DataCollect
         public QltRecoder()
         {
           
-        }
-
-
-        protected static List<PointProperty> getParaList()
-        {
-            List<PointProperty> readlist = new List<PointProperty>();
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet data = opt.CreateDataSetOra("select r.para_code,r.VALUE_TAG from ht_pub_tech_para r  where r.para_type like '1___0%' and r.is_del = '0' order by r.para_code ");
-            if (data != null && data.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow row in data.Tables[0].Rows)
-                {
-                    PointProperty p = new PointProperty();
-                    p.para_code = row["para_code"].ToString();
-                    p.tag = row["set_tag"].ToString();
-                    readlist.Add(p);
-                }
-            }
-            return readlist;
-        }
+        }      
 
        
       
@@ -97,7 +77,7 @@ namespace DataCollect
                 foreach (IHAction.SectionTimeSeg seg in segs)
                 {
                     int count = Convert.ToInt16(opt.GetSegValue("select count(rowid) as count from ht_qlt_data_record t where substr(para_code,1,5) = '" + row["section_code"].ToString() + "' and b_time <= '" + starttime + "' and e_time >= '" + endtime + "'", "count"));
-                    DataSet pointsets = opt.CreateDataSetOra("select r.pathname,s.nodename,t.para_name,t.para_code from ht_pub_path_section r left join ht_pub_path_node s on s.section_code = r.section_code and substr(r.pathcode,s.orders,1) = '1' left join ht_pub_tech_para t on t.path_node = s.id  where r.section_code = '" + seg.sectioncode + "' and r.is_del = '0' and r.pathcode = '" + seg.pathcode + "'");
+                    DataSet pointsets = opt.CreateDataSetOra("select r.pathname,s.nodename,t.para_name,t.para_code from ht_pub_path_section r left join ht_pub_path_node s on s.section_code = r.section_code and substr(r.pathcode,s.orders,1) = '1' and s.is_del = '0' left join ht_pub_tech_para t on t.path_node = s.id and t.is_del = '0' where r.section_code = '" + seg.sectioncode + "' and r.is_del = '0' and r.pathcode = '" + seg.pathcode + "' and t.para_type like '___1%' union select r.para_name,r.para_code  from ht_pub_tech_para r where r.para_type like '___1%' and r.is_del = '0' and r.para_code like '" + seg.sectioncode + "%' and r.path_node is null;");
                     if (count < pointsets.Tables[0].Rows.Count)
                     {
                         foreach (DataRow prow in pointsets.Tables[0].Rows)

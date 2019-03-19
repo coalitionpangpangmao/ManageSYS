@@ -16,6 +16,7 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
             bindGrid2();
             bindGrid3();
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0'", "pathname", "pathcode");
             opt.bindDropDownList(listSection, "select distinct r.section_code ,r.section_name   from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '______1%'   order by r.section_code", "section_name", "section_code");
         }
 
@@ -63,22 +64,25 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
     }
     protected void bindGrid3()
     {
-        string query = "select t.para_code,t.para_name,t.weight,t.remark from ht_pub_tech_para t where t.is_del = '0' and t.para_type like '______1%'";
-        if (listSection.SelectedValue != "")
-            query += "  and substr(t.para_code,1,5) = '" + listSection.SelectedValue + "'";
-        query += " order by t.para_code";
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra(query);
-        GridView3.DataSource = data;
-        GridView3.DataBind();
-        if (data != null && data.Tables[0].Rows.Count > 0)
-        {
-            for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+        if (listPathAll.SelectedValue != "")
+        {         
+            string query = "select r.para_code,r.para_name,t.weight,r.remark from ht_pub_para_weight t left join ht_pub_tech_para r on r.para_code = t.para_code where t.is_del = '0' and t.path_code = '" + listPathAll.SelectedValue + "'";
+            if (listSection.SelectedValue != "")
+                query += " and substr(r.para_code,1,5) = '" + listSection.SelectedValue + "'";
+            query += " order by r.para_code";
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            DataSet data = opt.CreateDataSetOra(query);
+            GridView3.DataSource = data;
+            GridView3.DataBind();
+            if (data != null && data.Tables[0].Rows.Count > 0)
             {
-                DataRowView mydrv = data.Tables[0].DefaultView[i];               
-                ((TextBox)GridView3.Rows[i].FindControl("txtPara")).Text = mydrv["para_name"].ToString();
-                ((TextBox)GridView3.Rows[i].FindControl("txtWeight")).Text = mydrv["Weight"].ToString();
-                ((TextBox)GridView3.Rows[i].FindControl("txtRemark")).Text = mydrv["remark"].ToString();
+                for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+                {
+                    DataRowView mydrv = data.Tables[0].DefaultView[i];
+                    ((TextBox)GridView3.Rows[i].FindControl("txtPara")).Text = mydrv["para_name"].ToString();
+                    ((TextBox)GridView3.Rows[i].FindControl("txtWeight")).Text = mydrv["Weight"].ToString();
+                    ((TextBox)GridView3.Rows[i].FindControl("txtRemark")).Text = mydrv["remark"].ToString();
+                }
             }
         }
     }
@@ -129,9 +133,9 @@ public partial class Quality_WeightSet : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         foreach (GridViewRow row in GridView3.Rows)
         {
-            string[] seg = {  "para_code","Weight", "remark"};
-            string[] value = { GridView3.DataKeys[row.RowIndex].Value.ToString(), ((TextBox)row.FindControl("txtWeight")).Text, ((TextBox)row.FindControl("txtRemark")).Text};
-            commandlist.Add(opt.getMergeStr(seg,value,1,"ht_pub_tech_para"));           
+            string[] seg = { "para_code", "PATH_CODE", "WEIGHT" };
+            string[] value = { GridView3.DataKeys[row.RowIndex].Value.ToString(),listPathAll.SelectedValue, ((TextBox)row.FindControl("txtWeight")).Text};
+            commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PARA_WEIGHT"));           
         }
          string log_message = opt.TransactionCommand(commandlist) == "Success" ? "更改工艺点权重成功" : "更改工艺点权重失败";          
             InsertTlog(log_message);
