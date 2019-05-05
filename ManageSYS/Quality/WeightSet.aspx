@@ -120,8 +120,8 @@
         <div id="tab3" class="tabson">
             <div class="framelist"> 
                  <div class="listtitle">
-                     路径选择：  <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack ="true" OnSelectedIndexChanged="listSection_SelectedIndexChanged" ></asp:DropDownList> 
-                     工艺段：<asp:DropDownList ID ="listSection" runat="server" CssClass="drpdwnlist" AutoPostBack ="true" OnSelectedIndexChanged="listSection_SelectedIndexChanged" ></asp:DropDownList>
+                     路径选择：  <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack ="true" OnSelectedIndexChanged="listSection_SelectedIndexChanged" Width="200px" ></asp:DropDownList> 
+                     工艺段：<asp:DropDownList ID ="listSection" runat="server" CssClass="drpdwnlist" AutoPostBack ="true" OnSelectedIndexChanged="listSection_SelectedIndexChanged" Width ="200px" ></asp:DropDownList>
                                <span style="position: relative; float: right">
                                     <asp:Button ID="btnGrid3Save" runat="server" CssClass="btnmodify auth" Text="保存" OnClick="btnGrid3Save_Click" />
                                   

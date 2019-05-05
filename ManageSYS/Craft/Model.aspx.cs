@@ -409,6 +409,7 @@ public partial class Craft_Model : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text.Length == 10 && txtCode.Text.Substring(0, 5) == listSection.SelectedValue)
         {
+            string oldepath = opt.GetSegValue("select * from HT_PUB_TECH_PARA where PARA_CODE = '" + txtCode.Text + "'", "PATH_NODE");
             string[] seg = { "PARA_CODE", "PARA_NAME", "PARA_UNIT", "PARA_TYPE", "REMARK", "IS_VALID", "CREATE_ID", "CREATE_TIME", "EQUIP_CODE", "SET_TAG", "VALUE_TAG", "BUSS_ID", "PATH_NODE" };
             string[] value = { txtCode.Text, txtName.Text, txtUnit.Text, getType(), txtDscrp.Text, Convert.ToInt16(rdValid.Checked).ToString(), ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listEquip.SelectedValue, txtSetTag.Text, txtValueTag.Text,listApt.SelectedValue,listPathnode.SelectedValue };
             
@@ -419,7 +420,32 @@ public partial class Craft_Model : MSYS.Web.BasePage
                 tvHtml = InitTree();
                 string[] procseg = { };
                 object[] procvalues = { };
-                opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);               
+                opt.ExecProcedures("Create_Online_month_Report", procseg, procvalues);
+                if (ckQuaAnalyze.Checked && oldepath != listPathnode.SelectedValue)
+                {
+                    DataSet points = opt.CreateDataSetOra("select distinct path_code,path_name from ht_pub_para_weight t ");
+                    if (points != null && points.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow row in points.Tables[0].Rows)
+                        {
+                            if(listPathnode.SelectedValue == "")
+                            {
+                                opt.UpDateOra("insert into ht_pub_para_weight(para_code,path_code,weight,path_name)values ('" + txtCode.Text + "','" + row["path_code"].ToString() + "','0.2','" + row["path_name"].ToString() + "')");
+                            }
+                            else
+                            {
+                                 DataSet paras = opt.CreateDataSetOra("select  r.para_code,t.pathcode from ht_pub_path_prod t  left join ht_pub_path_node s on s.is_del = '0' and  s.section_code = t.section_code and substr(t.section_path,s.orders,1) = '0' left join ht_pub_tech_para r on r.path_node = s.id and r.is_del = '0' and r.para_type like '______1%' where t.pathcode = '" + row["path_code"].ToString() + "' and t.is_del = '0' and r.para_code = '" + txtCode.Text + "'");
+                                 if (paras != null && paras.Tables[0].Rows.Count > 0)
+                                 {
+                                opt.UpDateOra("delete from ht_pub_para_weight where para_code = '" + txtCode.Text + "' and path_code = '" + row["path_code"].ToString() + "'");
+                                 }
+                            }                          
+
+                        }
+                    }
+                }
+                // opt.UpDateOra("delete from ht_pub_para_weight where PATH_CODE = '" + listPathAll.SelectedValue + "'");
+                // opt.UpDateOra("insert into ht_pub_para_weight ( select  r.para_code,t.pathcode,'0',0.2,'test1' from ht_pub_path_prod t  left join ht_pub_path_node s on s.is_del = '0' and  s.section_code = t.section_code and substr(t.section_path,s.orders,1) = '1' left join ht_pub_tech_para r on r.path_node = s.id and r.is_del = '0' and r.para_type like '______1%' where t.pathcode = '" + listPathAll.SelectedValue + "' and t.is_del = '0' and r.para_code is not null union select r.para_code,'" + listPathAll.SelectedValue + "','0',0.2,'test1' from ht_pub_tech_para r where r.para_type like '______1%' and r.path_node is null and r.is_del = '0')");
             }
             else
                 log_message = "保存参数点失败";

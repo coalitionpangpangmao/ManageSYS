@@ -601,7 +601,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
     private void insertSectionPath(string path_code, string planno)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet pathdata = opt.CreateDataSetOra("select  pathcode  from ht_pub_path_plan where prod_plan = '" + planno + "' order by section_code ");
+        DataSet pathdata = opt.CreateDataSetOra("select  pathcode,section_code  from ht_pub_path_plan where prod_plan = '" + planno + "'  and pathcode is not null order by section_code ");
         string path = "";
         if (pathdata != null && pathdata.Tables[0].Rows.Count > 0)
         {
@@ -609,7 +609,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
             foreach(DataRow row in pathdata.Tables[0].Rows)
             {
                 if(first) path += "-";
-                path += row["pathcode"].ToString();
+                path +=row["section_code"].ToString()+ row["pathcode"].ToString();
                 first = true;
             }
         }      
@@ -620,18 +620,25 @@ public partial class Product_Plan : MSYS.Web.BasePage
       
         string[] subpath = path_code.Split('-');
         DataSet data = opt.CreateDataSetOra("select g.section_name , g.section_code from ht_pub_tech_section g  where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code");
-        if (data != null && data.Tables[0].Rows.Count == subpath.Length)
-        {
-            for (int i = 0; i < subpath.Length; i++)
+        if (data != null)
+        {           
+            for (int i = 0; i < data.Tables[0].Rows.Count; i++)
             {
                 DataRow row = data.Tables[0].Rows[i];
                 string sectioncode = row["section_code"].ToString();
-                string pathname = opt.GetSegValue("select pathname from ht_pub_path_section  where section_code = '" + sectioncode + "' and pathcode = '" + subpath[i] + "'", "pathname");
-                if (subpath[i] != " ")
+                string pathname = "";
+                string pathcode = "";
+                foreach(string sub in subpath)
                 {
-                    string[] value = { sectioncode, planno, subpath[i], pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-                    commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
+                    if (sub.Substring(0, 5) == sectioncode)
+                    {
+                        pathname = opt.GetSegValue("select pathname from ht_pub_path_section  where section_code = '" + sectioncode + "' and pathcode = '" + sub.Substring(5) + "'", "pathname");
+                        pathcode = sub.Substring(5);
+                    }
                 }
+                string[] value = { sectioncode, planno, pathcode, pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                    commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
+                
             }
         }
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "配置生产任务路径成功" : "配置生产任务路径失败";

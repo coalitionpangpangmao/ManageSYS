@@ -204,15 +204,17 @@
                                                 <asp:DropDownList ID="listqlt" runat="server" class="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
-
-                                            <td width="100">描述
+                                              <td>路径选择</td>
+                                            <td colspan="3">
+                                                 <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack="true" Width ="275px"  OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
                                             </td>
-                                            <td>
-                                                <asp:TextBox ID="txtDscpt" runat="server" class="dfinput1" ></asp:TextBox>
+                                            
+                                            </tr>
+                                        <tr>
+                                          <td width="100">描述
                                             </td>
-                                            <td>路径选择</td>
-                                            <td>
-                                                 <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack="true" OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
+                                            <td colspan="5">
+                                                <asp:TextBox ID="txtDscpt" runat="server" Width ="550px" class="dfinput1" ></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>

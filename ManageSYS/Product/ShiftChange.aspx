@@ -183,12 +183,12 @@
                                        
                                         </tr>
                                     <tr>
-                                        <td width="100" height="55">
+                                        <td width="100" height="100">
                                             设备运行情况
                                         </td>
                                         <td colspan="7">
-                                            <asp:TextBox ID="txtDevice" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="800px"></asp:TextBox>
+                                            <asp:TextBox ID="txtDevice" runat="server" class="dfinput1" Height="200px" TextMode="MultiLine"
+                                                Width="1000px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr class="btnhide">
@@ -196,8 +196,8 @@
                                             工艺质量情况
                                         </td>
                                         <td colspan="7">
-                                            <asp:TextBox ID="txtQlt" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="800px"></asp:TextBox>
+                                            <asp:TextBox ID="txtQlt" runat="server" class="dfinput1" Height="200px" TextMode="MultiLine"
+                                                Width="1000px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -205,17 +205,17 @@
                                             现场情况
                                         </td>
                                         <td colspan="7">
-                                            <asp:TextBox ID="txtScean" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="800px"></asp:TextBox>
+                                            <asp:TextBox ID="txtScean" runat="server" class="dfinput1" Height="200px" TextMode="MultiLine"
+                                                Width="1000px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="100" height="55px">
+                                        <td width="100" height="100px">
                                             备注
                                         </td>
                                         <td colspan="7">
-                                            <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
-                                                Width="800px"></asp:TextBox>
+                                            <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="100px" TextMode="MultiLine"
+                                                Width="1000px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>

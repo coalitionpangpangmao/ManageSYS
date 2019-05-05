@@ -25,6 +25,13 @@ namespace MSYS
         /// 列的类型：TextBox、DropDownList等
         /// </summary>
         private string P_ColumnType;
+        private static Action<object,EventArgs> btnclick;
+
+        public static void SetButtonClickEvent(Action<object, EventArgs> listener)
+        {
+            btnclick = listener;
+        }
+
 
         public GridViewTemplate()
         {
@@ -100,7 +107,7 @@ namespace MSYS
                         btn.EnableViewState = true;
                         btn.CssClass = "btn1  auth";
                         btn.Text = "保存";
-                        btn.Click += new EventHandler(btn_Click);
+                        btn.Click += new EventHandler(btnclick);
                         //tb.Text = "";
                         //ck.DataBinding += new EventHandler(lb_DataBinding);
                         container.Controls.Add(btn);
@@ -124,7 +131,7 @@ namespace MSYS
                     break;
             }
         }
-        void btn_Click(object sender, EventArgs e)
+       /* void btn_Click(object sender, EventArgs e)
         {
            
                 Button btn = (Button)sender;
@@ -151,7 +158,7 @@ namespace MSYS
          
 
         }
-        /*  void ck_DataBinding(object sender, EventArgs e)
+          void ck_DataBinding(object sender, EventArgs e)
          {
              CheckBox ck = (CheckBox)sender;
              GridViewRow container = (GridViewRow)ck.NamingContainer;

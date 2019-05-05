@@ -135,7 +135,7 @@ namespace DataCollect
         public void Qua_Start_Click(object sender, EventArgs e)
         {
             QltRecoder.insertQuaReport(Convert.ToDateTime(QuaTime.Text));
-            ProdRecoder.ProdRecord(QuaTime.Text,"");
+            ProdRecoder.ProdRecord(Convert.ToDateTime(QuaTime.Text));
    //         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
    //DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where date_begin between '2018-12-01' and '2018-12-15'");
    //         if (times != null && times.Tables[0].Rows.Count > 0)
@@ -357,19 +357,10 @@ namespace DataCollect
 
 
         protected void InsertProdReport(object o)
-        {
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet times = opt.CreateDataSetOra("select date_begin  as time ,team_code from ht_prod_schedule where substr(date_begin,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select date_end as time,team_code  from ht_prod_schedule where substr(date_end,1,10) ='" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select starttime  as time ,''  from ht_prod_report where substr(starttime,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select endtime  as time,''  from ht_prod_report where substr(starttime,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "'");
-            if (times != null && times.Tables[0].Rows.Count > 0)
-            {
+        {           
                 try
-                {
-                   
-                    foreach (DataRow time in times.Tables[0].Rows)
-                    {
-                        if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, 0, -20) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1, 20))
-                            ProdRecoder.ProdRecord(time["time"].ToString(),time["team_code"].ToString());
-                    }
+                {                   
+                    ProdRecoder.ProdRecord(System.DateTime.Now);
                 }
                 catch
                 {
@@ -380,7 +371,7 @@ namespace DataCollect
                     }
                 }
             }
-        }
+      
         #endregion
 
      

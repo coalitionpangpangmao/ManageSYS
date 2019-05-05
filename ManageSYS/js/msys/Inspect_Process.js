@@ -55,6 +55,32 @@ var app = new Vue({
 
     },
     methods: {
+        keyDown(event) {
+var inputs = document.getElementById("grid").getElementsByTagName("input");
+//alert("keydown");
+var focus = document.activeElement;
+if (!document.getElementById("grid").contains(focus)) return;
+console.log("keydownrun");
+var event = window.event || event;
+var key = event.keyCode;
+for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i] === focus) break;
+}
+switch (key) {
+    case 37:
+        if (i > 0) inputs[i - 1].focus();
+        break;
+    case 38:
+        if (i - 4 >= 0) inputs[i - 4- this.id.length].focus();
+        break;
+    case 39:
+        if (i < inputs.length - 1) inputs[i + 1].focus();
+        break;
+    case 40:
+        if (i + 4 < inputs.length) inputs[i + 4+this.id.length].focus();
+        break;
+}
+},
         getSchedule(start_time, end_time, dates,  team_code, schedule_time){
         axios({
     method:"post",
@@ -189,7 +215,11 @@ add(dindex){
 change(dindex,rindex,index,data){
     this.changed.push(dindex);
     let tem = this.rows[rindex].splice(0);
-    tem[index] = parseInt(data);
+    if(data == ''){
+        tem[index] = '';
+    }else{
+        tem[index] = parseFloat(data);
+    }
     this.$set(this.rows, rindex, tem);
     console.log(this.rows[rindex]);
 },
@@ -235,6 +265,15 @@ getRows() {
     this.prod = prod_code.options[prod_code.selectedIndex].text;
     console.log(this.rowsDates);
     this.rows = res.data.rows;
+    //3-27修改
+    for(let i=0; i<this.rows.length; i++){
+        for(let j=4; j<this.rows[0].length; j++){
+            if(this.rows[i][j]==-1){
+                this.rows[i][j]="";
+            }
+        }
+}
+//
     console.log(this.rowsDates.indexOf("2018-10-02"));
     console.log(this.rows[0]);
     console.log(this.rows);

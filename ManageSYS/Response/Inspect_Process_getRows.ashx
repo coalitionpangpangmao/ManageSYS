@@ -91,7 +91,7 @@ public class Inspect_Process_getRows : IHttpHandler {
 
                 if (i > 1)
                     str.Append(" left join ");
-                str.Append("(select a.id,  a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as ");
+                str.Append("(select a.id,  a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,-1) as ");
                 //str.Append("(select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as ");
                 str.Append(name);
                 str.Append("  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '");

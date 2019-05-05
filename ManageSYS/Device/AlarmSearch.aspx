@@ -34,13 +34,7 @@
                 <table class="tablelist">
                     <tbody>
                         <tr>
-                            <td width="100">标签
-                            </td>
-                            <td width="100">
-                                <asp:DropDownList ID="tag" runat="server" CssClass="drpdwnlist" AutoPostBack="True"
-                                     Width ="200px">
-                                </asp:DropDownList>
-                            </td>
+
                             <td width="100">区域
                             </td>
                             <td width="100">

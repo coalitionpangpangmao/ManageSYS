@@ -25,7 +25,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         opt.bindDropDownList(listMtrl, "select Formula_code, FORMULA_NAME  from ht_qa_mater_formula where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
         opt.bindDropDownList(listTechStd, "select distinct tech_code,tech_name from ht_tech_stdd_code where is_valid = '1' and is_del = '0'", "tech_name", "tech_code");
         opt.bindDropDownList(listqlt, "select QLT_CODE,QLT_NAME from ht_qlt_stdd_code where is_del = '0' and is_valid = '1'", "QLT_NAME", "QLT_CODE");
-        opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0'", "pathname", "pathcode");
+        opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0' order by pathname", "pathname", "pathcode");
     }
     protected void bindGrid()
     {
@@ -253,7 +253,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
     protected void bindGrid4()
     {
-        string query = "select g.section_name as 工艺段, '' as 路径选择, '' as 路径详情,g.section_code from ht_pub_tech_section g  where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
+        string query = "select distinct g.section_name as 工艺段, '' as 路径选择, '' as 路径详情,g.section_code from ht_pub_tech_section g left join ht_pub_path_section h on h.section_code = g.section_code where h.section_code is not null and  g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -271,7 +271,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
                 opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "'", "pathname", "pathcode");
                 list.SelectedValue = mydrv["路径详情"].ToString();
                 if (subpath.Length == GridView4.Rows.Count)
-                    list.SelectedValue = subpath[i];
+                    list.SelectedValue = subpath[i].Substring(5);
                 query = createQuery(mydrv["section_code"].ToString());
                 if (query != "")
                 {

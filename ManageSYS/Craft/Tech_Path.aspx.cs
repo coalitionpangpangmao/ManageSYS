@@ -124,6 +124,7 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     {
         try
         {
+            int delcount = 0;
             for (int i = 0; i <= GridView2.Rows.Count - 1; i++)
             {
                 if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
@@ -134,7 +135,15 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径节点成功" : "删除工艺路径节点失败";
                     log_message += ",工艺路径节点ID:" + ID;
                     InsertTlog(log_message);
+                    delcount++;
                 }
+            }
+            if (delcount>0)
+            {
+                string query = "delete from  ht_pub_path_section  where SECTION_CODE = '" + listSection2.SelectedValue + "'";
+                MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+                string log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径成功" : "删除工艺路径失败";
+                InsertTlog(log_message);
             }
             bindGrid2();
             if (listSection1.SelectedValue == listSection2.SelectedValue)
@@ -176,6 +185,11 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 string log_message = opt.UpDateData(seg, value, "ht_pub_path_node", " where ID = '" + ID + "'") == "Success" ? "更新路径节点成功" : "更新路径节点失败";
                 log_message += "--详情:" + string.Join(",", value);
                 InsertTlog(log_message);
+              
+                    string query = "delete from  ht_pub_path_section  where SECTION_CODE = '" + listSection2.SelectedValue + "'";                   
+                     log_message = opt.UpDateOra(query) == "Success" ? "删除工艺路径成功" : "删除工艺路径失败";
+                    InsertTlog(log_message);
+               
             }
 
             bindGrid2();
@@ -204,17 +218,22 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
             data = set.Tables[0];
-            
-                object[] value = new object[data.Columns.Count];
-                value[0] = "";
-                for (int i = 1; i < value.Length - 2; i++)
-                { value[i] = "0"; }
-                value[data.Columns.Count - 2] = listSection1.SelectedValue;
-                value[data.Columns.Count - 1] = "";
-                data.Rows.Add(value);
-          
+
+            object[] value = new object[data.Columns.Count];
+            value[0] = "";
+            for (int i = 1; i < value.Length - 2; i++)
+            { value[i] = "0"; }
+            value[data.Columns.Count - 2] = listSection1.SelectedValue;
+            value[data.Columns.Count - 1] = "";
+            data.Rows.Add(value);
+
             attachData(data);
-           
+
+        }
+        else
+        {
+            GridView1.DataSource = null;
+            GridView1.DataBind();
         }
 
     }
@@ -245,9 +264,9 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
     protected void createGridView()
     {
         string query = createQuery(listSection1.SelectedValue);
+        hideQuery.Value = query;
         if (query != "")
-        {
-            hideQuery.Value = query;
+        {           
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
 
@@ -286,11 +305,33 @@ public partial class Craft_Tech_Path : MSYS.Web.BasePage
                 GridView1.Columns.Add(customField);
             }
             //增加保存按钮
+            MSYS.GridViewTemplate.SetButtonClickEvent((object sender,EventArgs e)=>{ 
+                Button btn = (Button)sender;
+                GridView gv = (GridView)btn.NamingContainer.DataKeysContainer;
+                GridViewRow gvr = (GridViewRow)btn.NamingContainer;
+                int index = gvr.RowIndex;
+                string sectioncode = gv.DataKeys[index].Values[0].ToString();
+                string opathcode = gv.DataKeys[index].Values[1].ToString();
+                string[] seg = { "SECTION_CODE", "PATHCODE", "PATHNAME", "CREATE_TIME" ,"IS_DEL"};
+                string pathcode = "";
+                for (int i = 3; i < gv.Columns.Count - 1; i++)
+                {
+                    pathcode += Convert.ToInt16(((CheckBox)gvr.FindControl("ck_" + (i - 1).ToString())).Checked).ToString();
+                }
+                ((TextBox)gvr.FindControl("txt_Pathcode")).Text = pathcode;
+                string[] value = { sectioncode, pathcode, ((TextBox)gvr.FindControl("txt_Pathname")).Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),"0" };               
+
+                List<String> commandlist = new List<String>();
+                commandlist.Add("delete from HT_PUB_PATH_SECTION where SECTION_CODE = '" + sectioncode + "' and PATHCODE = '" + opathcode + "'");
+                commandlist.Add(opt.InsertDatastr(seg, value, "HT_PUB_PATH_SECTION"));
+                opt.TransactionCommand(commandlist);  
+            });
             customField = new TemplateField();
             customField.ShowHeader = true;
             customField.HeaderTemplate = new MSYS.GridViewTemplate(DataControlRowType.Header, "操作", "");
             customField.ItemTemplate = new MSYS.GridViewTemplate(DataControlRowType.DataRow, "Grid1Save", "Button");
             ViewState["btn_Grid1Save"] = true;
+            
             GridView1.Columns.Add(customField);
 
 

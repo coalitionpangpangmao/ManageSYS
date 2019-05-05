@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Newtonsoft.Json;
 [Serializable]
 public struct ProductInfo
 {
@@ -40,15 +41,16 @@ public class ProductInfoHandler : IHttpHandler
 {
 
     public void ProcessRequest(HttpContext context)
-    {
-       // context.Response.ContentType = "application/json";
+    {      
         var data = context.Request["date"];
         try
         {
             ResponseProductData datainfo = getResponseData(data);
-            var javaScriptSerializer = new JavaScriptSerializer();
-               var responseData = javaScriptSerializer.Serialize(datainfo);
-               context.Response.ContentType = "text/plain";
+           // var javaScriptSerializer = new JavaScriptSerializer();
+            //   var responseData = javaScriptSerializer.Serialize(datainfo);
+             //  context.Response.ContentType = "text/plain";
+            object responseData = JsonConvert.SerializeObject(datainfo);
+               context.Response.ContentType = "application/json";
                context.Response.Write(responseData);
         }
         catch (Exception ee)
@@ -141,7 +143,7 @@ public class ProductInfoHandler : IHttpHandler
     protected string getStatics(string date)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select g3.prod_name,g1.plan_output*1000 as plan_output, g2.realout,g1.plan_output*1000-g2.realout from (select t.prod_code,t.plan_output from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id  where t1.plan_time = '" + date.Substring(0, 7) + "') g1 left join(select prod_code ,sum(outweight) as realout from hv_prod_inout_ratio t where substr(datetime,0,7) = '" + date.Substring(0, 7) + "' group by prod_code) g2 on g1.prod_code = g2.prod_code left join ht_pub_prod_design g3 on g3.prod_code = g1.prod_code");
+        DataSet data = opt.CreateDataSetOra("select g3.prod_name,g1.plan_output*1000 as plan_output, g2.realout,g1.plan_output*1000-g2.realout from (select t.prod_code,t.plan_output from ht_prod_month_plan_detail t left join ht_prod_month_plan t1 on t1.id = t.month_plan_id  where t1.plan_time = '" + date.Substring(0, 7) + "' and t.is_del = '0') g1 left join(select prod_code ,sum(outweight) as realout from hv_prod_inout_ratio t where substr(datetime,0,7) = '" + date.Substring(0, 7) + "' group by prod_code) g2 on g1.prod_code = g2.prod_code left join ht_pub_prod_design g3 on g3.prod_code = g1.prod_code");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             StringBuilder str = new StringBuilder("");

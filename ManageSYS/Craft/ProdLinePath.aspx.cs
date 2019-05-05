@@ -20,14 +20,14 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     protected void initView()
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0'", "pathname", "pathcode");
+        opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0' order by pathname", "pathname", "pathcode");
         opt.bindDropDownList(listAprv, "select * from ht_inner_aprv_status ", "NAME", "ID");
         
     }
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        if (txtCodeS.Text.Split('-').Length >= 5)
+        if (txtCodeS.Text.Split('-').Length >= GridView1.Rows.Count)
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             List<String> commandlist = new List<String>();
@@ -44,11 +44,11 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             log_message += "--标识:" + listPathAll.SelectedValue;
             InsertTlog(log_message);
             commandlist.Clear();
-            commandlist.Add("delete HT_PUB_PARA_WEIGHT where PATH_NAME = '" + txtNameS.Text + "'");
-           
-            commandlist.Add("insert into ht_pub_para_weight ( select  r.para_code,t.pathcode,'0',0.2,'test1' from ht_pub_path_prod t  left join ht_pub_path_node s on s.is_del = '0' and  s.section_code = t.section_code and substr(t.section_path,s.orders,1) = '1' left join ht_pub_tech_para r on r.path_node = s.id and r.is_del = '0' and r.para_type like '______1%' where t.pathcode = '" + txtCodeS.Text + "' and t.is_del = '0' and r.para_code is not null union select r.para_code,'" + txtCodeS.Text + "','0',0.2,'test1' from ht_pub_tech_para r where r.para_type like '______1%' and r.path_node is null and r.is_del = '0')");
+            commandlist.Add("delete HT_PUB_PARA_WEIGHT where PATH_NAME = '" + txtNameS.Text + "' or path_code ='" + txtCodeS.Text + "'");
+
+            commandlist.Add("insert into ht_pub_para_weight ( select  r.para_code,t.pathcode,'0',0.2,'" + txtNameS.Text + "' from ht_pub_path_prod t  left join ht_pub_path_node s on s.is_del = '0' and  s.section_code = t.section_code and substr(t.section_path,s.orders,1) = '1' left join ht_pub_tech_para r on r.path_node = s.id and r.is_del = '0' and r.para_type like '______1%' where t.pathcode = '" + txtCodeS.Text + "' and t.is_del = '0' and r.para_code is not null union select r.para_code,'" + txtCodeS.Text + "','0',0.2,'" + txtNameS.Text + "' from ht_pub_tech_para r where r.para_type like '______1%' and r.path_node is null and r.is_del = '0')");
             opt.TransactionCommand(commandlist);
-            opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0'", "pathname", "pathcode");
+            opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0' order by pathname", "pathname", "pathcode");
             listPathAll.SelectedValue = txtCodeS.Text;
             bindGrid();
         }
@@ -67,6 +67,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "删除全线路径成功" : "删除全线路径失败";
         log_message += "--标识:" + listPathAll.SelectedValue;
         InsertTlog(log_message);
+        initView();
+        bindGrid();
         
     }
   
@@ -106,7 +108,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
     protected void bindGrid()
     {
-        string query = "select g.section_name as 工艺段, '' as 路径选择, '' as 路径详情,g.section_code from ht_pub_tech_section g  where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
+        string query = "select distinct g.section_name as 工艺段, '' as 路径选择, '' as 路径详情,g.section_code from ht_pub_tech_section g left join ht_pub_path_section h on h.section_code = g.section_code where h.section_code is not null and  g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code";
        
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -121,10 +123,10 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
                 ((TextBox)GridView1.Rows[i].FindControl("txtSection")).Text = mydrv["工艺段"].ToString();
                 DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listpath");
-                opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "'", "pathname", "pathcode");
+                opt.bindDropDownList(list, "select pathname,pathcode from ht_pub_path_section where section_code = '" + mydrv["section_code"].ToString() + "' and is_del = '0' ", "pathname", "pathcode");
                 list.SelectedValue = mydrv["路径详情"].ToString();
                 if (subpath.Length == GridView1.Rows.Count)
-                    list.SelectedValue = subpath[i];
+                    list.SelectedValue = subpath[i].Substring(5);
                 query = createQuery(mydrv["section_code"].ToString());
                 if (query != "")
                 {
@@ -199,7 +201,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             DropDownList list = (DropDownList)GridView1.Rows[i].FindControl("listpath");
             if (list.SelectedValue != "")
             {
-                pathcode += list.SelectedValue;
+                pathcode +=GridView1.DataKeys[i].Value+ list.SelectedValue;
             }
             else
             {

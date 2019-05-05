@@ -9,7 +9,7 @@ using System.Text;
 public partial class Quality_Evaluat_PhyChem : MSYS.Web.BasePage
 {
     protected string htmltable;
-    private string currentTableId;
+  //  private string currentTableId;
     protected void Page_Load(object sender, EventArgs e)
     {
         base.PageLoad(sender, e);

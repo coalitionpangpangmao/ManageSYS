@@ -294,41 +294,7 @@ public partial class SysConfig_ExcelModel : MSYS.Web.BasePage
         tvHtml = InitTreeR();
         ScriptManager.RegisterStartupScript(UpdatePanel3, this.Page.GetType(), "", "initTreetoggle();", true);
     }
-    private int getColumn(string Col)
-    {
-        int ColNum;
-        switch (Col)
-        {
-            case "A": ColNum = 0; break;
-            case "B": ColNum = 1; break;
-            case "C": ColNum = 2; break;
-            case "D": ColNum = 3; break;
-            case "E": ColNum = 4; break;
-            case "F": ColNum = 5; break;
-            case "G": ColNum = 6; break;
-            case "H": ColNum = 7; break;
-            case "I": ColNum = 8; break;
-            case "J": ColNum = 9; break;
-            case "K": ColNum = 10; break;
-            case "L": ColNum = 11; break;
-            case "M": ColNum = 12; break;
-            case "N": ColNum = 13; break;
-            case "O": ColNum = 14; break;
-            case "P": ColNum = 15; break;
-            case "Q": ColNum = 16; break;
-            case "R": ColNum = 17; break;
-            case "S": ColNum = 18; break;
-            case "T": ColNum = 19; break;
-            case "U": ColNum = 20; break;
-            case "V": ColNum = 21; break;
-            case "W": ColNum = 22; break;
-            case "X": ColNum = 23; break;
-            case "Y": ColNum = 24; break;
-            case "Z": ColNum = 25; break;
-            default: ColNum = 26; break;
-        }
-        return ColNum;
-    }
+  
     private void SetBlank()
     {
         ReportName.Text = "";

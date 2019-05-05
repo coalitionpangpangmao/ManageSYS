@@ -155,18 +155,29 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
             //申明一个ExcelSaveAs对象，该对象完成将数据写入Excel的操作           
             openXMLExcel = new MSYS.Common.ExcelExport(sourcePath, false);
             MSYS.IHAction ihopt = new MSYS.IHAction();
-            List<MSYS.IHAction.ParaInfo> paralist = ihopt.GetData(txtBtime.Text, txtEtime.Text, listpara.SelectedValue);
+            List<MSYS.IHAction.ParaRes> paralist = getData(listpara.SelectedValue, txtBtime.Text, txtEtime.Text);
             DataTable dt = new DataTable();
+           
             dt.Columns.Add("时间");
             dt.Columns.Add("值");
-           
-           
-            foreach (MSYS.IHAction.ParaInfo info in paralist)
-            {               
-                    var values = new object[2];
-                    values[0] = info.timestamp;
-                    values[1] = info.value;
-                    dt.Rows.Add(values);                  
+            dt.Columns.Add("状态");
+
+
+            foreach (MSYS.IHAction.ParaRes info in paralist)
+            {
+                double resvalue = -9999 ;
+                if(txtValue.Text != "")
+                 resvalue = Convert.ToDouble(txtValue.Text);
+                if ((resvalue != -9999&&info.value > resvalue)||resvalue == -9999 ) 
+                {
+                    
+                        var values = new object[3];
+                        values[0] = info.timestamp;
+                        values[1] = info.value;
+                        values[2] = info.status;                    
+                        dt.Rows.Add(values);
+                   
+                }                
             }
             openXMLExcel.SetCurrentSheet(0);
           
@@ -197,7 +208,7 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
           //  Response.End();
             HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
-        catch(Exception ee)
+        catch
         {
             if (openXMLExcel != null)
             {
@@ -208,5 +219,35 @@ public partial class Quality_Comparison : MSYS.Web.BasePage
       
     }
 
+    protected List<MSYS.IHAction.ParaRes> getData( string point, string starttime, string endtime)
+    {
+         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        //query prod_code
+        string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + starttime + "' and t.endtime >='" + endtime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + starttime + "' and t.endtime <'" + endtime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + starttime + "' and t.starttime <'" + endtime + "' order by starttime", "Prod_code");
+        List<MSYS.IHAction.ParaRes> Rows = new List<MSYS.IHAction.ParaRes>();
+        if (prodcode != "NoRecord")
+        {
+            DataSet pointinfo;
+            pointinfo = opt.CreateDataSetOra("select t.para_name,t.value_tag from    ht_pub_tech_para t where t.para_code = '" + point + "'");
+            if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = pointinfo.Tables[0].Rows[0];
+                string tag = row["value_tag"].ToString();
 
+                if (tag != "")
+                {
+                    //get rawdata from IHistorian 
+                    //   MSYS.IHDataOpt ihopt = new MSYS.IHDataOpt();
+                    //  DataRowCollection Rows = ihopt.GetData(starttime, endtime, point);
+                    MSYS.IHAction ihopt = new MSYS.IHAction();
+                    MSYS.IHAction.TimeSeg seg = ihopt.GetTimeSegP(starttime, endtime, point, prodcode);
+                     Rows = ihopt.GetIHRealDataSet(seg);
+
+                }
+
+            }
+        }
+        return Rows;
+    }
+ 
 }

@@ -83,7 +83,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
             ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "alert", "alert('请选择正确的排班车间与时间段!!')", true);
             return;
         }     
-        DateTime tempdate = GetMondayDate(startdate).AddDays(6); 
+        DateTime tempdate = GetMondayDate(startdate).AddDays(7); 
         if (GridView1.Rows.Count > 0)
         {
             List<string> commandlist = new List<string>();
@@ -191,6 +191,10 @@ public partial class Product_Schedual : MSYS.Web.BasePage
         {
             TableCell oldtc = GridView2.Rows[0].Cells[1];
             oldtc.RowSpan = 1;
+            System.Drawing.Color oddbgColor = System.Drawing.Color.FromName("#f5f8fa");
+            System.Drawing.Color bgColor = System.Drawing.Color.FromName("#ffffff");
+            System.Drawing.Color currColor =  bgColor;
+            Boolean isNextDay = true;
             for (int i = GridView2.PageSize * GridView2.PageIndex; i < GridView2.PageSize * (GridView2.PageIndex + 1) && i < data.Tables[0].Rows.Count; i++)
             {
                 int j = i - GridView2.PageSize * GridView2.PageIndex;
@@ -206,11 +210,21 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                         newtc.Visible = false;
                         oldtc.RowSpan = oldtc.RowSpan + 1;
                         oldtc.VerticalAlign = VerticalAlign.Middle;
+                        GridView2.Rows[j].BackColor = currColor;
                     }
                     else
                     {
+                        isNextDay = !isNextDay;
+                        if (isNextDay)
+                        {
+                            currColor = bgColor;
+                        }
+                        else {
+                            currColor = oddbgColor;
+                        }
                         oldtc = newtc;
                         oldtc.RowSpan = 1;
+                        GridView2.Rows[j].BackColor = currColor;
                     }
                 }
             }

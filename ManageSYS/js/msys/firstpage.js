@@ -48,7 +48,7 @@ function showPlot() {
         data: sendData,
         dataType: "json",
         success: function (result) {            
-            Drawchart(result["info"][0], 'container1','生产计划完成情况');
+            Drawchart(result["info"][0], 'container1','生产计划详情');
             Drawchart(result["info"][1], 'container2','产品产出情况');
             if (result["statics"]) {
                 $('#statics').empty();

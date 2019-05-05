@@ -63,6 +63,7 @@
                                         &nbsp;
                                     <asp:Button ID="btnAddtime" runat="server" Text="添加" OnClick="btnAddtime_Click" CssClass="btnadd auth" />
                                         <asp:Button ID="btnDeltime" runat="server" Text="删除" OnClick="btnDeltime_Click" CssClass="btndel auth"  />
+                                        限定值：<asp:TextBox ID="txtValue" runat="server" CssClass="dfinput1"></asp:TextBox>
                                         <asp:Button ID="btnExport" runat="server" Text="导出" class="btnset" OnClick="btnExport_Click" />
                                     </th>
                                 </tr>

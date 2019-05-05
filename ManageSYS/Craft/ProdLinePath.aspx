@@ -27,7 +27,7 @@
                 <ContentTemplate>
             <div class="listtitle">
                 路径名称：
-                <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack="true" OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
+                <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" Width ="300px" AutoPostBack="true" OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
                   <span style="position: relative; float: right" class="btnhide">
                       审批状态：<asp:DropDownList ID="listAprv" runat="server" CssClass="drpdwnlist" Width="80px" Enabled="False"></asp:DropDownList> 
                  &nbsp;    &nbsp;  <asp:Button ID="btnSubmit" runat="server" Text="提交审批" CssClass="btnpatch"  OnClick="btnSubmit_Click" Width ="100px" /> &nbsp;    &nbsp;   
@@ -56,12 +56,12 @@
                             <td width="100">路径名称
                             </td>
                             <td>
-                                <asp:TextBox ID="txtNameS" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtNameS" runat="server" class="dfinput1" Width ="250px"></asp:TextBox>
                             </td>
                             <td width="100">路径编码
                             </td>
                             <td>
-                                <asp:TextBox ID="txtCodeS" runat="server" class="dfinput1"></asp:TextBox>
+                                <asp:TextBox ID="txtCodeS" runat="server" class="dfinput1" Width ="250px"></asp:TextBox>
                             </td>                           
                             <td >
 

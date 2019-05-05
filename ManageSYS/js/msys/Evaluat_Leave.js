@@ -102,6 +102,7 @@ buildCreateTime(){
 },
 
         addTable(isInsert){
+            
             let jsonData = {};
             jsonData.id  = this.currentTableId==''? this.buildTableId():this.currentTableId;
             jsonData.factoryTime = this.getInputValue("factorytime");
@@ -137,11 +138,14 @@ buildCreateTime(){
                 data:jsonData
             }).then((res)=>{
                 console.log("更新成功");
+            alert("保存成功");
+           
                 
         }).catch((err)=>{
             console.log("更新失败");
         console.log(err.message);
-        });
+});
+       
         },
 
         getProduct(){

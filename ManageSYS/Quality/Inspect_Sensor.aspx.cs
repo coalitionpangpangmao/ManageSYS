@@ -155,7 +155,7 @@ public partial class Quality_Inspect_Sensor : MSYS.Web.BasePage
                 }
             }
         }
-        catch (Exception ee)
+        catch 
         {
         }
       

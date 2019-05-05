@@ -15,7 +15,7 @@ public partial class Device_AlarmSearch : MSYS.Web.BasePage
         {
             MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            opt.bindDropDownList(tag, "select DISTINCT ALM_TAGNAME from fixalarms", "ALM_TAGNAME", "ALM_TAGNAME");
+            //opt.bindDropDownList(tag, "select DISTINCT ALM_TAGNAME from fixalarms", "ALM_TAGNAME", "ALM_TAGNAME");
             opt.bindDropDownList(area, "select DISTINCT ALM_ALMAREA from fixalarms", "ALM_ALMAREA", "ALM_ALMAREA");
 
         }
@@ -23,8 +23,8 @@ public partial class Device_AlarmSearch : MSYS.Web.BasePage
 
     protected void btnSearch_Click(object sender, EventArgs e) {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string tagName = tag.Text.Trim()=="" ?"is null ":("='"+tag.Text.Trim()+"'");
-        string areaName = area.Text.Trim() == "" ? "is null ": ("='"+area.Text.Trim()+"'");
+        //string tagName = tag.Text.Trim()=="" ?"is null ":("='"+tag.Text.Trim()+"'");
+        string areaName = area.Text.Trim()== "" ? "is null ": ("='"+area.Text.Trim()+"'");
         string sstime = stime.Text;
         /*if (sstime != "") {
             sstime = sstime.Remove(5, 1); 
@@ -32,7 +32,7 @@ public partial class Device_AlarmSearch : MSYS.Web.BasePage
         string time = sstime+ "%";
         time = time.Replace("-", "/");
         System.Diagnostics.Debug.WriteLine(time);
-        string query = "select * from fixalarms where ALM_TAGDESC is not null and  ALM_TAGNAME " + tagName + " and ALM_ALMAREA " + areaName + "";
+        string query = "select * from fixalarms where ALM_DESCR is not null and ALM_ALMAREA " + areaName + "";
         query += " and to_char(ALM_NATIVETIMEIN, 'yyyy/MM/dd') like '" + time + "'";
         System.Diagnostics.Debug.WriteLine(query);
         DataSet ds = opt.CreateDataSetOra(query);

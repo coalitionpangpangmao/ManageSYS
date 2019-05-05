@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Newtonsoft.Json;
 [Serializable]
 public struct RequestDataJSON
 {
@@ -92,8 +93,12 @@ public class RealDataHandler : IHttpHandler
         }
         else
             datainfo = handleEquipData(PostedData);
-        var responseData = javaScriptSerializer.Serialize(datainfo);
-        context.Response.ContentType = "text/plain";
+    //    var responseData = javaScriptSerializer.Serialize(datainfo);
+     //   context.Response.ContentType = "text/plain";
+    //    context.Response.Write(responseData);
+
+        object responseData = JsonConvert.SerializeObject(datainfo);
+        context.Response.ContentType = "application/json";
         context.Response.Write(responseData);
         }
         catch (Exception ee)
