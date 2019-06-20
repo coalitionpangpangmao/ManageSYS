@@ -60,3 +60,50 @@
     font-size: medium;
     font-weight: normal;
 }
+
+.reporttable2
+{
+    border: 3px solid #666699;
+    width: 100%;
+    clear: both;
+    padding-left: 50px;
+   
+}
+.reporttable2 thead th
+{
+    height: 45px;
+    border-bottom: solid 1px #b6cad2;
+    text-indent: 18px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #666699;
+    font-size: xx-large;
+    font-weight: normal;
+}
+.reporttable2 tbody th
+{
+    height: 30px;
+    text-indent: 14px;
+    border-right: dotted 1px #c7c7c7;
+    border: 1px solid #666699;
+    font-size: medium;
+    font-weight: normal;
+    background-color: #AAAAFF;
+}
+.reporttable2 td
+{
+    height: 30px;
+    border-right: dotted 1px #c7c7c7;
+    border: 1px solid #666699;
+    font-size: medium;
+    font-weight: normal;
+}
+.reporttxt2
+{
+    line-height: 25px;
+    text-indent: 12px;
+    border-style: none;
+    font-size: 14px;
+    height: 30px;
+    width: 98%;
+}

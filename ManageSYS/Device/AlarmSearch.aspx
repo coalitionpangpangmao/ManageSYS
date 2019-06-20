@@ -54,16 +54,16 @@
                     </tbody>
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
-                    检查项目列表 <span style="position: relative; float: right">
+                     <span style="position: relative; float: right">
                         
-                        <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset" Text="全选" />
-                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除"   OnClientClick="javascript:return confirm('确认删除？');"/></span>
+                        <asp:Button ID="btnGrid1CkAll" runat="server" CssClass="btnset" Text="全选" OnClick='btnCkAll_Click' />
+                        <asp:Button ID="btnGrid1DelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click"  OnClientClick="javascript:return confirm('确认删除？');"/></span>
                 </div>
                 <div style="top:0px; bottom:8px;">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False"
-                                DataKeyNames="ALM_NATIVETIMEIN">
+                                DataKeyNames="ALM_MSGID">
                                 <Columns>
                                     <asp:TemplateField     >
                                         <ItemTemplate>
@@ -73,7 +73,7 @@
                                     <asp:BoundField    DataField="ALM_NATIVETIMEIN" HeaderText="报警开始时间" />
                                     <asp:BoundField    DataField="ALM_NATIVETIMELAST" HeaderText="报警结束时间" />
                                     <asp:BoundField    DataField="ALM_TAGNAME" HeaderText="标签" />
-                                    <asp:BoundField    DataField="ALM_TAGDESC" HeaderText="详情" />
+                                    <asp:BoundField    DataField="ALM_DESCR" HeaderText="详情" />
                                     <asp:BoundField    DataField="ALM_ALMAREA" HeaderText="区域" />
                                     <asp:TemplateField      HeaderText="操作">
                                         <ItemTemplate>

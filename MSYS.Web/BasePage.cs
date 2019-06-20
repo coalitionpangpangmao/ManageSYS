@@ -366,59 +366,8 @@ namespace MSYS.Web
                                     DataTable dt = set.Tables[0];
 
                                     openXMLExcel.SetCurrentSheet(Convert.ToInt32(row["F_SHEETINDEX"].ToString()));
-                                    if (filename == "再造梗丝产品过程检测日报")
-                                    {
-                                        
-                                            //openXMLExcel.WriteData(4, 1, startDate.ToString());
-
-
-                                        double[] avg = getAvg(startDate);
-                                        for (int i = 0; i < avg.Length; i++) {
-                                            System.Diagnostics.Debug.WriteLine(avg[i]);
-                                        }
-                                        double[] quarate = getQuaRate(startDate);
-                                        int[] interval = getInterval(startDate);
-                                        openXMLExcel.WriteData(1, 1, startDate + " 梗丝线日报表");
-                                        string qu = "select * from hv_qlt_process_daily_report t where record_time='"+startDate+"' order by team_id";
-                                        System.Diagnostics.Debug.WriteLine("日期"+startDate);
-                                        //System.Diagnostics.Debug.WriteLine(Convert.ToInt32(row["F_DESY"].ToString()));
-                                        DataTable dtt = opt.CreateDataSetOra(qu).Tables[0];
-                                        int startX = 2;
-                                        int startY = 3;
-                                        for (int i = 3, y=0; i < dtt.Columns.Count -1 && y<dtt.Rows.Count; i++) {
-                                            //openXMLExcel.WriteData(y+4, i+64, dtt.Rows[y][i].ToString());
-                                            openXMLExcel.WriteData(y+4, i, dtt.Rows[y][i].ToString());
-                                            //System.Diagnostics.Debug.WriteLine(Convert.ToInt32("A").ToString());
-                                            System.Diagnostics.Debug.WriteLine(dtt.Rows[y][i].ToString());
-                                            if (i == (dtt.Columns.Count - 2) && y < dtt.Rows.Count) {
-                                                i = 2;
-                                                y++;
-                                                continue;
-                                            }
-                                        }
-                                        qu = "select distinct t.inspect_code, r.range, t.value, r.avrg, r.std, r.quarate from HV_QLT_PROCESS_INSPECT_CODE t left outer join  hv_qlt_process_avg r on t.inspect_code = r.inspect_code where r.record_time='"+startDate+"' or  r.record_time is null  order by t.inspect_code";
-                                        DataTable dttt = opt.CreateDataSetOra(qu).Tables[0];
-                                        qu = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group where r.INSPECT_TYPE = '0' and r.is_del = '0' order by r.inspect_code";
-                                        DataTable uplower = opt.CreateDataSetOra(qu).Tables[0];
-                                        for (int i = 0; i < dttt.Rows.Count; i++) {
-                                            openXMLExcel.WriteData(9, i+3, dttt.Rows[i][3].ToString());
-                                            openXMLExcel.WriteData(10, i+3, dttt.Rows[i][5].ToString());
-                                            openXMLExcel.WriteData(11, i+3, dttt.Rows[i][4].ToString());
-                                            
-                                            
-                                        }
-                                       int j = 3;
-                                        int d=0;
-                                        for (int i = 0; i < interval.Length; i++) { 
-                                            openXMLExcel.WriteData(7, j, avg[i].ToString());
-                                            openXMLExcel.WriteData(8, j, quarate[i].ToString());
-                                            openXMLExcel.WriteData(3, j, uplower.Rows[d][3].ToString());
-                                            j = j + interval[i];
-                                            d = d + interval[i];
-                                        }
-
-                                    }
-                                    else if (merge)
+                                    
+                                    if (merge)
                                     {
                                         if(hasCaption)
                                             openXMLExcel.WriteDataRerangeWithCaption(Convert.ToInt32(row["F_DESX"].ToString()), getColumn(row["F_DESY"].ToString()) + 1, dt);
@@ -452,12 +401,7 @@ namespace MSYS.Web
                     openXMLExcel.SaveAsHtm(filepath);
                     System.Diagnostics.Debug.WriteLine("路径");
                     System.Diagnostics.Debug.WriteLine(filepath);
-                    if (filename == "再造梗丝产品过程检测日报")
-                    {
-                        string fp = basedir + @"TEMP\" + filename + date.ToString("HHmmss") + @".files\sheet001.htm";
-                        System.Diagnostics.Debug.WriteLine(fp);
-                        addCSS(fp);
-                    }
+                   
                     
                 }
                 openXMLExcel.Dispose();
@@ -478,151 +422,6 @@ namespace MSYS.Web
             }
         }
 
-
-        public double[] getAvg(String data){
-            List<string> items = new List<string>();
-            string query = "select * from hv_qlt_process_inspect_code order by inspect_code";
-            string que = "select * from hv_qlt_process_avg where record_time='"+data+"' order by inspect_code";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataTable dt = opt.CreateDataSetOra(query).Tables[0];
-            for (int i = 0; i < dt.Rows.Count; i++) {
-                String temp = dt.Rows[i][2].ToString().Substring(0,3);
-                System.Diagnostics.Debug.WriteLine(temp);
-                if (!items.Contains(temp))
-                {
-                    items.Add(temp);
-                }
-
-            }
-            double[] sum = new double[items.Count];
-            double[] count = new double[items.Count];
-            double[] quarate = new double[items.Count];
-            //items.Clear();
-            DataTable dtt = opt.CreateDataSetOra(que).Tables[0];
-            int j = -1;
-            for (int i = 0; i < dtt.Rows.Count; i++) {
-                String temp = dtt.Rows[i][2].ToString().Substring(0, 3);
-                j=items.FindIndex(a=>a==temp);
-                if (-1==j)
-                {
-                    continue;
-              
-                    
-                }
-                sum[j] += double.Parse(dtt.Rows[i][9].ToString());
-                
-                //quarate[j] += Convert.ToInt32(dt.Rows[i][4].ToString());
-                count[j]++;
-            }
-            for (int i = 0; i < sum.Length; i++) {
-                if (count[i] == 0) {
-                    sum[i] = 0;
-                    continue;
-                }
-                sum[i] = sum[i] / count[i];
-            }
-            return sum;
-        }
-
-        public double[] getQuaRate(string data)
-        {
-            List<string> items = new List<string>();
-            string query = "select * from hv_qlt_process_inspect_code order by inspect_code";
-            string que = "select * from hv_qlt_process_avg where record_time='"+data+"' order by inspect_code";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataTable dt = opt.CreateDataSetOra(query).Tables[0];
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                String temp = dt.Rows[i][2].ToString().Substring(0, 3);
-                System.Diagnostics.Debug.WriteLine(temp);
-                if (!items.Contains(temp))
-                {
-                    items.Add(temp);
-                }
-
-            }
-            double[] sum = new double[items.Count];
-            double[] count = new double[items.Count];
-            double[] quarate = new double[items.Count];
-            //items.Clear();
-            DataTable dtt = opt.CreateDataSetOra(que).Tables[0];
-            int j = -1;
-            for (int i = 0; i < dtt.Rows.Count; i++)
-            {
-                String temp = dtt.Rows[i][2].ToString().Substring(0, 3);
-                j = items.FindIndex(a => a == temp);
-                if (-1 == j)
-                {
-                    continue;
-
-
-                }
-                quarate[j] += double.Parse(dtt.Rows[i][4].ToString());
-
-                //quarate[j] += Convert.ToInt32(dt.Rows[i][4].ToString());
-                count[j]++;
-            }
-            for (int i = 0; i < sum.Length; i++)
-            {
-                if (count[i] == 0)
-                {
-                    quarate[i] = 0;
-                    continue;
-                }
-                quarate[i] = quarate[i] / count[i];
-            }
-            return quarate;
-        }
-
-
-        public int[] getInterval(String data)
-        {
-            List<string> items = new List<string>();
-            string query = "select * from hv_qlt_process_inspect_code order by inspect_code";
-            string que = "select * from hv_qlt_process_avg where record_time='"+data+"' order by inspect_code";
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataTable dt = opt.CreateDataSetOra(query).Tables[0];
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                String temp = dt.Rows[i][2].ToString().Substring(0, 3);
-                System.Diagnostics.Debug.WriteLine(temp);
-                if (!items.Contains(temp))
-                {
-                    items.Add(temp);
-                }
-
-            }
-            double[] sum = new double[items.Count];
-            int[] count = new int[items.Count];
-            double[] quarate = new double[items.Count];
-            items.Clear();
-            DataTable dtt = opt.CreateDataSetOra(que).Tables[0];
-            int j = -1;
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                string temp = dt.Rows[i][2].ToString().Substring(0, 3);
-                if (!items.Contains(temp))
-                {
-                    items.Add(temp);
-                    j++;
-                }
-                count[j]++;
-                
-            }
-            return count;
-        }
-        public void addCSS(String path) {
-            StreamReader sr = new StreamReader(path, System.Text.Encoding.GetEncoding("GB2312"));
-            string str = sr.ReadToEnd();
-            sr.Close();
-            int index = str.IndexOf("<head>");
-            string css = "<style>table{text-align: center;}</style>";
-            str = str.Insert(index+6, css);
-            
-            StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.GetEncoding("GB2312"));
-            sw.WriteLine(str);
-            sw.Close();
-        }
 
         public void ExportExcel(string filename, string brand, string startDate, string endDate, string team, string style,string month,DateTime date,bool merge)
         {

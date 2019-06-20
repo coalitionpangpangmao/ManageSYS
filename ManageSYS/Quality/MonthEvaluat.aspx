@@ -130,7 +130,7 @@
                              过程检测
                              </div>
                         <asp:GridView ID="GridView3" runat="server" ShowHeaderWhenEmpty="True"
-                            CssClass="grid" AutoGenerateColumns ="true" OnRowCreated="GridView3_RowCreated">
+                            CssClass="grid2" AutoGenerateColumns ="true" OnRowCreated="GridView3_RowCreated">
 
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" />

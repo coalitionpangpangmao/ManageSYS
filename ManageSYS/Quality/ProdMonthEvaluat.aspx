@@ -139,8 +139,8 @@
                 <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                     <ContentTemplate>
                         <asp:GridView ID="GridView4" runat="server" ShowHeaderWhenEmpty="True"
-                            CssClass="grid" AutoGenerateColumns ="true" OnRowCreated="GridView4_RowCreated">
-                            <HeaderStyle CssClass="gridheader" />
+                            CssClass="grid2" AutoGenerateColumns ="true" OnRowCreated="GridView4_RowCreated">
+                            <HeaderStyle CssClass="gridheader"/>
                             <RowStyle CssClass="gridrow" />
                             <AlternatingRowStyle CssClass="gridalterrow" />
                         </asp:GridView>

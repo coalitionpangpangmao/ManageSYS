@@ -263,6 +263,7 @@
                     </div>
                 </div>
             </div>
+            </div>
 
         <script type="text/javascript">
             $('.tablelist tbody tr:odd').addClass('odd');

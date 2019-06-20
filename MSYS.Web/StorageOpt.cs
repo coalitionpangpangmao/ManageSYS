@@ -100,32 +100,7 @@ namespace MSYS.Web
          
         }
 
-        protected  void updateWarehouse()
-        {
-            MSYS.Web.StoreService.StoreServiceInterfaceService service = new MSYS.Web.StoreService.StoreServiceInterfaceService();
-
-            service.getMaterialWarehouseListCompleted += new getMaterialWarehouseListCompletedEventHandler(wareHouseUpdate_Completed);
-            service.getMaterialWarehouseListAsync();
-
-        }
-
-        private static void wareHouseUpdate_Completed(object sender, getMaterialWarehouseListCompletedEventArgs e)
-        {
-            hashMap[] lists = e.Result;
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-           
-           // string[] seg = { "ID", "MATTREE_CODE", "MATTREE_NAME", "IS_DEL", "PK_CLASS", "PK_PARENT_CLASS" };
-
-            foreach (hashMap list in lists)
-            {
-                string[] value = {};
-             //   string temp = opt.getMergeStr(seg, value, 1, "HT_PUB_MATTREE");
-                //  commandlist.Add(temp);
-                //if (opt.UpDateOra(temp) != "Success")
-                //    System.Diagnostics.Debug.Write(temp);
-            }
-            
-        }
+     
     }
 
 

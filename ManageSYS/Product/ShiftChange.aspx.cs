@@ -159,7 +159,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             txtRemark.Text = row["remark"].ToString();
 
             string endtime = row["date_end"].ToString();
-            opt.bindDropDownList(listPlanno, "select planno from  ht_prod_report  where  ('" + endtime + "' between starttime and endtime)  or ('" + endtime + "' >starttime and endtime is null) ", "planno", "planno");
+            opt.bindDropDownList(listPlanno, "select distinct planno from  ht_prod_report  where  ('" + endtime + "' between starttime and endtime)  or ('" + endtime + "' >starttime and endtime is null) ", "planno", "planno");
             listPlanno.SelectedValue = row["计划号"].ToString();
 
         }

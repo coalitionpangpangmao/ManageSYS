@@ -8,6 +8,9 @@
     margin-right: 0;
     margin-top: 0;
 }
+.proc {
+    width:max-content;
+}
 body{font-family:'微软雅黑'; margin:0 auto;min-width:980px;}
 ul{display:block;margin:0;padding:0;list-style:none;}
 li{display:block;margin:0;padding:0;list-style: none;}
@@ -79,7 +82,7 @@ h2{font-weight:normal;}
 .dfinput{width:345px; height:25px; line-height:25px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .dfinput1{width:150px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .tbinput{width:70px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
-.tbinput1{width:100px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
+.tbinput1{width:105px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 .tbinputcenter{text-align:center; width:100px; height:20px; line-height:20px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
 
 .disableinput{    background: none repeat-x;    text-indent: 10px;    background-color: #C0C0C0;}
@@ -96,7 +99,8 @@ h2{font-weight:normal;}
 .datable td {border-top: 1px solid #FFFFFF; border-left: 1px solid #FFFFFF;}
 /*gridview2*/
 .grid{border:solid 1px #cbcbcb; width:100%; clear:both;}
-.gridheader{ background: url(../images/th.gif) repeat-x;    height: 34px;    line-height: 34px;    border-bottom: solid 1px #b6cad2;    text-indent: 11px;    text-align: center;}
+.grid2{border:solid 1px #cbcbcb; width:150%; clear:both;}
+.gridheader{ background: url(../images/th.gif) repeat-x;    height: 34px;    line-height: 14px;    border-bottom: solid 1px #b6cad2;    text-indent: 11px;    text-align: center;}
 .gridrow{line-height:25px; text-indent:11px; border-right: dotted 1px #c7c7c7;background-color: #FFFFFF;text-align: center;}
 .gridalterrow{line-height:25px; text-indent:11px; border-right: dotted 1px #c7c7c7; background-color: #F2F9FF;text-align: center;}
 .gridpager{    background-color: #b6cad2;    height: 28px;    line-height: 28px;    border-bottom: solid 1px #b6cad2;    text-indent: 11px;    text-align: center;}
@@ -152,7 +156,9 @@ h2{font-weight:normal;}
 
 
 .labinfo{ height:25px;display:block; float:left;}
-.drpdwnlist{line-height:23px;height:23px;    border: thin ridge #CCCCFF;    width: 150px;    color: #000;    background-color: #FFFFFF;    overflow: scroll;    visibility: visible;}
+.drpdwnlist{line-height:23px;height:23px;    border: thin ridge #CCCCFF;    width: 150px;    color: #000;    background-color: #FFFFFF;    overflow: scroll;    visibility: visible;
+    margin-bottom: 0px;
+}
 
 
 /*tip*/

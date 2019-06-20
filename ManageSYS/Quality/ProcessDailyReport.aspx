@@ -59,13 +59,13 @@
 
             <div id="app">
                 <div id="tablebutton" style="display:none" @click="search()"></div>
-                <table id = "Msysexport" class = "reporttable" style="text-align:right">
+                <table id = "Msysexport" class = "reporttable2" style="text-align:center">
         <thead>
         <th :colspan="2+AllCheckItems.length">{{time}}梗丝日报</th>
         </thead>
         <tbody>
             <tr>
-                <td rowspan="2" style="text-align:right">配方</td>
+                <td rowspan="2" style="text-align:center">配方</td>
                 <td>检测项目</td>
                 <td v-for="(item, index) in  UniqueCheckItems" :colspan="CheckTimes[index]">{{item}}</td>
             </tr>
@@ -74,7 +74,7 @@
                 <td v-for="(item, index) in CheckTimes" :colspan="item">{{Standar[index].standar}}</td>
             </tr>
             <tr>
-                <td rowspan="5" style="text-align:right">当日</td>
+                <td rowspan="5" style="text-align:center">当日</td>
                 <td rowspan="3">检测结果</td>
                 
                 
@@ -101,7 +101,7 @@
               
             </tr>
             <tr>
-                <td rowspan="3" style="text-align:right">月度</td>
+                <td rowspan="3" style="text-align:center">月度</td>
                 <td>均值</td>
                  <td v-for="(item, index) in CheckTimes" :colspan="item">{{MonthAvg[index]}}</td>
                

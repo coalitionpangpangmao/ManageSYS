@@ -371,7 +371,7 @@ public partial class Quality_Inspect_Process : MSYS.Web.BasePage
             temp.Add(data.Tables[0].Rows[0][5].ToString(), data.Tables[0].Rows[0][6].ToString());
             for (int i = 1; i < data.Tables[0].Rows.Count; i++)
             {
-                if (data.Tables[0].Rows[i][4] == temp["time"] && data.Tables[0].Rows[i][2] == temp["team"])
+                if (data.Tables[0].Rows[i][4].ToString() == temp["time"] && data.Tables[0].Rows[i][2].ToString() == temp["team"])
                 {
                     temp.Add(data.Tables[0].Rows[i][5].ToString(), data.Tables[0].Rows[i][6].ToString());
                 }

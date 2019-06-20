@@ -97,7 +97,7 @@ public partial class Product_Schedual : MSYS.Web.BasePage
                 if (h == 3)
                     h = 0;
                 TeamSchedula schedule = schedules.ToArray()[h];
-                while (startdate <= tempdate && startdate <= enddate)
+                while (startdate < tempdate && startdate <= enddate)
                 {
 
                     for (int i = 0; i < GridView1.Rows.Count; i++)

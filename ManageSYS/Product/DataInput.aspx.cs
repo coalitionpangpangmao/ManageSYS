@@ -191,7 +191,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
     protected void ListProd2_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        opt.bindDropDownList(listPlanno, "select distinct planno from ht_prod_report  where prod_code = '" + listProd2.SelectedValue + "'", "planno", "planno");
+        opt.bindDropDownList(listPlanno, "select distinct planno from ht_prod_report  where prod_code = '" + listProd2.SelectedValue + "' order by planno desc", "planno", "planno");
     }
 
  
@@ -216,7 +216,7 @@ public partial class Product_DataInput : MSYS.Web.BasePage
             else
             {
                 MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
-                string[] seg = { "PLANNO", "PROD_CODE", "SECTION_CODE", "TEAM", "TIME", "PARA_CODE", "CREATOR", "VALUE", };
+                string[] seg = { "PLANNO", "PROD_CODE", "SECTION_CODE", "TEAM", "TIME", "PARA_CODE", "CREATOR", "VALUE" };
                 foreach (GridViewRow row in GridView2.Rows)
                 {
                     string paravalue = ((TextBox)row.FindControl("txtParavalue")).Text;
