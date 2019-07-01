@@ -5,14 +5,20 @@
       <xs:element name="DOCUMENT" nillable="true" type="xs:anyType" />
       <xs:element name="fuliaoInAndOut4ws_03" type="tns:fuliaoInAndOut4ws_03" />
       <xs:element name="fuliaoInAndOut4ws_03Response" type="tns:fuliaoInAndOut4ws_03Response" />
+      <xs:element name="getAccOnhandList" type="tns:getAccOnhandList" />
+      <xs:element name="getAccOnhandListResponse" type="tns:getAccOnhandListResponse" />
       <xs:element name="getCategoryList" type="tns:getCategoryList" />
       <xs:element name="getCategoryListResponse" type="tns:getCategoryListResponse" />
+      <xs:element name="getFLCategoryList" type="tns:getFLCategoryList" />
+      <xs:element name="getFLCategoryListResponse" type="tns:getFLCategoryListResponse" />
       <xs:element name="getMatOnhandNoPageList" type="tns:getMatOnhandNoPageList" />
       <xs:element name="getMatOnhandNoPageListResponse" type="tns:getMatOnhandNoPageListResponse" />
       <xs:element name="getMatSapOnhandList" type="tns:getMatSapOnhandList" />
       <xs:element name="getMatSapOnhandListResponse" type="tns:getMatSapOnhandListResponse" />
       <xs:element name="getMaterialWarehouseList" type="tns:getMaterialWarehouseList" />
       <xs:element name="getMaterialWarehouseListResponse" type="tns:getMaterialWarehouseListResponse" />
+      <xs:element name="getOnhandNoBjPageList" type="tns:getOnhandNoBjPageList" />
+      <xs:element name="getOnhandNoBjPageListResponse" type="tns:getOnhandNoBjPageListResponse" />
       <xs:element name="getSapCityList" type="tns:getSapCityList" />
       <xs:element name="getSapCityListResponse" type="tns:getSapCityListResponse" />
       <xs:element name="getSapLevelList" type="tns:getSapLevelList" />
@@ -47,69 +53,20 @@
       <xs:complexType name="abstractMap" abstract="true">
         <xs:sequence />
       </xs:complexType>
+      <xs:complexType name="getFLCategoryList">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="getFLCategoryListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getCategoryList">
         <xs:sequence />
       </xs:complexType>
       <xs:complexType name="getCategoryListResponse">
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="yuanfuCgrk">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="arg0" type="tns:poOrderAllVO" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="poOrderAllVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="bz" type="xs:string" />
-          <xs:element minOccurs="0" name="bzName" type="xs:string" />
-          <xs:element minOccurs="0" name="cgbm" type="xs:string" />
-          <xs:element minOccurs="0" name="cgbmName" type="xs:string" />
-          <xs:element minOccurs="0" name="cgy" type="xs:string" />
-          <xs:element minOccurs="0" name="cgyName" type="xs:string" />
-          <xs:element minOccurs="0" name="cwarehouseName" type="xs:string" />
-          <xs:element minOccurs="0" name="cwarehouseid" type="xs:string" />
-          <xs:element minOccurs="0" name="ddrq" type="xs:string" />
-          <xs:element minOccurs="0" name="gys" type="xs:string" />
-          <xs:element minOccurs="0" name="gysName" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="icPurchaseinBVOList" nillable="true" type="tns:icPurchaseinBVO" />
-          <xs:element minOccurs="0" name="id" type="xs:string" />
-          <xs:element minOccurs="0" name="isNc" type="xs:string" />
-          <xs:element minOccurs="0" name="kpgys" type="xs:string" />
-          <xs:element minOccurs="0" name="kpgysName" type="xs:string" />
-          <xs:element minOccurs="0" name="materType" type="xs:string" />
-          <xs:element minOccurs="0" name="status" type="xs:string" />
-          <xs:element name="sumNum" type="xs:double" />
-          <xs:element name="sunPrice" type="xs:double" />
-          <xs:element minOccurs="0" name="zdkslb" type="xs:string" />
-          <xs:element minOccurs="0" name="zdsl" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="icPurchaseinBVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="cgeneralbid" type="xs:string" />
-          <xs:element minOccurs="0" name="clocationid" type="xs:string" />
-          <xs:element minOccurs="0" name="crowno" type="xs:string" />
-          <xs:element minOccurs="0" name="cunitid" type="xs:string" />
-          <xs:element minOccurs="0" name="dbizdate" type="xs:string" />
-          <xs:element minOccurs="0" name="localName" type="xs:string" />
-          <xs:element minOccurs="0" name="materialCode" type="xs:string" />
-          <xs:element minOccurs="0" name="materialName" type="xs:string" />
-          <xs:element minOccurs="0" name="materialspec" type="xs:string" />
-          <xs:element minOccurs="0" name="materialtype" type="xs:string" />
-          <xs:element minOccurs="0" name="nmny" type="xs:double" />
-          <xs:element minOccurs="0" name="nnum" type="xs:double" />
-          <xs:element minOccurs="0" name="nshouldnum" type="xs:double" />
-          <xs:element minOccurs="0" name="ntax" type="xs:double" />
-          <xs:element minOccurs="0" name="taxPrice" type="xs:double" />
-          <xs:element minOccurs="0" name="unitCode" type="xs:string" />
-          <xs:element minOccurs="0" name="unitName" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="yuanfuCgrkResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="getMatOnhandNoPageList">
@@ -152,6 +109,7 @@
               <xs:element minOccurs="0" name="materCategory" type="xs:string" />
               <xs:element minOccurs="0" name="categoryCode" type="xs:string" />
               <xs:element minOccurs="0" name="materType" type="xs:string" />
+              <xs:element minOccurs="0" name="materType2" type="xs:string" />
               <xs:element minOccurs="0" name="specVal" type="xs:string" />
               <xs:element minOccurs="0" name="modelVal" type="xs:string" />
               <xs:element minOccurs="0" name="typeCode" type="xs:string" />
@@ -189,14 +147,6 @@
           <xs:element minOccurs="0" name="start" type="xs:int" />
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="getSapLevelList">
-        <xs:sequence />
-      </xs:complexType>
-      <xs:complexType name="getSapLevelListResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="getMatSapOnhandList">
         <xs:sequence>
           <xs:element minOccurs="0" name="arg0" type="tns:tWaSaponhand" />
@@ -206,6 +156,7 @@
         <xs:complexContent mixed="false">
           <xs:extension base="tns:baseVO">
             <xs:sequence>
+              <xs:element minOccurs="0" name="charg" type="xs:string" />
               <xs:element minOccurs="0" name="clocationid" type="xs:string" />
               <xs:element minOccurs="0" name="cwarehouseid" type="xs:string" />
               <xs:element minOccurs="0" name="id" type="xs:long" />
@@ -320,6 +271,71 @@
           <xs:element minOccurs="0" name="status" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="yuanfuCgrk">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:poOrderAllVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="poOrderAllVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="bz" type="xs:string" />
+          <xs:element minOccurs="0" name="bzName" type="xs:string" />
+          <xs:element minOccurs="0" name="cgbm" type="xs:string" />
+          <xs:element minOccurs="0" name="cgbmName" type="xs:string" />
+          <xs:element minOccurs="0" name="cgy" type="xs:string" />
+          <xs:element minOccurs="0" name="cgyName" type="xs:string" />
+          <xs:element minOccurs="0" name="cwarehouseName" type="xs:string" />
+          <xs:element minOccurs="0" name="cwarehouseid" type="xs:string" />
+          <xs:element minOccurs="0" name="ddrq" type="xs:string" />
+          <xs:element minOccurs="0" name="gys" type="xs:string" />
+          <xs:element minOccurs="0" name="gysName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="icPurchaseinBVOList" nillable="true" type="tns:icPurchaseinBVO" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="isNc" type="xs:string" />
+          <xs:element minOccurs="0" name="kpgys" type="xs:string" />
+          <xs:element minOccurs="0" name="kpgysName" type="xs:string" />
+          <xs:element minOccurs="0" name="materType" type="xs:string" />
+          <xs:element minOccurs="0" name="status" type="xs:string" />
+          <xs:element name="sumNum" type="xs:double" />
+          <xs:element name="sunPrice" type="xs:double" />
+          <xs:element minOccurs="0" name="zdkslb" type="xs:string" />
+          <xs:element minOccurs="0" name="zdsl" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="icPurchaseinBVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cgeneralbid" type="xs:string" />
+          <xs:element minOccurs="0" name="clocationid" type="xs:string" />
+          <xs:element minOccurs="0" name="crowno" type="xs:string" />
+          <xs:element minOccurs="0" name="cunitid" type="xs:string" />
+          <xs:element minOccurs="0" name="dbizdate" type="xs:string" />
+          <xs:element minOccurs="0" name="localName" type="xs:string" />
+          <xs:element minOccurs="0" name="materialCode" type="xs:string" />
+          <xs:element minOccurs="0" name="materialName" type="xs:string" />
+          <xs:element minOccurs="0" name="materialspec" type="xs:string" />
+          <xs:element minOccurs="0" name="materialtype" type="xs:string" />
+          <xs:element minOccurs="0" name="nmny" type="xs:double" />
+          <xs:element minOccurs="0" name="nnum" type="xs:double" />
+          <xs:element minOccurs="0" name="nshouldnum" type="xs:double" />
+          <xs:element minOccurs="0" name="ntax" type="xs:double" />
+          <xs:element minOccurs="0" name="taxPrice" type="xs:double" />
+          <xs:element minOccurs="0" name="unitCode" type="xs:string" />
+          <xs:element minOccurs="0" name="unitName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="yuanfuCgrkResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getSapLevelList">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="getSapLevelListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="insertMaterialPurchaseinInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="contentXml" type="xs:string" />
@@ -338,12 +354,14 @@
           <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="getSapProvinceList">
-        <xs:sequence />
-      </xs:complexType>
-      <xs:complexType name="getSapProvinceListResponse">
+      <xs:complexType name="getAccOnhandList">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
+          <xs:element minOccurs="0" name="arg0" type="tns:tWaOnhand" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getAccOnhandListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tWaOnhand" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="yuanliaoInAndOut4ws_03">
@@ -354,6 +372,29 @@
       <xs:complexType name="yuanliaoInAndOut4ws_03Response">
         <xs:sequence>
           <xs:element minOccurs="0" name="return" type="tns:wsRespond" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getSapProvinceList">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="getSapProvinceListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:hashMap" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getOnhandNoBjPageList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+          <xs:element minOccurs="0" name="arg1" type="xs:string" />
+          <xs:element minOccurs="0" name="arg2" type="xs:string" />
+          <xs:element minOccurs="0" name="arg3" type="xs:string" />
+          <xs:element minOccurs="0" name="arg4" type="xs:string" />
+          <xs:element minOccurs="0" name="arg5" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getOnhandNoBjPageListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tWaOnhand" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="getSapPlaceList">
@@ -386,11 +427,17 @@
   <wsdl:message name="insertMaterialPurchaseinInfoResponse">
     <wsdl:part name="parameters" element="tns:insertMaterialPurchaseinInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="getOnhandNoBjPageList">
+    <wsdl:part name="parameters" element="tns:getOnhandNoBjPageList" />
+  </wsdl:message>
   <wsdl:message name="yuanliaoInAndOut4ws_03Response">
     <wsdl:part name="parameters" element="tns:yuanliaoInAndOut4ws_03Response" />
   </wsdl:message>
   <wsdl:message name="getCategoryList">
     <wsdl:part name="parameters" element="tns:getCategoryList" />
+  </wsdl:message>
+  <wsdl:message name="getFLCategoryListResponse">
+    <wsdl:part name="parameters" element="tns:getFLCategoryListResponse" />
   </wsdl:message>
   <wsdl:message name="getSapLevelListResponse">
     <wsdl:part name="parameters" element="tns:getSapLevelListResponse" />
@@ -403,6 +450,9 @@
   </wsdl:message>
   <wsdl:message name="getSapCityListResponse">
     <wsdl:part name="parameters" element="tns:getSapCityListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getFLCategoryList">
+    <wsdl:part name="parameters" element="tns:getFLCategoryList" />
   </wsdl:message>
   <wsdl:message name="insertMaterialPurchaseinInfo">
     <wsdl:part name="parameters" element="tns:insertMaterialPurchaseinInfo" />
@@ -422,6 +472,9 @@
   <wsdl:message name="getSapCityList">
     <wsdl:part name="parameters" element="tns:getSapCityList" />
   </wsdl:message>
+  <wsdl:message name="getAccOnhandList">
+    <wsdl:part name="parameters" element="tns:getAccOnhandList" />
+  </wsdl:message>
   <wsdl:message name="getSapPlaceListResponse">
     <wsdl:part name="parameters" element="tns:getSapPlaceListResponse" />
   </wsdl:message>
@@ -434,8 +487,14 @@
   <wsdl:message name="getSapMatgroupList">
     <wsdl:part name="parameters" element="tns:getSapMatgroupList" />
   </wsdl:message>
+  <wsdl:message name="getAccOnhandListResponse">
+    <wsdl:part name="parameters" element="tns:getAccOnhandListResponse" />
+  </wsdl:message>
   <wsdl:message name="getSapPlaceList">
     <wsdl:part name="parameters" element="tns:getSapPlaceList" />
+  </wsdl:message>
+  <wsdl:message name="getOnhandNoBjPageListResponse">
+    <wsdl:part name="parameters" element="tns:getOnhandNoBjPageListResponse" />
   </wsdl:message>
   <wsdl:message name="getMatOnhandNoPageListResponse">
     <wsdl:part name="parameters" element="tns:getMatOnhandNoPageListResponse" />
@@ -457,21 +516,17 @@
       <wsdl:input name="getMaterialWarehouseList" message="tns:getMaterialWarehouseList" />
       <wsdl:output name="getMaterialWarehouseListResponse" message="tns:getMaterialWarehouseListResponse" />
     </wsdl:operation>
+    <wsdl:operation name="getFLCategoryList">
+      <wsdl:input name="getFLCategoryList" message="tns:getFLCategoryList" />
+      <wsdl:output name="getFLCategoryListResponse" message="tns:getFLCategoryListResponse" />
+    </wsdl:operation>
     <wsdl:operation name="getCategoryList">
       <wsdl:input name="getCategoryList" message="tns:getCategoryList" />
       <wsdl:output name="getCategoryListResponse" message="tns:getCategoryListResponse" />
     </wsdl:operation>
-    <wsdl:operation name="yuanfuCgrk">
-      <wsdl:input name="yuanfuCgrk" message="tns:yuanfuCgrk" />
-      <wsdl:output name="yuanfuCgrkResponse" message="tns:yuanfuCgrkResponse" />
-    </wsdl:operation>
     <wsdl:operation name="getMatOnhandNoPageList">
       <wsdl:input name="getMatOnhandNoPageList" message="tns:getMatOnhandNoPageList" />
       <wsdl:output name="getMatOnhandNoPageListResponse" message="tns:getMatOnhandNoPageListResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="getSapLevelList">
-      <wsdl:input name="getSapLevelList" message="tns:getSapLevelList" />
-      <wsdl:output name="getSapLevelListResponse" message="tns:getSapLevelListResponse" />
     </wsdl:operation>
     <wsdl:operation name="getMatSapOnhandList">
       <wsdl:input name="getMatSapOnhandList" message="tns:getMatSapOnhandList" />
@@ -481,6 +536,14 @@
       <wsdl:input name="fuliaoInAndOut4ws_03" message="tns:fuliaoInAndOut4ws_03" />
       <wsdl:output name="fuliaoInAndOut4ws_03Response" message="tns:fuliaoInAndOut4ws_03Response" />
     </wsdl:operation>
+    <wsdl:operation name="yuanfuCgrk">
+      <wsdl:input name="yuanfuCgrk" message="tns:yuanfuCgrk" />
+      <wsdl:output name="yuanfuCgrkResponse" message="tns:yuanfuCgrkResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getSapLevelList">
+      <wsdl:input name="getSapLevelList" message="tns:getSapLevelList" />
+      <wsdl:output name="getSapLevelListResponse" message="tns:getSapLevelListResponse" />
+    </wsdl:operation>
     <wsdl:operation name="insertMaterialPurchaseinInfo">
       <wsdl:input name="insertMaterialPurchaseinInfo" message="tns:insertMaterialPurchaseinInfo" />
       <wsdl:output name="insertMaterialPurchaseinInfoResponse" message="tns:insertMaterialPurchaseinInfoResponse" />
@@ -489,13 +552,21 @@
       <wsdl:input name="getSapMatgroupList" message="tns:getSapMatgroupList" />
       <wsdl:output name="getSapMatgroupListResponse" message="tns:getSapMatgroupListResponse" />
     </wsdl:operation>
-    <wsdl:operation name="getSapProvinceList">
-      <wsdl:input name="getSapProvinceList" message="tns:getSapProvinceList" />
-      <wsdl:output name="getSapProvinceListResponse" message="tns:getSapProvinceListResponse" />
+    <wsdl:operation name="getAccOnhandList">
+      <wsdl:input name="getAccOnhandList" message="tns:getAccOnhandList" />
+      <wsdl:output name="getAccOnhandListResponse" message="tns:getAccOnhandListResponse" />
     </wsdl:operation>
     <wsdl:operation name="yuanliaoInAndOut4ws_03">
       <wsdl:input name="yuanliaoInAndOut4ws_03" message="tns:yuanliaoInAndOut4ws_03" />
       <wsdl:output name="yuanliaoInAndOut4ws_03Response" message="tns:yuanliaoInAndOut4ws_03Response" />
+    </wsdl:operation>
+    <wsdl:operation name="getSapProvinceList">
+      <wsdl:input name="getSapProvinceList" message="tns:getSapProvinceList" />
+      <wsdl:output name="getSapProvinceListResponse" message="tns:getSapProvinceListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getOnhandNoBjPageList">
+      <wsdl:input name="getOnhandNoBjPageList" message="tns:getOnhandNoBjPageList" />
+      <wsdl:output name="getOnhandNoBjPageListResponse" message="tns:getOnhandNoBjPageListResponse" />
     </wsdl:operation>
     <wsdl:operation name="getSapPlaceList">
       <wsdl:input name="getSapPlaceList" message="tns:getSapPlaceList" />
@@ -508,6 +579,15 @@
   </wsdl:portType>
   <wsdl:binding name="StoreServiceInterfaceServiceSoapBinding" type="tns:StoreServiceInterface">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getFLCategoryList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getFLCategoryList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getFLCategoryListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getMaterialWarehouseList">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getMaterialWarehouseList">
@@ -535,30 +615,12 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="yuanfuCgrk">
-      <soap:operation soapAction="" style="document" />
-      <wsdl:input name="yuanfuCgrk">
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="yuanfuCgrkResponse">
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="getMatSapOnhandList">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getMatSapOnhandList">
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getMatSapOnhandListResponse">
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="getSapLevelList">
-      <soap:operation soapAction="" style="document" />
-      <wsdl:input name="getSapLevelList">
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="getSapLevelListResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -571,6 +633,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="yuanfuCgrk">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="yuanfuCgrk">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="yuanfuCgrkResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSapLevelList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getSapLevelList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getSapLevelListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="insertMaterialPurchaseinInfo">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="insertMaterialPurchaseinInfo">
@@ -580,12 +660,39 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getAccOnhandList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAccOnhandList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAccOnhandListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getSapMatgroupList">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getSapMatgroupList">
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getSapMatgroupListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="yuanliaoInAndOut4ws_03">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="yuanliaoInAndOut4ws_03">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="yuanliaoInAndOut4ws_03Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOnhandNoBjPageList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getOnhandNoBjPageList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getOnhandNoBjPageListResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -604,15 +711,6 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getSapPlaceListResponse">
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="yuanliaoInAndOut4ws_03">
-      <soap:operation soapAction="" style="document" />
-      <wsdl:input name="yuanliaoInAndOut4ws_03">
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="yuanliaoInAndOut4ws_03Response">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

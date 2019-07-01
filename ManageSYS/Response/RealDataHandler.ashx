@@ -30,6 +30,8 @@ public struct ResponseData
     public List<string> xAxis;
     public List<double> yAxis;
     public string statics;
+    public double max;
+    public double min;
 }
 [Serializable]
 public struct pointData
@@ -163,6 +165,8 @@ public class RealDataHandler : IHttpHandler
                          }
                      }
                      datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
+                     datainfo.min = datainfo.yAxis.Min();
+                     datainfo.max = datainfo.yAxis.Max();
                  }
             }
 

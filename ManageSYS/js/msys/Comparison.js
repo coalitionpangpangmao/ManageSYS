@@ -229,6 +229,12 @@ function DrawChartWithStd(result) {
     var errdev = result["errdev"];
     var xAxis = result["xAxis"];
     var yAxis = result["yAxis"];
+    var max = result["max"];
+    var min = result["min"];
+    if (max < upper + (upper - value))
+        max = upper + (upper - value);
+    if (min > lower - (value - lower))
+        min = lower - (value - lower);
     var para_name = result["para_name"];
     if (xAxis == null) {
         alert('没有从数据库获取数据，请查看质量采集设置是否正确，或IH实时数据库是否正常！！');
@@ -254,6 +260,8 @@ function DrawChartWithStd(result) {
             minorGridLineWidth: 0,
             gridLineWidth: 0,
             alternateGridColor: null,
+            min:min,
+            max:max,
             plotBands: [{ // Light air
                 from: Number.NEGATIVE_INFINITY,
                 to: lower,

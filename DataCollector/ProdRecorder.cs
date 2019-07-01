@@ -69,16 +69,14 @@ namespace DataCollect
         public static void ProdRecord(DateTime datetime)
         {
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            DataSet times = opt.CreateDataSetOra("select date_begin  as time ,team_code from ht_prod_schedule where substr(date_begin,1,10) = '" + datetime.ToString("yyyy-MM-dd") + "' union select date_end as time,team_code  from ht_prod_schedule where substr(date_end,1,10) ='" + datetime.ToString("yyyy-MM-dd") + "' union select starttime  as time ,''  from ht_prod_report where substr(starttime,1,10) = '" + datetime.ToString("yyyy-MM-dd") + "' union select endtime  as time,''  from ht_prod_report where substr(starttime,1,10) = '" + datetime.ToString("yyyy-MM-dd") + "'");
+            DataSet times = opt.CreateDataSetOra("select date_begin  as time ,team_code from ht_prod_schedule where substr(date_begin,1,10) = '" + datetime.ToString("yyyy-MM-dd") + "' union select date_end as time,team_code  from ht_prod_schedule where substr(date_end,1,10) ='" + datetime.ToString("yyyy-MM-dd") + "' union select starttime  as time ,''  from ht_prod_report where substr(starttime,1,10) = '" + datetime.ToString("yyyy-MM-dd") + "' union select endtime  as time,''  from ht_prod_report where substr(endtime,1,10) = '" + datetime.ToString("yyyy-MM-dd") + "'");
             if (times != null && times.Tables[0].Rows.Count > 0)
             {
-
                 foreach (DataRow time in times.Tables[0].Rows)
                 {
-                    if (datetime - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, 0, -20) && datetime - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1, 20))
+                    if (datetime - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, -1, -20) && datetime - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1, 20))
                         ProdRecord(time["time"].ToString(), time["team_code"].ToString());
                 }
-
             }
 
         }

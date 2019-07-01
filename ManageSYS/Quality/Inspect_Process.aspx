@@ -25,7 +25,7 @@
                 <li><a href="#">过程检验</a></li>
             </ul>
         </div>
-        <div class="formbody">
+        <div class="formbody" style="width:auto">
              <div id="usual1" class="usual">
                 <div class="itab">
                     <ul>
@@ -97,15 +97,15 @@
                             <div style="display:inline-block; text-align:center; margin-left:3px; float:right" class="btn1"  @click="getRows">查询</div>
                             <div style="display:inline-block; float:right" class="btn1"  @click="saveAll">全部保存</div>
                              </div>
-                           <table class="grid" cellspacing="0" rules="all" id="grid" style="border-collapse:collapse" @keydown="keyDown($event)">
+                           <table class="grid" cellspacing="0" rules="all" id="grid" style=" border-collapse:collapse; width:max-content" @keydown="keyDown($event)">
                                <tbody>
                                    <tr class="gridheader">
-                                       <th scope="col">记录时间</th>
-                                       <th scope="col">产品</th>
-                                       <th  scope="col">班组</th>
-                                       <th scope="col">班时</th>
-                                       <th v-for="ti in title"  scope="col">{{ti}}</th>
-                                       <th scope="col">操作</th>
+                                       <th class="proc" scope="col">记录时间</th>
+                                       <th class="proc" scope="col">产品</th>
+                                       <th class="proc" scope="col">班组</th>
+                                       <th class="proc" scope="col">班时</th>
+                                       <th class="proc" v-for="ti in title"  scope="col">{{ti}}</th>
+                                       <th class="proc" scope="col">操作</th>
                                     </tr>
                                     <tr v-for="(date , dindex) in dates" class="gridrow">
                                          <td><input class="tbinput1" id="Text1" type="text" :value="date[0]"></td>
@@ -114,10 +114,10 @@
                                          <td>
                                              <input class="tbinput1" id="Text4" type="text" :value="date[2]"></td>
                                          </td>
-                                        <td v-if="rowsDates.indexOf(date[0])!=-1 &&-1!= rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}}) && index>3 &&index<(title.length+4)" v-for="(item, index) in rows[rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}})]">
-                                            <input :id="dindex.toString()+(index-4).toString()" class="tbinput1" @change="change(dindex, rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}}),index, $event.target.value)" type="text" :value="item">
+                                        <td v-if="rowsDates.indexOf(date[0])!=-1 &&-1!= rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]&&date[2]==ele[3]){return true;}}) && index>3 &&index<(title.length+4)" v-for="(item, index) in rows[rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]&&date[2]==ele[3]){return true;}})]">
+                                            <input :id="dindex.toString()+(index-4).toString()" class="tbinput1" @change="change(dindex, rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]&&date[2]==ele[3]){return true;}}),index, $event.target.value)" type="text" :value="item">
                                         </td>
-                                        <td v-if="rowsDates.indexOf(date[0])==-1||-1== rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]){return true;}})"  v-for="(item, index) in title">
+                                        <td v-if="rowsDates.indexOf(date[0])==-1||-1== rows.findIndex((ele)=>{if(ele[0]==date[0] && date[4]==ele[2]&&date[2]==ele[3]){return true;}})"  v-for="(item, index) in title">
                                             <input class="tbinput1" @change="add(dindex)" :id="dindex.toString()+index.toString()" type="text" value="">
                                         </td>
                                         <td>

@@ -33,25 +33,31 @@ namespace MSYS.Web.StoreService {
         
         private System.Threading.SendOrPostCallback getMaterialWarehouseListOperationCompleted;
         
+        private System.Threading.SendOrPostCallback getFLCategoryListOperationCompleted;
+        
         private System.Threading.SendOrPostCallback getCategoryListOperationCompleted;
         
-        private System.Threading.SendOrPostCallback yuanfuCgrkOperationCompleted;
-        
         private System.Threading.SendOrPostCallback getMatOnhandNoPageListOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback getSapLevelListOperationCompleted;
         
         private System.Threading.SendOrPostCallback getMatSapOnhandListOperationCompleted;
         
         private System.Threading.SendOrPostCallback fuliaoInAndOut4ws_03OperationCompleted;
         
+        private System.Threading.SendOrPostCallback yuanfuCgrkOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getSapLevelListOperationCompleted;
+        
         private System.Threading.SendOrPostCallback insertMaterialPurchaseinInfoOperationCompleted;
         
         private System.Threading.SendOrPostCallback getSapMatgroupListOperationCompleted;
         
-        private System.Threading.SendOrPostCallback getSapProvinceListOperationCompleted;
+        private System.Threading.SendOrPostCallback getAccOnhandListOperationCompleted;
         
         private System.Threading.SendOrPostCallback yuanliaoInAndOut4ws_03OperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getSapProvinceListOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getOnhandNoBjPageListOperationCompleted;
         
         private System.Threading.SendOrPostCallback getSapPlaceListOperationCompleted;
         
@@ -99,16 +105,13 @@ namespace MSYS.Web.StoreService {
         public event getMaterialWarehouseListCompletedEventHandler getMaterialWarehouseListCompleted;
         
         /// <remarks/>
+        public event getFLCategoryListCompletedEventHandler getFLCategoryListCompleted;
+        
+        /// <remarks/>
         public event getCategoryListCompletedEventHandler getCategoryListCompleted;
         
         /// <remarks/>
-        public event yuanfuCgrkCompletedEventHandler yuanfuCgrkCompleted;
-        
-        /// <remarks/>
         public event getMatOnhandNoPageListCompletedEventHandler getMatOnhandNoPageListCompleted;
-        
-        /// <remarks/>
-        public event getSapLevelListCompletedEventHandler getSapLevelListCompleted;
         
         /// <remarks/>
         public event getMatSapOnhandListCompletedEventHandler getMatSapOnhandListCompleted;
@@ -117,16 +120,28 @@ namespace MSYS.Web.StoreService {
         public event fuliaoInAndOut4ws_03CompletedEventHandler fuliaoInAndOut4ws_03Completed;
         
         /// <remarks/>
+        public event yuanfuCgrkCompletedEventHandler yuanfuCgrkCompleted;
+        
+        /// <remarks/>
+        public event getSapLevelListCompletedEventHandler getSapLevelListCompleted;
+        
+        /// <remarks/>
         public event insertMaterialPurchaseinInfoCompletedEventHandler insertMaterialPurchaseinInfoCompleted;
         
         /// <remarks/>
         public event getSapMatgroupListCompletedEventHandler getSapMatgroupListCompleted;
         
         /// <remarks/>
-        public event getSapProvinceListCompletedEventHandler getSapProvinceListCompleted;
+        public event getAccOnhandListCompletedEventHandler getAccOnhandListCompleted;
         
         /// <remarks/>
         public event yuanliaoInAndOut4ws_03CompletedEventHandler yuanliaoInAndOut4ws_03Completed;
+        
+        /// <remarks/>
+        public event getSapProvinceListCompletedEventHandler getSapProvinceListCompleted;
+        
+        /// <remarks/>
+        public event getOnhandNoBjPageListCompletedEventHandler getOnhandNoBjPageListCompleted;
         
         /// <remarks/>
         public event getSapPlaceListCompletedEventHandler getSapPlaceListCompleted;
@@ -165,6 +180,34 @@ namespace MSYS.Web.StoreService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public hashMap[] getFLCategoryList() {
+            object[] results = this.Invoke("getFLCategoryList", new object[0]);
+            return ((hashMap[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getFLCategoryListAsync() {
+            this.getFLCategoryListAsync(null);
+        }
+        
+        /// <remarks/>
+        public void getFLCategoryListAsync(object userState) {
+            if ((this.getFLCategoryListOperationCompleted == null)) {
+                this.getFLCategoryListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetFLCategoryListOperationCompleted);
+            }
+            this.InvokeAsync("getFLCategoryList", new object[0], this.getFLCategoryListOperationCompleted, userState);
+        }
+        
+        private void OngetFLCategoryListOperationCompleted(object arg) {
+            if ((this.getFLCategoryListCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getFLCategoryListCompleted(this, new getFLCategoryListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public hashMap[] getCategoryList() {
             object[] results = this.Invoke("getCategoryList", new object[0]);
             return ((hashMap[])(results[0]));
@@ -187,36 +230,6 @@ namespace MSYS.Web.StoreService {
             if ((this.getCategoryListCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getCategoryListCompleted(this, new getCategoryListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string yuanfuCgrk([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] poOrderAllVO arg0) {
-            object[] results = this.Invoke("yuanfuCgrk", new object[] {
-                        arg0});
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void yuanfuCgrkAsync(poOrderAllVO arg0) {
-            this.yuanfuCgrkAsync(arg0, null);
-        }
-        
-        /// <remarks/>
-        public void yuanfuCgrkAsync(poOrderAllVO arg0, object userState) {
-            if ((this.yuanfuCgrkOperationCompleted == null)) {
-                this.yuanfuCgrkOperationCompleted = new System.Threading.SendOrPostCallback(this.OnyuanfuCgrkOperationCompleted);
-            }
-            this.InvokeAsync("yuanfuCgrk", new object[] {
-                        arg0}, this.yuanfuCgrkOperationCompleted, userState);
-        }
-        
-        private void OnyuanfuCgrkOperationCompleted(object arg) {
-            if ((this.yuanfuCgrkCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.yuanfuCgrkCompleted(this, new yuanfuCgrkCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -257,34 +270,6 @@ namespace MSYS.Web.StoreService {
             if ((this.getMatOnhandNoPageListCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getMatOnhandNoPageListCompleted(this, new getMatOnhandNoPageListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public hashMap[] getSapLevelList() {
-            object[] results = this.Invoke("getSapLevelList", new object[0]);
-            return ((hashMap[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getSapLevelListAsync() {
-            this.getSapLevelListAsync(null);
-        }
-        
-        /// <remarks/>
-        public void getSapLevelListAsync(object userState) {
-            if ((this.getSapLevelListOperationCompleted == null)) {
-                this.getSapLevelListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetSapLevelListOperationCompleted);
-            }
-            this.InvokeAsync("getSapLevelList", new object[0], this.getSapLevelListOperationCompleted, userState);
-        }
-        
-        private void OngetSapLevelListOperationCompleted(object arg) {
-            if ((this.getSapLevelListCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getSapLevelListCompleted(this, new getSapLevelListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -351,6 +336,64 @@ namespace MSYS.Web.StoreService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string yuanfuCgrk([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] poOrderAllVO arg0) {
+            object[] results = this.Invoke("yuanfuCgrk", new object[] {
+                        arg0});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void yuanfuCgrkAsync(poOrderAllVO arg0) {
+            this.yuanfuCgrkAsync(arg0, null);
+        }
+        
+        /// <remarks/>
+        public void yuanfuCgrkAsync(poOrderAllVO arg0, object userState) {
+            if ((this.yuanfuCgrkOperationCompleted == null)) {
+                this.yuanfuCgrkOperationCompleted = new System.Threading.SendOrPostCallback(this.OnyuanfuCgrkOperationCompleted);
+            }
+            this.InvokeAsync("yuanfuCgrk", new object[] {
+                        arg0}, this.yuanfuCgrkOperationCompleted, userState);
+        }
+        
+        private void OnyuanfuCgrkOperationCompleted(object arg) {
+            if ((this.yuanfuCgrkCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.yuanfuCgrkCompleted(this, new yuanfuCgrkCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public hashMap[] getSapLevelList() {
+            object[] results = this.Invoke("getSapLevelList", new object[0]);
+            return ((hashMap[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getSapLevelListAsync() {
+            this.getSapLevelListAsync(null);
+        }
+        
+        /// <remarks/>
+        public void getSapLevelListAsync(object userState) {
+            if ((this.getSapLevelListOperationCompleted == null)) {
+                this.getSapLevelListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetSapLevelListOperationCompleted);
+            }
+            this.InvokeAsync("getSapLevelList", new object[0], this.getSapLevelListOperationCompleted, userState);
+        }
+        
+        private void OngetSapLevelListOperationCompleted(object arg) {
+            if ((this.getSapLevelListCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getSapLevelListCompleted(this, new getSapLevelListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string insertMaterialPurchaseinInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
             object[] results = this.Invoke("insertMaterialPurchaseinInfo", new object[] {
                         contentXml});
@@ -409,28 +452,30 @@ namespace MSYS.Web.StoreService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public hashMap[] getSapProvinceList() {
-            object[] results = this.Invoke("getSapProvinceList", new object[0]);
-            return ((hashMap[])(results[0]));
+        public tWaOnhand[] getAccOnhandList([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] tWaOnhand arg0) {
+            object[] results = this.Invoke("getAccOnhandList", new object[] {
+                        arg0});
+            return ((tWaOnhand[])(results[0]));
         }
         
         /// <remarks/>
-        public void getSapProvinceListAsync() {
-            this.getSapProvinceListAsync(null);
+        public void getAccOnhandListAsync(tWaOnhand arg0) {
+            this.getAccOnhandListAsync(arg0, null);
         }
         
         /// <remarks/>
-        public void getSapProvinceListAsync(object userState) {
-            if ((this.getSapProvinceListOperationCompleted == null)) {
-                this.getSapProvinceListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetSapProvinceListOperationCompleted);
+        public void getAccOnhandListAsync(tWaOnhand arg0, object userState) {
+            if ((this.getAccOnhandListOperationCompleted == null)) {
+                this.getAccOnhandListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetAccOnhandListOperationCompleted);
             }
-            this.InvokeAsync("getSapProvinceList", new object[0], this.getSapProvinceListOperationCompleted, userState);
+            this.InvokeAsync("getAccOnhandList", new object[] {
+                        arg0}, this.getAccOnhandListOperationCompleted, userState);
         }
         
-        private void OngetSapProvinceListOperationCompleted(object arg) {
-            if ((this.getSapProvinceListCompleted != null)) {
+        private void OngetAccOnhandListOperationCompleted(object arg) {
+            if ((this.getAccOnhandListCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getSapProvinceListCompleted(this, new getSapProvinceListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getAccOnhandListCompleted(this, new getAccOnhandListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -461,6 +506,74 @@ namespace MSYS.Web.StoreService {
             if ((this.yuanliaoInAndOut4ws_03Completed != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.yuanliaoInAndOut4ws_03Completed(this, new yuanliaoInAndOut4ws_03CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public hashMap[] getSapProvinceList() {
+            object[] results = this.Invoke("getSapProvinceList", new object[0]);
+            return ((hashMap[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getSapProvinceListAsync() {
+            this.getSapProvinceListAsync(null);
+        }
+        
+        /// <remarks/>
+        public void getSapProvinceListAsync(object userState) {
+            if ((this.getSapProvinceListOperationCompleted == null)) {
+                this.getSapProvinceListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetSapProvinceListOperationCompleted);
+            }
+            this.InvokeAsync("getSapProvinceList", new object[0], this.getSapProvinceListOperationCompleted, userState);
+        }
+        
+        private void OngetSapProvinceListOperationCompleted(object arg) {
+            if ((this.getSapProvinceListCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getSapProvinceListCompleted(this, new getSapProvinceListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public tWaOnhand[] getOnhandNoBjPageList([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg2, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg3, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg4, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg5) {
+            object[] results = this.Invoke("getOnhandNoBjPageList", new object[] {
+                        arg0,
+                        arg1,
+                        arg2,
+                        arg3,
+                        arg4,
+                        arg5});
+            return ((tWaOnhand[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getOnhandNoBjPageListAsync(string arg0, string arg1, string arg2, string arg3, string arg4, string arg5) {
+            this.getOnhandNoBjPageListAsync(arg0, arg1, arg2, arg3, arg4, arg5, null);
+        }
+        
+        /// <remarks/>
+        public void getOnhandNoBjPageListAsync(string arg0, string arg1, string arg2, string arg3, string arg4, string arg5, object userState) {
+            if ((this.getOnhandNoBjPageListOperationCompleted == null)) {
+                this.getOnhandNoBjPageListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetOnhandNoBjPageListOperationCompleted);
+            }
+            this.InvokeAsync("getOnhandNoBjPageList", new object[] {
+                        arg0,
+                        arg1,
+                        arg2,
+                        arg3,
+                        arg4,
+                        arg5}, this.getOnhandNoBjPageListOperationCompleted, userState);
+        }
+        
+        private void OngetOnhandNoBjPageListOperationCompleted(object arg) {
+            if ((this.getOnhandNoBjPageListCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getOnhandNoBjPageListCompleted(this, new getOnhandNoBjPageListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -556,6 +669,596 @@ namespace MSYS.Web.StoreService {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
     public abstract partial class abstractMap {
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class icPurchaseinBVO {
+        
+        private string cgeneralbidField;
+        
+        private string clocationidField;
+        
+        private string crownoField;
+        
+        private string cunitidField;
+        
+        private string dbizdateField;
+        
+        private string localNameField;
+        
+        private string materialCodeField;
+        
+        private string materialNameField;
+        
+        private string materialspecField;
+        
+        private string materialtypeField;
+        
+        private double nmnyField;
+        
+        private bool nmnyFieldSpecified;
+        
+        private double nnumField;
+        
+        private bool nnumFieldSpecified;
+        
+        private double nshouldnumField;
+        
+        private bool nshouldnumFieldSpecified;
+        
+        private double ntaxField;
+        
+        private bool ntaxFieldSpecified;
+        
+        private double taxPriceField;
+        
+        private bool taxPriceFieldSpecified;
+        
+        private string unitCodeField;
+        
+        private string unitNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cgeneralbid {
+            get {
+                return this.cgeneralbidField;
+            }
+            set {
+                this.cgeneralbidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string clocationid {
+            get {
+                return this.clocationidField;
+            }
+            set {
+                this.clocationidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string crowno {
+            get {
+                return this.crownoField;
+            }
+            set {
+                this.crownoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cunitid {
+            get {
+                return this.cunitidField;
+            }
+            set {
+                this.cunitidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string dbizdate {
+            get {
+                return this.dbizdateField;
+            }
+            set {
+                this.dbizdateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string localName {
+            get {
+                return this.localNameField;
+            }
+            set {
+                this.localNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string materialCode {
+            get {
+                return this.materialCodeField;
+            }
+            set {
+                this.materialCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string materialName {
+            get {
+                return this.materialNameField;
+            }
+            set {
+                this.materialNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string materialspec {
+            get {
+                return this.materialspecField;
+            }
+            set {
+                this.materialspecField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string materialtype {
+            get {
+                return this.materialtypeField;
+            }
+            set {
+                this.materialtypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double nmny {
+            get {
+                return this.nmnyField;
+            }
+            set {
+                this.nmnyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nmnySpecified {
+            get {
+                return this.nmnyFieldSpecified;
+            }
+            set {
+                this.nmnyFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double nnum {
+            get {
+                return this.nnumField;
+            }
+            set {
+                this.nnumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nnumSpecified {
+            get {
+                return this.nnumFieldSpecified;
+            }
+            set {
+                this.nnumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double nshouldnum {
+            get {
+                return this.nshouldnumField;
+            }
+            set {
+                this.nshouldnumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nshouldnumSpecified {
+            get {
+                return this.nshouldnumFieldSpecified;
+            }
+            set {
+                this.nshouldnumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double ntax {
+            get {
+                return this.ntaxField;
+            }
+            set {
+                this.ntaxField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ntaxSpecified {
+            get {
+                return this.ntaxFieldSpecified;
+            }
+            set {
+                this.ntaxFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double taxPrice {
+            get {
+                return this.taxPriceField;
+            }
+            set {
+                this.taxPriceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool taxPriceSpecified {
+            get {
+                return this.taxPriceFieldSpecified;
+            }
+            set {
+                this.taxPriceFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string unitCode {
+            get {
+                return this.unitCodeField;
+            }
+            set {
+                this.unitCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string unitName {
+            get {
+                return this.unitNameField;
+            }
+            set {
+                this.unitNameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class poOrderAllVO {
+        
+        private string bzField;
+        
+        private string bzNameField;
+        
+        private string cgbmField;
+        
+        private string cgbmNameField;
+        
+        private string cgyField;
+        
+        private string cgyNameField;
+        
+        private string cwarehouseNameField;
+        
+        private string cwarehouseidField;
+        
+        private string ddrqField;
+        
+        private string gysField;
+        
+        private string gysNameField;
+        
+        private icPurchaseinBVO[] icPurchaseinBVOListField;
+        
+        private string idField;
+        
+        private string isNcField;
+        
+        private string kpgysField;
+        
+        private string kpgysNameField;
+        
+        private string materTypeField;
+        
+        private string statusField;
+        
+        private double sumNumField;
+        
+        private double sunPriceField;
+        
+        private string zdkslbField;
+        
+        private string zdslField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string bz {
+            get {
+                return this.bzField;
+            }
+            set {
+                this.bzField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string bzName {
+            get {
+                return this.bzNameField;
+            }
+            set {
+                this.bzNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cgbm {
+            get {
+                return this.cgbmField;
+            }
+            set {
+                this.cgbmField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cgbmName {
+            get {
+                return this.cgbmNameField;
+            }
+            set {
+                this.cgbmNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cgy {
+            get {
+                return this.cgyField;
+            }
+            set {
+                this.cgyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cgyName {
+            get {
+                return this.cgyNameField;
+            }
+            set {
+                this.cgyNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cwarehouseName {
+            get {
+                return this.cwarehouseNameField;
+            }
+            set {
+                this.cwarehouseNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cwarehouseid {
+            get {
+                return this.cwarehouseidField;
+            }
+            set {
+                this.cwarehouseidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string ddrq {
+            get {
+                return this.ddrqField;
+            }
+            set {
+                this.ddrqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string gys {
+            get {
+                return this.gysField;
+            }
+            set {
+                this.gysField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string gysName {
+            get {
+                return this.gysNameField;
+            }
+            set {
+                this.gysNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("icPurchaseinBVOList", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
+        public icPurchaseinBVO[] icPurchaseinBVOList {
+            get {
+                return this.icPurchaseinBVOListField;
+            }
+            set {
+                this.icPurchaseinBVOListField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string isNc {
+            get {
+                return this.isNcField;
+            }
+            set {
+                this.isNcField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string kpgys {
+            get {
+                return this.kpgysField;
+            }
+            set {
+                this.kpgysField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string kpgysName {
+            get {
+                return this.kpgysNameField;
+            }
+            set {
+                this.kpgysNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string materType {
+            get {
+                return this.materTypeField;
+            }
+            set {
+                this.materTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string status {
+            get {
+                return this.statusField;
+            }
+            set {
+                this.statusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double sumNum {
+            get {
+                return this.sumNumField;
+            }
+            set {
+                this.sumNumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double sunPrice {
+            get {
+                return this.sunPriceField;
+            }
+            set {
+                this.sunPriceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zdkslb {
+            get {
+                return this.zdkslbField;
+            }
+            set {
+                this.zdkslbField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zdsl {
+            get {
+                return this.zdslField;
+            }
+            set {
+                this.zdslField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -1658,6 +2361,8 @@ namespace MSYS.Web.StoreService {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
     public partial class tWaSaponhand : baseVO {
         
+        private string chargField;
+        
         private string clocationidField;
         
         private string cwarehouseidField;
@@ -1707,6 +2412,17 @@ namespace MSYS.Web.StoreService {
         private string tupdatetimeField;
         
         private string unitNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string charg {
+            get {
+                return this.chargField;
+            }
+            set {
+                this.chargField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -2038,6 +2754,8 @@ namespace MSYS.Web.StoreService {
         
         private string materTypeField;
         
+        private string materType2Field;
+        
         private string specValField;
         
         private string modelValField;
@@ -2346,6 +3064,17 @@ namespace MSYS.Web.StoreService {
             }
             set {
                 this.materTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string materType2 {
+            get {
+                return this.materType2Field;
+            }
+            set {
+                this.materType2Field = value;
             }
         }
         
@@ -2670,596 +3399,6 @@ namespace MSYS.Web.StoreService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class icPurchaseinBVO {
-        
-        private string cgeneralbidField;
-        
-        private string clocationidField;
-        
-        private string crownoField;
-        
-        private string cunitidField;
-        
-        private string dbizdateField;
-        
-        private string localNameField;
-        
-        private string materialCodeField;
-        
-        private string materialNameField;
-        
-        private string materialspecField;
-        
-        private string materialtypeField;
-        
-        private double nmnyField;
-        
-        private bool nmnyFieldSpecified;
-        
-        private double nnumField;
-        
-        private bool nnumFieldSpecified;
-        
-        private double nshouldnumField;
-        
-        private bool nshouldnumFieldSpecified;
-        
-        private double ntaxField;
-        
-        private bool ntaxFieldSpecified;
-        
-        private double taxPriceField;
-        
-        private bool taxPriceFieldSpecified;
-        
-        private string unitCodeField;
-        
-        private string unitNameField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cgeneralbid {
-            get {
-                return this.cgeneralbidField;
-            }
-            set {
-                this.cgeneralbidField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string clocationid {
-            get {
-                return this.clocationidField;
-            }
-            set {
-                this.clocationidField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string crowno {
-            get {
-                return this.crownoField;
-            }
-            set {
-                this.crownoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cunitid {
-            get {
-                return this.cunitidField;
-            }
-            set {
-                this.cunitidField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dbizdate {
-            get {
-                return this.dbizdateField;
-            }
-            set {
-                this.dbizdateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string localName {
-            get {
-                return this.localNameField;
-            }
-            set {
-                this.localNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string materialCode {
-            get {
-                return this.materialCodeField;
-            }
-            set {
-                this.materialCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string materialName {
-            get {
-                return this.materialNameField;
-            }
-            set {
-                this.materialNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string materialspec {
-            get {
-                return this.materialspecField;
-            }
-            set {
-                this.materialspecField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string materialtype {
-            get {
-                return this.materialtypeField;
-            }
-            set {
-                this.materialtypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double nmny {
-            get {
-                return this.nmnyField;
-            }
-            set {
-                this.nmnyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool nmnySpecified {
-            get {
-                return this.nmnyFieldSpecified;
-            }
-            set {
-                this.nmnyFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double nnum {
-            get {
-                return this.nnumField;
-            }
-            set {
-                this.nnumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool nnumSpecified {
-            get {
-                return this.nnumFieldSpecified;
-            }
-            set {
-                this.nnumFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double nshouldnum {
-            get {
-                return this.nshouldnumField;
-            }
-            set {
-                this.nshouldnumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool nshouldnumSpecified {
-            get {
-                return this.nshouldnumFieldSpecified;
-            }
-            set {
-                this.nshouldnumFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double ntax {
-            get {
-                return this.ntaxField;
-            }
-            set {
-                this.ntaxField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ntaxSpecified {
-            get {
-                return this.ntaxFieldSpecified;
-            }
-            set {
-                this.ntaxFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double taxPrice {
-            get {
-                return this.taxPriceField;
-            }
-            set {
-                this.taxPriceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool taxPriceSpecified {
-            get {
-                return this.taxPriceFieldSpecified;
-            }
-            set {
-                this.taxPriceFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string unitCode {
-            get {
-                return this.unitCodeField;
-            }
-            set {
-                this.unitCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string unitName {
-            get {
-                return this.unitNameField;
-            }
-            set {
-                this.unitNameField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class poOrderAllVO {
-        
-        private string bzField;
-        
-        private string bzNameField;
-        
-        private string cgbmField;
-        
-        private string cgbmNameField;
-        
-        private string cgyField;
-        
-        private string cgyNameField;
-        
-        private string cwarehouseNameField;
-        
-        private string cwarehouseidField;
-        
-        private string ddrqField;
-        
-        private string gysField;
-        
-        private string gysNameField;
-        
-        private icPurchaseinBVO[] icPurchaseinBVOListField;
-        
-        private string idField;
-        
-        private string isNcField;
-        
-        private string kpgysField;
-        
-        private string kpgysNameField;
-        
-        private string materTypeField;
-        
-        private string statusField;
-        
-        private double sumNumField;
-        
-        private double sunPriceField;
-        
-        private string zdkslbField;
-        
-        private string zdslField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string bz {
-            get {
-                return this.bzField;
-            }
-            set {
-                this.bzField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string bzName {
-            get {
-                return this.bzNameField;
-            }
-            set {
-                this.bzNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cgbm {
-            get {
-                return this.cgbmField;
-            }
-            set {
-                this.cgbmField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cgbmName {
-            get {
-                return this.cgbmNameField;
-            }
-            set {
-                this.cgbmNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cgy {
-            get {
-                return this.cgyField;
-            }
-            set {
-                this.cgyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cgyName {
-            get {
-                return this.cgyNameField;
-            }
-            set {
-                this.cgyNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cwarehouseName {
-            get {
-                return this.cwarehouseNameField;
-            }
-            set {
-                this.cwarehouseNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cwarehouseid {
-            get {
-                return this.cwarehouseidField;
-            }
-            set {
-                this.cwarehouseidField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string ddrq {
-            get {
-                return this.ddrqField;
-            }
-            set {
-                this.ddrqField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string gys {
-            get {
-                return this.gysField;
-            }
-            set {
-                this.gysField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string gysName {
-            get {
-                return this.gysNameField;
-            }
-            set {
-                this.gysNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("icPurchaseinBVOList", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public icPurchaseinBVO[] icPurchaseinBVOList {
-            get {
-                return this.icPurchaseinBVOListField;
-            }
-            set {
-                this.icPurchaseinBVOListField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string isNc {
-            get {
-                return this.isNcField;
-            }
-            set {
-                this.isNcField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string kpgys {
-            get {
-                return this.kpgysField;
-            }
-            set {
-                this.kpgysField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string kpgysName {
-            get {
-                return this.kpgysNameField;
-            }
-            set {
-                this.kpgysNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string materType {
-            get {
-                return this.materTypeField;
-            }
-            set {
-                this.materTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string status {
-            get {
-                return this.statusField;
-            }
-            set {
-                this.statusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double sumNum {
-            get {
-                return this.sumNumField;
-            }
-            set {
-                this.sumNumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double sunPrice {
-            get {
-                return this.sunPriceField;
-            }
-            set {
-                this.sunPriceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string zdkslb {
-            get {
-                return this.zdkslbField;
-            }
-            set {
-                this.zdkslbField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string zdsl {
-            get {
-                return this.zdslField;
-            }
-            set {
-                this.zdslField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     public delegate void getMaterialWarehouseListCompletedEventHandler(object sender, getMaterialWarehouseListCompletedEventArgs e);
     
@@ -3272,6 +3411,32 @@ namespace MSYS.Web.StoreService {
         private object[] results;
         
         internal getMaterialWarehouseListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public hashMap[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((hashMap[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void getFLCategoryListCompletedEventHandler(object sender, getFLCategoryListCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getFLCategoryListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getFLCategoryListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -3313,32 +3478,6 @@ namespace MSYS.Web.StoreService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    public delegate void yuanfuCgrkCompletedEventHandler(object sender, yuanfuCgrkCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class yuanfuCgrkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal yuanfuCgrkCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public string Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     public delegate void getMatOnhandNoPageListCompletedEventHandler(object sender, getMatOnhandNoPageListCompletedEventArgs e);
     
     /// <remarks/>
@@ -3359,32 +3498,6 @@ namespace MSYS.Web.StoreService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((tWaOnhand[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    public delegate void getSapLevelListCompletedEventHandler(object sender, getSapLevelListCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getSapLevelListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getSapLevelListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public hashMap[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((hashMap[])(this.results[0]));
             }
         }
     }
@@ -3443,6 +3556,58 @@ namespace MSYS.Web.StoreService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void yuanfuCgrkCompletedEventHandler(object sender, yuanfuCgrkCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class yuanfuCgrkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal yuanfuCgrkCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void getSapLevelListCompletedEventHandler(object sender, getSapLevelListCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getSapLevelListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getSapLevelListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public hashMap[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((hashMap[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     public delegate void insertMaterialPurchaseinInfoCompletedEventHandler(object sender, insertMaterialPurchaseinInfoCompletedEventArgs e);
     
     /// <remarks/>
@@ -3495,26 +3660,26 @@ namespace MSYS.Web.StoreService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    public delegate void getSapProvinceListCompletedEventHandler(object sender, getSapProvinceListCompletedEventArgs e);
+    public delegate void getAccOnhandListCompletedEventHandler(object sender, getAccOnhandListCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getSapProvinceListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getAccOnhandListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal getSapProvinceListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getAccOnhandListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public hashMap[] Result {
+        public tWaOnhand[] Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((hashMap[])(this.results[0]));
+                return ((tWaOnhand[])(this.results[0]));
             }
         }
     }
@@ -3541,6 +3706,58 @@ namespace MSYS.Web.StoreService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((wsRespond)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void getSapProvinceListCompletedEventHandler(object sender, getSapProvinceListCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getSapProvinceListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getSapProvinceListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public hashMap[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((hashMap[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void getOnhandNoBjPageListCompletedEventHandler(object sender, getOnhandNoBjPageListCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getOnhandNoBjPageListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getOnhandNoBjPageListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public tWaOnhand[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((tWaOnhand[])(this.results[0]));
             }
         }
     }

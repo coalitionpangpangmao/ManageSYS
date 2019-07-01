@@ -36,7 +36,7 @@
                 <div class = "framelist">
                     <div class="listtitle">
                         查询条件<span style="position: relative; float: right">
-                            <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" />  </span>
+                            <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />  </span>
 
                     </div>
                     <table class="tablelist">
@@ -46,7 +46,7 @@
                                     年份
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtYear" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:TextBox ID="txtYear" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy'})"></asp:TextBox>
                                 </td>
                                  <td width="100">
                                     物料名称
@@ -58,7 +58,29 @@
                                     类别
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtcatgory" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:DropDownList ID="txtcatgory" runat="server" class="dfinput1">
+                                        <asp:ListItem Value=""></asp:ListItem>
+                                        <asp:ListItem Value="片烟">片烟</asp:ListItem>
+                                        <asp:ListItem Value="长梗">长梗</asp:ListItem>
+                                        <asp:ListItem Value="短梗">短梗</asp:ListItem>
+                                        <asp:ListItem Value="碎片">碎片</asp:ListItem>
+                                        <asp:ListItem Value="烟末">烟末</asp:ListItem>
+                                        <asp:ListItem Value="烟棒">烟棒</asp:ListItem>
+                                        <asp:ListItem Value="大末">大末</asp:ListItem>
+                                        <asp:ListItem Value="小末">小末</asp:ListItem>
+                                        <asp:ListItem Value="木浆板">木浆板</asp:ListItem>
+                                        <asp:ListItem Value="碳酸钙">碳酸钙</asp:ListItem>
+                                        <asp:ListItem Value="瓜尔胶">瓜尔胶</asp:ListItem>
+                                        <asp:ListItem Value="纸箱">纸箱</asp:ListItem>
+                                        <asp:ListItem Value="塑料袋">塑料袋</asp:ListItem>
+                                        <asp:ListItem Value="打包带">打包带</asp:ListItem>
+                                        <asp:ListItem Value="酒精">酒精</asp:ListItem>
+                                        <asp:ListItem Value="丙二醇">丙二醇</asp:ListItem>
+                                        <asp:ListItem Value="蜂蜜">蜂蜜</asp:ListItem>
+                                        <asp:ListItem Value="香精香料">香精香料</asp:ListItem>
+                                        <asp:ListItem Value="回填液">回填液</asp:ListItem>
+                                        <asp:ListItem Value="胶带">胶带</asp:ListItem>
+                                    </asp:DropDownList>
                                 </td>
                             </tr>
                             <tr>
@@ -66,7 +88,12 @@
                                     类型
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txttype" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:DropdownList ID="txttype" runat="server" class="dfinput1">
+                                                <asp:ListItem Value=""></asp:ListItem>
+                                               <asp:ListItem Value="原材料">原材料</asp:ListItem>
+                                                <asp:ListItem Value="辅助材料">辅助材料</asp:ListItem>
+                                                <asp:ListItem Value="库存商品">库存商品</asp:ListItem>                                                
+                                    </asp:DropdownList>
                                 </td>
                                  <td width="100">
                                     产地
@@ -78,7 +105,13 @@
                                     仓库
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtwarehouse" runat="server" class="dfinput1"></asp:TextBox>
+                                    <asp:DropDownList ID="txtwarehouse" runat="server" class="dfinput1">
+                                        <asp:ListItem Value=""></asp:ListItem>
+                                        <asp:ListItem Value="烟厂原料库">烟厂原料库</asp:ListItem>
+                                        <asp:ListItem Value="鑫源原材料">鑫源原材料</asp:ListItem>
+                                        <asp:ListItem Value="烟厂免费原料库">烟厂免费原料库</asp:ListItem>
+                                        <asp:ListItem Value="鑫源免费原料库">鑫源免费原料库</asp:ListItem>
+                                    </asp:DropDownList>
                                 </td>
                             </tr>
                         </tbody>
@@ -89,15 +122,15 @@
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>
                 
-                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" 
-                        AllowPaging="True" AutoGenerateColumns="False"  >
+                 <asp:GridView ID="GridView1" runat="server" class="grid3" DataKeyNames="ID" 
+                        AllowPaging="false" AutoGenerateColumns="True"  >
                      <Columns>
                        <asp:TemplateField      >
                         <ItemTemplate>
                             <asp:CheckBox ID="chk" runat="server" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                          <asp:BoundField    DataField="物料编码" HeaderText="生产日期" />
+                          <asp:BoundField    DataField="物料编码" HeaderText="物料编码" />
                           <asp:BoundField    DataField="物料名称" HeaderText="物料名称" />
                           <asp:BoundField    DataField="仓库" HeaderText="仓库" />
                           <asp:BoundField    DataField="货位号" HeaderText="货位号" />
@@ -177,8 +210,8 @@
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>
                 <div style="overflow: scroll">
-                 <asp:GridView ID="GridView2" runat="server" class="grid" DataKeyNames="ID" 
-                        AllowPaging="True" AutoGenerateColumns="False"  >
+                 <asp:GridView ID="GridView2" runat="server" class="grid3" DataKeyNames="ID" 
+                        AllowPaging="True" AutoGenerateColumns="False" >
                      <Columns>									
                                     <asp:BoundField    DataField="物料组" HeaderText="物料组" />
                           <asp:BoundField    DataField="物料名称" HeaderText="物料名称" />

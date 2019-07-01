@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="Inspect_Process_getRows" %>
+﻿<%@ WebHandler Language="C#" Class="Inspect_Sensor_getRows" %>
 
 using System;
 using System.Web;
@@ -6,23 +6,21 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Text;
-public class Inspect_Process_getRows : IHttpHandler {
+
+public class Inspect_Sensor_getRows : IHttpHandler {
     
     public void ProcessRequest (HttpContext context) {
         System.Diagnostics.Debug.WriteLine("getRows is running");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         var json = new JObject();
         var rows = new JArray();
-        //StringBuilder qu = new StringBuilder();
-        
+        StringBuilder qu = new StringBuilder();
         //qu.Append(createSql3(true, context.Request["prod_code"], context.Request["start_time"], context.Request["end_time"], context.Request["team_code"], context.Request["schedule_time"]));
         byte[] postData = new byte[context.Request.InputStream.Length];
         context.Request.InputStream.Read(postData, 0, postData.Length);
         string postDataString = System.Text.Encoding.UTF8.GetString(postData);
         JObject js = (JObject)JsonConvert.DeserializeObject(postDataString);
-        //qu.Append(createSql3(true, js["prod_code"].ToString(), js["start_time"].ToString(), js["end_time"].ToString(), js["team_code"].ToString(), js["schedule_time"].ToString()));
-
-        string qu = getSQL(js["prod_code"].ToString(), js["start_time"].ToString(), js["end_time"].ToString(), js["team_code"].ToString(), js["schedule_time"].ToString());
+        qu.Append(createSql3(true, js["prod_code"].ToString(), js["start_time"].ToString(), js["end_time"].ToString(), js["team_code"].ToString(), js["schedule_time"].ToString()));
         //qu.Append(createSql3(true,"7031003", "2018-10-01", "2018-11-13", "00", "00"));
         System.Diagnostics.Debug.WriteLine("sql" + qu);
         DataSet data = opt.CreateDataSetOra(qu.ToString());
@@ -50,19 +48,6 @@ public class Inspect_Process_getRows : IHttpHandler {
         }
     }
 
-    public string getSQL(string prodCode, string startTime, string endTime, string teamcode, string timecode) {
-        string query = "select * from hv_qlt_process_daily_data where PROD_CODE = " + prodCode+ " and record_time>= '"+startTime+"' and record_time <= '"+endTime+"' "; 
-        if (teamcode != "00" || teamcode == null)
-        {
-            query +=" and a.team_id='" + teamcode + "'";
-        }
-        if (timecode != "00" || timecode == null)
-        {
-            query +=" and a.shift_id = '" + timecode + "'";
-        }
-        return query;   
-    }
-
     public string createSql3(bool Isteamgroup, string prodCode, string startTime, string endTime, string teamcode, string timecode)
     {
         StringBuilder sql = new StringBuilder();
@@ -81,7 +66,7 @@ public class Inspect_Process_getRows : IHttpHandler {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_code in (select r.inspect_code from ht_qlt_inspect_proj r left join ht_inner_inspect_group s on s.id = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_group in('1','2','3') and r.is_del = '0' order by r.inspect_group)  and is_del = '0' order by inspect_code";
-        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_code in (select r.inspect_code  from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_type = '0' and r.is_del = '0')  and is_del = '0' order by inspect_code";
+        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_code in (select r.inspect_code from ht_qlt_inspect_proj r left join ht_inner_inspect_group s on s.id = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_group = '4' and r.is_del = '0')  and is_del = '0' order by inspect_code";
         DataSet data = opt.CreateDataSetOra(query);
 
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -107,8 +92,8 @@ public class Inspect_Process_getRows : IHttpHandler {
 
                 if (i > 1)
                     str.Append(" left join ");
-                str.Append("(select a.id,  a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,-1) as ");
-                //str.Append("(select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as ");
+                str.Append("(select a.id,  a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as ");
+                // str.Append("(select   a.prod_code,a.team_id,a.shift_ID,a.record_time ,nvl(b.score,0) as score, nvl(a.inspect_value,0) as ");
                 str.Append(name);
                 str.Append("  from ht_qlt_inspect_record a left join ht_qlt_inspect_event b on b.record_id = a.id where a.inspect_code = '");
                 str.Append(code);
@@ -144,21 +129,21 @@ public class Inspect_Process_getRows : IHttpHandler {
                 i++;
             }
             temp.Append(" as 得分");
-            sql.Append(",g1.id, ");
+            sql.Append(", g1.id, ");
             sql.Append(temp);
             sql.Append(" from ");
             sql.Append(str.ToString());
             sql.Append("left join ht_pub_prod_design p on p.prod_code = g1.prod_code left join ht_sys_team t on t.team_code = g1.team_id ");
             sql.Append("join ht_sys_shift z on z.shift_code = g1.shift_id ");
+            
             sql.Append(" group by p.prod_name");
             if (Isteamgroup)
-                sql.Append(",t.team_name, g1.record_time,z.shift_name, g1.shift_id, g1.id");
-            sql.Append(" order by g1.record_time, t.team_name");
+                sql.Append(",t.team_name, g1.team_id ,g1.record_time, g1.shift_id, z.shift_name,g1.id");
+            sql.Append(" order by g1.record_time, g1.team_id");
             return sql.ToString();
         }
         else return null;
 
     }
-
 
 }

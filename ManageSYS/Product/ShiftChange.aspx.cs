@@ -150,6 +150,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             txtEditor.Text = row["create_id"].ToString();
             if (txtEditor.Text == "")
                 txtEditor.Text = ((MSYS.Data.SysUser)Session["User"]).text;
+            else
+                txtEditor.Text = opt.GetSegValue("select name from ht_svr_user where id = '" + txtEditor.Text + "'", "name"); 
             txtOutput.Text = row["output_vl"].ToString();
             listOlder.SelectedValue = row["shift_id"].ToString();
             listNewer.SelectedValue = row["succ_id"].ToString();

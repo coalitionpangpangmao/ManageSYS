@@ -125,7 +125,7 @@ namespace MSYS
                 if (DateTime.Compare(stoptime, Etime) > 0)
                     stoptime = Etime;
             }
-            while (Etime - starttime > TimeSpan.FromHours(2));
+            while (Etime - starttime > TimeSpan.FromHours(0));
 
             return paralist;
         }
@@ -177,7 +177,7 @@ namespace MSYS
                 if (DateTime.Compare(stoptime, Etime) > 0)
                     stoptime = Etime;
             }
-            while (Etime - starttime > TimeSpan.FromHours(2));
+            while (Etime - starttime > TimeSpan.FromHours(0));
 
             return paralist;
         }

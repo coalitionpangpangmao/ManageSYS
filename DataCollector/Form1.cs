@@ -134,20 +134,21 @@ namespace DataCollect
         #region 点击响应
         public void Qua_Start_Click(object sender, EventArgs e)
         {
-            QltRecoder.insertQuaReport(Convert.ToDateTime(QuaTime.Text));
-            ProdRecoder.ProdRecord(Convert.ToDateTime(QuaTime.Text));
-   //         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-   //DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where date_begin between '2018-12-01' and '2018-12-15'");
-   //         if (times != null && times.Tables[0].Rows.Count > 0)
-   //         {
-               
-   //                 foreach (DataRow time in times.Tables[0].Rows)
-   //                 {
-                      
-   //                         ProdRecoder.ProdRecord(time["time"].ToString());
-   //                 }
+            InsertProdReportAsTime(QuaTime.Text.Substring(0, 10));
+            //QltRecoder.insertQuaReport(Convert.ToDateTime(QuaTime.Text));
+            // ProdRecoder.ProdRecord(QuaTime.Text,"");
+            //         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            //DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where date_begin between '2018-12-01' and '2018-12-15'");
+            //         if (times != null && times.Tables[0].Rows.Count > 0)
+            //         {
 
-   //         }
+            //                 foreach (DataRow time in times.Tables[0].Rows)
+            //                 {
+
+            //                         ProdRecoder.ProdRecord(time["time"].ToString());
+            //                 }
+
+            //         }
         }
         private void Qua_Stop_Click(object sender, EventArgs e)
         {
@@ -371,7 +372,27 @@ namespace DataCollect
                     }
                 }
             }
-      
+
+        protected void InsertProdReportAsTime(string datetime)
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            DataSet times = opt.CreateDataSetOra("select date_begin  as time ,team_code from ht_prod_schedule where substr(date_begin,1,10) = '" + datetime + "' union select date_end as time,team_code  from ht_prod_schedule where substr(date_end,1,10) ='" + datetime + "' union select starttime  as time ,''  from ht_prod_report where substr(starttime,1,10) = '" + datetime + "' union select endtime  as time,''  from ht_prod_report where substr(endtime,1,10) = '" + datetime + "'");
+            if (times != null && times.Tables[0].Rows.Count > 0)
+            {
+                try
+                {
+
+                    foreach (DataRow time in times.Tables[0].Rows)
+                    {
+                        ProdRecoder.ProdRecord(time["time"].ToString(), time["team_code"].ToString());
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
         #endregion
 
      
