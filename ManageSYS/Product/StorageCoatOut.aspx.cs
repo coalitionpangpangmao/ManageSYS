@@ -298,7 +298,7 @@ public partial class Product_StorageCoatOut : MSYS.Web.BasePage
     {
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "SC" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,10) ='SC" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "GSHL" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,13,3)),0)  as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,12) ='GSHL" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
@@ -535,7 +535,7 @@ public partial class Product_StorageCoatOut : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text == "")
-            txtCode.Text = "SC" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,10) ='SC" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+            txtCode.Text = "GSHL" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,12) ='GSHL" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         Button btn = (Button)sender;
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();

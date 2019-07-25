@@ -289,7 +289,7 @@ public partial class Product_StorageFlaIn : MSYS.Web.BasePage
     {
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "SF" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,10) ='SF" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "GSXT" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,13,3)),0)  as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,12) ='GSXT" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
@@ -466,7 +466,7 @@ public partial class Product_StorageFlaIn : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text == "")
-            txtCode.Text = "SF" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,10) ='SF" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+            txtCode.Text = "GSXT" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,12) ='GSXT" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         foreach (GridViewRow row in GridView2.Rows)
         {                   
            

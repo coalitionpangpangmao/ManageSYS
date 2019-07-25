@@ -699,6 +699,8 @@
                                     </Triggers>
                                 </asp:UpdatePanel>
                             </div>
+
+           
                         </div>
                         <div id="tab8" class="tabson">
                             <div class="listtitle">
@@ -792,7 +794,20 @@
                                 </asp:UpdatePanel>
                             </div>
                         </div>
+                                                    <div class="listtitle">
+                                  配方公式<span style="position: relative; float: right"><asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnFormulaSave_Click" /></span>
+                            </div>
+                            <div class="listtile">
 
+                                              <asp:UpdatePanel ID="UpdatePanelfo" runat="server">
+                                                <ContentTemplate>
+                                                      <asp:TextBox ID="formula" TextMode="MultiLine" style="width:100%" Rows="10" runat="server"></asp:TextBox>
+                                                </ContentTemplate>
+                                                <Triggers>
+                                                    <asp:AsyncPostBackTrigger ControlID="btnSave2" />
+                                                </Triggers>
+                                            </asp:UpdatePanel>
+                               </div>
                     </div>
                 </div>
                 <div id="tab4" class="tabson">

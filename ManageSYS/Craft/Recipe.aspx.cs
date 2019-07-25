@@ -818,15 +818,29 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     protected void bindGrid2()
     {
         string query;
-        if (hdcode2.Value.Length == 8)
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'HT' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "' order by r.id";
-        else
-            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id  from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'HT' and r.is_del = '0'and t.is_del = '0' and t.PROD_CODE  = '" + hdcode2.Value + "' order by r.id";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-       
+        if (hdcode2.Value.Length == 8)
+        {
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'HT' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "' order by r.id";
+            string sql = "select remark from ht_qa_coat_formula where formula_code = " + hdcode2.Value;
+            DataSet dt = opt.CreateDataSetOra(sql);
+            formula.Text = dt.Tables[0].Rows[0][0].ToString();
+            
+        }
+        else
+            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'HT' and r.is_del = '0'and t.is_del = '0' and t.PROD_CODE  = '" + hdcode2.Value + "' order by r.id";
+        string sql1 = "select remark from ht_qa_coat_formula where formula_code = " + hdcode2.Value;
+        DataSet dt1 = opt.CreateDataSetOra(sql1);
+        string test = dt1.Tables[0].Rows[0][0].ToString();
+        System.Diagnostics.Debug.WriteLine("the hdcode2 is:"+ hdcode2.Value);
+        System.Diagnostics.Debug.WriteLine("the test resultis :"+test);
         DataSet data = opt.CreateDataSetOra(query);
+        //string sql = "select remark from ht_qa_coat_formula where formula_code = "+txtCode2.Text;
+
+       // formula.Text = data.Tables[0].Rows[0][]
         if (data != null)
             grid2Databind(data.Tables[0], GridView2);
+
     }
     protected void bindGrid2_2()
     {
@@ -997,7 +1011,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
                     string mtr_code = ((DropDownList)GridView2_2.Rows[i].FindControl("listGridName2")).SelectedValue;
                     string query;
                     if (mtr_code == "")
-                        query = "delete from ht_qa_coat_formula_detail where id= '" + GridView2_2.DataKeys[i].Value.ToString() + "'";
+                        query = "delete from ht_qa_coat_detail where id= '" + GridView2_2.DataKeys[i].Value.ToString() + "'";
                     else
                         query = "update ht_qa_coat_formula_detail set IS_DEL = '1'  where FORMULA_CODE = '" + txtCode2.Text + "' and MATER_CODE = '" + mtr_code + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
@@ -1084,6 +1098,26 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
 
 
     }
+
+    protected void btnFormulaSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            string[] seg = { "FORMULA_CODE", "PROD_CODE", "REMARK" };
+            string[] value = { txtCode2.Text, listPro2.SelectedValue, formula.Text };
+            string log_message = opt.MergeInto(seg, value, 1, "ht_qa_coat_formula") == "Success" ? "回填液配方公式保存成功" : "回填液配方公式保存失败";
+            log_message += ",回填液配方编码：" + txtCode2.Text;
+            //InsertTlog(log_message);
+            bindGrid2();
+        }
+        catch (Exception ee) {
+            Response.Write(ee.Message);
+        }
+
+
+    }
+
     protected void btnSave2_2_Click(object sender, EventArgs e)
     {
         try
