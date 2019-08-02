@@ -3,6 +3,8 @@
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="DOCUMENT" nillable="true" type="xs:anyType" />
+      <xs:element name="execUpdateSapOnhand" type="tns:execUpdateSapOnhand" />
+      <xs:element name="execUpdateSapOnhandResponse" type="tns:execUpdateSapOnhandResponse" />
       <xs:element name="getAllMaterialtList" type="tns:getAllMaterialtList" />
       <xs:element name="getAllMaterialtListResponse" type="tns:getAllMaterialtListResponse" />
       <xs:element name="getAllProductList" type="tns:getAllProductList" />
@@ -17,8 +19,124 @@
       <xs:element name="getTechStdByIdResponse" type="tns:getTechStdByIdResponse" />
       <xs:element name="getUnitList" type="tns:getUnitList" />
       <xs:element name="getUnitListResponse" type="tns:getUnitListResponse" />
+      <xs:element name="getWorkSchedule" type="tns:getWorkSchedule" />
+      <xs:element name="getWorkScheduleResponse" type="tns:getWorkScheduleResponse" />
       <xs:element name="materialTree" type="tns:materialTree" />
       <xs:element name="materialTreeResponse" type="tns:materialTreeResponse" />
+      <xs:element name="receiveMatInfo" type="tns:receiveMatInfo" />
+      <xs:element name="receiveMatInfoResponse" type="tns:receiveMatInfoResponse" />
+      <xs:element name="receiveVirtualTransferInfo" type="tns:receiveVirtualTransferInfo" />
+      <xs:element name="receiveVirtualTransferInfoResponse" type="tns:receiveVirtualTransferInfoResponse" />
+      <xs:element name="updateSapOnhandByCode" type="tns:updateSapOnhandByCode" />
+      <xs:element name="updateSapOnhandByCodeResponse" type="tns:updateSapOnhandByCodeResponse" />
+      <xs:complexType name="updateSapOnhandByCode">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="updateSapOnhandByCodeResponse">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="receiveMatInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="arg0" type="tns:sapTmara" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="arg1" type="tns:sapTmch1" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sapTmara">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="bezei1" type="xs:string" />
+              <xs:element minOccurs="0" name="bezei2" type="xs:string" />
+              <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="id" type="xs:long" />
+              <xs:element minOccurs="0" name="lvorm" type="xs:string" />
+              <xs:element minOccurs="0" name="maktx" type="xs:string" />
+              <xs:element minOccurs="0" name="marm" type="xs:string" />
+              <xs:element minOccurs="0" name="matkl" type="xs:string" />
+              <xs:element minOccurs="0" name="matnr" type="xs:string" />
+              <xs:element minOccurs="0" name="meins" type="xs:string" />
+              <xs:element minOccurs="0" name="mtart" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="sapTmarmList" nillable="true" type="tns:sapTmarm" />
+              <xs:element minOccurs="0" name="xchpf" type="xs:string" />
+              <xs:element minOccurs="0" name="zzcdCode" type="xs:string" />
+              <xs:element minOccurs="0" name="zzcdText" type="xs:string" />
+              <xs:element minOccurs="0" name="zzdjCode" type="xs:string" />
+              <xs:element minOccurs="0" name="zzdjText" type="xs:string" />
+              <xs:element minOccurs="0" name="zzpzCode" type="xs:string" />
+              <xs:element minOccurs="0" name="zzpzText" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sapTmarm">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="meinh" type="xs:string" />
+          <xs:element minOccurs="0" name="meins" type="xs:string" />
+          <xs:element minOccurs="0" name="tmaraId" type="xs:long" />
+          <xs:element minOccurs="0" name="umren" type="xs:double" />
+          <xs:element minOccurs="0" name="umrez" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sapTmch1">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="charg" type="xs:string" />
+          <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="kztxt" type="xs:string" />
+          <xs:element minOccurs="0" name="matnr" type="xs:string" />
+          <xs:element minOccurs="0" name="zbz" type="xs:string" />
+          <xs:element minOccurs="0" name="zdj" type="xs:string" />
+          <xs:element minOccurs="0" name="znf" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="receiveMatInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rs" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rs">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="xs:string" />
+          <xs:element minOccurs="0" name="status" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="receiveVirtualTransferInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="arg0" type="tns:sapTmdoc" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sapTmdoc">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="budat" type="xs:string" />
+          <xs:element minOccurs="0" name="charg" type="xs:string" />
+          <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="matnr" type="xs:string" />
+          <xs:element minOccurs="0" name="mblnr" type="xs:string" />
+          <xs:element minOccurs="0" name="meins" type="xs:string" />
+          <xs:element minOccurs="0" name="menge" type="xs:double" />
+          <xs:element minOccurs="0" name="usnam" type="xs:string" />
+          <xs:element minOccurs="0" name="zeile" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="receiveVirtualTransferInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rs" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getTechStdById">
         <xs:sequence>
           <xs:element minOccurs="0" name="arg0" type="xs:string" />
@@ -61,15 +179,6 @@
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
-      <xs:complexType name="baseVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="draw" type="xs:int" />
-          <xs:element minOccurs="0" name="length" type="xs:int" />
-          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
-          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
-          <xs:element minOccurs="0" name="start" type="xs:int" />
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="techStddDetail">
         <xs:sequence>
           <xs:element minOccurs="0" name="baseDown" type="xs:string" />
@@ -89,6 +198,43 @@
           <xs:element minOccurs="0" name="stddValue" type="xs:string" />
           <xs:element minOccurs="0" name="techParmType" type="xs:string" />
           <xs:element minOccurs="0" name="techStddId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getWorkSchedule">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+          <xs:element minOccurs="0" name="arg1" type="xs:string" />
+          <xs:element minOccurs="0" name="arg2" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getWorkScheduleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:workScheduleVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="workScheduleVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="col1" type="xs:string" />
+          <xs:element minOccurs="0" name="col2" type="xs:string" />
+          <xs:element minOccurs="0" name="col3" type="xs:string" />
+          <xs:element minOccurs="0" name="col4" type="xs:string" />
+          <xs:element minOccurs="0" name="dateBegin" type="xs:string" />
+          <xs:element minOccurs="0" name="dateEnd" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="shiftName" type="xs:string" />
+          <xs:element minOccurs="0" name="teamName" type="xs:string" />
+          <xs:element minOccurs="0" name="workDate" type="xs:string" />
+          <xs:element minOccurs="0" name="workStaus" type="xs:string" />
+          <xs:element minOccurs="0" name="workshopName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="execUpdateSapOnhand">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="execUpdateSapOnhandResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="getMatFormulaById">
@@ -126,6 +272,7 @@
           <xs:element minOccurs="0" name="pieceNum" type="xs:double" />
           <xs:element minOccurs="0" name="smallsNum" type="xs:double" />
           <xs:element minOccurs="0" name="sticksNum" type="xs:double" />
+          <xs:element minOccurs="0" name="pzcode" type="xs:string" />
           <xs:element minOccurs="0" name="adjust" type="xs:string" />
           <xs:element minOccurs="0" name="flowStatus" type="xs:string" />
           <xs:element name="executeBatch" type="xs:int" />
@@ -296,6 +443,7 @@
               <xs:element minOccurs="0" name="matType" type="xs:string" />
               <xs:element minOccurs="0" name="matType2" type="xs:string" />
               <xs:element minOccurs="0" name="matTypeCode" type="xs:string" />
+              <xs:element minOccurs="0" name="matTypeCode2" type="xs:string" />
               <xs:element minOccurs="0" name="matVariety" type="xs:string" />
               <xs:element minOccurs="0" name="matYear" type="xs:string" />
               <xs:element minOccurs="0" name="materLocation" type="xs:string" />
@@ -400,26 +548,65 @@
   <wsdl:message name="getAllMaterialtListResponse">
     <wsdl:part name="parameters" element="tns:getAllMaterialtListResponse" />
   </wsdl:message>
+  <wsdl:message name="updateSapOnhandByCode">
+    <wsdl:part name="parameters" element="tns:updateSapOnhandByCode" />
+  </wsdl:message>
   <wsdl:message name="getAllProductList">
     <wsdl:part name="parameters" element="tns:getAllProductList" />
   </wsdl:message>
-  <wsdl:message name="getAllMaterialtList">
-    <wsdl:part name="parameters" element="tns:getAllMaterialtList" />
+  <wsdl:message name="getWorkScheduleResponse">
+    <wsdl:part name="parameters" element="tns:getWorkScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="getWorkSchedule">
+    <wsdl:part name="parameters" element="tns:getWorkSchedule" />
   </wsdl:message>
   <wsdl:message name="getAllProductListResponse">
     <wsdl:part name="parameters" element="tns:getAllProductListResponse" />
   </wsdl:message>
-  <wsdl:message name="materialTreeResponse">
-    <wsdl:part name="parameters" element="tns:materialTreeResponse" />
+  <wsdl:message name="execUpdateSapOnhandResponse">
+    <wsdl:part name="parameters" element="tns:execUpdateSapOnhandResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveMatInfoResponse">
+    <wsdl:part name="parameters" element="tns:receiveMatInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveMatInfo">
+    <wsdl:part name="parameters" element="tns:receiveMatInfo" />
+  </wsdl:message>
+  <wsdl:message name="updateSapOnhandByCodeResponse">
+    <wsdl:part name="parameters" element="tns:updateSapOnhandByCodeResponse" />
   </wsdl:message>
   <wsdl:message name="getCoatFormulaByIdResponse">
     <wsdl:part name="parameters" element="tns:getCoatFormulaByIdResponse" />
   </wsdl:message>
+  <wsdl:message name="getMatFormulaById">
+    <wsdl:part name="parameters" element="tns:getMatFormulaById" />
+  </wsdl:message>
+  <wsdl:message name="receiveVirtualTransferInfoResponse">
+    <wsdl:part name="parameters" element="tns:receiveVirtualTransferInfoResponse" />
+  </wsdl:message>
   <wsdl:message name="getUnitListResponse">
     <wsdl:part name="parameters" element="tns:getUnitListResponse" />
   </wsdl:message>
-  <wsdl:message name="getMatFormulaById">
-    <wsdl:part name="parameters" element="tns:getMatFormulaById" />
+  <wsdl:message name="getCoatFormulaById">
+    <wsdl:part name="parameters" element="tns:getCoatFormulaById" />
+  </wsdl:message>
+  <wsdl:message name="materialTree">
+    <wsdl:part name="parameters" element="tns:materialTree" />
+  </wsdl:message>
+  <wsdl:message name="getTechStdByIdResponse">
+    <wsdl:part name="parameters" element="tns:getTechStdByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveVirtualTransferInfo">
+    <wsdl:part name="parameters" element="tns:receiveVirtualTransferInfo" />
+  </wsdl:message>
+  <wsdl:message name="getMatFormulaByIdResponse">
+    <wsdl:part name="parameters" element="tns:getMatFormulaByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAllMaterialtList">
+    <wsdl:part name="parameters" element="tns:getAllMaterialtList" />
+  </wsdl:message>
+  <wsdl:message name="materialTreeResponse">
+    <wsdl:part name="parameters" element="tns:materialTreeResponse" />
   </wsdl:message>
   <wsdl:message name="getUnitList">
     <wsdl:part name="parameters" element="tns:getUnitList" />
@@ -433,22 +620,33 @@
   <wsdl:message name="getTechStdById">
     <wsdl:part name="parameters" element="tns:getTechStdById" />
   </wsdl:message>
-  <wsdl:message name="getCoatFormulaById">
-    <wsdl:part name="parameters" element="tns:getCoatFormulaById" />
-  </wsdl:message>
-  <wsdl:message name="materialTree">
-    <wsdl:part name="parameters" element="tns:materialTree" />
-  </wsdl:message>
-  <wsdl:message name="getTechStdByIdResponse">
-    <wsdl:part name="parameters" element="tns:getTechStdByIdResponse" />
-  </wsdl:message>
-  <wsdl:message name="getMatFormulaByIdResponse">
-    <wsdl:part name="parameters" element="tns:getMatFormulaByIdResponse" />
+  <wsdl:message name="execUpdateSapOnhand">
+    <wsdl:part name="parameters" element="tns:execUpdateSapOnhand" />
   </wsdl:message>
   <wsdl:portType name="WsBaseDataInterface">
+    <wsdl:operation name="updateSapOnhandByCode">
+      <wsdl:input name="updateSapOnhandByCode" message="tns:updateSapOnhandByCode" />
+      <wsdl:output name="updateSapOnhandByCodeResponse" message="tns:updateSapOnhandByCodeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveMatInfo">
+      <wsdl:input name="receiveMatInfo" message="tns:receiveMatInfo" />
+      <wsdl:output name="receiveMatInfoResponse" message="tns:receiveMatInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveVirtualTransferInfo">
+      <wsdl:input name="receiveVirtualTransferInfo" message="tns:receiveVirtualTransferInfo" />
+      <wsdl:output name="receiveVirtualTransferInfoResponse" message="tns:receiveVirtualTransferInfoResponse" />
+    </wsdl:operation>
     <wsdl:operation name="getTechStdById">
       <wsdl:input name="getTechStdById" message="tns:getTechStdById" />
       <wsdl:output name="getTechStdByIdResponse" message="tns:getTechStdByIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getWorkSchedule">
+      <wsdl:input name="getWorkSchedule" message="tns:getWorkSchedule" />
+      <wsdl:output name="getWorkScheduleResponse" message="tns:getWorkScheduleResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="execUpdateSapOnhand">
+      <wsdl:input name="execUpdateSapOnhand" message="tns:execUpdateSapOnhand" />
+      <wsdl:output name="execUpdateSapOnhandResponse" message="tns:execUpdateSapOnhandResponse" />
     </wsdl:operation>
     <wsdl:operation name="getMatFormulaById">
       <wsdl:input name="getMatFormulaById" message="tns:getMatFormulaById" />
@@ -481,12 +679,30 @@
   </wsdl:portType>
   <wsdl:binding name="WsBaseDataInterfaceServiceSoapBinding" type="tns:WsBaseDataInterface">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="getMatFormulaById">
+    <wsdl:operation name="updateSapOnhandByCode">
       <soap:operation soapAction="" style="document" />
-      <wsdl:input name="getMatFormulaById">
+      <wsdl:input name="updateSapOnhandByCode">
         <soap:body use="literal" />
       </wsdl:input>
-      <wsdl:output name="getMatFormulaByIdResponse">
+      <wsdl:output name="updateSapOnhandByCodeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveMatInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="receiveMatInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="receiveMatInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getWorkSchedule">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getWorkSchedule">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getWorkScheduleResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -496,6 +712,33 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getTechStdByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveVirtualTransferInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="receiveVirtualTransferInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="receiveVirtualTransferInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="execUpdateSapOnhand">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="execUpdateSapOnhand">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="execUpdateSapOnhandResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMatFormulaById">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getMatFormulaById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMatFormulaByIdResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

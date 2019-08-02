@@ -14,5 +14,8 @@
     <Setting Name="MSYS_Web_StoreService_StoreServiceInterfaceService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://10.43.171.22:8081/xymis/services/StoreService</Value>
     </Setting>
+    <Setting Name="MSYS_Web_PlanService_WsPlanForGSInterfaceService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.43.171.22:8081/xymis/services/planForGSService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

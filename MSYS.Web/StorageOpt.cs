@@ -44,13 +44,13 @@ namespace MSYS.Web
                 r.inoutType = row["STRG_TYPE"].ToString();
                 r.cwarehouseid = row["WARE_HOUSE_ID"].ToString();
                 r.formulaId = Convert.ToInt64(row["formula_code"].ToString());  
-                List<tShopMaterInoutSub> s = new List<tShopMaterInoutSub>();
+                List<tShopMaterInoutSubVO> s = new List<tShopMaterInoutSubVO>();
                 DataSet details = opt.CreateDataSetOra("select t.*,r.material_name from ht_strg_mater_sub t left join ht_pub_materiel r on r.material_code = t.mater_code  where t.main_code = '" + PZ_code + "' and t.is_del = '0'");
                 if (details != null && details.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow drow in details.Tables[0].Rows)
                     {
-                        tShopMaterInoutSub sub = new tShopMaterInoutSub();
+                        tShopMaterInoutSubVO sub = new tShopMaterInoutSubVO();
                         sub.mainId = drow["MAIN_CODE"].ToString();
                         sub.materCode = drow["MATER_CODE"].ToString();
                         sub.materName = drow["material_name"].ToString();
@@ -60,14 +60,14 @@ namespace MSYS.Web
                         sub.occurQty = drow["ORIGINAL_DEMAND"].ToString();
                         sub.remark = drow["REMARK"].ToString();
                         sub.warehouseCode = drow["WAREHOUSECODE"].ToString();
-                        sub.packingNumbers = Convert.ToDouble( drow["PACKNUM"].ToString());
-                        sub.substance = Convert.ToDouble( drow["SUBSTANCE"].ToString());
-                        sub.oddQty = Convert.ToDouble( drow["ODDQTY"].ToString());
+                        sub.packingNumbers = drow["PACKNUM"].ToString();
+                        sub.substance =drow["SUBSTANCE"].ToString();
+                        sub.oddQty =  drow["ODDQTY"].ToString();
                         s.Add(sub);
                     }                    
                 }
                 r.subList = s.ToArray();
-                return service.yuanliaoInAndOut4ws_03(r).status ;
+                return service.yuanliaoInAndOut4ws_03(r, "2019-07-24", 1.0).status ;
             }
             else
                 return "Falied";
@@ -100,7 +100,32 @@ namespace MSYS.Web
          
         }
 
-     
+        protected  void updateWarehouse()
+        {
+            MSYS.Web.StoreService.StoreServiceInterfaceService service = new MSYS.Web.StoreService.StoreServiceInterfaceService();
+
+            service.getMaterialWarehouseListCompleted += new getMaterialWarehouseListCompletedEventHandler(wareHouseUpdate_Completed);
+            service.getMaterialWarehouseListAsync();
+
+        }
+
+        private static void wareHouseUpdate_Completed(object sender, getMaterialWarehouseListCompletedEventArgs e)
+        {
+            hashMap[] lists = e.Result;
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+           
+           // string[] seg = { "ID", "MATTREE_CODE", "MATTREE_NAME", "IS_DEL", "PK_CLASS", "PK_PARENT_CLASS" };
+
+            foreach (hashMap list in lists)
+            {
+                string[] value = {};
+             //   string temp = opt.getMergeStr(seg, value, 1, "HT_PUB_MATTREE");
+                //  commandlist.Add(temp);
+                //if (opt.UpDateOra(temp) != "Success")
+                //    System.Diagnostics.Debug.Write(temp);
+            }
+            
+        }
     }
 
 

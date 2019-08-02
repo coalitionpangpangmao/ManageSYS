@@ -25,6 +25,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         opt.bindDropDownList(listMtrl, "select Formula_code, FORMULA_NAME  from ht_qa_mater_formula where is_valid = '1' and is_del = '0'", "FORMULA_NAME", "Formula_code");
         opt.bindDropDownList(listTechStd, "select distinct tech_code,tech_name from ht_tech_stdd_code where is_valid = '1' and is_del = '0'", "tech_name", "tech_code");
         opt.bindDropDownList(listqlt, "select QLT_CODE,QLT_NAME from ht_qlt_stdd_code where is_del = '0' and is_valid = '1'", "QLT_NAME", "QLT_CODE");
+        opt.bindDropDownList(listisp, "select inspect_stdd_code,inspect_stdd_name from ht_qlt_inspect_stdd t where t.is_del = '0' order by t.inspect_stdd_code", "inspect_stdd_name", "inspect_stdd_code");
         opt.bindDropDownList(listPathAll, "select distinct pathname,pathcode  from ht_pub_path_prod t where t.is_del = '0' order by pathname", "pathname", "pathcode");
     }
     protected void bindGrid()
@@ -147,6 +148,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             listFla.SelectedValue = data.Tables[0].Rows[0]["FLA_FORMULA_CODE"].ToString();
             listcoat.SelectedValue = data.Tables[0].Rows[0]["Coat_FORMULA_CODE"].ToString();
             listqlt.SelectedValue = data.Tables[0].Rows[0]["QLT_CODE"].ToString();
+            listisp.SelectedValue = data.Tables[0].Rows[0]["INSPECT_STDD"].ToString();
             txtValue.Text = data.Tables[0].Rows[0]["SENSOR_SCORE"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
             if (listPathAll.Items.FindByValue(data.Tables[0].Rows[0]["PATH_CODE"].ToString()) != null)
@@ -217,7 +219,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         listMtrl.SelectedValue = ""; 
         listFla.SelectedValue = ""; 
         listcoat.SelectedValue = ""; 
-        listqlt.SelectedValue = ""; 
+        listqlt.SelectedValue = "";
+        listisp.SelectedValue = "";
         txtValue.Text = "";
         txtDscpt.Text = ""; 
         
@@ -226,9 +229,9 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
     {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-
-        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "FLA_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "SENSOR_SCORE", "REMARK", "CREATE_TIME", "PATH_CODE" };
-        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listFla.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, txtValue.Text, txtDscpt.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listPathAll.SelectedValue};
+       
+        string[] seg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "FLA_FORMULA_CODE", "COAT_FORMULA_CODE", "QLT_CODE", "INSPECT_STDD", "SENSOR_SCORE", "REMARK", "CREATE_TIME", "PATH_CODE" };
+        string[] value = { txtCode.Text, txtName.Text, txtPack.Text, listType.SelectedValue, listTechStd.SelectedValue, listMtrl.SelectedValue, listFla.SelectedValue, listcoat.SelectedValue, listqlt.SelectedValue, listisp.SelectedValue ,txtValue.Text, txtDscpt.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listPathAll.SelectedValue};
         string log_message = opt.MergeInto(seg, value, 1, "HT_PUB_PROD_DESIGN") == "Success" ? "保存产品信息成功," : "保存产品信息失败,";
         log_message += ",产品信息：" + string.Join(",", value);
         InsertTlog(log_message);

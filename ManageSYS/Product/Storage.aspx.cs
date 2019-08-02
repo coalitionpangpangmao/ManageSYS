@@ -37,7 +37,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         string type = txttype.SelectedValue.ToString().Trim();
         string category = txtcatgory.SelectedValue.ToString().Trim();
         MSYS.Web.StoreService.StoreServiceInterfaceService service = new MSYS.Web.StoreService.StoreServiceInterfaceService();
-        tWaOnhand[] lists = service.getOnhandNoBjPageList(materialName.ToString(), type.ToString(), category.ToString(),year.ToString(), province.ToString(), warehouse.ToString());
+        tWaOnhand[] lists = service.getOnhandNoBjPageList(materialName.ToString(), type.ToString(), category.ToString(),year.ToString(), province.ToString(), warehouse.ToString(),"");
         System.Diagnostics.Debug.WriteLine(year);
         System.Diagnostics.Debug.WriteLine(materialName);
         System.Diagnostics.Debug.WriteLine(province);
@@ -58,13 +58,20 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         data.Columns.Add("使用叶组");
         data.Columns.Add("件数");
         data.Columns.Add("单重(kg)");
-        if (lists == null || lists.Length == 0)
+        /*if (lists == null || lists.Length == 0)
         {
             System.Diagnostics.Debug.WriteLine("无数据");
             GridView1.DataSource = data;
             GridView1.DataBind();
             return;
 
+        }*/
+        if (lists ==  null)
+        {
+
+            GridView1.DataSource = null;
+            GridView1.DataBind();
+            return;
         }
         foreach (tWaOnhand mat in lists)
         {

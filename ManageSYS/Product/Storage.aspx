@@ -122,8 +122,8 @@
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" >
                 <ContentTemplate>
                 
-                 <asp:GridView ID="GridView1" runat="server" class="grid3" DataKeyNames="ID" 
-                        AllowPaging="false" AutoGenerateColumns="True"  >
+                 <asp:GridView ID="GridView1" runat="server" class="grid" DataKeyNames="ID" 
+                        AllowPaging="false" AutoGenerateColumns="False"  >
                      <Columns>
                        <asp:TemplateField      >
                         <ItemTemplate>

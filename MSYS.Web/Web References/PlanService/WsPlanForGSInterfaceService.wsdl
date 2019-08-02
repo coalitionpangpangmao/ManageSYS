@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.dhcc.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="WsPlanForGSInterfaceService" targetNamespace="http://webservice.dhcc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.dhcc.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="DOCUMENT" nillable="true" type="xs:anyType" />
+      <xs:element name="getLurList" type="tns:getLurList" />
+      <xs:element name="getLurListResponse" type="tns:getLurListResponse" />
+      <xs:element name="getMaintainList" type="tns:getMaintainList" />
+      <xs:element name="getMaintainListResponse" type="tns:getMaintainListResponse" />
+      <xs:element name="getProdAssignForGS" type="tns:getProdAssignForGS" />
+      <xs:element name="getProdAssignForGSResponse" type="tns:getProdAssignForGSResponse" />
+      <xs:element name="getProdAssignListForGS" type="tns:getProdAssignListForGS" />
+      <xs:element name="getProdAssignListForGSResponse" type="tns:getProdAssignListForGSResponse" />
+      <xs:element name="getQuarterPlanList" type="tns:getQuarterPlanList" />
+      <xs:element name="getQuarterPlanListResponse" type="tns:getQuarterPlanListResponse" />
+      <xs:complexType name="getLurList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:lubricatePlanMain" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="lubricatePlanMain">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="approveTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="approveTimeStr" type="xs:string" />
+              <xs:element minOccurs="0" name="col1" type="xs:string" />
+              <xs:element minOccurs="0" name="collect" type="xs:int" />
+              <xs:element minOccurs="0" name="createBy" type="xs:int" />
+              <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="createUserDept" type="xs:string" />
+              <xs:element minOccurs="0" name="createUserId" type="xs:string" />
+              <xs:element minOccurs="0" name="createUserName" type="xs:string" />
+              <xs:element minOccurs="0" name="execState" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:string" />
+              <xs:element minOccurs="0" name="isDel" type="xs:int" />
+              <xs:element minOccurs="0" name="planName" type="xs:string" />
+              <xs:element minOccurs="0" name="planYear" type="xs:string" />
+              <xs:element minOccurs="0" name="pzCode" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="stateCode" type="xs:string" />
+              <xs:element minOccurs="0" name="stateName" type="xs:string" />
+              <xs:element minOccurs="0" name="updateTime" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getLurListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:lubPlanVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="lubPlanVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="lubPlanMain" type="tns:lubricatePlanMain" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="subList" type="tns:lubricatePlanDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="lubricatePlanDetail">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="col1" type="xs:string" />
+              <xs:element minOccurs="0" name="equipId" type="xs:string" />
+              <xs:element minOccurs="0" name="equipName" type="xs:string" />
+              <xs:element minOccurs="0" name="equipNo" type="xs:string" />
+              <xs:element minOccurs="0" name="equipTag" type="xs:string" />
+              <xs:element minOccurs="0" name="firstWork" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="firstWorkStr" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:string" />
+              <xs:element minOccurs="0" name="isDel" type="xs:int" />
+              <xs:element minOccurs="0" name="lastOperateTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="lastSignTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="life" type="xs:string" />
+              <xs:element minOccurs="0" name="lifeDay" type="xs:int" />
+              <xs:element minOccurs="0" name="lubLocation" type="xs:string" />
+              <xs:element minOccurs="0" name="lubPoint" type="xs:string" />
+              <xs:element minOccurs="0" name="lubStyle" type="xs:string" />
+              <xs:element minOccurs="0" name="lubWeight" type="xs:string" />
+              <xs:element minOccurs="0" name="mainId" type="xs:string" />
+              <xs:element minOccurs="0" name="oilId" type="xs:string" />
+              <xs:element minOccurs="0" name="oilName" type="xs:string" />
+              <xs:element minOccurs="0" name="operatorId" type="xs:string" />
+              <xs:element minOccurs="0" name="operatorName" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="sectionName" type="xs:string" />
+              <xs:element minOccurs="0" name="stateCode" type="xs:string" />
+              <xs:element minOccurs="0" name="stateName" type="xs:string" />
+              <xs:element minOccurs="0" name="totalOperateCount" type="xs:int" />
+              <xs:element minOccurs="0" name="year" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="getProdAssignForGS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+          <xs:element minOccurs="0" name="arg1" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getProdAssignForGSResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:prodAssignPlan" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="prodAssignPlan">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="issuedStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="planName" type="xs:string" />
+          <xs:element minOccurs="0" name="planNo" type="xs:string" />
+          <xs:element minOccurs="0" name="planTime" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="bFlowStatus" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQuarterPlanList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+          <xs:element minOccurs="0" name="arg1" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQuarterPlanListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:quarterPlanVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="quarterPlanVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="quarterPlan" type="tns:tAmQuarterPlan" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="subList" type="tns:tAmQuarterPlanDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tAmQuarterPlan">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="createTime" type="tns:timestamp" />
+          <xs:element minOccurs="0" name="creator" type="xs:string" />
+          <xs:element minOccurs="0" name="deptId" type="xs:string" />
+          <xs:element minOccurs="0" name="deptName" type="xs:string" />
+          <xs:element minOccurs="0" name="flowStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="issuedStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="modify" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyId" type="xs:string" />
+          <xs:element minOccurs="0" name="modifyTime" type="tns:timestamp" />
+          <xs:element minOccurs="0" name="planName" type="xs:string" />
+          <xs:element minOccurs="0" name="planYear" type="xs:string" />
+          <xs:element minOccurs="0" name="pzCode" type="xs:string" />
+          <xs:element minOccurs="0" name="quarter" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="totalOutput" type="xs:double" />
+          <xs:element minOccurs="0" name="unitId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="timestamp">
+        <xs:sequence>
+          <xs:element name="nanos" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tAmQuarterPlanDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="output1Adjust" type="xs:string" />
+          <xs:element minOccurs="0" name="output2Adjust" type="xs:string" />
+          <xs:element minOccurs="0" name="output3Adjust" type="xs:string" />
+          <xs:element minOccurs="0" name="planOutput1" type="xs:double" />
+          <xs:element minOccurs="0" name="planOutput2" type="xs:double" />
+          <xs:element minOccurs="0" name="planOutput3" type="xs:double" />
+          <xs:element minOccurs="0" name="planYear" type="xs:string" />
+          <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+          <xs:element minOccurs="0" name="quarterCode" type="xs:string" />
+          <xs:element minOccurs="0" name="quarterPlanId" type="xs:string" />
+          <xs:element minOccurs="0" name="totalOutput" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getProdAssignListForGS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+          <xs:element minOccurs="0" name="arg1" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getProdAssignListForGSResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:prodAssignVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="prodAssignVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BTime" type="xs:string" />
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
+          <xs:element minOccurs="0" name="createTime" type="xs:string" />
+          <xs:element minOccurs="0" name="ETime" type="xs:string" />
+          <xs:element minOccurs="0" name="finishOutput" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="isDel" type="xs:string" />
+          <xs:element minOccurs="0" name="jobMonth" type="xs:string" />
+          <xs:element minOccurs="0" name="jobOutput" type="xs:string" />
+          <xs:element minOccurs="0" name="jobSort" type="xs:string" />
+          <xs:element minOccurs="0" name="jobYear" type="xs:string" />
+          <xs:element minOccurs="0" name="mainFinishTime" type="xs:string" />
+          <xs:element minOccurs="0" name="planNo" type="xs:string" />
+          <xs:element minOccurs="0" name="planType" type="xs:string" />
+          <xs:element minOccurs="0" name="prodCode" type="xs:string" />
+          <xs:element minOccurs="0" name="prodName" type="xs:string" />
+          <xs:element minOccurs="0" name="prodUnit" type="xs:string" />
+          <xs:element minOccurs="0" name="status" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMaintainList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:maintainPlanMain" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="maintainPlanMain">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="approveTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="approveTimeStr" type="xs:string" />
+              <xs:element minOccurs="0" name="col1" type="xs:string" />
+              <xs:element minOccurs="0" name="collect" type="xs:int" />
+              <xs:element minOccurs="0" name="createBy" type="xs:int" />
+              <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="createUserDept" type="xs:string" />
+              <xs:element minOccurs="0" name="createUserId" type="xs:string" />
+              <xs:element minOccurs="0" name="createUserName" type="xs:string" />
+              <xs:element minOccurs="0" name="execState" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:string" />
+              <xs:element minOccurs="0" name="isDel" type="xs:int" />
+              <xs:element minOccurs="0" name="planName" type="xs:string" />
+              <xs:element minOccurs="0" name="planYear" type="xs:string" />
+              <xs:element minOccurs="0" name="pzCode" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="stateCode" type="xs:string" />
+              <xs:element minOccurs="0" name="stateName" type="xs:string" />
+              <xs:element minOccurs="0" name="updateTime" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="getMaintainListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:maintainPlanVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="maintainPlanVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="maintain" type="tns:maintainPlanMain" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="subList" type="tns:maintainPlanDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="maintainPlanDetail">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="checkUserName" type="xs:string" />
+              <xs:element minOccurs="0" name="col1" type="xs:string" />
+              <xs:element minOccurs="0" name="detailType" type="xs:string" />
+              <xs:element minOccurs="0" name="dutyUserName" type="xs:string" />
+              <xs:element minOccurs="0" name="endWork" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="endWorkStr" type="xs:string" />
+              <xs:element minOccurs="0" name="equipId" type="xs:string" />
+              <xs:element minOccurs="0" name="equipName" type="xs:string" />
+              <xs:element minOccurs="0" name="equipNo" type="xs:string" />
+              <xs:element minOccurs="0" name="equipTag" type="xs:string" />
+              <xs:element minOccurs="0" name="firstWork" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="firstWorkStr" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:string" />
+              <xs:element minOccurs="0" name="isDel" type="xs:byte" />
+              <xs:element minOccurs="0" name="lastOperateTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="lastSignTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="life" type="xs:string" />
+              <xs:element minOccurs="0" name="lifeDay" type="xs:int" />
+              <xs:element minOccurs="0" name="mainId" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainArea" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainContent" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainReason" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainStep" type="xs:string" />
+              <xs:element minOccurs="0" name="operatorId" type="xs:string" />
+              <xs:element minOccurs="0" name="operatorName" type="xs:string" />
+              <xs:element minOccurs="0" name="planYear" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="stateCode" type="xs:string" />
+              <xs:element minOccurs="0" name="stateName" type="xs:string" />
+              <xs:element minOccurs="0" name="totalOperateCount" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getQuarterPlanListResponse">
+    <wsdl:part name="parameters" element="tns:getQuarterPlanListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProdAssignForGS">
+    <wsdl:part name="parameters" element="tns:getProdAssignForGS" />
+  </wsdl:message>
+  <wsdl:message name="getProdAssignListForGSResponse">
+    <wsdl:part name="parameters" element="tns:getProdAssignListForGSResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProdAssignListForGS">
+    <wsdl:part name="parameters" element="tns:getProdAssignListForGS" />
+  </wsdl:message>
+  <wsdl:message name="getQuarterPlanList">
+    <wsdl:part name="parameters" element="tns:getQuarterPlanList" />
+  </wsdl:message>
+  <wsdl:message name="getMaintainListResponse">
+    <wsdl:part name="parameters" element="tns:getMaintainListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getLurListResponse">
+    <wsdl:part name="parameters" element="tns:getLurListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMaintainList">
+    <wsdl:part name="parameters" element="tns:getMaintainList" />
+  </wsdl:message>
+  <wsdl:message name="getProdAssignForGSResponse">
+    <wsdl:part name="parameters" element="tns:getProdAssignForGSResponse" />
+  </wsdl:message>
+  <wsdl:message name="getLurList">
+    <wsdl:part name="parameters" element="tns:getLurList" />
+  </wsdl:message>
+  <wsdl:portType name="WsPlanForGSInterface">
+    <wsdl:operation name="getLurList">
+      <wsdl:input name="getLurList" message="tns:getLurList" />
+      <wsdl:output name="getLurListResponse" message="tns:getLurListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getProdAssignForGS">
+      <wsdl:input name="getProdAssignForGS" message="tns:getProdAssignForGS" />
+      <wsdl:output name="getProdAssignForGSResponse" message="tns:getProdAssignForGSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getQuarterPlanList">
+      <wsdl:input name="getQuarterPlanList" message="tns:getQuarterPlanList" />
+      <wsdl:output name="getQuarterPlanListResponse" message="tns:getQuarterPlanListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getProdAssignListForGS">
+      <wsdl:input name="getProdAssignListForGS" message="tns:getProdAssignListForGS" />
+      <wsdl:output name="getProdAssignListForGSResponse" message="tns:getProdAssignListForGSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getMaintainList">
+      <wsdl:input name="getMaintainList" message="tns:getMaintainList" />
+      <wsdl:output name="getMaintainListResponse" message="tns:getMaintainListResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsPlanForGSInterfaceServiceSoapBinding" type="tns:WsPlanForGSInterface">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getLurList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getLurList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getLurListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProdAssignForGS">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getProdAssignForGS">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getProdAssignForGSResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuarterPlanList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getQuarterPlanList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getQuarterPlanListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMaintainList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getMaintainList">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMaintainListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProdAssignListForGS">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getProdAssignListForGS">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getProdAssignListForGSResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsPlanForGSInterfaceService">
+    <wsdl:port name="WsPlanForGSInterfacePort" binding="tns:WsPlanForGSInterfaceServiceSoapBinding">
+      <soap:address location="http://10.43.171.22:8081/xymis/services/planForGSService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

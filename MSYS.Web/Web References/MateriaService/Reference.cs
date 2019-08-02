@@ -30,7 +30,17 @@ namespace MSYS.Web.MateriaService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(baseVO))]
     public partial class WsBaseDataInterfaceService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
+        private System.Threading.SendOrPostCallback updateSapOnhandByCodeOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback receiveMatInfoOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback receiveVirtualTransferInfoOperationCompleted;
+        
         private System.Threading.SendOrPostCallback getTechStdByIdOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback getWorkScheduleOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback execUpdateSapOnhandOperationCompleted;
         
         private System.Threading.SendOrPostCallback getMatFormulaByIdOperationCompleted;
         
@@ -85,7 +95,22 @@ namespace MSYS.Web.MateriaService {
         }
         
         /// <remarks/>
+        public event updateSapOnhandByCodeCompletedEventHandler updateSapOnhandByCodeCompleted;
+        
+        /// <remarks/>
+        public event receiveMatInfoCompletedEventHandler receiveMatInfoCompleted;
+        
+        /// <remarks/>
+        public event receiveVirtualTransferInfoCompletedEventHandler receiveVirtualTransferInfoCompleted;
+        
+        /// <remarks/>
         public event getTechStdByIdCompletedEventHandler getTechStdByIdCompleted;
+        
+        /// <remarks/>
+        public event getWorkScheduleCompletedEventHandler getWorkScheduleCompleted;
+        
+        /// <remarks/>
+        public event execUpdateSapOnhandCompletedEventHandler execUpdateSapOnhandCompleted;
         
         /// <remarks/>
         public event getMatFormulaByIdCompletedEventHandler getMatFormulaByIdCompleted;
@@ -107,6 +132,96 @@ namespace MSYS.Web.MateriaService {
         
         /// <remarks/>
         public event getAllProductListCompletedEventHandler getAllProductListCompleted;
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void updateSapOnhandByCode([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0) {
+            this.Invoke("updateSapOnhandByCode", new object[] {
+                        arg0});
+        }
+        
+        /// <remarks/>
+        public void updateSapOnhandByCodeAsync(string arg0) {
+            this.updateSapOnhandByCodeAsync(arg0, null);
+        }
+        
+        /// <remarks/>
+        public void updateSapOnhandByCodeAsync(string arg0, object userState) {
+            if ((this.updateSapOnhandByCodeOperationCompleted == null)) {
+                this.updateSapOnhandByCodeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateSapOnhandByCodeOperationCompleted);
+            }
+            this.InvokeAsync("updateSapOnhandByCode", new object[] {
+                        arg0}, this.updateSapOnhandByCodeOperationCompleted, userState);
+        }
+        
+        private void OnupdateSapOnhandByCodeOperationCompleted(object arg) {
+            if ((this.updateSapOnhandByCodeCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.updateSapOnhandByCodeCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public rs receiveMatInfo([System.Xml.Serialization.XmlElementAttribute("arg0", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] sapTmara[] arg0, [System.Xml.Serialization.XmlElementAttribute("arg1", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] sapTmch1[] arg1) {
+            object[] results = this.Invoke("receiveMatInfo", new object[] {
+                        arg0,
+                        arg1});
+            return ((rs)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void receiveMatInfoAsync(sapTmara[] arg0, sapTmch1[] arg1) {
+            this.receiveMatInfoAsync(arg0, arg1, null);
+        }
+        
+        /// <remarks/>
+        public void receiveMatInfoAsync(sapTmara[] arg0, sapTmch1[] arg1, object userState) {
+            if ((this.receiveMatInfoOperationCompleted == null)) {
+                this.receiveMatInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreceiveMatInfoOperationCompleted);
+            }
+            this.InvokeAsync("receiveMatInfo", new object[] {
+                        arg0,
+                        arg1}, this.receiveMatInfoOperationCompleted, userState);
+        }
+        
+        private void OnreceiveMatInfoOperationCompleted(object arg) {
+            if ((this.receiveMatInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.receiveMatInfoCompleted(this, new receiveMatInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public rs receiveVirtualTransferInfo([System.Xml.Serialization.XmlElementAttribute("arg0", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] sapTmdoc[] arg0) {
+            object[] results = this.Invoke("receiveVirtualTransferInfo", new object[] {
+                        arg0});
+            return ((rs)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void receiveVirtualTransferInfoAsync(sapTmdoc[] arg0) {
+            this.receiveVirtualTransferInfoAsync(arg0, null);
+        }
+        
+        /// <remarks/>
+        public void receiveVirtualTransferInfoAsync(sapTmdoc[] arg0, object userState) {
+            if ((this.receiveVirtualTransferInfoOperationCompleted == null)) {
+                this.receiveVirtualTransferInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreceiveVirtualTransferInfoOperationCompleted);
+            }
+            this.InvokeAsync("receiveVirtualTransferInfo", new object[] {
+                        arg0}, this.receiveVirtualTransferInfoOperationCompleted, userState);
+        }
+        
+        private void OnreceiveVirtualTransferInfoOperationCompleted(object arg) {
+            if ((this.receiveVirtualTransferInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.receiveVirtualTransferInfoCompleted(this, new receiveVirtualTransferInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -135,6 +250,68 @@ namespace MSYS.Web.MateriaService {
             if ((this.getTechStdByIdCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getTechStdByIdCompleted(this, new getTechStdByIdCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public workScheduleVO[] getWorkSchedule([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg2) {
+            object[] results = this.Invoke("getWorkSchedule", new object[] {
+                        arg0,
+                        arg1,
+                        arg2});
+            return ((workScheduleVO[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getWorkScheduleAsync(string arg0, string arg1, string arg2) {
+            this.getWorkScheduleAsync(arg0, arg1, arg2, null);
+        }
+        
+        /// <remarks/>
+        public void getWorkScheduleAsync(string arg0, string arg1, string arg2, object userState) {
+            if ((this.getWorkScheduleOperationCompleted == null)) {
+                this.getWorkScheduleOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetWorkScheduleOperationCompleted);
+            }
+            this.InvokeAsync("getWorkSchedule", new object[] {
+                        arg0,
+                        arg1,
+                        arg2}, this.getWorkScheduleOperationCompleted, userState);
+        }
+        
+        private void OngetWorkScheduleOperationCompleted(object arg) {
+            if ((this.getWorkScheduleCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getWorkScheduleCompleted(this, new getWorkScheduleCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string execUpdateSapOnhand() {
+            object[] results = this.Invoke("execUpdateSapOnhand", new object[0]);
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void execUpdateSapOnhandAsync() {
+            this.execUpdateSapOnhandAsync(null);
+        }
+        
+        /// <remarks/>
+        public void execUpdateSapOnhandAsync(object userState) {
+            if ((this.execUpdateSapOnhandOperationCompleted == null)) {
+                this.execUpdateSapOnhandOperationCompleted = new System.Threading.SendOrPostCallback(this.OnexecUpdateSapOnhandOperationCompleted);
+            }
+            this.InvokeAsync("execUpdateSapOnhand", new object[0], this.execUpdateSapOnhandOperationCompleted, userState);
+        }
+        
+        private void OnexecUpdateSapOnhandOperationCompleted(object arg) {
+            if ((this.execUpdateSapOnhandCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.execUpdateSapOnhandCompleted(this, new execUpdateSapOnhandCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -367,196 +544,91 @@ namespace MSYS.Web.MateriaService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class techStddInfoVO {
+    public partial class sapTmara : baseVO {
         
-        private tQaTechStdd techStddInfoField;
+        private string bezei1Field;
         
-        private techStddDetail[] techStdDetailsField;
+        private string bezei2Field;
         
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public tQaTechStdd techStddInfo {
-            get {
-                return this.techStddInfoField;
-            }
-            set {
-                this.techStddInfoField = value;
-            }
-        }
+        private System.DateTime createTimeField;
         
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("techStdDetails", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public techStddDetail[] techStdDetails {
-            get {
-                return this.techStdDetailsField;
-            }
-            set {
-                this.techStdDetailsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class tQaTechStdd : baseVO {
-        
-        private System.DateTime bDateField;
-        
-        private bool bDateFieldSpecified;
-        
-        private string controlStatusField;
-        
-        private System.DateTime createDateField;
-        
-        private bool createDateFieldSpecified;
-        
-        private string createDeptField;
-        
-        private string createIdField;
-        
-        private string creatorField;
-        
-        private System.DateTime eDateField;
-        
-        private bool eDateFieldSpecified;
+        private bool createTimeFieldSpecified;
         
         private long idField;
         
         private bool idFieldSpecified;
         
-        private string isDelField;
+        private string lvormField;
         
-        private string isValidField;
+        private string maktxField;
         
-        private string issuedStatusField;
+        private string marmField;
         
-        private string modifyIdField;
+        private string matklField;
         
-        private System.DateTime modifyTimeField;
+        private string matnrField;
         
-        private bool modifyTimeFieldSpecified;
+        private string meinsField;
         
-        private string prodCodeField;
+        private string mtartField;
         
-        private string remarkField;
+        private sapTmarm[] sapTmarmListField;
         
-        private string standardCodeField;
+        private string xchpfField;
         
-        private string standardVolField;
+        private string zzcdCodeField;
         
-        private string techStddNameField;
+        private string zzcdTextField;
+        
+        private string zzdjCodeField;
+        
+        private string zzdjTextField;
+        
+        private string zzpzCodeField;
+        
+        private string zzpzTextField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public System.DateTime BDate {
+        public string bezei1 {
             get {
-                return this.bDateField;
+                return this.bezei1Field;
             }
             set {
-                this.bDateField = value;
+                this.bezei1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string bezei2 {
+            get {
+                return this.bezei2Field;
+            }
+            set {
+                this.bezei2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime createTime {
+            get {
+                return this.createTimeField;
+            }
+            set {
+                this.createTimeField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BDateSpecified {
+        public bool createTimeSpecified {
             get {
-                return this.bDateFieldSpecified;
+                return this.createTimeFieldSpecified;
             }
             set {
-                this.bDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string controlStatus {
-            get {
-                return this.controlStatusField;
-            }
-            set {
-                this.controlStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public System.DateTime createDate {
-            get {
-                return this.createDateField;
-            }
-            set {
-                this.createDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool createDateSpecified {
-            get {
-                return this.createDateFieldSpecified;
-            }
-            set {
-                this.createDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string createDept {
-            get {
-                return this.createDeptField;
-            }
-            set {
-                this.createDeptField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string createId {
-            get {
-                return this.createIdField;
-            }
-            set {
-                this.createIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string creator {
-            get {
-                return this.creatorField;
-            }
-            set {
-                this.creatorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public System.DateTime EDate {
-            get {
-                return this.eDateField;
-            }
-            set {
-                this.eDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool EDateSpecified {
-            get {
-                return this.eDateFieldSpecified;
-            }
-            set {
-                this.eDateFieldSpecified = value;
+                this.createTimeFieldSpecified = value;
             }
         }
         
@@ -584,264 +656,331 @@ namespace MSYS.Web.MateriaService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string isDel {
+        public string lvorm {
             get {
-                return this.isDelField;
+                return this.lvormField;
             }
             set {
-                this.isDelField = value;
+                this.lvormField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string isValid {
+        public string maktx {
             get {
-                return this.isValidField;
+                return this.maktxField;
             }
             set {
-                this.isValidField = value;
+                this.maktxField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string issuedStatus {
+        public string marm {
             get {
-                return this.issuedStatusField;
+                return this.marmField;
             }
             set {
-                this.issuedStatusField = value;
+                this.marmField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string modifyId {
+        public string matkl {
             get {
-                return this.modifyIdField;
+                return this.matklField;
             }
             set {
-                this.modifyIdField = value;
+                this.matklField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public System.DateTime modifyTime {
+        public string matnr {
             get {
-                return this.modifyTimeField;
+                return this.matnrField;
             }
             set {
-                this.modifyTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool modifyTimeSpecified {
-            get {
-                return this.modifyTimeFieldSpecified;
-            }
-            set {
-                this.modifyTimeFieldSpecified = value;
+                this.matnrField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string prodCode {
+        public string meins {
             get {
-                return this.prodCodeField;
+                return this.meinsField;
             }
             set {
-                this.prodCodeField = value;
+                this.meinsField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string remark {
+        public string mtart {
             get {
-                return this.remarkField;
+                return this.mtartField;
             }
             set {
-                this.remarkField = value;
+                this.mtartField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("sapTmarmList", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
+        public sapTmarm[] sapTmarmList {
+            get {
+                return this.sapTmarmListField;
+            }
+            set {
+                this.sapTmarmListField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string standardCode {
+        public string xchpf {
             get {
-                return this.standardCodeField;
+                return this.xchpfField;
             }
             set {
-                this.standardCodeField = value;
+                this.xchpfField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string standardVol {
+        public string zzcdCode {
             get {
-                return this.standardVolField;
+                return this.zzcdCodeField;
             }
             set {
-                this.standardVolField = value;
+                this.zzcdCodeField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string techStddName {
+        public string zzcdText {
             get {
-                return this.techStddNameField;
+                return this.zzcdTextField;
             }
             set {
-                this.techStddNameField = value;
+                this.zzcdTextField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zzdjCode {
+            get {
+                return this.zzdjCodeField;
+            }
+            set {
+                this.zzdjCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zzdjText {
+            get {
+                return this.zzdjTextField;
+            }
+            set {
+                this.zzdjTextField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zzpzCode {
+            get {
+                return this.zzpzCodeField;
+            }
+            set {
+                this.zzpzCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zzpzText {
+            get {
+                return this.zzpzTextField;
+            }
+            set {
+                this.zzpzTextField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(productEntity))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(tPubMateriel))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(tQaTechStdd))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class baseVO {
+    public partial class sapTmarm {
         
-        private int drawField;
+        private System.DateTime createTimeField;
         
-        private bool drawFieldSpecified;
+        private bool createTimeFieldSpecified;
         
-        private int lengthField;
+        private long idField;
         
-        private bool lengthFieldSpecified;
+        private bool idFieldSpecified;
         
-        private int pageNumField;
+        private string meinhField;
         
-        private bool pageNumFieldSpecified;
+        private string meinsField;
         
-        private int pageSizeField;
+        private long tmaraIdField;
         
-        private bool pageSizeFieldSpecified;
+        private bool tmaraIdFieldSpecified;
         
-        private int startField;
+        private double umrenField;
         
-        private bool startFieldSpecified;
+        private bool umrenFieldSpecified;
+        
+        private double umrezField;
+        
+        private bool umrezFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public int draw {
+        public System.DateTime createTime {
             get {
-                return this.drawField;
+                return this.createTimeField;
             }
             set {
-                this.drawField = value;
+                this.createTimeField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool drawSpecified {
+        public bool createTimeSpecified {
             get {
-                return this.drawFieldSpecified;
+                return this.createTimeFieldSpecified;
             }
             set {
-                this.drawFieldSpecified = value;
+                this.createTimeFieldSpecified = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public int length {
+        public long id {
             get {
-                return this.lengthField;
+                return this.idField;
             }
             set {
-                this.lengthField = value;
+                this.idField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lengthSpecified {
+        public bool idSpecified {
             get {
-                return this.lengthFieldSpecified;
+                return this.idFieldSpecified;
             }
             set {
-                this.lengthFieldSpecified = value;
+                this.idFieldSpecified = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public int pageNum {
+        public string meinh {
             get {
-                return this.pageNumField;
+                return this.meinhField;
             }
             set {
-                this.pageNumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool pageNumSpecified {
-            get {
-                return this.pageNumFieldSpecified;
-            }
-            set {
-                this.pageNumFieldSpecified = value;
+                this.meinhField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public int pageSize {
+        public string meins {
             get {
-                return this.pageSizeField;
+                return this.meinsField;
             }
             set {
-                this.pageSizeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool pageSizeSpecified {
-            get {
-                return this.pageSizeFieldSpecified;
-            }
-            set {
-                this.pageSizeFieldSpecified = value;
+                this.meinsField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public int start {
+        public long tmaraId {
             get {
-                return this.startField;
+                return this.tmaraIdField;
             }
             set {
-                this.startField = value;
+                this.tmaraIdField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool startSpecified {
+        public bool tmaraIdSpecified {
             get {
-                return this.startFieldSpecified;
+                return this.tmaraIdFieldSpecified;
             }
             set {
-                this.startFieldSpecified = value;
+                this.tmaraIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double umren {
+            get {
+                return this.umrenField;
+            }
+            set {
+                this.umrenField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool umrenSpecified {
+            get {
+                return this.umrenFieldSpecified;
+            }
+            set {
+                this.umrenFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double umrez {
+            get {
+                return this.umrezField;
+            }
+            set {
+                this.umrezField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool umrezSpecified {
+            get {
+                return this.umrezFieldSpecified;
+            }
+            set {
+                this.umrezFieldSpecified = value;
             }
         }
     }
@@ -2528,6 +2667,8 @@ namespace MSYS.Web.MateriaService {
         
         private bool sticksNumFieldSpecified;
         
+        private string pzcodeField;
+        
         private string adjustField;
         
         private string flowStatusField;
@@ -2892,6 +3033,17 @@ namespace MSYS.Web.MateriaService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string pzcode {
+            get {
+                return this.pzcodeField;
+            }
+            set {
+                this.pzcodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string adjust {
             get {
                 return this.adjustField;
@@ -2942,6 +3094,184 @@ namespace MSYS.Web.MateriaService {
             }
             set {
                 this.ygSubListField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class workScheduleVO {
+        
+        private string col1Field;
+        
+        private string col2Field;
+        
+        private string col3Field;
+        
+        private string col4Field;
+        
+        private string dateBeginField;
+        
+        private string dateEndField;
+        
+        private string idField;
+        
+        private string remarkField;
+        
+        private string shiftNameField;
+        
+        private string teamNameField;
+        
+        private string workDateField;
+        
+        private string workStausField;
+        
+        private string workshopNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col1 {
+            get {
+                return this.col1Field;
+            }
+            set {
+                this.col1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col2 {
+            get {
+                return this.col2Field;
+            }
+            set {
+                this.col2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col3 {
+            get {
+                return this.col3Field;
+            }
+            set {
+                this.col3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col4 {
+            get {
+                return this.col4Field;
+            }
+            set {
+                this.col4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string dateBegin {
+            get {
+                return this.dateBeginField;
+            }
+            set {
+                this.dateBeginField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string dateEnd {
+            get {
+                return this.dateEndField;
+            }
+            set {
+                this.dateEndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string remark {
+            get {
+                return this.remarkField;
+            }
+            set {
+                this.remarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string shiftName {
+            get {
+                return this.shiftNameField;
+            }
+            set {
+                this.shiftNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string teamName {
+            get {
+                return this.teamNameField;
+            }
+            set {
+                this.teamNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string workDate {
+            get {
+                return this.workDateField;
+            }
+            set {
+                this.workDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string workStaus {
+            get {
+                return this.workStausField;
+            }
+            set {
+                this.workStausField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string workshopName {
+            get {
+                return this.workshopNameField;
+            }
+            set {
+                this.workshopNameField = value;
             }
         }
     }
@@ -3172,6 +3502,492 @@ namespace MSYS.Web.MateriaService {
             }
             set {
                 this.techStddIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class techStddInfoVO {
+        
+        private tQaTechStdd techStddInfoField;
+        
+        private techStddDetail[] techStdDetailsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public tQaTechStdd techStddInfo {
+            get {
+                return this.techStddInfoField;
+            }
+            set {
+                this.techStddInfoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("techStdDetails", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public techStddDetail[] techStdDetails {
+            get {
+                return this.techStdDetailsField;
+            }
+            set {
+                this.techStdDetailsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class tQaTechStdd : baseVO {
+        
+        private System.DateTime bDateField;
+        
+        private bool bDateFieldSpecified;
+        
+        private string controlStatusField;
+        
+        private System.DateTime createDateField;
+        
+        private bool createDateFieldSpecified;
+        
+        private string createDeptField;
+        
+        private string createIdField;
+        
+        private string creatorField;
+        
+        private System.DateTime eDateField;
+        
+        private bool eDateFieldSpecified;
+        
+        private long idField;
+        
+        private bool idFieldSpecified;
+        
+        private string isDelField;
+        
+        private string isValidField;
+        
+        private string issuedStatusField;
+        
+        private string modifyIdField;
+        
+        private System.DateTime modifyTimeField;
+        
+        private bool modifyTimeFieldSpecified;
+        
+        private string prodCodeField;
+        
+        private string remarkField;
+        
+        private string standardCodeField;
+        
+        private string standardVolField;
+        
+        private string techStddNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime BDate {
+            get {
+                return this.bDateField;
+            }
+            set {
+                this.bDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool BDateSpecified {
+            get {
+                return this.bDateFieldSpecified;
+            }
+            set {
+                this.bDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string controlStatus {
+            get {
+                return this.controlStatusField;
+            }
+            set {
+                this.controlStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime createDate {
+            get {
+                return this.createDateField;
+            }
+            set {
+                this.createDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createDateSpecified {
+            get {
+                return this.createDateFieldSpecified;
+            }
+            set {
+                this.createDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string createDept {
+            get {
+                return this.createDeptField;
+            }
+            set {
+                this.createDeptField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string createId {
+            get {
+                return this.createIdField;
+            }
+            set {
+                this.createIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string creator {
+            get {
+                return this.creatorField;
+            }
+            set {
+                this.creatorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime EDate {
+            get {
+                return this.eDateField;
+            }
+            set {
+                this.eDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool EDateSpecified {
+            get {
+                return this.eDateFieldSpecified;
+            }
+            set {
+                this.eDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public long id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string isDel {
+            get {
+                return this.isDelField;
+            }
+            set {
+                this.isDelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string isValid {
+            get {
+                return this.isValidField;
+            }
+            set {
+                this.isValidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string issuedStatus {
+            get {
+                return this.issuedStatusField;
+            }
+            set {
+                this.issuedStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string modifyId {
+            get {
+                return this.modifyIdField;
+            }
+            set {
+                this.modifyIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime modifyTime {
+            get {
+                return this.modifyTimeField;
+            }
+            set {
+                this.modifyTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool modifyTimeSpecified {
+            get {
+                return this.modifyTimeFieldSpecified;
+            }
+            set {
+                this.modifyTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string prodCode {
+            get {
+                return this.prodCodeField;
+            }
+            set {
+                this.prodCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string remark {
+            get {
+                return this.remarkField;
+            }
+            set {
+                this.remarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string standardCode {
+            get {
+                return this.standardCodeField;
+            }
+            set {
+                this.standardCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string standardVol {
+            get {
+                return this.standardVolField;
+            }
+            set {
+                this.standardVolField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string techStddName {
+            get {
+                return this.techStddNameField;
+            }
+            set {
+                this.techStddNameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(productEntity))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(tPubMateriel))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(tQaTechStdd))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(sapTmara))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class baseVO {
+        
+        private int drawField;
+        
+        private bool drawFieldSpecified;
+        
+        private int lengthField;
+        
+        private bool lengthFieldSpecified;
+        
+        private int pageNumField;
+        
+        private bool pageNumFieldSpecified;
+        
+        private int pageSizeField;
+        
+        private bool pageSizeFieldSpecified;
+        
+        private int startField;
+        
+        private bool startFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int draw {
+            get {
+                return this.drawField;
+            }
+            set {
+                this.drawField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool drawSpecified {
+            get {
+                return this.drawFieldSpecified;
+            }
+            set {
+                this.drawFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int length {
+            get {
+                return this.lengthField;
+            }
+            set {
+                this.lengthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lengthSpecified {
+            get {
+                return this.lengthFieldSpecified;
+            }
+            set {
+                this.lengthFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int pageNum {
+            get {
+                return this.pageNumField;
+            }
+            set {
+                this.pageNumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pageNumSpecified {
+            get {
+                return this.pageNumFieldSpecified;
+            }
+            set {
+                this.pageNumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int pageSize {
+            get {
+                return this.pageSizeField;
+            }
+            set {
+                this.pageSizeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pageSizeSpecified {
+            get {
+                return this.pageSizeFieldSpecified;
+            }
+            set {
+                this.pageSizeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int start {
+            get {
+                return this.startField;
+            }
+            set {
+                this.startField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool startSpecified {
+            get {
+                return this.startFieldSpecified;
+            }
+            set {
+                this.startFieldSpecified = value;
             }
         }
     }
@@ -3575,6 +4391,8 @@ namespace MSYS.Web.MateriaService {
         
         private string matTypeCodeField;
         
+        private string matTypeCode2Field;
+        
         private string matVarietyField;
         
         private string matYearField;
@@ -3870,6 +4688,17 @@ namespace MSYS.Web.MateriaService {
             }
             set {
                 this.matTypeCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string matTypeCode2 {
+            get {
+                return this.matTypeCode2Field;
+            }
+            set {
+                this.matTypeCode2Field = value;
             }
         }
         
@@ -4183,6 +5012,427 @@ namespace MSYS.Web.MateriaService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class sapTmdoc {
+        
+        private string budatField;
+        
+        private string chargField;
+        
+        private System.DateTime createTimeField;
+        
+        private bool createTimeFieldSpecified;
+        
+        private long idField;
+        
+        private bool idFieldSpecified;
+        
+        private string matnrField;
+        
+        private string mblnrField;
+        
+        private string meinsField;
+        
+        private double mengeField;
+        
+        private bool mengeFieldSpecified;
+        
+        private string usnamField;
+        
+        private string zeileField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string budat {
+            get {
+                return this.budatField;
+            }
+            set {
+                this.budatField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string charg {
+            get {
+                return this.chargField;
+            }
+            set {
+                this.chargField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime createTime {
+            get {
+                return this.createTimeField;
+            }
+            set {
+                this.createTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createTimeSpecified {
+            get {
+                return this.createTimeFieldSpecified;
+            }
+            set {
+                this.createTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public long id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string matnr {
+            get {
+                return this.matnrField;
+            }
+            set {
+                this.matnrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string mblnr {
+            get {
+                return this.mblnrField;
+            }
+            set {
+                this.mblnrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string meins {
+            get {
+                return this.meinsField;
+            }
+            set {
+                this.meinsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double menge {
+            get {
+                return this.mengeField;
+            }
+            set {
+                this.mengeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool mengeSpecified {
+            get {
+                return this.mengeFieldSpecified;
+            }
+            set {
+                this.mengeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string usnam {
+            get {
+                return this.usnamField;
+            }
+            set {
+                this.usnamField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zeile {
+            get {
+                return this.zeileField;
+            }
+            set {
+                this.zeileField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class rs {
+        
+        private string messageField;
+        
+        private string statusField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string status {
+            get {
+                return this.statusField;
+            }
+            set {
+                this.statusField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class sapTmch1 {
+        
+        private string chargField;
+        
+        private System.DateTime createTimeField;
+        
+        private bool createTimeFieldSpecified;
+        
+        private long idField;
+        
+        private bool idFieldSpecified;
+        
+        private string kztxtField;
+        
+        private string matnrField;
+        
+        private string zbzField;
+        
+        private string zdjField;
+        
+        private double znfField;
+        
+        private bool znfFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string charg {
+            get {
+                return this.chargField;
+            }
+            set {
+                this.chargField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime createTime {
+            get {
+                return this.createTimeField;
+            }
+            set {
+                this.createTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool createTimeSpecified {
+            get {
+                return this.createTimeFieldSpecified;
+            }
+            set {
+                this.createTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public long id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string kztxt {
+            get {
+                return this.kztxtField;
+            }
+            set {
+                this.kztxtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string matnr {
+            get {
+                return this.matnrField;
+            }
+            set {
+                this.matnrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zbz {
+            get {
+                return this.zbzField;
+            }
+            set {
+                this.zbzField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string zdj {
+            get {
+                return this.zdjField;
+            }
+            set {
+                this.zdjField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double znf {
+            get {
+                return this.znfField;
+            }
+            set {
+                this.znfField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool znfSpecified {
+            get {
+                return this.znfFieldSpecified;
+            }
+            set {
+                this.znfFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void updateSapOnhandByCodeCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void receiveMatInfoCompletedEventHandler(object sender, receiveMatInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class receiveMatInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal receiveMatInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public rs Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((rs)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void receiveVirtualTransferInfoCompletedEventHandler(object sender, receiveVirtualTransferInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class receiveVirtualTransferInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal receiveVirtualTransferInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public rs Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((rs)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     public delegate void getTechStdByIdCompletedEventHandler(object sender, getTechStdByIdCompletedEventArgs e);
     
@@ -4204,6 +5454,58 @@ namespace MSYS.Web.MateriaService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((techStddInfoVO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void getWorkScheduleCompletedEventHandler(object sender, getWorkScheduleCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getWorkScheduleCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getWorkScheduleCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public workScheduleVO[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((workScheduleVO[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void execUpdateSapOnhandCompletedEventHandler(object sender, execUpdateSapOnhandCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class execUpdateSapOnhandCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal execUpdateSapOnhandCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
             }
         }
     }

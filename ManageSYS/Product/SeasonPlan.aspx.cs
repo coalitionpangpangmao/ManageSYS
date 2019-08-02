@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Collections;
+using MSYS.Web.PlanService;
+
 public partial class Product_SeasonPlan : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -23,7 +25,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
     protected void bindGrid1()
     {
-        string query = "select distinct g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g4.total as 计划总产量,'吨' as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g  left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' left join (select sum(s.total_output) as total,r.id from ht_prod_season_plan r left join ht_prod_season_plan_detail s on s.quarter_plan_id = r.id  and s.is_del = '0' where r.is_del = '0' group by r.id) g4 on g4.id = g.id where g.is_del = '0' order by g.plan_name";
+        string query = "select distinct g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g4.total as 计划总产量,'吨' as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g  left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' left join (select sum(s.total_output) as total,r.id from ht_prod_season_plan r left join ht_prod_season_plan_detail s on s.quarter_plan_id = r.id  and s.is_del = '0' where r.is_del = '0' group by r.id) g4 on g4.id = g.id where g.is_del = '0' order by 计划名";
         if (txtYears.Text != "")
             query += " and g.plan_year = '" + txtYears.Text + "'";
         if (listSeason.SelectedValue != "")
@@ -55,6 +57,29 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
 
             }
+        }
+    }
+
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        MSYS.Web.PlanService.WsPlanForGSInterfaceService service = new MSYS.Web.PlanService.WsPlanForGSInterfaceService();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        quarterPlanVO[] pb = service.getQuarterPlanList("", "");
+        prodAssignVO[] pvo = service.getProdAssignListForGS("", "");
+        string[] seg = { "id", "PLAN_NAME", "B_FLOW_STATUS", "ISSUED_STATUS", "PLAN_YEAR", "QUATER", "IS_VALID", "REMARK" };
+        string[] seg2 = { "QUARTER_PLAN_ID", "prod_code ", "plan_OUTPUT_1", "PLAN_OUTPUT_2", "PLAN_OUTPUT_3", "TOTAL_OUTPUT", "IS_DEL" };
+        foreach (quarterPlanVO p in pb)
+        {
+            string[] value = { p.quarterPlan.id, p.quarterPlan.planName, p.quarterPlan.flowStatus, p.quarterPlan.issuedStatus, p.quarterPlan.planYear, p.quarterPlan.quarter, "1", p.quarterPlan.remark, };
+            //  string[] value2 = { p.id };
+            opt.getMergeStr(seg, value, 1, "HT_PROD_SEASON_PLAN");
+            foreach (tAmQuarterPlanDetail pd in p.subList)
+            {
+                string[] value2 = { p.quarterPlan.id, pd.prodCode, pd.planOutput1.ToString(), pd.planOutput2.ToString(), pd.planOutput3.ToString(), pd.totalOutput.ToString(), pd.isDel };
+                opt.getMergeStr(seg2, value2, 1, "HT_PROD_SEASON_PLAN_DETAIL");
+            }
+            // opt.getMergeStr(seg2, value2, 1, "HT_PROD_MONTH_PLAN_DETAIL");
+            // dt.Rows.Add(paras);
         }
     }
   
@@ -119,6 +144,27 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         }
 
 
+    }
+
+    //同步季度生产计划
+    protected void btnSync_Click(Object sender, EventArgs e) {
+        MSYS.Web.PlanService.WsPlanForGSInterfaceService service = new MSYS.Web.PlanService.WsPlanForGSInterfaceService();
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        string[] seg1 = new string[] { "ID", "PLAN_NAME", "FLOW_STATUS", "ISSUED_STATUS", "CREATE_ID", "CREATE_TIME", "MODIFY_ID", "MODIFYER", "MODIFY_TIME", "DEPT_ID", "PLAN_YEAR", "QUARTER", "UNIT", "REMARK", "IS_DEL", "TOTAL_OUTPUT", "PZ_CODE", "ADJUST_STATUS" };
+        string[] seg2 = new string[] { "ID", "QUARTER_PLAN_ID", "PROD_CODE", "PLAN_OUTPUT_1", "PLAN_OUT_PUT_2", "PLAN_OUTPUT_3", "TOTAL_OUTPUT", "IS_DEL", "OUTPUT_1_ADJUST", "OUTPUT_2_ADJUST", "OUTPUT_3_ADJUST", "IS_VALID"};
+        string table1 = " HT_PROD_SEASON_PLAN";
+        string table2 = "HT_PROD_SEASON_PLAN_DETAIL";
+        
+        quarterPlanVO[] qp = service.getQuarterPlanList(txtYear.Text, listSeason.SelectedValue.ToString());
+        foreach (quarterPlanVO q in qp) {
+            string[] data = new string[] { q.quarterPlan.id, q.quarterPlan.planName, q.quarterPlan.flowStatus, q.quarterPlan.issuedStatus, q.quarterPlan.createId, q.quarterPlan.createTime.ToString(), null, null, null,q.quarterPlan.deptId, q.quarterPlan.planYear, q.quarterPlan.quarter, q.quarterPlan.unitId };
+            string result = opt.InsertData(seg1, data, table1);
+            foreach (tAmQuarterPlanDetail ap in q.subList) {
+                string[] data_detail = new string[] { ap.id.ToString(), ap.quarterPlanId, ap.prodCode, ap.planOutput1.ToString(), ap.planOutput2.ToString(), ap.planOutput3.ToString(), ap.totalOutput.ToString(), ap.isDel, ap.output1Adjust, ap.output2Adjust, ap.output3Adjust,  "true"};
+            }
+        }
+
+        
     }
 
     protected void datagrid2Bind(DataTable data)
@@ -304,17 +350,15 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         string planname = txtYear.Text + "-" + listSeason2.SelectedValue + "季度生产计划";
-       
 
+        opt.UpDateOra("delete from  HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'");
         string[] seg = { "PLAN_YEAR", "QUARTER", "PLAN_NAME", "CREATE_ID", "CREATE_TIME", "REMARK" };
         string[] value = { txtYear.Text, listSeason2.SelectedValue, planname, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), txtRemark.Text };
-        
-        string log_message = opt.MergeInto(seg, value,3, "HT_PROD_SEASON_PLAN") == "Success" ? "新增季度生产计划成功" : "新增季度生产计划失败";
+        string log_message = opt.InsertData(seg, value, "HT_PROD_SEASON_PLAN") == "Success" ? "新增季度生产计划成功" : "新增季度生产计划失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
         hidePlanID.Value = opt.GetSegValue("select * from HT_PROD_SEASON_PLAN   where plan_name = '" + planname + "' and  is_del = '0'", "ID");
         bindGrid1();
-        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('" + log_message + "');", true);
 
     }
 

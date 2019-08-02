@@ -51,7 +51,10 @@
                         </tbody>
                     </table>
                     <div class="listtitle" style="margin-top: 10px">
-                        月度生产计划表<span style="position: relative; float: right">
+                        月度生产计划表<span style="position:relative; float:right">
+                            <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
+                               </span>
+                        <span style="position: relative; float: right">
                             <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click"  OnClientClick ="$('#tabtop2').click();"/>
                         </span>
                     </div>

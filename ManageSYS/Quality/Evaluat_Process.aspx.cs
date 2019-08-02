@@ -82,7 +82,7 @@ public partial class Quality_Evaluat_Process : MSYS.Web.BasePage
     protected void initTable(GridViewRow row)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        string query = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group where r.INSPECT_TYPE = '0' and r.is_del = '0' order by r.inspect_code";
+        string query = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd_sub s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group where r.INSPECT_TYPE = '0' and r.is_del = '0' and   s.stdd_code in (select inspect_stdd from ht_pub_prod_design where prod_name = '" + row.Cells[1].Text + "' )  order by r.inspect_code";
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
 
 

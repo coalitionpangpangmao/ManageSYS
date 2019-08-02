@@ -284,7 +284,7 @@ namespace MSYS.Web
             //    List<string> commandlist = new List<string>();
 
             string[] matseg = { "PROD_CODE", "PROD_NAME", "PACK_NAME", "HAND_MODE", "TECH_STDD_CODE", "MATER_FORMULA_CODE", "AUX_FORMULA_CODE", "COAT_FORMULA_CODE", "REMARK", "CREATEOR_ID", "CREATE_TIME", "MODIFY_ID", "MODIFY_TIME", "STANDARD_VALUE", "XY_PROD_CODE", "IS_VALID", "IS_DEL" };
-           // int SucCount = 0;
+            int SucCount = 0;
 
             foreach (productEntity prod in prods)
             {

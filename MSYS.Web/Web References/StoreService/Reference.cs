@@ -306,24 +306,26 @@ namespace MSYS.Web.StoreService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public wsRespond fuliaoInAndOut4ws_03([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] materInAndOutVO arg0) {
+        public wsRespond fuliaoInAndOut4ws_03([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] materInAndOutVO arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1) {
             object[] results = this.Invoke("fuliaoInAndOut4ws_03", new object[] {
-                        arg0});
+                        arg0,
+                        arg1});
             return ((wsRespond)(results[0]));
         }
         
         /// <remarks/>
-        public void fuliaoInAndOut4ws_03Async(materInAndOutVO arg0) {
-            this.fuliaoInAndOut4ws_03Async(arg0, null);
+        public void fuliaoInAndOut4ws_03Async(materInAndOutVO arg0, string arg1) {
+            this.fuliaoInAndOut4ws_03Async(arg0, arg1, null);
         }
         
         /// <remarks/>
-        public void fuliaoInAndOut4ws_03Async(materInAndOutVO arg0, object userState) {
+        public void fuliaoInAndOut4ws_03Async(materInAndOutVO arg0, string arg1, object userState) {
             if ((this.fuliaoInAndOut4ws_03OperationCompleted == null)) {
                 this.fuliaoInAndOut4ws_03OperationCompleted = new System.Threading.SendOrPostCallback(this.OnfuliaoInAndOut4ws_03OperationCompleted);
             }
             this.InvokeAsync("fuliaoInAndOut4ws_03", new object[] {
-                        arg0}, this.fuliaoInAndOut4ws_03OperationCompleted, userState);
+                        arg0,
+                        arg1}, this.fuliaoInAndOut4ws_03OperationCompleted, userState);
         }
         
         private void OnfuliaoInAndOut4ws_03OperationCompleted(object arg) {
@@ -482,24 +484,28 @@ namespace MSYS.Web.StoreService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public wsRespond yuanliaoInAndOut4ws_03([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] materInAndOutVO arg0) {
+        public wsRespond yuanliaoInAndOut4ws_03([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] materInAndOutVO arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] double arg2) {
             object[] results = this.Invoke("yuanliaoInAndOut4ws_03", new object[] {
-                        arg0});
+                        arg0,
+                        arg1,
+                        arg2});
             return ((wsRespond)(results[0]));
         }
         
         /// <remarks/>
-        public void yuanliaoInAndOut4ws_03Async(materInAndOutVO arg0) {
-            this.yuanliaoInAndOut4ws_03Async(arg0, null);
+        public void yuanliaoInAndOut4ws_03Async(materInAndOutVO arg0, string arg1, double arg2) {
+            this.yuanliaoInAndOut4ws_03Async(arg0, arg1, arg2, null);
         }
         
         /// <remarks/>
-        public void yuanliaoInAndOut4ws_03Async(materInAndOutVO arg0, object userState) {
+        public void yuanliaoInAndOut4ws_03Async(materInAndOutVO arg0, string arg1, double arg2, object userState) {
             if ((this.yuanliaoInAndOut4ws_03OperationCompleted == null)) {
                 this.yuanliaoInAndOut4ws_03OperationCompleted = new System.Threading.SendOrPostCallback(this.OnyuanliaoInAndOut4ws_03OperationCompleted);
             }
             this.InvokeAsync("yuanliaoInAndOut4ws_03", new object[] {
-                        arg0}, this.yuanliaoInAndOut4ws_03OperationCompleted, userState);
+                        arg0,
+                        arg1,
+                        arg2}, this.yuanliaoInAndOut4ws_03OperationCompleted, userState);
         }
         
         private void OnyuanliaoInAndOut4ws_03OperationCompleted(object arg) {
@@ -540,24 +546,25 @@ namespace MSYS.Web.StoreService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public tWaOnhand[] getOnhandNoBjPageList([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg2, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg3, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg4, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg5) {
+        public tWaOnhand[] getOnhandNoBjPageList([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg2, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg3, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg4, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg5, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg6) {
             object[] results = this.Invoke("getOnhandNoBjPageList", new object[] {
                         arg0,
                         arg1,
                         arg2,
                         arg3,
                         arg4,
-                        arg5});
+                        arg5,
+                        arg6});
             return ((tWaOnhand[])(results[0]));
         }
         
         /// <remarks/>
-        public void getOnhandNoBjPageListAsync(string arg0, string arg1, string arg2, string arg3, string arg4, string arg5) {
-            this.getOnhandNoBjPageListAsync(arg0, arg1, arg2, arg3, arg4, arg5, null);
+        public void getOnhandNoBjPageListAsync(string arg0, string arg1, string arg2, string arg3, string arg4, string arg5, string arg6) {
+            this.getOnhandNoBjPageListAsync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, null);
         }
         
         /// <remarks/>
-        public void getOnhandNoBjPageListAsync(string arg0, string arg1, string arg2, string arg3, string arg4, string arg5, object userState) {
+        public void getOnhandNoBjPageListAsync(string arg0, string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, object userState) {
             if ((this.getOnhandNoBjPageListOperationCompleted == null)) {
                 this.getOnhandNoBjPageListOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetOnhandNoBjPageListOperationCompleted);
             }
@@ -567,7 +574,8 @@ namespace MSYS.Web.StoreService {
                         arg2,
                         arg3,
                         arg4,
-                        arg5}, this.getOnhandNoBjPageListOperationCompleted, userState);
+                        arg5,
+                        arg6}, this.getOnhandNoBjPageListOperationCompleted, userState);
         }
         
         private void OngetOnhandNoBjPageListOperationCompleted(object arg) {
@@ -1351,15 +1359,9 @@ namespace MSYS.Web.StoreService {
         
         private double batchNumberField;
         
-        private bool batchNumberFieldSpecified;
-        
         private double caboSumField;
         
-        private bool caboSumFieldSpecified;
-        
         private double piecesSumField;
-        
-        private bool piecesSumFieldSpecified;
         
         private string remarkField;
         
@@ -1391,7 +1393,7 @@ namespace MSYS.Web.StoreService {
         
         private string prodNameField;
         
-        private tShopMaterInoutSub[] subListField;
+        private tShopMaterInoutSubVO[] subListField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -1581,17 +1583,6 @@ namespace MSYS.Web.StoreService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool batchNumberSpecified {
-            get {
-                return this.batchNumberFieldSpecified;
-            }
-            set {
-                this.batchNumberFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public double caboSum {
             get {
@@ -1603,17 +1594,6 @@ namespace MSYS.Web.StoreService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool caboSumSpecified {
-            get {
-                return this.caboSumFieldSpecified;
-            }
-            set {
-                this.caboSumFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public double piecesSum {
             get {
@@ -1621,17 +1601,6 @@ namespace MSYS.Web.StoreService {
             }
             set {
                 this.piecesSumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool piecesSumSpecified {
-            get {
-                return this.piecesSumFieldSpecified;
-            }
-            set {
-                this.piecesSumFieldSpecified = value;
             }
         }
         
@@ -1802,7 +1771,7 @@ namespace MSYS.Web.StoreService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("subList", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public tShopMaterInoutSub[] subList {
+        public tShopMaterInoutSubVO[] subList {
             get {
                 return this.subListField;
             }
@@ -1818,7 +1787,7 @@ namespace MSYS.Web.StoreService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class tShopMaterInoutSub : baseVO {
+    public partial class tShopMaterInoutSubVO : baseVO {
         
         private string auditMarkField;
         
@@ -1856,21 +1825,15 @@ namespace MSYS.Web.StoreService {
         
         private string occurQtyField;
         
-        private double oddQtyField;
+        private string oddQtyField;
         
-        private bool oddQtyFieldSpecified;
-        
-        private double packingNumbersField;
-        
-        private bool packingNumbersFieldSpecified;
+        private string packingNumbersField;
         
         private string pkMeasdocField;
         
         private string remarkField;
         
-        private double substanceField;
-        
-        private bool substanceFieldSpecified;
+        private string substanceField;
         
         private string unitCodeField;
         
@@ -2080,7 +2043,7 @@ namespace MSYS.Web.StoreService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double oddQty {
+        public string oddQty {
             get {
                 return this.oddQtyField;
             }
@@ -2090,35 +2053,13 @@ namespace MSYS.Web.StoreService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool oddQtySpecified {
-            get {
-                return this.oddQtyFieldSpecified;
-            }
-            set {
-                this.oddQtyFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double packingNumbers {
+        public string packingNumbers {
             get {
                 return this.packingNumbersField;
             }
             set {
                 this.packingNumbersField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool packingNumbersSpecified {
-            get {
-                return this.packingNumbersFieldSpecified;
-            }
-            set {
-                this.packingNumbersFieldSpecified = value;
             }
         }
         
@@ -2146,23 +2087,12 @@ namespace MSYS.Web.StoreService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public double substance {
+        public string substance {
             get {
                 return this.substanceField;
             }
             set {
                 this.substanceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool substanceSpecified {
-            get {
-                return this.substanceFieldSpecified;
-            }
-            set {
-                this.substanceFieldSpecified = value;
             }
         }
         
@@ -2212,7 +2142,7 @@ namespace MSYS.Web.StoreService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(tShopMaterInoutSub))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(tShopMaterInoutSubVO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(tWaSaponhand))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(tWaOnhand))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]

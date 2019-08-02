@@ -36,6 +36,7 @@
                 <div class="listtitle">
                     查询条件<span style="position: relative; float: right">
                         <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
+                         <asp:Button ID="btnSync" runat="server" Text="同步" CssClass="btnview" OnClick="btnSync_Click" />
                     </span>
                 </div>
                 <table class="tablelist">
@@ -63,7 +64,9 @@
                     </tbody>
                 </table>
                 <div class="listtitle" style="margin-top: 10px">
-                    生产计划表<span style="position: relative; float: right">
+                    生产计划表<span style="position:relative; float:right">
+                            <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="100px"/>
+                               </span><span style="position: relative; float: right">
                         <asp:Button ID="btnAddPlan" runat="server" Text="新增" class="btnadd auth" OnClick="btnAddPlan_Click"   OnClientClick ="$('#tabtop2').click()"/>
                     </span>
                 </div>

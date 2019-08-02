@@ -57,8 +57,8 @@ public partial class Quality_ProdMonthEvaluat : MSYS.Web.BasePage
             GridView2.DataSource = opt.CreateDataSetOra(query);
             GridView2.DataBind();
 
-            //query = "select t.record_time as 检测时间，t.* from hv_qlt_sensor_realrec t where t.产品 = '" + listProd.SelectedValue + "' and t.sensor_month = '" + txtStartTime.Text + "'";
-            query = "select t.record_time as 评测时间, t.产品名称,  t.* from hv_qlt_sensor_realrec2 t where t.产品 = '" + listProd.SelectedValue + "' and t.sensor_month = '" + txtStartTime.Text + "'";
+            query = "select t.record_time as 检测时间，t.* from hv_qlt_sensor_realrec t where t.产品 = '" + listProd.SelectedValue + "' and t.sensor_month = '" + txtStartTime.Text + "'";
+            //query = "select t.record_time as 评测时间, t.产品名称,  t.* from hv_qlt_sensor_realrec2 t where t.产品 = '" + listProd.SelectedValue + "' and t.sensor_month = '" + txtStartTime.Text + "'";
             GridView3.DataSource = opt.CreateDataSetOra(query);
             GridView3.DataBind();
 

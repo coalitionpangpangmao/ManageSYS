@@ -204,9 +204,16 @@
                                                 <asp:DropDownList ID="listqlt" runat="server" class="drpdwnlist">
                                                 </asp:DropDownList>
                                             </td>
+                                             <td width="100">工艺检查标准
+                                            </td>
+                                            <td>
+                                              
+                                                <asp:DropDownList ID="listisp" runat="server" class="drpdwnlist">
+                                                </asp:DropDownList>
+                                            </td>
                                               <td>路径选择</td>
-                                            <td colspan="3">
-                                                 <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack="true" Width ="275px"  OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
+                                            <td >
+                                                 <asp:DropDownList ID="listPathAll" runat="server" CssClass="drpdwnlist" AutoPostBack="true" OnSelectedIndexChanged="listPathAll_SelectedIndexChanged"></asp:DropDownList> 
                                             </td>
                                             
                                             </tr>

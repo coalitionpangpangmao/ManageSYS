@@ -6,6 +6,78 @@
       <xs:element name="getEquipClsListResponse" type="tns:getEquipClsListResponse" />
       <xs:element name="getEquipList" type="tns:getEquipList" />
       <xs:element name="getEquipListResponse" type="tns:getEquipListResponse" />
+      <xs:element name="getMaintainSignRecord" type="tns:getMaintainSignRecord" />
+      <xs:element name="getMaintainSignRecordResponse" type="tns:getMaintainSignRecordResponse" />
+      <xs:complexType name="getMaintainSignRecord">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMaintainSignRecordResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:maintainSignVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="maintainSignVO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:maintainPlanDetail">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="operateDate" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="searchEnd" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="searchStart" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="signDate" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="signUserName" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="maintainPlanDetail">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="checkUserName" type="xs:string" />
+              <xs:element minOccurs="0" name="col1" type="xs:string" />
+              <xs:element minOccurs="0" name="detailType" type="xs:string" />
+              <xs:element minOccurs="0" name="dutyUserName" type="xs:string" />
+              <xs:element minOccurs="0" name="endWork" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="endWorkStr" type="xs:string" />
+              <xs:element minOccurs="0" name="equipId" type="xs:string" />
+              <xs:element minOccurs="0" name="equipName" type="xs:string" />
+              <xs:element minOccurs="0" name="equipNo" type="xs:string" />
+              <xs:element minOccurs="0" name="equipTag" type="xs:string" />
+              <xs:element minOccurs="0" name="firstWork" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="firstWorkStr" type="xs:string" />
+              <xs:element minOccurs="0" name="id" type="xs:string" />
+              <xs:element minOccurs="0" name="isDel" type="xs:byte" />
+              <xs:element minOccurs="0" name="lastOperateTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="lastSignTime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="life" type="xs:string" />
+              <xs:element minOccurs="0" name="lifeDay" type="xs:int" />
+              <xs:element minOccurs="0" name="mainId" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainArea" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainContent" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainReason" type="xs:string" />
+              <xs:element minOccurs="0" name="maintainStep" type="xs:string" />
+              <xs:element minOccurs="0" name="operatorId" type="xs:string" />
+              <xs:element minOccurs="0" name="operatorName" type="xs:string" />
+              <xs:element minOccurs="0" name="planYear" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="stateCode" type="xs:string" />
+              <xs:element minOccurs="0" name="stateName" type="xs:string" />
+              <xs:element minOccurs="0" name="totalOperateCount" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getEquipList">
         <xs:sequence>
           <xs:element minOccurs="0" name="arg0" type="tns:tEqEqpTbl" />
@@ -58,15 +130,6 @@
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
-      <xs:complexType name="baseVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="draw" type="xs:int" />
-          <xs:element minOccurs="0" name="length" type="xs:int" />
-          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
-          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
-          <xs:element minOccurs="0" name="start" type="xs:int" />
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="getEquipListResponse">
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tEqEqpTbl" />
@@ -100,6 +163,12 @@
   <wsdl:message name="getEquipListResponse">
     <wsdl:part name="parameters" element="tns:getEquipListResponse" />
   </wsdl:message>
+  <wsdl:message name="getMaintainSignRecord">
+    <wsdl:part name="parameters" element="tns:getMaintainSignRecord" />
+  </wsdl:message>
+  <wsdl:message name="getMaintainSignRecordResponse">
+    <wsdl:part name="parameters" element="tns:getMaintainSignRecordResponse" />
+  </wsdl:message>
   <wsdl:message name="getEquipClsList">
     <wsdl:part name="parameters" element="tns:getEquipClsList" />
   </wsdl:message>
@@ -107,6 +176,10 @@
     <wsdl:part name="parameters" element="tns:getEquipList" />
   </wsdl:message>
   <wsdl:portType name="EquipServiceInterface">
+    <wsdl:operation name="getMaintainSignRecord">
+      <wsdl:input name="getMaintainSignRecord" message="tns:getMaintainSignRecord" />
+      <wsdl:output name="getMaintainSignRecordResponse" message="tns:getMaintainSignRecordResponse" />
+    </wsdl:operation>
     <wsdl:operation name="getEquipList">
       <wsdl:input name="getEquipList" message="tns:getEquipList" />
       <wsdl:output name="getEquipListResponse" message="tns:getEquipListResponse" />
@@ -124,6 +197,15 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getEquipListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMaintainSignRecord">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getMaintainSignRecord">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMaintainSignRecordResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
