@@ -97,6 +97,7 @@
           <xs:element minOccurs="0" name="id" type="xs:long" />
           <xs:element minOccurs="0" name="kztxt" type="xs:string" />
           <xs:element minOccurs="0" name="matnr" type="xs:string" />
+          <xs:element minOccurs="0" name="tmaraId" type="xs:long" />
           <xs:element minOccurs="0" name="zbz" type="xs:string" />
           <xs:element minOccurs="0" name="zdj" type="xs:string" />
           <xs:element minOccurs="0" name="znf" type="xs:double" />
@@ -123,11 +124,13 @@
           <xs:element minOccurs="0" name="budat" type="xs:string" />
           <xs:element minOccurs="0" name="charg" type="xs:string" />
           <xs:element minOccurs="0" name="createTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="endDate" type="xs:string" />
           <xs:element minOccurs="0" name="id" type="xs:long" />
           <xs:element minOccurs="0" name="matnr" type="xs:string" />
           <xs:element minOccurs="0" name="mblnr" type="xs:string" />
           <xs:element minOccurs="0" name="meins" type="xs:string" />
           <xs:element minOccurs="0" name="menge" type="xs:double" />
+          <xs:element minOccurs="0" name="startDate" type="xs:string" />
           <xs:element minOccurs="0" name="usnam" type="xs:string" />
           <xs:element minOccurs="0" name="zeile" type="xs:string" />
         </xs:sequence>
@@ -135,6 +138,35 @@
       <xs:complexType name="receiveVirtualTransferInfoResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="return" type="tns:rs" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getWorkSchedule">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+          <xs:element minOccurs="0" name="arg1" type="xs:string" />
+          <xs:element minOccurs="0" name="arg2" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getWorkScheduleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:workScheduleVO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="workScheduleVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="col1" type="xs:string" />
+          <xs:element minOccurs="0" name="col2" type="xs:string" />
+          <xs:element minOccurs="0" name="col3" type="xs:string" />
+          <xs:element minOccurs="0" name="col4" type="xs:string" />
+          <xs:element minOccurs="0" name="dateBegin" type="xs:string" />
+          <xs:element minOccurs="0" name="dateEnd" type="xs:string" />
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="remark" type="xs:string" />
+          <xs:element minOccurs="0" name="shiftName" type="xs:string" />
+          <xs:element minOccurs="0" name="teamName" type="xs:string" />
+          <xs:element minOccurs="0" name="workDate" type="xs:string" />
+          <xs:element minOccurs="0" name="workStaus" type="xs:string" />
+          <xs:element minOccurs="0" name="workshopName" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="getTechStdById">
@@ -200,43 +232,6 @@
           <xs:element minOccurs="0" name="techStddId" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="getWorkSchedule">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="arg0" type="xs:string" />
-          <xs:element minOccurs="0" name="arg1" type="xs:string" />
-          <xs:element minOccurs="0" name="arg2" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="getWorkScheduleResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:workScheduleVO" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="workScheduleVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="col1" type="xs:string" />
-          <xs:element minOccurs="0" name="col2" type="xs:string" />
-          <xs:element minOccurs="0" name="col3" type="xs:string" />
-          <xs:element minOccurs="0" name="col4" type="xs:string" />
-          <xs:element minOccurs="0" name="dateBegin" type="xs:string" />
-          <xs:element minOccurs="0" name="dateEnd" type="xs:string" />
-          <xs:element minOccurs="0" name="id" type="xs:string" />
-          <xs:element minOccurs="0" name="remark" type="xs:string" />
-          <xs:element minOccurs="0" name="shiftName" type="xs:string" />
-          <xs:element minOccurs="0" name="teamName" type="xs:string" />
-          <xs:element minOccurs="0" name="workDate" type="xs:string" />
-          <xs:element minOccurs="0" name="workStaus" type="xs:string" />
-          <xs:element minOccurs="0" name="workshopName" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="execUpdateSapOnhand">
-        <xs:sequence />
-      </xs:complexType>
-      <xs:complexType name="execUpdateSapOnhandResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="getMatFormulaById">
         <xs:sequence>
           <xs:element minOccurs="0" name="arg0" type="xs:string" />
@@ -292,6 +287,14 @@
           <xs:element minOccurs="0" name="materName" type="xs:string" />
           <xs:element minOccurs="0" name="materSort" type="xs:int" />
           <xs:element minOccurs="0" name="remark" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="execUpdateSapOnhand">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="execUpdateSapOnhandResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="getCoatFormulaById">
@@ -423,6 +426,7 @@
         <xs:complexContent mixed="false">
           <xs:extension base="tns:baseVO">
             <xs:sequence>
+              <xs:element minOccurs="0" name="charg" type="xs:string" />
               <xs:element minOccurs="0" name="clocationid" type="xs:string" />
               <xs:element minOccurs="0" name="costprice" type="xs:double" />
               <xs:element minOccurs="0" name="cwarehouseID" type="xs:string" />
@@ -548,11 +552,11 @@
   <wsdl:message name="getAllMaterialtListResponse">
     <wsdl:part name="parameters" element="tns:getAllMaterialtListResponse" />
   </wsdl:message>
-  <wsdl:message name="updateSapOnhandByCode">
-    <wsdl:part name="parameters" element="tns:updateSapOnhandByCode" />
-  </wsdl:message>
   <wsdl:message name="getAllProductList">
     <wsdl:part name="parameters" element="tns:getAllProductList" />
+  </wsdl:message>
+  <wsdl:message name="updateSapOnhandByCode">
+    <wsdl:part name="parameters" element="tns:updateSapOnhandByCode" />
   </wsdl:message>
   <wsdl:message name="getWorkScheduleResponse">
     <wsdl:part name="parameters" element="tns:getWorkScheduleResponse" />
@@ -596,11 +600,11 @@
   <wsdl:message name="getTechStdByIdResponse">
     <wsdl:part name="parameters" element="tns:getTechStdByIdResponse" />
   </wsdl:message>
-  <wsdl:message name="receiveVirtualTransferInfo">
-    <wsdl:part name="parameters" element="tns:receiveVirtualTransferInfo" />
-  </wsdl:message>
   <wsdl:message name="getMatFormulaByIdResponse">
     <wsdl:part name="parameters" element="tns:getMatFormulaByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveVirtualTransferInfo">
+    <wsdl:part name="parameters" element="tns:receiveVirtualTransferInfo" />
   </wsdl:message>
   <wsdl:message name="getAllMaterialtList">
     <wsdl:part name="parameters" element="tns:getAllMaterialtList" />
@@ -636,21 +640,21 @@
       <wsdl:input name="receiveVirtualTransferInfo" message="tns:receiveVirtualTransferInfo" />
       <wsdl:output name="receiveVirtualTransferInfoResponse" message="tns:receiveVirtualTransferInfoResponse" />
     </wsdl:operation>
-    <wsdl:operation name="getTechStdById">
-      <wsdl:input name="getTechStdById" message="tns:getTechStdById" />
-      <wsdl:output name="getTechStdByIdResponse" message="tns:getTechStdByIdResponse" />
-    </wsdl:operation>
     <wsdl:operation name="getWorkSchedule">
       <wsdl:input name="getWorkSchedule" message="tns:getWorkSchedule" />
       <wsdl:output name="getWorkScheduleResponse" message="tns:getWorkScheduleResponse" />
     </wsdl:operation>
-    <wsdl:operation name="execUpdateSapOnhand">
-      <wsdl:input name="execUpdateSapOnhand" message="tns:execUpdateSapOnhand" />
-      <wsdl:output name="execUpdateSapOnhandResponse" message="tns:execUpdateSapOnhandResponse" />
+    <wsdl:operation name="getTechStdById">
+      <wsdl:input name="getTechStdById" message="tns:getTechStdById" />
+      <wsdl:output name="getTechStdByIdResponse" message="tns:getTechStdByIdResponse" />
     </wsdl:operation>
     <wsdl:operation name="getMatFormulaById">
       <wsdl:input name="getMatFormulaById" message="tns:getMatFormulaById" />
       <wsdl:output name="getMatFormulaByIdResponse" message="tns:getMatFormulaByIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="execUpdateSapOnhand">
+      <wsdl:input name="execUpdateSapOnhand" message="tns:execUpdateSapOnhand" />
+      <wsdl:output name="execUpdateSapOnhandResponse" message="tns:execUpdateSapOnhandResponse" />
     </wsdl:operation>
     <wsdl:operation name="getCoatFormulaById">
       <wsdl:input name="getCoatFormulaById" message="tns:getCoatFormulaById" />
@@ -697,21 +701,21 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getWorkSchedule">
-      <soap:operation soapAction="" style="document" />
-      <wsdl:input name="getWorkSchedule">
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="getWorkScheduleResponse">
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="getTechStdById">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getTechStdById">
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getTechStdByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getWorkSchedule">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getWorkSchedule">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getWorkScheduleResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -724,21 +728,21 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="execUpdateSapOnhand">
-      <soap:operation soapAction="" style="document" />
-      <wsdl:input name="execUpdateSapOnhand">
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="execUpdateSapOnhandResponse">
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="getMatFormulaById">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getMatFormulaById">
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getMatFormulaByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="execUpdateSapOnhand">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="execUpdateSapOnhand">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="execUpdateSapOnhandResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -799,7 +803,7 @@
   </wsdl:binding>
   <wsdl:service name="WsBaseDataInterfaceService">
     <wsdl:port name="WsBaseDataInterfacePort" binding="tns:WsBaseDataInterfaceServiceSoapBinding">
-      <soap:address location="http://10.43.171.22:8081/xymis/services/baseDataService" />
+      <soap:address location="http://10.43.171.20/xymis/services/baseDataService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -97,6 +97,8 @@
     </Compile>
     <Compile Include="UpdateDeptInfo.cs" />
     <Compile Include="UpdateMarclassInfo.cs" />
+    <Compile Include="UpdateMonthPlan.cs" />
+    <Compile Include="UpdateQuarterPlan.cs" />
     <Compile Include="UpdateSysUnit.cs" />
     <Compile Include="UpdateUserInfo.cs" />
     <Compile Include="UpdateMaterialInfo.cs" />
@@ -116,6 +118,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\PlanService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\StoreService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -125,15 +132,17 @@
     <Compile Include="UpdateProduct.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Web References\EquipService\EquipServiceInterfaceService.wsdl" />
+    <None Include="Web References\EquipService\maintainSignVO1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\EquipService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -165,6 +174,9 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Web References\MateriaService\rs1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\MateriaService\techStddInfoVO.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -177,7 +189,30 @@
     <None Include="Web References\MateriaService\treeVO.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
+    <None Include="Web References\MateriaService\workScheduleVO1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\MateriaService\WsBaseDataInterfaceService.wsdl" />
+    <None Include="Web References\PlanService\lubPlanVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\PlanService\maintainPlanVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\PlanService\prodAssignPlan.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\PlanService\prodAssignVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\PlanService\quarterPlanVO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\PlanService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\PlanService\WsPlanForGSInterfaceService.wsdl" />
     <None Include="Web References\StoreService\hashMap.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -200,10 +235,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/baseDataService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/baseDataService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\MateriaService\</RelPath>
-      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/baseDataService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.20/xymis/services/baseDataService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -211,10 +246,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_MateriaService_WsBaseDataInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/EquipService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/EquipService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\EquipService\</RelPath>
-      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/EquipService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.20/xymis/services/EquipService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -222,16 +257,27 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_EquipService_EquipServiceInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/MisMasterDataService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/MisMasterDataService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\MasterService\</RelPath>
-      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/MisMasterDataService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.20/xymis/services/MisMasterDataService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_MasterService_MisMasterDataServiceInterfaceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/planForGSService%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\PlanService\</RelPath>
+      <UpdateFromURL>http://10.43.171.20/xymis/services/planForGSService%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>MSYS_Web_PlanService_WsPlanForGSInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
     <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
@@ -262,6 +308,9 @@
       <Project>{d88ad759-6b4e-44de-84d3-8504653dc11d}</Project>
       <Name>MSYS.Security</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

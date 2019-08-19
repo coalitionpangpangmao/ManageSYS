@@ -33,13 +33,14 @@ namespace MSYS.Web
                 if (prod.prodCode.Substring(0, 3) == "703")
                 {
                     commandlist.Clear();
-                    string[] value = { prod.prodCode, prod.prodName, prod.packName, prod.handMode, prod.techStddId, prod.materFormulaId, prod.auxFormulaId, prod.coatFormulaId, prod.remark, prod.createorId, prod.createTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.modifyId, prod.modifyTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.standardValue, prod.xyProdCode, prod.isValid, prod.isDel };
+                   
+                    string[] value = { prod.prodCode, prod.prodName, prod.packName, prod.handMode, prod.techStddId, prod.materFormulaId, prod.auxFormulaId, prod.coatFormulaId, prod.remark, prod.createorId, prod.createTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.modifyId, prod.modifyTime.ToString("yyyy-MM-dd HH:mm:ss"), prod.standardValue, prod.prodCode, prod.isValid, prod.isDel };
 
                     string temp = opt.getMergeStr(matseg, value, 1, "HT_PUB_PROD_DESIGN");
                     commandlist.Add(temp);
                     if (opt.UpDateOra(temp) != "Success")
                         System.Diagnostics.Debug.Write(temp);
-                    getTechstdd_SQL(prod.techStddId, prod.prodCode); // java.math.BigInteger cannot be cast to java.lang.String
+                   // getTechstdd_SQL(prod.techStddId, prod.prodCode); // java.math.BigInteger cannot be cast to java.lang.String
                     getMaterFormalu_SQL(prod.materFormulaId, prod.prodCode);
                    // getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode); //java.math.BigDecimal cannot be cast to java.lang.Double
                     getCoatFormalu_SQL(prod.coatFormulaId, prod.prodCode);
@@ -295,7 +296,7 @@ namespace MSYS.Web
                 //   commandlist.Add(temp);
                 if (opt.UpDateOra(temp) != "Success")
                     System.Diagnostics.Debug.Write(temp);
-                getTechstdd_SQL(prod.techStddId, prod.prodCode);
+                //getTechstdd_SQL(prod.techStddId, prod.prodCode);
                 getMaterFormalu_SQL(prod.materFormulaId, prod.prodCode);
                 getAuxFormalu_SQL(prod.auxFormulaId, prod.prodCode);
                 getCoatFormalu_SQL(prod.coatFormulaId, prod.prodCode);

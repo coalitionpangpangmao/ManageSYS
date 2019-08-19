@@ -80,6 +80,16 @@
           <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="getUserInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getUserInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getProdInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="contentXml" type="xs:string" />
@@ -96,16 +106,6 @@
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="queryStorageResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="getUserInfo">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="contentXml" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="getUserInfoResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="return" type="xs:string" />
         </xs:sequence>
@@ -191,6 +191,10 @@
       <wsdl:input name="getEquipCLS" message="tns:getEquipCLS" />
       <wsdl:output name="getEquipCLSResponse" message="tns:getEquipCLSResponse" />
     </wsdl:operation>
+    <wsdl:operation name="getUserInfo">
+      <wsdl:input name="getUserInfo" message="tns:getUserInfo" />
+      <wsdl:output name="getUserInfoResponse" message="tns:getUserInfoResponse" />
+    </wsdl:operation>
     <wsdl:operation name="getProdInfo">
       <wsdl:input name="getProdInfo" message="tns:getProdInfo" />
       <wsdl:output name="getProdInfoResponse" message="tns:getProdInfoResponse" />
@@ -198,10 +202,6 @@
     <wsdl:operation name="queryStorage">
       <wsdl:input name="queryStorage" message="tns:queryStorage" />
       <wsdl:output name="queryStorageResponse" message="tns:queryStorageResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="getUserInfo">
-      <wsdl:input name="getUserInfo" message="tns:getUserInfo" />
-      <wsdl:output name="getUserInfoResponse" message="tns:getUserInfoResponse" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="MisMasterDataServiceInterfaceServiceSoapBinding" type="tns:MisMasterDataServiceInterface">
@@ -260,21 +260,21 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getProdInfo">
-      <soap:operation soapAction="" style="document" />
-      <wsdl:input name="getProdInfo">
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="getProdInfoResponse">
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="getUserInfo">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="getUserInfo">
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getUserInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProdInfo">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getProdInfo">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getProdInfoResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -290,7 +290,7 @@
   </wsdl:binding>
   <wsdl:service name="MisMasterDataServiceInterfaceService">
     <wsdl:port name="MisMasterDataServiceInterfacePort" binding="tns:MisMasterDataServiceInterfaceServiceSoapBinding">
-      <soap:address location="http://10.43.171.22:8081/xymis/services/MisMasterDataService" />
+      <soap:address location="http://10.43.171.20/xymis/services/MisMasterDataService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

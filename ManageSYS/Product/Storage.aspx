@@ -92,7 +92,8 @@
                                                 <asp:ListItem Value=""></asp:ListItem>
                                                <asp:ListItem Value="原材料">原材料</asp:ListItem>
                                                 <asp:ListItem Value="辅助材料">辅助材料</asp:ListItem>
-                                                <asp:ListItem Value="库存商品">库存商品</asp:ListItem>                                                
+                                                <asp:ListItem Value="库存商品">库存商品</asp:ListItem>
+                                        <asp:ListItem Value="备品备件">备品备件</asp:ListItem>                                                
                                     </asp:DropdownList>
                                 </td>
                                  <td width="100">
@@ -101,7 +102,7 @@
                                 <td>
                                     <asp:TextBox ID="txtprovince" runat="server" class="dfinput1"></asp:TextBox>
                                 </td>
-                                  <td width="100">
+                                  <<td width="100">
                                     仓库
                                 </td>
                                 <td>

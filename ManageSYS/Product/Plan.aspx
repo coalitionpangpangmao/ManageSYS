@@ -225,7 +225,7 @@
                                                 </asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField   HeaderText="计划产量" SortExpression="计划产量">
+                                        <asp:TemplateField   HeaderText="计划产量(吨)" SortExpression="计划产量">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="txtOutput" runat="server" DataValueField="计划产量" DataTextField="计划产量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                     CssClass="tbinput"></asp:TextBox>

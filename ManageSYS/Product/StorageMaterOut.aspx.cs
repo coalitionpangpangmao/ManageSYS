@@ -6,6 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
+using MSYS.Web.StoreService;
+
 public partial class Product_StorageMaterOut : MSYS.Web.BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -195,11 +197,13 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
             commandlist.Add("update HT_STRG_MATERIA set ISSUE_STATUS = '1',ISSUER_ID ='" + ((MSYS.Data.SysUser)Session["User"]).id + "'  where ORDER_SN = '" + id + "'");
             commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and MATER_STATUS = '1'");
             MSYS.Web.StorageOpt st = new MSYS.Web.StorageOpt();
-            ////调用接口，变更库存////
-      //      st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
-            /////
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "出入库成功" : "出入库失败";
+            string flag = st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).LoginName, ((MSYS.Data.SysUser)Session["User"]).id);
+            if (flag.Length > 9 && flag.Substring(0, 9) == "notenough")
+            {
+                ScriptManager.RegisterStartupScript(GridView1, this.GetType(), "scriptKey", "alert(‘物料不足" + flag.Substring(9) + "’)", true);
+            }
             log_message += "--标识:" + id;
             InsertTlog(log_message);
             bindGrid1();
@@ -211,6 +215,8 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
 
 
     }
+
+
     protected void btnGridview_Click(object sender, EventArgs e)//查看领退明细
     {
         Button btn = (Button)sender;
@@ -298,7 +304,7 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
     {
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "GSYL" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,13,3)),0)  as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,12) ='GSYL" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
@@ -318,7 +324,7 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
     protected void bindGrid2()
     {
 
-        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from ht_strg_mater_sub where main_code = '" + txtCode.Text + "' and IS_DEL = '0'";
+        string query = " select m.material_name as 物料名称, m.mat_type as 物料分类, s.STORAGE as  仓库,s.CLS_CODE as   类型 ,s.unit_code as  计量单位, s.mater_code as   原料编码, s.original_demand as   领料量, s.ID  from ht_strg_mater_sub s left join ht_pub_materiel m on s.mater_code = m.material_code where s.main_code = '" + txtCode.Text + "' and s.IS_DEL = '0'";
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -331,12 +337,14 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
                 GridViewRow row = GridView2.Rows[i];
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
                 ((DropDownList)GridView2.Rows[i].FindControl("listGridstrg")).SelectedValue = mydrv["仓库"].ToString();
-                DropDownList list = (DropDownList)row.FindControl("listGridType");
-                list.SelectedValue = mydrv["类型"].ToString();
-                opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and (substr(type_code,1,4) ='" + list.SelectedValue + "' or substr(material_code,1,4) = '" + list.SelectedValue + "')", "material_name", "material_code");
+               // DropDownList list = (DropDownList)row.FindControl("listGridType");
+                //list.SelectedValue = mydrv["类型"].ToString();
+                //opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and (substr(type_code,1,4) ='" + list.SelectedValue + "' or substr(material_code,1,4) = '" + list.SelectedValue + "')", "material_name", "material_code");
                 ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
-                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
-                ((DropDownList)GridView2.Rows[i].FindControl("listGridtype")).SelectedValue = mydrv["类型"].ToString(); ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
+                ((TextBox)row.FindControl("GridType1")).Text = mydrv["物料分类"].ToString();
+                ((TextBox)row.FindControl("GridName1")).Text = mydrv["物料名称"].ToString();
+                //((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
+                //((DropDownList)GridView2.Rows[i].FindControl("listGridtype")).SelectedValue = mydrv["类型"].ToString(); ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridAmount")).Text = mydrv["领料量"].ToString();
             }
 
@@ -535,7 +543,7 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text == "")
-            txtCode.Text = "GSYL" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,12) ='GSYL" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+            txtCode.Text = "SM" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_MATERIA where substr(ORDER_SN,1,10) ='SM" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         Button btn = (Button)sender;
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();

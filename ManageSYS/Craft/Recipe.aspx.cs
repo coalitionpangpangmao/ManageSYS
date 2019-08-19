@@ -296,22 +296,31 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
                 int j = i - gv.PageSize * gv.PageIndex;
                 DataRowView mydrv = data.DefaultView[i];
                 GridViewRow row = gv.Rows[j];
-                DropDownList list = (DropDownList)row.FindControl("listGridType1");
-                list.SelectedValue = mydrv["物料分类"].ToString();
-                opt.bindDropDownList((DropDownList)row.FindControl("listGridName1"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and substr(TYPE_CODE,1,4) ='" + list.SelectedValue + "'", "material_name", "material_code");
+               // DropDownList list = (DropDownList)row.FindControl("listGridType1");
+                //list.SelectedValue = mydrv["物料分类"].ToString();
+                //opt.bindDropDownList((DropDownList)row.FindControl("listGridName1"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and substr(TYPE_CODE,1,4) ='" + list.SelectedValue + "'", "material_name", "material_code");
                 ((TextBox)row.FindControl("txtCodeM")).Text = mydrv["物料编码"].ToString();
-                ((DropDownList)row.FindControl("listGridName1")).SelectedValue = mydrv["物料编码"].ToString();
+                ((TextBox)row.FindControl("GridName1")).Text = mydrv["物料名称"].ToString();
                 ((TextBox)row.FindControl("txtAmountM")).Text = mydrv["批投料量"].ToString();
                 ((TextBox)row.FindControl("txtGroupM")).Text = mydrv["优先组"].ToString();
+                ((TextBox)row.FindControl("GridType1")).Text = mydrv["物料分类"].ToString();
             }
         }
 
     }
-    protected DataSet gridTypebind(string code)
+    /*protected DataSet gridTypebind(string code)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         return opt.CreateDataSetOra("select mattree_name,mattree_code from ht_pub_mattree t where length(mattree_code) = 4 and parent_code = '02' and mattree_code ='" + code + "' union select '' as mattree_name,'' as mattree_code from dual  order by mattree_code desc");
         //  return opt.CreateDataSetOra("select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料'");      
+    }*/
+    protected DataSet gridTypebind(String code)
+    {
+        string s1_1 = code.Replace(",", "','"); //返回结果为：1','2','3','4','5','6
+        code = string.Format("'{0}'", s1_1);
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        return opt.CreateDataSetOra("select mattree_name,mattree_code from ht_pub_mattree t where length(mattree_code) = 4 and parent_code = '02' and mattree_code in (" + code + ") union select '' as mattree_name,'' as mattree_code from dual  order by mattree_code desc");
     }
     protected void listGirdName1_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -359,9 +368,15 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     {
         string query;
         if (hdcode1.Value.Length == 8)
-            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and  r.MATER_FLAG = 'YG' and FORMULA_CODE = '" + hdcode1.Value + "' order by r.id";
+        {
+            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,s.mat_type   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and  r.MATER_FLAG = 'YG' and FORMULA_CODE = '" + hdcode1.Value + "' order by r.id";
+            //query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and  FORMULA_CODE = '" + hdcode1.Value + "' order by r.id";
+        }
         else
-            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and r.MATER_FLAG = 'YG' and t.is_del ='0'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+        {
+            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,s.mat_type   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and r.MATER_FLAG = 'YG' and t.is_del ='0'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+            //query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and t.is_del ='0'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+        }
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
     
         DataSet data = opt.CreateDataSetOra(query);
@@ -372,9 +387,9 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     {
         string query;
         if (hdcode1.Value.Length == 8)
-            query = "select r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and r.MATER_FLAG = 'SP' and FORMULA_CODE = '" + hdcode1.Value + "'  order by r.id";
+            query = "select  r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,s.mat_type   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code where r.is_del = '0' and r.MATER_FLAG = 'SP' and FORMULA_CODE = '" + hdcode1.Value + "'  order by r.id";
         else
-            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,r.CLS_CODE   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and t.is_del ='0' and r.MATER_FLAG = 'SP'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
+            query = "select distinct r.MATER_CODE   as 物料编码,s.material_name as 物料名称,r.BATCH_SIZE  as 批投料量,r.FRONT_GROUP   as 优先组,s.mat_type   as 物料分类,r.id from ht_qa_mater_formula_detail r left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_mater_formula t on t.FORMULA_CODE = r.FORMULA_CODE where r.is_del = '0' and t.is_del ='0' and r.MATER_FLAG = 'SP'  and t.PROD_CODE = '" + hdcode1.Value + "'  order by r.id";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
       
         DataSet data = opt.CreateDataSetOra(query);

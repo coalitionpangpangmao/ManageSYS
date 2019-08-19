@@ -41,11 +41,11 @@ namespace MSYS.Web.MasterService {
         
         private System.Threading.SendOrPostCallback getEquipCLSOperationCompleted;
         
+        private System.Threading.SendOrPostCallback getUserInfoOperationCompleted;
+        
         private System.Threading.SendOrPostCallback getProdInfoOperationCompleted;
         
         private System.Threading.SendOrPostCallback queryStorageOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback getUserInfoOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -104,13 +104,13 @@ namespace MSYS.Web.MasterService {
         public event getEquipCLSCompletedEventHandler getEquipCLSCompleted;
         
         /// <remarks/>
+        public event getUserInfoCompletedEventHandler getUserInfoCompleted;
+        
+        /// <remarks/>
         public event getProdInfoCompletedEventHandler getProdInfoCompleted;
         
         /// <remarks/>
         public event queryStorageCompletedEventHandler queryStorageCompleted;
-        
-        /// <remarks/>
-        public event getUserInfoCompletedEventHandler getUserInfoCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -295,6 +295,36 @@ namespace MSYS.Web.MasterService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string getUserInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
+            object[] results = this.Invoke("getUserInfo", new object[] {
+                        contentXml});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getUserInfoAsync(string contentXml) {
+            this.getUserInfoAsync(contentXml, null);
+        }
+        
+        /// <remarks/>
+        public void getUserInfoAsync(string contentXml, object userState) {
+            if ((this.getUserInfoOperationCompleted == null)) {
+                this.getUserInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetUserInfoOperationCompleted);
+            }
+            this.InvokeAsync("getUserInfo", new object[] {
+                        contentXml}, this.getUserInfoOperationCompleted, userState);
+        }
+        
+        private void OngetUserInfoOperationCompleted(object arg) {
+            if ((this.getUserInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getUserInfoCompleted(this, new getUserInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string getProdInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
             object[] results = this.Invoke("getProdInfo", new object[] {
                         contentXml});
@@ -349,36 +379,6 @@ namespace MSYS.Web.MasterService {
             if ((this.queryStorageCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.queryStorageCompleted(this, new queryStorageCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string getUserInfo([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string contentXml) {
-            object[] results = this.Invoke("getUserInfo", new object[] {
-                        contentXml});
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getUserInfoAsync(string contentXml) {
-            this.getUserInfoAsync(contentXml, null);
-        }
-        
-        /// <remarks/>
-        public void getUserInfoAsync(string contentXml, object userState) {
-            if ((this.getUserInfoOperationCompleted == null)) {
-                this.getUserInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetUserInfoOperationCompleted);
-            }
-            this.InvokeAsync("getUserInfo", new object[] {
-                        contentXml}, this.getUserInfoOperationCompleted, userState);
-        }
-        
-        private void OngetUserInfoOperationCompleted(object arg) {
-            if ((this.getUserInfoCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getUserInfoCompleted(this, new getUserInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -559,6 +559,32 @@ namespace MSYS.Web.MasterService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void getUserInfoCompletedEventHandler(object sender, getUserInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getUserInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getUserInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     public delegate void getProdInfoCompletedEventHandler(object sender, getProdInfoCompletedEventArgs e);
     
     /// <remarks/>
@@ -596,32 +622,6 @@ namespace MSYS.Web.MasterService {
         private object[] results;
         
         internal queryStorageCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public string Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    public delegate void getUserInfoCompletedEventHandler(object sender, getUserInfoCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getUserInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getUserInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

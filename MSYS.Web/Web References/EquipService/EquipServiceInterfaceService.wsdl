@@ -8,6 +8,72 @@
       <xs:element name="getEquipListResponse" type="tns:getEquipListResponse" />
       <xs:element name="getMaintainSignRecord" type="tns:getMaintainSignRecord" />
       <xs:element name="getMaintainSignRecordResponse" type="tns:getMaintainSignRecordResponse" />
+      <xs:complexType name="getEquipList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:tEqEqpTbl" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tEqEqpTbl">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:baseVO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="clsCode" type="xs:string" />
+              <xs:element minOccurs="0" name="clsName" type="xs:string" />
+              <xs:element minOccurs="0" name="createTime" type="xs:string" />
+              <xs:element minOccurs="0" name="creator" type="xs:string" />
+              <xs:element minOccurs="0" name="dutyName" type="xs:string" />
+              <xs:element minOccurs="0" name="eqModel" type="xs:string" />
+              <xs:element minOccurs="0" name="eqName" type="xs:string" />
+              <xs:element minOccurs="0" name="eqStatus" type="xs:string" />
+              <xs:element minOccurs="0" name="eqType" type="xs:string" />
+              <xs:element minOccurs="0" name="eqpFrom" type="xs:string" />
+              <xs:element minOccurs="0" name="eqpIp" type="xs:string" />
+              <xs:element minOccurs="0" name="eqpMac" type="xs:string" />
+              <xs:element minOccurs="0" name="eqpSn" type="xs:string" />
+              <xs:element minOccurs="0" name="eqpSys" type="xs:string" />
+              <xs:element minOccurs="0" name="financeEqName" type="xs:string" />
+              <xs:element name="flag" type="xs:int" />
+              <xs:element minOccurs="0" name="idkey" type="xs:string" />
+              <xs:element minOccurs="0" name="isDel" type="xs:string" />
+              <xs:element minOccurs="0" name="isMadeinchina" type="xs:string" />
+              <xs:element minOccurs="0" name="isSpecEqp" type="xs:string" />
+              <xs:element minOccurs="0" name="manufacturer" type="xs:string" />
+              <xs:element minOccurs="0" name="mgtDeptCode" type="xs:string" />
+              <xs:element minOccurs="0" name="mgtDeptName" type="xs:string" />
+              <xs:element minOccurs="0" name="ncCode" type="xs:string" />
+              <xs:element minOccurs="0" name="netWorth" type="xs:string" />
+              <xs:element minOccurs="0" name="oriOwnerName" type="xs:string" />
+              <xs:element minOccurs="0" name="oriWorth" type="xs:string" />
+              <xs:element minOccurs="0" name="ownerName" type="xs:string" />
+              <xs:element minOccurs="0" name="powerUnit" type="xs:string" />
+              <xs:element minOccurs="0" name="ratedPower" type="xs:string" />
+              <xs:element minOccurs="0" name="realPower" type="xs:string" />
+              <xs:element minOccurs="0" name="remark" type="xs:string" />
+              <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+              <xs:element minOccurs="0" name="sgsCode" type="xs:string" />
+              <xs:element minOccurs="0" name="supplier" type="xs:string" />
+              <xs:element minOccurs="0" name="useDeptCode" type="xs:string" />
+              <xs:element minOccurs="0" name="useDeptName" type="xs:string" />
+              <xs:element minOccurs="0" name="usedDate" type="xs:string" />
+              <xs:element minOccurs="0" name="zgDate" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="baseVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="draw" type="xs:int" />
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
+          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+          <xs:element minOccurs="0" name="start" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEquipListResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tEqEqpTbl" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="getMaintainSignRecord">
         <xs:sequence>
           <xs:element minOccurs="0" name="arg0" type="xs:string" />
@@ -69,72 +135,6 @@
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
-      <xs:complexType name="baseVO">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="draw" type="xs:int" />
-          <xs:element minOccurs="0" name="length" type="xs:int" />
-          <xs:element minOccurs="0" name="pageNum" type="xs:int" />
-          <xs:element minOccurs="0" name="pageSize" type="xs:int" />
-          <xs:element minOccurs="0" name="start" type="xs:int" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="getEquipList">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="arg0" type="tns:tEqEqpTbl" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="tEqEqpTbl">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:baseVO">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="clsCode" type="xs:string" />
-              <xs:element minOccurs="0" name="clsName" type="xs:string" />
-              <xs:element minOccurs="0" name="createTime" type="xs:string" />
-              <xs:element minOccurs="0" name="creator" type="xs:string" />
-              <xs:element minOccurs="0" name="dutyName" type="xs:string" />
-              <xs:element minOccurs="0" name="eqModel" type="xs:string" />
-              <xs:element minOccurs="0" name="eqName" type="xs:string" />
-              <xs:element minOccurs="0" name="eqStatus" type="xs:string" />
-              <xs:element minOccurs="0" name="eqType" type="xs:string" />
-              <xs:element minOccurs="0" name="eqpFrom" type="xs:string" />
-              <xs:element minOccurs="0" name="eqpIp" type="xs:string" />
-              <xs:element minOccurs="0" name="eqpMac" type="xs:string" />
-              <xs:element minOccurs="0" name="eqpSn" type="xs:string" />
-              <xs:element minOccurs="0" name="eqpSys" type="xs:string" />
-              <xs:element minOccurs="0" name="financeEqName" type="xs:string" />
-              <xs:element name="flag" type="xs:int" />
-              <xs:element minOccurs="0" name="idkey" type="xs:string" />
-              <xs:element minOccurs="0" name="isDel" type="xs:string" />
-              <xs:element minOccurs="0" name="isMadeinchina" type="xs:string" />
-              <xs:element minOccurs="0" name="isSpecEqp" type="xs:string" />
-              <xs:element minOccurs="0" name="manufacturer" type="xs:string" />
-              <xs:element minOccurs="0" name="mgtDeptCode" type="xs:string" />
-              <xs:element minOccurs="0" name="mgtDeptName" type="xs:string" />
-              <xs:element minOccurs="0" name="ncCode" type="xs:string" />
-              <xs:element minOccurs="0" name="netWorth" type="xs:string" />
-              <xs:element minOccurs="0" name="oriOwnerName" type="xs:string" />
-              <xs:element minOccurs="0" name="oriWorth" type="xs:string" />
-              <xs:element minOccurs="0" name="ownerName" type="xs:string" />
-              <xs:element minOccurs="0" name="powerUnit" type="xs:string" />
-              <xs:element minOccurs="0" name="ratedPower" type="xs:string" />
-              <xs:element minOccurs="0" name="realPower" type="xs:string" />
-              <xs:element minOccurs="0" name="remark" type="xs:string" />
-              <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
-              <xs:element minOccurs="0" name="sgsCode" type="xs:string" />
-              <xs:element minOccurs="0" name="supplier" type="xs:string" />
-              <xs:element minOccurs="0" name="useDeptCode" type="xs:string" />
-              <xs:element minOccurs="0" name="useDeptName" type="xs:string" />
-              <xs:element minOccurs="0" name="usedDate" type="xs:string" />
-              <xs:element minOccurs="0" name="zgDate" type="xs:string" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:complexType name="getEquipListResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:tEqEqpTbl" />
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="getEquipClsList">
         <xs:sequence>
           <xs:element minOccurs="0" name="contentXml" type="xs:string" />
@@ -176,13 +176,13 @@
     <wsdl:part name="parameters" element="tns:getEquipList" />
   </wsdl:message>
   <wsdl:portType name="EquipServiceInterface">
-    <wsdl:operation name="getMaintainSignRecord">
-      <wsdl:input name="getMaintainSignRecord" message="tns:getMaintainSignRecord" />
-      <wsdl:output name="getMaintainSignRecordResponse" message="tns:getMaintainSignRecordResponse" />
-    </wsdl:operation>
     <wsdl:operation name="getEquipList">
       <wsdl:input name="getEquipList" message="tns:getEquipList" />
       <wsdl:output name="getEquipListResponse" message="tns:getEquipListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getMaintainSignRecord">
+      <wsdl:input name="getMaintainSignRecord" message="tns:getMaintainSignRecord" />
+      <wsdl:output name="getMaintainSignRecordResponse" message="tns:getMaintainSignRecordResponse" />
     </wsdl:operation>
     <wsdl:operation name="getEquipClsList">
       <wsdl:input name="getEquipClsList" message="tns:getEquipClsList" />
@@ -221,7 +221,7 @@
   </wsdl:binding>
   <wsdl:service name="EquipServiceInterfaceService">
     <wsdl:port name="EquipServiceInterfacePort" binding="tns:EquipServiceInterfaceServiceSoapBinding">
-      <soap:address location="http://10.43.171.22:8081/xymis/services/EquipService" />
+      <soap:address location="http://10.43.171.20/xymis/services/EquipService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

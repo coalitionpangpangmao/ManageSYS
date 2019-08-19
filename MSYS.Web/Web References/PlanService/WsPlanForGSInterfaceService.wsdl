@@ -403,7 +403,7 @@
   </wsdl:binding>
   <wsdl:service name="WsPlanForGSInterfaceService">
     <wsdl:port name="WsPlanForGSInterfacePort" binding="tns:WsPlanForGSInterfaceServiceSoapBinding">
-      <soap:address location="http://10.43.171.22:8081/xymis/services/planForGSService" />
+      <soap:address location="http://10.43.171.20/xymis/services/planForGSService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

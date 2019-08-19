@@ -60,27 +60,69 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         }
     }
 
+    public  string GetQuarterNum(DateTime dt)
+    {
+        int year = dt.Year;
+        string jd;
+        DateTime dt0 = new DateTime(year, 1, 1);
+        DateTime dt1 = new DateTime(year, 4, 1);
+        DateTime dt2 = new DateTime(year, 7, 1);
+        DateTime dt3 = new DateTime(year, 10, 1);
+        if (dt.CompareTo(dt1) < 0)
+            jd = "01";
+        else if (dt.CompareTo(dt2) < 0)
+            jd = "02";
+        else if (dt.CompareTo(dt3) < 0)
+            jd = "03";
+        else
+            jd = "04";
+        return jd;
+    }
+
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
         MSYS.Web.PlanService.WsPlanForGSInterfaceService service = new MSYS.Web.PlanService.WsPlanForGSInterfaceService();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        quarterPlanVO[] pb = service.getQuarterPlanList("", "");
-        prodAssignVO[] pvo = service.getProdAssignListForGS("", "");
-        string[] seg = { "id", "PLAN_NAME", "B_FLOW_STATUS", "ISSUED_STATUS", "PLAN_YEAR", "QUATER", "IS_VALID", "REMARK" };
+        quarterPlanVO[] pb = service.getQuarterPlanList(System.DateTime.Now.Year.ToString(), GetQuarterNum(System.DateTime.Now));
+        if (pb == null)
+        {
+            return;
+        }
+       // prodAssignVO[] pvo = service.getProdAssignListForGS("", "");
+        string[] seg = { "id", "PLAN_NAME", "FLOW_STATUS", "ISSUED_STATUS", "PLAN_YEAR", "QUARTER", "IS_DEL","REMARK", "CREATE_ID" };
         string[] seg2 = { "QUARTER_PLAN_ID", "prod_code ", "plan_OUTPUT_1", "PLAN_OUTPUT_2", "PLAN_OUTPUT_3", "TOTAL_OUTPUT", "IS_DEL" };
         foreach (quarterPlanVO p in pb)
         {
-            string[] value = { p.quarterPlan.id, p.quarterPlan.planName, p.quarterPlan.flowStatus, p.quarterPlan.issuedStatus, p.quarterPlan.planYear, p.quarterPlan.quarter, "1", p.quarterPlan.remark, };
+            //string plname = p.quarterPlan.planName == "" ? System.DateTime.Now.Year.ToString() + "-" + GetQuarterNum(new DateTime()) + "季度生产计划" :p.quarterPlan.planName;
+            string plname = System.DateTime.Now.Year.ToString() + "-" + Convert.ToInt32(GetQuarterNum(System.DateTime.Now)).ToString() + "季度生产计划";
+            System.Diagnostics.Debug.WriteLine(plname);
+            System.Diagnostics.Debug.WriteLine(p.quarterPlan.id);
+            string sqllog = "select id from ht_svr_user where loginname = '" + p.quarterPlan.createId + "'";
+            string cid = opt.CreateDataSetOra(sqllog).Tables[0].Rows[0][0].ToString();
+            string[] value = { p.quarterPlan.pzCode,plname, "2", p.quarterPlan.issuedStatus, p.quarterPlan.planYear, Convert.ToInt32(GetQuarterNum(System.DateTime.Now)).ToString(), "0", p.quarterPlan.remark, cid };
             //  string[] value2 = { p.id };
-            opt.getMergeStr(seg, value, 1, "HT_PROD_SEASON_PLAN");
+           opt.MergeInto(seg, value, 2, "HT_PROD_SEASON_PLAN");
             foreach (tAmQuarterPlanDetail pd in p.subList)
             {
-                string[] value2 = { p.quarterPlan.id, pd.prodCode, pd.planOutput1.ToString(), pd.planOutput2.ToString(), pd.planOutput3.ToString(), pd.totalOutput.ToString(), pd.isDel };
-                opt.getMergeStr(seg2, value2, 1, "HT_PROD_SEASON_PLAN_DETAIL");
+                System.Diagnostics.Debug.WriteLine(pd.prodCode);
+                System.Diagnostics.Debug.WriteLine(System.DateTime.Now.Year.ToString());
+                System.Diagnostics.Debug.WriteLine(GetQuarterNum(System.DateTime.Now));
+                string sql = "select prod_code from ht_pub_prod_design where xy_prod_code = " + pd.prodCode;
+               DataSet ds = opt.CreateDataSetOra(sql);
+               if (ds == null || ds.Tables[0].Rows.Count == 0)
+                   continue;
+              string xy_prod_code =  ds.Tables[0].Rows[0][0].ToString();
+                
+              if (xy_prod_code.Substring(0, 3) != "703")
+                  continue;
+               // string[] value2 = { p.quarterPlan.id, pd.prodCode, pd.planOutput1.ToString(), pd.planOutput2.ToString(), pd.planOutput3.ToString(), pd.totalOutput.ToString(), pd.isDel };
+              string[] value2 = { p.quarterPlan.pzCode, xy_prod_code, pd.planOutput1.ToString(), pd.planOutput2.ToString(), pd.planOutput3.ToString(), pd.totalOutput.ToString(), pd.isDel };
+                opt.MergeInto(seg2, value2, 6, "HT_PROD_SEASON_PLAN_DETAIL");
             }
             // opt.getMergeStr(seg2, value2, 1, "HT_PROD_MONTH_PLAN_DETAIL");
             // dt.Rows.Add(paras);
         }
+        bindGrid1();
     }
   
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -93,9 +135,9 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         if (Regex.IsMatch(planID, @"^[+-]?/d*$"))
             hidePlanID.Value = planID;
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
-        string query = "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = " + hidePlanID.Value + "order by r.id"; ;
+        string query = "select r.prod_code as 产品,round(r.TOTAL_OUTPUT,3) as 计划数量,round(r.plan_output_1,3) as month1,round(r.plan_output_2,3) as month2,round(r.plan_output_3,3) as month3,r.id   from ht_prod_season_plan_Detail r  where r.is_del = '0' and  r.QUARTER_PLAN_ID = '" + hidePlanID.Value + "' order by r.id"; ;
 
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+       MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from ht_prod_season_plan_Detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null)
@@ -153,7 +195,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string[] seg1 = new string[] { "ID", "PLAN_NAME", "FLOW_STATUS", "ISSUED_STATUS", "CREATE_ID", "CREATE_TIME", "MODIFY_ID", "MODIFYER", "MODIFY_TIME", "DEPT_ID", "PLAN_YEAR", "QUARTER", "UNIT", "REMARK", "IS_DEL", "TOTAL_OUTPUT", "PZ_CODE", "ADJUST_STATUS" };
         string[] seg2 = new string[] { "ID", "QUARTER_PLAN_ID", "PROD_CODE", "PLAN_OUTPUT_1", "PLAN_OUT_PUT_2", "PLAN_OUTPUT_3", "TOTAL_OUTPUT", "IS_DEL", "OUTPUT_1_ADJUST", "OUTPUT_2_ADJUST", "OUTPUT_3_ADJUST", "IS_VALID"};
         string table1 = " HT_PROD_SEASON_PLAN";
-        string table2 = "HT_PROD_SEASON_PLAN_DETAIL";
+       // string table2 = "HT_PROD_SEASON_PLAN_DETAIL";
         
         quarterPlanVO[] qp = service.getQuarterPlanList(txtYear.Text, listSeason.SelectedValue.ToString());
         foreach (quarterPlanVO q in qp) {

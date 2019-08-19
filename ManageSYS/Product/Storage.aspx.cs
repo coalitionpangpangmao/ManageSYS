@@ -37,7 +37,7 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         string type = txttype.SelectedValue.ToString().Trim();
         string category = txtcatgory.SelectedValue.ToString().Trim();
         MSYS.Web.StoreService.StoreServiceInterfaceService service = new MSYS.Web.StoreService.StoreServiceInterfaceService();
-        tWaOnhand[] lists = service.getOnhandNoBjPageList(materialName.ToString(), type.ToString(), category.ToString(),year.ToString(), province.ToString(), warehouse.ToString(),"");
+        tWaOnhand[] lists = service.getOnhandNoBjPageList(materialName.ToString(),"", type.ToString(), category.ToString(),year.ToString(), province.ToString(), warehouse.ToString());
         System.Diagnostics.Debug.WriteLine(year);
         System.Diagnostics.Debug.WriteLine(materialName);
         System.Diagnostics.Debug.WriteLine(province);
@@ -51,8 +51,8 @@ public partial class Product_StorageOut : MSYS.Web.BasePage
         //data.Columns.Add("物料编码");
         data.Columns.Add("仓库");
         data.Columns.Add("货位号");
-        data.Columns.Add("类别");
         data.Columns.Add("类型");
+        data.Columns.Add("类别");
         data.Columns.Add("产地");
         data.Columns.Add("库存(kg)");
         data.Columns.Add("使用叶组");

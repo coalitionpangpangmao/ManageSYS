@@ -74,7 +74,7 @@ namespace DataCollect
             {
                 foreach (DataRow time in times.Tables[0].Rows)
                 {
-                    if (datetime - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, -1, -20) && datetime - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 1, 20))
+                    if (datetime - Convert.ToDateTime(time["time"].ToString()) >= new TimeSpan(0, -2, -20) && datetime - Convert.ToDateTime(time["time"].ToString()) <= new TimeSpan(0, 2, 20))
                         ProdRecord(time["time"].ToString(), time["team_code"].ToString());
                 }
             }

@@ -81,7 +81,7 @@ public class Inspect_Process_getRows : IHttpHandler {
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_code in (select r.inspect_code from ht_qlt_inspect_proj r left join ht_inner_inspect_group s on s.id = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_group in('1','2','3') and r.is_del = '0' order by r.inspect_group)  and is_del = '0' order by inspect_code";
-        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_code in (select r.inspect_code  from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_type = '0' and r.is_del = '0')  and is_del = '0' order by inspect_code";
+        string query = "select inspect_code,inspect_name from ht_qlt_inspect_proj  where inspect_code in (select r.inspect_code  from ht_qlt_inspect_proj r left join ht_pub_tech_section s on s.section_code = r.inspect_group left join ht_qlt_inspect_stdd_sub t on t.inspect_code = r.inspect_code and t.is_del = '0' where r.inspect_type = '0' and r.is_del = '0')  and is_del = '0' order by inspect_code";
         DataSet data = opt.CreateDataSetOra(query);
 
         if (data != null && data.Tables[0].Rows.Count > 0)

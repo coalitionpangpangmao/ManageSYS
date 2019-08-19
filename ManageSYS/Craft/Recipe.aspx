@@ -319,14 +319,18 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料分类">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind("0202")%>' DataValueField="mattree_code" DataTextField="mattree_name">
-                                                                </asp:DropDownList>
+                                                               <!-- <asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind("0202,0203")%>' DataValueField="mattree_code" DataTextField="mattree_name">
+                                                                </asp:DropDownList>-->
+                                                                             
+                                                                <asp:TextBox ID="GridType1" runat="server" DataValueField="物料分类" DataTextField="物料分类"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料名称" SortExpression="物料名称">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listGridName1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName1_SelectedIndexChanged" AutoPostBack="True" Width="300px">
-                                                                </asp:DropDownList>
+                                                                <!--<asp:DropDownList ID="listGridName1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName1_SelectedIndexChanged" AutoPostBack="True" Width="300px">
+                                                                </asp:DropDownList>-->
+                                                               
+                                                                <asp:TextBox ID="GridName1" runat="server" Width="100%" taValueField="物料名称" DataTextField="物料名称"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料编码" SortExpression="物料编码">
@@ -335,7 +339,7 @@
                                                                     CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="批投料量" SortExpression="批投料量">
+                                                        <asp:TemplateField HeaderText="批投料量(Kg)" SortExpression="批投料量">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txtAmountM" runat="server" DataValueField="批投料量" DataTextField="批投料量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                                     CssClass="tbinput"></asp:TextBox>
@@ -414,14 +418,16 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料分类">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind("0204")%>' DataValueField="mattree_code" DataTextField="mattree_name">
-                                                                </asp:DropDownList>
+                                                                <!--<asp:DropDownList ID="listGridType1" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType1_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind("0204")%>' DataValueField="mattree_code" DataTextField="mattree_name">
+                                                                </asp:DropDownList>-->
+                                                                <asp:TextBox ID="GridType1" runat="server" DataValueField="物料分类" DataTextField="物料分类"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料名称" SortExpression="物料名称">
                                                             <ItemTemplate>
-                                                                <asp:DropDownList ID="listGridName1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName1_SelectedIndexChanged" AutoPostBack="True" Width="300px">
-                                                                </asp:DropDownList>
+                                                                <!--<asp:DropDownList ID="listGridName1" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGirdName1_SelectedIndexChanged" AutoPostBack="True" Width="300px">
+                                                                </asp:DropDownList>-->
+                                                                <asp:TextBox ID="GridName1" runat="server" DataValueField="物料名称" DataTextField="物料名称" Width  ="100%"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="物料编码" SortExpression="物料编码">
@@ -430,7 +436,7 @@
                                                                     CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="批投料量" SortExpression="批投料量">
+                                                        <asp:TemplateField HeaderText="批投料量(Kg)" SortExpression="批投料量">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txtAmountM" runat="server" DataValueField="批投料量" DataTextField="批投料量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                                     CssClass="tbinput"></asp:TextBox>
@@ -652,7 +658,7 @@
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                 <asp:TemplateField HeaderText="每批用量">
+                                                 <asp:TemplateField HeaderText="每批用量(Kg)">
                                                  <ItemTemplate>
                                                         <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                             CssClass="tbinput"></asp:TextBox>
@@ -746,7 +752,7 @@
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                  <asp:TemplateField HeaderText="每批用量">
+                                                  <asp:TemplateField HeaderText="每批用量(Kg)">
                                                  <ItemTemplate>
                                                         <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                             CssClass="tbinput"></asp:TextBox>
@@ -963,7 +969,7 @@
                                                         CssClass="tbinput"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                              <asp:TemplateField HeaderText="每批用量">
+                                              <asp:TemplateField HeaderText="每批用量(Kg)">
                                                  <ItemTemplate>
                                                         <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                             CssClass="tbinput"></asp:TextBox>

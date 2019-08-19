@@ -80,7 +80,7 @@ public class ProcessDailyReport : IHttpHandler {
 
     public JArray getStandar(MSYS.DAL.DbOperator opt) {
         JArray result = new JArray();
-        string query = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range ,s.lower_value, s.upper_value from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group where r.INSPECT_TYPE = '0' and r.is_del = '0' order by r.inspect_code";
+        string query = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range ,s.lower_value, s.upper_value from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd_sub s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group where r.INSPECT_TYPE = '0' and r.is_del = '0' order by r.inspect_code";
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
         for (int i = 0; i < dt.Rows.Count; i++) {
             JObject tem = new JObject();

@@ -36,13 +36,13 @@ namespace MSYS.Web.MateriaService {
         
         private System.Threading.SendOrPostCallback receiveVirtualTransferInfoOperationCompleted;
         
-        private System.Threading.SendOrPostCallback getTechStdByIdOperationCompleted;
-        
         private System.Threading.SendOrPostCallback getWorkScheduleOperationCompleted;
         
-        private System.Threading.SendOrPostCallback execUpdateSapOnhandOperationCompleted;
+        private System.Threading.SendOrPostCallback getTechStdByIdOperationCompleted;
         
         private System.Threading.SendOrPostCallback getMatFormulaByIdOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback execUpdateSapOnhandOperationCompleted;
         
         private System.Threading.SendOrPostCallback getCoatFormulaByIdOperationCompleted;
         
@@ -104,16 +104,16 @@ namespace MSYS.Web.MateriaService {
         public event receiveVirtualTransferInfoCompletedEventHandler receiveVirtualTransferInfoCompleted;
         
         /// <remarks/>
-        public event getTechStdByIdCompletedEventHandler getTechStdByIdCompleted;
-        
-        /// <remarks/>
         public event getWorkScheduleCompletedEventHandler getWorkScheduleCompleted;
         
         /// <remarks/>
-        public event execUpdateSapOnhandCompletedEventHandler execUpdateSapOnhandCompleted;
+        public event getTechStdByIdCompletedEventHandler getTechStdByIdCompleted;
         
         /// <remarks/>
         public event getMatFormulaByIdCompletedEventHandler getMatFormulaByIdCompleted;
+        
+        /// <remarks/>
+        public event execUpdateSapOnhandCompletedEventHandler execUpdateSapOnhandCompleted;
         
         /// <remarks/>
         public event getCoatFormulaByIdCompletedEventHandler getCoatFormulaByIdCompleted;
@@ -226,36 +226,6 @@ namespace MSYS.Web.MateriaService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public techStddInfoVO getTechStdById([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0) {
-            object[] results = this.Invoke("getTechStdById", new object[] {
-                        arg0});
-            return ((techStddInfoVO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getTechStdByIdAsync(string arg0) {
-            this.getTechStdByIdAsync(arg0, null);
-        }
-        
-        /// <remarks/>
-        public void getTechStdByIdAsync(string arg0, object userState) {
-            if ((this.getTechStdByIdOperationCompleted == null)) {
-                this.getTechStdByIdOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetTechStdByIdOperationCompleted);
-            }
-            this.InvokeAsync("getTechStdById", new object[] {
-                        arg0}, this.getTechStdByIdOperationCompleted, userState);
-        }
-        
-        private void OngetTechStdByIdOperationCompleted(object arg) {
-            if ((this.getTechStdByIdCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getTechStdByIdCompleted(this, new getTechStdByIdCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public workScheduleVO[] getWorkSchedule([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg2) {
             object[] results = this.Invoke("getWorkSchedule", new object[] {
                         arg0,
@@ -290,28 +260,30 @@ namespace MSYS.Web.MateriaService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string execUpdateSapOnhand() {
-            object[] results = this.Invoke("execUpdateSapOnhand", new object[0]);
-            return ((string)(results[0]));
+        public techStddInfoVO getTechStdById([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0) {
+            object[] results = this.Invoke("getTechStdById", new object[] {
+                        arg0});
+            return ((techStddInfoVO)(results[0]));
         }
         
         /// <remarks/>
-        public void execUpdateSapOnhandAsync() {
-            this.execUpdateSapOnhandAsync(null);
+        public void getTechStdByIdAsync(string arg0) {
+            this.getTechStdByIdAsync(arg0, null);
         }
         
         /// <remarks/>
-        public void execUpdateSapOnhandAsync(object userState) {
-            if ((this.execUpdateSapOnhandOperationCompleted == null)) {
-                this.execUpdateSapOnhandOperationCompleted = new System.Threading.SendOrPostCallback(this.OnexecUpdateSapOnhandOperationCompleted);
+        public void getTechStdByIdAsync(string arg0, object userState) {
+            if ((this.getTechStdByIdOperationCompleted == null)) {
+                this.getTechStdByIdOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetTechStdByIdOperationCompleted);
             }
-            this.InvokeAsync("execUpdateSapOnhand", new object[0], this.execUpdateSapOnhandOperationCompleted, userState);
+            this.InvokeAsync("getTechStdById", new object[] {
+                        arg0}, this.getTechStdByIdOperationCompleted, userState);
         }
         
-        private void OnexecUpdateSapOnhandOperationCompleted(object arg) {
-            if ((this.execUpdateSapOnhandCompleted != null)) {
+        private void OngetTechStdByIdOperationCompleted(object arg) {
+            if ((this.getTechStdByIdCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.execUpdateSapOnhandCompleted(this, new execUpdateSapOnhandCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getTechStdByIdCompleted(this, new getTechStdByIdCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -342,6 +314,34 @@ namespace MSYS.Web.MateriaService {
             if ((this.getMatFormulaByIdCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getMatFormulaByIdCompleted(this, new getMatFormulaByIdCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://webservice.dhcc.com/", ResponseNamespace="http://webservice.dhcc.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string execUpdateSapOnhand() {
+            object[] results = this.Invoke("execUpdateSapOnhand", new object[0]);
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void execUpdateSapOnhandAsync() {
+            this.execUpdateSapOnhandAsync(null);
+        }
+        
+        /// <remarks/>
+        public void execUpdateSapOnhandAsync(object userState) {
+            if ((this.execUpdateSapOnhandOperationCompleted == null)) {
+                this.execUpdateSapOnhandOperationCompleted = new System.Threading.SendOrPostCallback(this.OnexecUpdateSapOnhandOperationCompleted);
+            }
+            this.InvokeAsync("execUpdateSapOnhand", new object[0], this.execUpdateSapOnhandOperationCompleted, userState);
+        }
+        
+        private void OnexecUpdateSapOnhandOperationCompleted(object arg) {
+            if ((this.execUpdateSapOnhandCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.execUpdateSapOnhandCompleted(this, new execUpdateSapOnhandCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -3104,184 +3104,6 @@ namespace MSYS.Web.MateriaService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
-    public partial class workScheduleVO {
-        
-        private string col1Field;
-        
-        private string col2Field;
-        
-        private string col3Field;
-        
-        private string col4Field;
-        
-        private string dateBeginField;
-        
-        private string dateEndField;
-        
-        private string idField;
-        
-        private string remarkField;
-        
-        private string shiftNameField;
-        
-        private string teamNameField;
-        
-        private string workDateField;
-        
-        private string workStausField;
-        
-        private string workshopNameField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string col1 {
-            get {
-                return this.col1Field;
-            }
-            set {
-                this.col1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string col2 {
-            get {
-                return this.col2Field;
-            }
-            set {
-                this.col2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string col3 {
-            get {
-                return this.col3Field;
-            }
-            set {
-                this.col3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string col4 {
-            get {
-                return this.col4Field;
-            }
-            set {
-                this.col4Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dateBegin {
-            get {
-                return this.dateBeginField;
-            }
-            set {
-                this.dateBeginField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dateEnd {
-            get {
-                return this.dateEndField;
-            }
-            set {
-                this.dateEndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string remark {
-            get {
-                return this.remarkField;
-            }
-            set {
-                this.remarkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string shiftName {
-            get {
-                return this.shiftNameField;
-            }
-            set {
-                this.shiftNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string teamName {
-            get {
-                return this.teamNameField;
-            }
-            set {
-                this.teamNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string workDate {
-            get {
-                return this.workDateField;
-            }
-            set {
-                this.workDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string workStaus {
-            get {
-                return this.workStausField;
-            }
-            set {
-                this.workStausField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string workshopName {
-            get {
-                return this.workshopNameField;
-            }
-            set {
-                this.workshopNameField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
     public partial class techStddDetail {
         
         private string baseDownField;
@@ -4347,6 +4169,8 @@ namespace MSYS.Web.MateriaService {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
     public partial class tPubMateriel : baseVO {
         
+        private string chargField;
+        
         private string clocationidField;
         
         private double costpriceField;
@@ -4448,6 +4272,17 @@ namespace MSYS.Web.MateriaService {
         private string warehouseNameField;
         
         private string xyMaterialCodeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string charg {
+            get {
+                return this.chargField;
+            }
+            set {
+                this.chargField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -5017,6 +4852,184 @@ namespace MSYS.Web.MateriaService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
+    public partial class workScheduleVO {
+        
+        private string col1Field;
+        
+        private string col2Field;
+        
+        private string col3Field;
+        
+        private string col4Field;
+        
+        private string dateBeginField;
+        
+        private string dateEndField;
+        
+        private string idField;
+        
+        private string remarkField;
+        
+        private string shiftNameField;
+        
+        private string teamNameField;
+        
+        private string workDateField;
+        
+        private string workStausField;
+        
+        private string workshopNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col1 {
+            get {
+                return this.col1Field;
+            }
+            set {
+                this.col1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col2 {
+            get {
+                return this.col2Field;
+            }
+            set {
+                this.col2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col3 {
+            get {
+                return this.col3Field;
+            }
+            set {
+                this.col3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string col4 {
+            get {
+                return this.col4Field;
+            }
+            set {
+                this.col4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string dateBegin {
+            get {
+                return this.dateBeginField;
+            }
+            set {
+                this.dateBeginField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string dateEnd {
+            get {
+                return this.dateEndField;
+            }
+            set {
+                this.dateEndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string remark {
+            get {
+                return this.remarkField;
+            }
+            set {
+                this.remarkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string shiftName {
+            get {
+                return this.shiftNameField;
+            }
+            set {
+                this.shiftNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string teamName {
+            get {
+                return this.teamNameField;
+            }
+            set {
+                this.teamNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string workDate {
+            get {
+                return this.workDateField;
+            }
+            set {
+                this.workDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string workStaus {
+            get {
+                return this.workStausField;
+            }
+            set {
+                this.workStausField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string workshopName {
+            get {
+                return this.workshopNameField;
+            }
+            set {
+                this.workshopNameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3062.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
     public partial class sapTmdoc {
         
         private string budatField;
@@ -5026,6 +5039,8 @@ namespace MSYS.Web.MateriaService {
         private System.DateTime createTimeField;
         
         private bool createTimeFieldSpecified;
+        
+        private string endDateField;
         
         private long idField;
         
@@ -5040,6 +5055,8 @@ namespace MSYS.Web.MateriaService {
         private double mengeField;
         
         private bool mengeFieldSpecified;
+        
+        private string startDateField;
         
         private string usnamField;
         
@@ -5086,6 +5103,17 @@ namespace MSYS.Web.MateriaService {
             }
             set {
                 this.createTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string endDate {
+            get {
+                return this.endDateField;
+            }
+            set {
+                this.endDateField = value;
             }
         }
         
@@ -5163,6 +5191,17 @@ namespace MSYS.Web.MateriaService {
             }
             set {
                 this.mengeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string startDate {
+            get {
+                return this.startDateField;
+            }
+            set {
+                this.startDateField = value;
             }
         }
         
@@ -5246,6 +5285,10 @@ namespace MSYS.Web.MateriaService {
         
         private string matnrField;
         
+        private long tmaraIdField;
+        
+        private bool tmaraIdFieldSpecified;
+        
         private string zbzField;
         
         private string zdjField;
@@ -5328,6 +5371,28 @@ namespace MSYS.Web.MateriaService {
             }
             set {
                 this.matnrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public long tmaraId {
+            get {
+                return this.tmaraIdField;
+            }
+            set {
+                this.tmaraIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tmaraIdSpecified {
+            get {
+                return this.tmaraIdFieldSpecified;
+            }
+            set {
+                this.tmaraIdFieldSpecified = value;
             }
         }
         
@@ -5434,32 +5499,6 @@ namespace MSYS.Web.MateriaService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    public delegate void getTechStdByIdCompletedEventHandler(object sender, getTechStdByIdCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getTechStdByIdCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getTechStdByIdCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public techStddInfoVO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((techStddInfoVO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     public delegate void getWorkScheduleCompletedEventHandler(object sender, getWorkScheduleCompletedEventArgs e);
     
     /// <remarks/>
@@ -5486,26 +5525,26 @@ namespace MSYS.Web.MateriaService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
-    public delegate void execUpdateSapOnhandCompletedEventHandler(object sender, execUpdateSapOnhandCompletedEventArgs e);
+    public delegate void getTechStdByIdCompletedEventHandler(object sender, getTechStdByIdCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class execUpdateSapOnhandCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getTechStdByIdCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal execUpdateSapOnhandCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getTechStdByIdCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public string Result {
+        public techStddInfoVO Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((techStddInfoVO)(this.results[0]));
             }
         }
     }
@@ -5532,6 +5571,32 @@ namespace MSYS.Web.MateriaService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((materFormulaVO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    public delegate void execUpdateSapOnhandCompletedEventHandler(object sender, execUpdateSapOnhandCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3062.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class execUpdateSapOnhandCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal execUpdateSapOnhandCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
             }
         }
     }

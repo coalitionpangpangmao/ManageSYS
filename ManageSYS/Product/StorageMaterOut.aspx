@@ -94,8 +94,8 @@
                                       <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                   
                                      <asp:BoundField    DataField="领用日期" HeaderText="领用日期" />                                   
                                     
-                                     <asp:BoundField    DataField="烟梗总量" HeaderText="烟梗总量" />
-                                     <asp:BoundField    DataField="碎片总量" HeaderText="碎片总量" />
+                                     <asp:BoundField    DataField="烟梗总量" HeaderText="烟梗总量(Kg)" />
+                                     <asp:BoundField    DataField="碎片总量" HeaderText="碎片总量(Kg)" />
                                      <asp:BoundField    DataField="编制人" HeaderText="编制人" />
                                      <asp:BoundField    DataField="收发人" HeaderText="收发人" />
                                     <asp:TemplateField  >
@@ -269,7 +269,7 @@
                                 </span>
                             </div>
                           
-                            <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="True" AutoGenerateColumns="False"
+                            <asp:GridView ID="GridView2" runat="server" class="grid" AllowPaging="False" AutoGenerateColumns="False"
                                 DataKeyNames="ID">
                                 <Columns>
                                     <asp:TemplateField  >
@@ -281,14 +281,16 @@
 
                                     <asp:TemplateField   HeaderText="类型">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_code" DataTextField="mattree_name">
-                                            </asp:DropDownList>
+                                            <!--<asp:DropDownList ID="listGridType" runat="server" CssClass="drpdwnlist" Width="80px" OnSelectedIndexChanged="listGridType_SelectedIndexChanged" AutoPostBack="True" DataSource='<%# gridTypebind()%>' DataValueField="mattree_code" DataTextField="mattree_name"></asp:DropDownList>-->
+                                                <asp:TextBox ID="GridType1" runat="server" DataValueField="类型" DataTextField="类型"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
+                                            
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderText="原料名称" SortExpression="物料名称">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGridName_SelectedIndexChanged" AutoPostBack="True" Width="230px">
-                                            </asp:DropDownList>
+                                            <!--<asp:DropDownList ID="listGridName" runat="server" CssClass="drpdwnlist" OnSelectedIndexChanged="listGridName_SelectedIndexChanged" AutoPostBack="True" Width="230px">
+                                            </asp:DropDownList>-->
+                                             <asp:TextBox ID="GridName1" runat="server" Width="100%" taValueField="原料名称" DataTextField="原料名称"  CssClass="tbinput1" Enabled="False"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderText="原料编码" SortExpression="物料编码">

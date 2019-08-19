@@ -94,7 +94,7 @@
                                       <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                   
                                      <asp:BoundField    DataField="领用日期" HeaderText="领用日期" />                                   
                                     
-                                     <asp:BoundField    DataField="香精香料总量" HeaderText="香精香料总量" />                                    
+                                     <asp:BoundField    DataField="香精香料总量" HeaderText="香精香料总量(Kg)" />                                    
                                      <asp:BoundField    DataField="编制人" HeaderText="编制人" />
                                      <asp:BoundField    DataField="收发人" HeaderText="收发人" />
                                     <asp:TemplateField  >
@@ -249,6 +249,8 @@
                             <asp:AsyncPostBackTrigger ControlID="listPrdctPlan" />
                             <asp:AsyncPostBackTrigger ControlID="btnReset" />
                             <asp:AsyncPostBackTrigger ControlID ="btnModify" />
+                            <asp:AsyncPostBackTrigger ControlID ="GridView2" />
+                            
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>

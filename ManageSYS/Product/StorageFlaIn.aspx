@@ -90,8 +90,8 @@
                                     </asp:TemplateField>
                                      <asp:BoundField    DataField="单据号" HeaderText="单据号" />
                                      <asp:BoundField    DataField="产品" HeaderText="产品" />
-                                      <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                                     <asp:BoundField    DataField="领退日期" HeaderText="领退日期" />                                                      <asp:BoundField    DataField="香精香料总量" HeaderText="香精香料总量" />
-                                     <asp:BoundField    DataField="料液总量" HeaderText="料液总量" />
+                                      <asp:BoundField    DataField="投料批次" HeaderText="投料批次" />                                                     <asp:BoundField    DataField="领退日期" HeaderText="领退日期" />                                                      <asp:BoundField    DataField="香精香料总量" HeaderText="香精香料总量(Kg)" />
+                                     <asp:BoundField    DataField="料液总量" HeaderText="料液总量(Kg)" />
                                      <asp:BoundField    DataField="编制人" HeaderText="编制人" />
                                      <asp:BoundField    DataField="收发人" HeaderText="收发人" />
                                     <asp:TemplateField  >

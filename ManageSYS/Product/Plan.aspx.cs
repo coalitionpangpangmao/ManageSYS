@@ -10,9 +10,9 @@ using System.Collections;
 using MSYS.Web.PlanService;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
 using System.Text.RegularExpressions;
-using System.Collections;
+
+
 public partial class Product_Plan : MSYS.Web.BasePage
 {
 
@@ -73,27 +73,48 @@ public partial class Product_Plan : MSYS.Web.BasePage
     protected void btnUpdate_Click(object sender, EventArgs e) {
         MSYS.Web.PlanService.WsPlanForGSInterfaceService service = new MSYS.Web.PlanService.WsPlanForGSInterfaceService();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        prodAssignPlan[] pb = service.getProdAssignForGS("", "");
-        prodAssignVO[] pvo = service.getProdAssignListForGS("", "");
-        string[] seg = { "id", "PLAN_NAME", "B_FLOW_STATUS", "ISSUED_STATUS", "PLAN_TIME", "IS_VALID", "REMARK" };
-        string[] seg2 = { "month_plan_id", "prod_code ", "plan_year", "prod_month", "plan_type", "plan_outpu", "plan_sort", "exe_status" };
+        System.Diagnostics.Debug.WriteLine(System.DateTime.Now.Month.ToString());
+        string month = "0" + System.DateTime.Now.Month.ToString();
+        prodAssignPlan[] pb = service.getProdAssignForGS(System.DateTime.Now.Year.ToString(), month);
+        prodAssignVO[] pvo = service.getProdAssignListForGS(System.DateTime.Now.Year.ToString(), month);
+        string[] seg = { "id", "PLAN_NAME", "B_FLOW_STATUS", "ISSUED_STATUS", "PLAN_TIME", "IS_DEL", "REMARK" ,"CREATE_ID"};
+        string[] seg2 = { "month_plan_id","plan_no", "prod_code ", "plan_year", "prod_month", "plan_type", "plan_output", "plan_sort", "exe_status" , "is_del", "is_valid", "create_id", "path_code"};
+        if (pb == null || pvo==null)
+        {
+            System.Diagnostics.Debug.WriteLine("无数据");
+            return;
+        }
+        string monthid = "";
+        string cid = "";
         foreach (prodAssignPlan p in pb)
         {
-            if (p.planNo.Substring(0, 2) != "GS")
-                continue;
-            string[] value = { p.id, p.planName, p.bFlowStatus, p.issuedStatus, p.planTime, "1", p.remark, };
+           // if (p.planNo.ToString().Substring(0, 2) != "GS")
+             //   continue;
+            monthid = p.id;
+            string sqllog = "select id from ht_svr_user where loginname = '"+pvo[0].planNo + "'";
+            if(pvo[0].createId != null)
+                cid = opt.CreateDataSetOra(sqllog).Tables[0].Rows[0][0].ToString();
+            string[] value = { p.id, p.planName, "2", p.issuedStatus, p.planTime.Substring(0,7), "0", p.remark, cid};
             //  string[] value2 = { p.id };
-            opt.getMergeStr(seg, value, 1, "HT_PROD_MONTH_PLAN");
+            opt.MergeInto(seg, value, 2, "HT_PROD_MONTH_PLAN");
             // opt.getMergeStr(seg2, value2, 1, "HT_PROD_MONTH_PLAN_DETAIL");
             // dt.Rows.Add(paras);
         }
         foreach (prodAssignVO p in pvo)
         {
-            if (p.planNo.Substring(0, 2) != "GS")
+           // if (p.planNo.ToString().Substring(0, 2) != "GS")
+             //   continue;
+           // string sql = "select xy_prod_code from ht_pub_prod_design where prod_code = " + p.prodCode;
+           // DataSet ds = opt.CreateDataSetOra(sql);
+            //string xy_prod_code = ds.Tables[0].Rows[0][0].ToString();
+            if (p.prodCode.Substring(0, 3) != "703")
                 continue;
-            string[] value = { p.planNo, p.prodCode, p.jobYear, p.jobMonth, p.planType, p.jobOutput, p.jobSort, p.status };
-            opt.getMergeStr(seg2, value, 1, "HT_PROD_MONTH_PLAN_DETAIL");
+            string path_code = opt.GetSegValue("select path_code from ht_pub_prod_design where prod_code = '" + p.prodCode + "'", "path_code"); 
+            string[] value = {monthid, p.planNo, p.prodCode, p.jobYear, p.jobMonth, p.planType, p.jobOutput, p.jobSort, p.status ,"0","1", cid, path_code};
+            opt.MergeInto(seg2, value, 2, "HT_PROD_MONTH_PLAN_DETAIL");
+            insertSectionPath(path_code, p.planNo);
         }
+        bindGrid1();
         return;
         
     }
@@ -116,7 +137,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         else hidePlanID.Value = planID.Substring(planID.LastIndexOf(',') + 1);
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from ht_prod_month_plan_detail where is_valid = '0'");
-        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 原料状态,(case t.coat_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 回填液状态 ,(case t.FLAVOR_STATUS when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 香精香料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = " + planID + " order by plan_Sort";
+        string query = " select t.plan_Sort as 顺序号, t.plan_no as 计划号, t.prod_code as 产品名称,round(t.plan_output,3) as 计划产量,t.path_code as  路径编码,r.name as 生产状态,(case t.mater_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 原料状态,(case t.coat_status when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 回填液状态 ,(case t.FLAVOR_STATUS when '1' then '要料中'  when '2' then '己出库' when '3' then '己到料' else ''  end) as 香精香料状态 from ht_prod_month_plan_detail t left join ht_inner_prodexe_status r on t.exe_status = r.id  where t.is_del = '0' and  t.MONTH_PLAN_ID = '" + planID + "' order by plan_Sort";
 
        
         DataSet data = opt.CreateDataSetOra(query);
@@ -654,7 +675,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
       
         string[] subpath = path_code.Split('-');
         DataSet data = opt.CreateDataSetOra("select g.section_name , g.section_code from ht_pub_tech_section g  where g.is_valid = '1' and g.is_del = '0' and g.IS_PATH_CONFIG = '1' order by g.section_code");
-        if (data != null && data.Tables[0].Rows.Count == subpath.Length)
+       /* if (data != null && data.Tables[0].Rows.Count == subpath.Length)
         {
             for (int i = 0; i < subpath.Length; i++)
             {
@@ -666,6 +687,27 @@ public partial class Product_Plan : MSYS.Web.BasePage
                     string[] value = { sectioncode, planno, subpath[i], pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
                     commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
                 }
+            }
+        }*/
+        if (data != null)
+        {
+            for (int i = 0; i < data.Tables[0].Rows.Count; i++)
+            {
+                DataRow row = data.Tables[0].Rows[i];
+                string sectioncode = row["section_code"].ToString();
+                string pathname = "";
+                string pathcode = "";
+                foreach (string sub in subpath)
+                {
+                    if (sub.Substring(0, 5) == sectioncode)
+                    {
+                        pathname = opt.GetSegValue("select pathname from ht_pub_path_section  where section_code = '" + sectioncode + "' and pathcode = '" + sub.Substring(5) + "'", "pathname");
+                        pathcode = sub.Substring(5);
+                    }
+                }
+                string[] value = { sectioncode, planno, pathcode, pathname, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
+                commandlist.Add(opt.getMergeStr(seg, value, 2, "HT_PUB_PATH_PLAN"));
+
             }
         }
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "配置生产任务路径成功" : "配置生产任务路径失败";

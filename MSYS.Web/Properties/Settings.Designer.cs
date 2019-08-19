@@ -26,7 +26,7 @@ namespace MSYS.Web.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.22:8081/xymis/services/MisMasterDataService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.20/xymis/services/MisMasterDataService")]
         public string MSYS_Web_MasterService_MisMasterDataServiceInterfaceService {
             get {
                 return ((string)(this["MSYS_Web_MasterService_MisMasterDataServiceInterfaceService"]));
@@ -36,7 +36,7 @@ namespace MSYS.Web.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.22:8081/xymis/services/EquipService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.20/xymis/services/EquipService")]
         public string MSYS_Web_EquipService_EquipServiceInterfaceService {
             get {
                 return ((string)(this["MSYS_Web_EquipService_EquipServiceInterfaceService"]));
@@ -46,7 +46,7 @@ namespace MSYS.Web.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.22:8081/xymis/services/baseDataService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.20/xymis/services/baseDataService")]
         public string MSYS_Web_MateriaService_WsBaseDataInterfaceService {
             get {
                 return ((string)(this["MSYS_Web_MateriaService_WsBaseDataInterfaceService"]));
@@ -56,7 +56,7 @@ namespace MSYS.Web.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.22:8081/xymis/services/StoreService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.20/xymis/services/StoreService")]
         public string MSYS_Web_StoreService_StoreServiceInterfaceService {
             get {
                 return ((string)(this["MSYS_Web_StoreService_StoreServiceInterfaceService"]));
@@ -66,7 +66,7 @@ namespace MSYS.Web.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.22:8081/xymis/services/planForGSService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.43.171.20/xymis/services/planForGSService")]
         public string MSYS_Web_PlanService_WsPlanForGSInterfaceService {
             get {
                 return ((string)(this["MSYS_Web_PlanService_WsPlanForGSInterfaceService"]));

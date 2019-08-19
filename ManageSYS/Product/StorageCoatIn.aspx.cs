@@ -191,7 +191,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
            // commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and MATER_STATUS = '1'");
             MSYS.Web.StorageOpt st = new MSYS.Web.StorageOpt();
             ////调用接口，变更库存////
-      //      st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
+           st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
             /////
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "出入库成功" : "出入库失败";
@@ -288,7 +288,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
     {
         setBlank();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        txtCode.Text = "GSHT" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,13,3)),0)  as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,12) ='GSHT" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        txtCode.Text = "SC" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select  nvl(max(substr(ORDER_SN,11,3)),0)  as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,10) ='SC" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         MSYS.Data.SysUser user = (MSYS.Data.SysUser)Session["User"];
         listCreator.SelectedValue = user.id;
         listApt.SelectedValue = user.OwningBusinessUnitId;
@@ -396,7 +396,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_COAT"));
             commandlist.Add("delete from HT_STRG_COAT_SUB where MAIN_CODE = '" + txtCode.Text + "'");
             //根据生产计划对应的配方明细生成原料领用明细           
-            commandlist.Add("insert into HT_STRG_COAT_SUB select strgmater_id_seq.nextval,  r.mater_code,r.storage,r.original_demand,r.real_demand,r.remark,r.unit_code,'0',r.mater_flag,'" + txtCode.Text + "','','','',r.CLS_CODE from HT_STRG_COAT_SUB r where r.main_code = '" + relationcode + "'");
+            commandlist.Add("insert into HT_STRG_COAT_SUB select STRGAUX_ID_SEQ.nextval,  r.mater_code,r.storage,r.original_demand,r.real_demand,r.remark,r.unit_code,'0',r.mater_flag,'" + txtCode.Text + "','','','',r.CLS_CODE from HT_STRG_COAT_SUB r where r.main_code = '" + relationcode + "'");
             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成原料领用主表记录成功" : "生成原料领用主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
@@ -465,14 +465,14 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (txtCode.Text == "")
-            txtCode.Text = "GSHT" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,12) ='GSHT" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+            txtCode.Text = "SC" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_COAT where substr(ORDER_SN,1,10) ='SC" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
         foreach (GridViewRow row in GridView2.Rows)
         {                   
            
             string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();
             if (ID == "0")
             {
-                ID = opt.GetSegValue("select STRGMATER_ID_SEQ.nextval as id from dual", "ID");
+                ID = opt.GetSegValue("select STRGAUX_ID_SEQ.nextval as id from dual", "ID");
             }
             string[] seg = { "ID", "mater_code", "STORAGE",  "unit_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
             string[] value = { ID, ((TextBox)row.FindControl("txtGridcode")).Text, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue,  ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };

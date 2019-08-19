@@ -506,11 +506,11 @@
   <wsdl:message name="getSapProvinceListResponse">
     <wsdl:part name="parameters" element="tns:getSapProvinceListResponse" />
   </wsdl:message>
-  <wsdl:message name="yuanfuCgrk">
-    <wsdl:part name="parameters" element="tns:yuanfuCgrk" />
-  </wsdl:message>
   <wsdl:message name="getCategoryListResponse">
     <wsdl:part name="parameters" element="tns:getCategoryListResponse" />
+  </wsdl:message>
+  <wsdl:message name="yuanfuCgrk">
+    <wsdl:part name="parameters" element="tns:yuanfuCgrk" />
   </wsdl:message>
   <wsdl:message name="getMaterialWarehouseListResponse">
     <wsdl:part name="parameters" element="tns:getMaterialWarehouseListResponse" />
@@ -730,7 +730,7 @@
   </wsdl:binding>
   <wsdl:service name="StoreServiceInterfaceService">
     <wsdl:port name="StoreServiceInterfacePort" binding="tns:StoreServiceInterfaceServiceSoapBinding">
-      <soap:address location="http://10.43.171.22:8081/xymis/services/StoreService" />
+      <soap:address location="http://10.43.171.20/xymis/services/StoreService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
