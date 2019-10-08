@@ -117,12 +117,13 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
                   continue;
                // string[] value2 = { p.quarterPlan.id, pd.prodCode, pd.planOutput1.ToString(), pd.planOutput2.ToString(), pd.planOutput3.ToString(), pd.totalOutput.ToString(), pd.isDel };
               string[] value2 = { p.quarterPlan.pzCode, xy_prod_code, pd.planOutput1.ToString(), pd.planOutput2.ToString(), pd.planOutput3.ToString(), pd.totalOutput.ToString(), pd.isDel };
-                opt.MergeInto(seg2, value2, 6, "HT_PROD_SEASON_PLAN_DETAIL");
+                opt.MergeInto(seg2, value2, 2, "HT_PROD_SEASON_PLAN_DETAIL");
             }
             // opt.getMergeStr(seg2, value2, 1, "HT_PROD_MONTH_PLAN_DETAIL");
             // dt.Rows.Add(paras);
         }
         bindGrid1();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('同步完成');", true);
     }
   
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -195,7 +196,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
         string[] seg1 = new string[] { "ID", "PLAN_NAME", "FLOW_STATUS", "ISSUED_STATUS", "CREATE_ID", "CREATE_TIME", "MODIFY_ID", "MODIFYER", "MODIFY_TIME", "DEPT_ID", "PLAN_YEAR", "QUARTER", "UNIT", "REMARK", "IS_DEL", "TOTAL_OUTPUT", "PZ_CODE", "ADJUST_STATUS" };
         string[] seg2 = new string[] { "ID", "QUARTER_PLAN_ID", "PROD_CODE", "PLAN_OUTPUT_1", "PLAN_OUT_PUT_2", "PLAN_OUTPUT_3", "TOTAL_OUTPUT", "IS_DEL", "OUTPUT_1_ADJUST", "OUTPUT_2_ADJUST", "OUTPUT_3_ADJUST", "IS_VALID"};
         string table1 = " HT_PROD_SEASON_PLAN";
-       // string table2 = "HT_PROD_SEASON_PLAN_DETAIL";
+        string table2 = "HT_PROD_SEASON_PLAN_DETAIL";
         
         quarterPlanVO[] qp = service.getQuarterPlanList(txtYear.Text, listSeason.SelectedValue.ToString());
         foreach (quarterPlanVO q in qp) {

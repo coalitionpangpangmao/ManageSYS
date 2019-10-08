@@ -29,7 +29,7 @@ public class ProcessDailyReport : IHttpHandler {
             result = this.getRawData(opt, requestParam["time"].ToString());
         }
         if (requestParam["methodName"].ToString() == "getStandar") {
-            result = this.getStandar(opt);
+            result = this.getStandar(opt, requestParam["prodcode"].ToString());
         }
         if (requestParam["methodName"].ToString() == "getMonthData")
         {
@@ -78,9 +78,9 @@ public class ProcessDailyReport : IHttpHandler {
         return result;
     }
 
-    public JArray getStandar(MSYS.DAL.DbOperator opt) {
+    public JArray getStandar(MSYS.DAL.DbOperator opt, string prodcode) {
         JArray result = new JArray();
-        string query = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range ,s.lower_value, s.upper_value from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd_sub s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group where r.INSPECT_TYPE = '0' and r.is_del = '0' order by r.inspect_code";
+        string query = "select t.section_name , r.inspect_code,r.inspect_name,s.lower_value||'~'||s.upper_value||r.unit as range ,s.lower_value, s.upper_value from ht_qlt_inspect_proj r left join ht_qlt_inspect_stdd_sub s on s.inspect_code = r.inspect_code left join ht_pub_tech_section t on t.section_code = r.inspect_group left join ht_pub_prod_design hpp on hpp.inspect_stdd = s.stdd_code where r.INSPECT_TYPE = '0' and r.is_del = '0' and hpp.prod_code = '"+ prodcode +"' order by r.inspect_code";
         DataTable dt = opt.CreateDataSetOra(query).Tables[0];
         for (int i = 0; i < dt.Rows.Count; i++) {
             JObject tem = new JObject();

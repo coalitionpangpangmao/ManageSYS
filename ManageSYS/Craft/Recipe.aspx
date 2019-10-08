@@ -15,6 +15,10 @@
     <script src="../js/jquery-treeview/jquery.treeview.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        function selbox(a) {
+            var val = a.val();
+            a.attr("title", val);
+        }
         $(document).ready(function () {
             initTree();
         });
@@ -661,6 +665,12 @@
                                                  <asp:TemplateField HeaderText="每批用量(Kg)">
                                                  <ItemTemplate>
                                                         <asp:TextBox ID="txtBatchNum" runat="server" DataValueField="每批用量" DataTextField="每批用量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                                                            CssClass="tbinput"></asp:TextBox>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="备注">
+                                                    <ItemTemplate>
+                                                         <asp:TextBox onmouseover ="selbox($(this))" ID="remark" runat="server" Width="100%" DataValueField="备注" DataTextField="备注"
                                                             CssClass="tbinput"></asp:TextBox>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>

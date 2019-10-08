@@ -6,13 +6,18 @@
         DailyValue: [],
         RawData: [],
         RawStandar: [],
-        MonthData: []
+        MonthData: [],
+        prodcode:''
     },
 
     mounted: function () {
         axios({
             url: "../Response/Inspect_Process_getTitle.ashx",
             method: "post",
+            /*dataType:"json",
+            data:{
+                prodcode:"7031003"
+            }*/
         }).then((res) => {
             //this.getDailyValue();
             //this.getQuaAndMonthData();
@@ -25,10 +30,30 @@ this.getRawStandar();
 },
 
 methods: {
-        search: function (time) {
-            this.time = time;
-            console.log(this.time);
 
+    getTitle: function () {
+        axios({
+            url: "../Response/Inspect_Process_getTitle.ashx",
+            method: "post",
+            dataType:"json",
+            data:{
+                prodcode:this.prodcode
+            }
+        }).then((res) => {
+            //this.getDailyValue();
+            //this.getQuaAndMonthData();
+            this.AllCheckItems = res.data.titles;
+        //console.log(this.AllCheckItems);
+        //console.log(this.UniqueCheckItems);
+        //console.log(this.CheckTimes);
+    });
+    this.getRawStandar();
+},
+        search: function (time, prodcode) {
+            this.time = time;
+            this.prodcode = prodcode;
+            console.log(this.time);
+            this.getTitle();
             this.getDailyValue();
             this.getQuaAndMonthData();
             this.getCurrentMonthData();
@@ -50,7 +75,7 @@ methods: {
             console.log(this.MonthData);
             console.log(this.MonthAvg);
             console.log(this.MonthStd);
-            console.log(this.MonthQua);
+            //console.log(this.MonthQua);
         });
 },
 
@@ -62,6 +87,7 @@ getRawStandar: function () {
         dataType: 'json',
         data: {
             methodName: 'getStandar',
+            prodcode: this.prodcode
 
         }
     }).then((val) => {

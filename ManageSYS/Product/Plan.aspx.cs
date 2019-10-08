@@ -10,8 +10,9 @@ using System.Collections;
 using MSYS.Web.PlanService;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
 using System.Text.RegularExpressions;
-
+using System.Collections;
 
 public partial class Product_Plan : MSYS.Web.BasePage
 {
@@ -26,17 +27,18 @@ public partial class Product_Plan : MSYS.Web.BasePage
     }
     protected void bindGrid1()
     {
-        string query = "select distinct g.id, g.plan_name as 计划名,case g.adjust_status when '1' then '是' else  '否' end as 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'";
+        string query = "select distinct g.id, g.plan_name as 计划名,case g.adjust_status when '1' then '是' else  '否' end as 是否有调整,g1.name as 审批状态,g2.issue_name  as 下发状态 ,g3.name as 编制人  from ht_prod_month_plan g left join ht_inner_aprv_status g1 on g1.id = g.b_flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id  where g.is_del = '0'" ;
         if (txtStart.Text != "" && txtStart.Text != "")
             query += " and PLAN_TIME between '" + txtStart.Text + "' and  '" + txtStop.Text + "'";
-        query += " order by g.id";
+        query += "  order by g.plan_name desc";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         GridView1.DataSource = data;
         GridView1.DataBind();
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
-            for (int i = 0; i < GridView1.Rows.Count; i++)
+            //for (int i = 0; i < GridView1.Rows.Count; i++)
+            for (int i = GridView1.PageSize * GridView1.PageIndex; i < GridView1.PageSize * (GridView1.PageIndex + 1) && i < GridView1.Rows.Count; i++)
             {
                 DataRowView mydrv = data.Tables[0].DefaultView[i];
 
@@ -68,6 +70,45 @@ public partial class Product_Plan : MSYS.Web.BasePage
             }
         }
 
+    }
+     // <asp:AsyncPostBackTrigger ControlID="Gridview1" />
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView theGrid = sender as GridView;
+        int newPageIndex = 0;
+        if (e.NewPageIndex == -3)
+        {
+            //点击跳转按钮
+            TextBox txtNewPageIndex = null;
+
+            //GridView较DataGrid提供了更多的API，获取分页块可以使用BottomPagerRow 或者TopPagerRow，当然还增加了HeaderRow和FooterRow
+            GridViewRow pagerRow = theGrid.BottomPagerRow;
+
+            if (pagerRow != null)
+            {
+                //得到text控件
+                txtNewPageIndex = pagerRow.FindControl("txtNewPageIndex") as TextBox;
+            }
+            if (txtNewPageIndex != null)
+            {
+                //得到索引
+                newPageIndex = int.Parse(txtNewPageIndex.Text) - 1;
+            }
+        }
+        else
+        {
+            //点击了其他的按钮
+            newPageIndex = e.NewPageIndex;
+        }
+        //防止新索引溢出
+        newPageIndex = newPageIndex < 0 ? 0 : newPageIndex;
+        newPageIndex = newPageIndex >= theGrid.PageCount ? theGrid.PageCount - 1 : newPageIndex;
+        //得到新的值
+        theGrid.PageIndex = newPageIndex;
+        //重新绑定
+
+        bindGrid1();
     }
 
     protected void btnUpdate_Click(object sender, EventArgs e) {
@@ -110,11 +151,12 @@ public partial class Product_Plan : MSYS.Web.BasePage
             if (p.prodCode.Substring(0, 3) != "703")
                 continue;
             string path_code = opt.GetSegValue("select path_code from ht_pub_prod_design where prod_code = '" + p.prodCode + "'", "path_code"); 
-            string[] value = {monthid, p.planNo, p.prodCode, p.jobYear, p.jobMonth, p.planType, p.jobOutput, p.jobSort, p.status ,"0","1", cid, path_code};
+            string[] value = {monthid, p.planNo, p.prodCode, p.jobYear, p.jobMonth, p.planType, p.jobOutput, p.jobSort, Convert.ToInt32(p.status).ToString(),"0","1", cid, path_code};
             opt.MergeInto(seg2, value, 2, "HT_PROD_MONTH_PLAN_DETAIL");
             insertSectionPath(path_code, p.planNo);
         }
         bindGrid1();
+        ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('同步完成');", true);
         return;
         
     }

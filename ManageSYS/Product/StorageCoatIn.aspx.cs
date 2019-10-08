@@ -21,6 +21,8 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
         txtStart.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
         txtStop.Text = System.DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(DropDownListShift, "select * from ht_sys_shift where is_del='0' and is_valid='1'", "shift_name", "shift_code");
+        opt.bindDropDownList(DropDownListTeam, "select * from ht_sys_team where is_del='0' and is_valid='1'", "team_name", "team_code");
         opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group order by F_CODE", "F_NAME", "F_CODE");
         opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0' order by prod_code", "PROD_NAME", "PROD_CODE");
        
@@ -191,7 +193,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
            // commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  MATER_STATUS = '2' where PLAN_NO = '" + planno + "' and MATER_STATUS = '1'");
             MSYS.Web.StorageOpt st = new MSYS.Web.StorageOpt();
             ////调用接口，变更库存////
-           st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
+           st.FuInOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
             /////
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             string log_message = opt.TransactionCommand(commandlist) == "Success" ? "出入库成功" : "出入库失败";
@@ -240,6 +242,9 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
                 listPrdct.SelectedValue = temp;
             else
                 listPrdct.SelectedValue = "";
+
+            DropDownListShift.SelectedValue = data.Tables[0].Rows[0]["shift_code"].ToString();
+            DropDownListTeam.SelectedValue = data.Tables[0].Rows[0]["team_code"].ToString();
             txtChipSum.Text = data.Tables[0].Rows[0]["PEICESSUM"].ToString();
             txtStemSum.Text = data.Tables[0].Rows[0]["CABOSUM"].ToString();
             listCreator.SelectedValue = data.Tables[0].Rows[0]["CREATOR_ID"].ToString();
@@ -382,7 +387,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         List<string> commandlist = new List<string>();
         string log_message;
-        if (txtPrdctdate.Text == "" || txtValiddate.Text == "" || (listStrgOut.SelectedValue == "" && txtStrgOut.Text == "")|| listPrdct.SelectedValue == "")
+        if (txtPrdctdate.Text == "" || txtValiddate.Text == "" || (listStrgOut.SelectedValue == "" && txtStrgOut.Text == "")|| listPrdct.SelectedValue == "" || DropDownListShift.SelectedValue == "" || DropDownListTeam.SelectedValue == "")
         {
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('请输入必要信息!!')", true);
             return;
@@ -390,13 +395,13 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
       
             //生成领用主表记录
         string relationcode = (listStrgOut.SelectedValue == "") ? txtStrgOut.Text:listStrgOut.SelectedValue;
-        string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "RELATION_CODE", "STRG_TYPE" };
-        string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, txtPlanno.Text, relationcode, "1" };
+        string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "RELATION_CODE", "STRG_TYPE", "team_code", "shift_code" };
+        string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, txtPlanno.Text, relationcode, "1" ,DropDownListTeam.SelectedValue.ToString(), DropDownListShift.SelectedValue.ToString()};
 
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_COAT"));
             commandlist.Add("delete from HT_STRG_COAT_SUB where MAIN_CODE = '" + txtCode.Text + "'");
             //根据生产计划对应的配方明细生成原料领用明细           
-            commandlist.Add("insert into HT_STRG_COAT_SUB select STRGAUX_ID_SEQ.nextval,  r.mater_code,r.storage,r.original_demand,r.real_demand,r.remark,r.unit_code,'0',r.mater_flag,'" + txtCode.Text + "','','','',r.CLS_CODE from HT_STRG_COAT_SUB r where r.main_code = '" + relationcode + "'");
+            commandlist.Add("insert into HT_STRG_COAT_SUB select strgcoat_id_seq.nextval,  r.mater_code,r.storage,r.original_demand,r.real_demand,r.remark,r.unit_code,'0',r.mater_flag,'" + txtCode.Text + "','','','',r.CLS_CODE,'','' from HT_STRG_COAT_SUB r where r.main_code = '" + relationcode + "'");
             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成原料领用主表记录成功" : "生成原料领用主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
@@ -472,7 +477,7 @@ public partial class Product_StorageCoatIn : MSYS.Web.BasePage
             string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();
             if (ID == "0")
             {
-                ID = opt.GetSegValue("select STRGAUX_ID_SEQ.nextval as id from dual", "ID");
+                ID = opt.GetSegValue("select STRGCOAT_ID_SEQ.nextval as id from dual", "ID");
             }
             string[] seg = { "ID", "mater_code", "STORAGE",  "unit_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
             string[] value = { ID, ((TextBox)row.FindControl("txtGridcode")).Text, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue,  ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };

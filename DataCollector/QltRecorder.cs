@@ -103,7 +103,7 @@ namespace DataCollect
         private static void insertPointQuaReport(IHAction.SectionTimeSeg seg, string para_code)
         {
             IHAction ihopt = new IHAction();
-            IHAction.TimeSeg timeseg = new IHAction.TimeSeg(seg.starttime, seg.endtime, seg.type, seg.planno, para_code);
+            IHAction.TimeSeg timeseg = new IHAction.TimeSeg(seg.starttime, seg.endtime, seg.type, seg.planno, para_code,seg.batchstart);
             InsertRecord(timeseg);
            
         }

@@ -5,7 +5,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>物料管理</title>
+    <title>物料编码管理</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../js/jquery.js"></script>
     <link rel="stylesheet" href="../js/jquery-treeview/jquery.treeview.css" />
@@ -141,7 +141,7 @@
             <span>位置：</span>
             <ul class="placeul">
                 <li><a href="#">工艺管理</a></li>
-                <li><a href="#">物料管理</a></li>
+                <li><a href="#">物料编码管理</a></li>
             </ul>
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
@@ -175,7 +175,7 @@
                     <asp:Button ID="btnModify1" CssClass="btnmodify auth" runat="server" OnClick="btnModify1_Click"
                         Text="保存"  />
                       
-                          <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  Width ="90px"/>     
+                          <asp:Button ID ="btnUpdate" CssClass ="btnpatch auth" runat ="server" Text ="同步数据" OnClick  ="btnUpdate_Click"  OnClientClick="javascript:return confirm('确认同步？');"  Width ="90px"/>     
                 <asp:Button ID="btnSearch1" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch1_Click" />
                         <asp:Button ID="btnUpdate1" runat="server" OnClick="btnUpdate1_Click" CssClass="btnhide" />
                        

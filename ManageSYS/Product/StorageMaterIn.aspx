@@ -245,6 +245,20 @@
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
+                                                                                                            <tr>
+                                        <td width="100">班组
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="DropDownListTeam" runat="server" CssClass="drpdwnlist">
+                                             </asp:DropDownList>
+                                        </td>
+                                        <td width="100">班时
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="DropDownListShift" runat="server" CssClass="drpdwnlist">
+                                             </asp:DropDownList>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </ContentTemplate>
@@ -307,7 +321,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField   HeaderText="退料量" SortExpression="退料量">
+                                    <asp:TemplateField   HeaderText="退料量(Kg)" SortExpression="退料量">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领料量" DataTextField="领料量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                 CssClass="tbinput"></asp:TextBox>
@@ -317,9 +331,8 @@
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGridstrg" runat="server" CssClass="drpdwnlist">
                                                 <asp:ListItem> </asp:ListItem>
-                                                <asp:ListItem Value="1">库存商品库</asp:ListItem>
                                                 <asp:ListItem Value="2">烟厂原料库</asp:ListItem>
-                                                <asp:ListItem Value="3">鑫源原料库</asp:ListItem>
+                                                <asp:ListItem Value="3">鑫源原材料</asp:ListItem>
                                                 <asp:ListItem Value="4">烟厂免费原料库</asp:ListItem>
                                                 <asp:ListItem Value="5">鑫源免费原料库</asp:ListItem>
                                             </asp:DropDownList>

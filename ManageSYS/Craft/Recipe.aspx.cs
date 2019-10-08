@@ -59,7 +59,8 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     public string InitTreeRecipe(string prod_code)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
+        //DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
+        DataSet data = opt.CreateDataSetOra("select h.formula_code as 配方编码，h.formula_name as 配方名称,h.b_date as 启用时间,h.CREATE_ID as 编辑人员,h.is_valid as 是否有效  from ht_qa_mater_formula h left join ht_pub_prod_design s on h.formula_code = s.mater_formula_code where s.prod_code ='" + prod_code + "' and h.is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";
@@ -744,6 +745,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
                 ((TextBox)row.FindControl("txtScale")).Text = mydrv["比例"].ToString();
                 ((TextBox)row.FindControl("txtPercent")).Text = mydrv["每罐调配所需"].ToString();
                 ((TextBox)row.FindControl("txtBatchNum")).Text = mydrv["每批用量"].ToString();
+                ((TextBox)row.FindControl("remark")).Text = mydrv["备注"].ToString();
 
             }
         }
@@ -836,14 +838,14 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         if (hdcode2.Value.Length == 8)
         {
-            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'HT' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "' order by r.id";
+            query = "select r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id, r.remark as 备注 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code   where r.coat_flag = 'HT' and r.is_del = '0'  and r.formula_code  = '" + hdcode2.Value + "' order by r.id";
             string sql = "select remark from ht_qa_coat_formula where formula_code = " + hdcode2.Value;
             DataSet dt = opt.CreateDataSetOra(sql);
             formula.Text = dt.Tables[0].Rows[0][0].ToString();
             
         }
         else
-            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'HT' and r.is_del = '0'and t.is_del = '0' and t.PROD_CODE  = '" + hdcode2.Value + "' order by r.id";
+            query = "select distinct r.MATER_CODE as 香料种类,r.coat_scale as 比例,r.need_size as 每罐调配所需,r.BATCH_NUM as 每批用量,r.id, r.remark as 备注 from ht_qa_coat_formula_detail r  left join ht_pub_materiel s on s.material_code = r.mater_code left join ht_qa_coat_formula t on t.formula_code = r.formula_code  where r.coat_flag = 'HT' and r.is_del = '0'and t.is_del = '0' and t.PROD_CODE  = '" + hdcode2.Value + "' order by r.id";
         string sql1 = "select remark from ht_qa_coat_formula where formula_code = " + hdcode2.Value;
         DataSet dt1 = opt.CreateDataSetOra(sql1);
         string test = dt1.Tables[0].Rows[0][0].ToString();

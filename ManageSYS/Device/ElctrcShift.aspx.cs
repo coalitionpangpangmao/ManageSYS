@@ -21,6 +21,25 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
             opt.bindDropDownList(listTeam, "select t.team_code,t.team_name  from ht_sys_team t where t.is_valid = '1' and t.is_del = '0' order by t.team_code", "team_name", "team_code");
             opt.bindDropDownList(listolder, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
             opt.bindDropDownList(listnewer, "select s.name,s.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_user s on s.role = t.f_id where r.f_id = '" + this.RightId + "' union select q.name,q.id from ht_svr_sys_role t left join ht_svr_sys_menu r on substr(t.f_right,r.f_id,1) = '1' left join ht_svr_org_group  s on s.f_role = t.f_id  left join ht_svr_user q on q.levelgroupid = s.f_code  where r.f_id = '" + this.RightId + "'  order by id desc", "name", "ID");
+            if (((MSYS.Data.SysUser)Session["user"]).UserRole == "生产处电气维修")
+            {
+                rdElec.Enabled = false;
+                rdMchnc.Enabled = false;
+                rdElec.Checked = true;
+                rdMchnc.Checked = false;
+            }
+            else if (((MSYS.Data.SysUser)Session["user"]).UserRole == "生产处机械维修")
+            {
+                rdElec.Enabled = false;
+                rdMchnc.Enabled = false;
+                rdElec.Checked = false;
+                rdMchnc.Checked = true;
+            }
+            else
+            {
+                rdElec.Enabled = true;
+                rdMchnc.Enabled = true;
+            }
             bindGrid1();
          
            
@@ -72,7 +91,7 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
                 query += " and g4.MAINTENANCE_TYPE = '0'";
             if (rdMchnc.Checked)
                 query += " and g4.MAINTENANCE_TYPE = '1'";
-        query += " where g1.work_date between '" + txtStartDate.Text + "' and '" + txtStopDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' order by g1.work_date,g1.id";
+        query += " where g1.work_date between '" + txtStartDate.Text + "' and '" + txtStopDate.Text + "' and g1.is_del = '0' and g1.is_valid = '1' order by g1.work_date DESC,g1.id ";
            MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
             DataSet data = opt.CreateDataSetOra(query);
             GridView1.DataSource = data;
@@ -130,7 +149,11 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
         hdID.Value = id;
-        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组,g1.create_id as 交班人,g1.modify_id as 接班人,g1.remark as 备注,g.date_begin as 开始时间,g.date_end as 结束时间 from Ht_Prod_Schedule g   left join HT_EQ_MT_SHIFT g1 on g1.ID = g.id   where g.id = '" + id + "'";
+        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组,g1.create_id as 交班人,g1.modify_id as 接班人,g1.remark as 备注,g.date_begin as 开始时间,g.date_end as 结束时间,MAINTENANCE_TYPE from Ht_Prod_Schedule g   left join HT_EQ_MT_SHIFT g1 on g1.ID = g.id   where g.id = '" + id + "'";
+         if (rdElec.Checked)
+                query += " and g1.MAINTENANCE_TYPE = '0'";
+            if (rdMchnc.Checked)
+                query += " and g1.MAINTENANCE_TYPE = '1'";
        MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
         if (data != null && data.Tables[0].Rows.Count > 0)
@@ -146,20 +169,38 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
 
             txtBtime.Text = row["开始时间"].ToString();
             txtEtime.Text = row["结束时间"].ToString();
-            listtype.SelectedValue = (rdElec.Checked? "0":"1");
-           
+            listtype.SelectedValue = row["MAINTENANCE_TYPE"].ToString();
 
+        }
+        else
+        {
+            query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组,g.date_begin as 开始时间,g.date_end as 结束时间 from Ht_Prod_Schedule g   where g.id = '" + id + "'";
+            data = opt.CreateDataSetOra(query);
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = data.Tables[0].Rows[0];
+                txtDate.Text = row["日期"].ToString();
+                listShift.SelectedValue = row["班时"].ToString();
+                listTeam.SelectedValue = row["班组"].ToString();           
+
+                txtBtime.Text = row["开始时间"].ToString();
+                txtEtime.Text = row["结束时间"].ToString();
+                listtype.SelectedValue = (rdElec.Checked ? "0" : "1");
+                listolder.SelectedValue = "";
+                listnewer.SelectedValue = "";
+                txtRemark.Text = "";
+            }
         }
         bindGrid2();
      
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {
-       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();        
-        string[] seg = { "ID"," WORKSHOP_CODE"," SHIFT_CODE"," TEAM_CODE"," HANDOVER_DATE"," B_TIME"," E_TIME"," CREATE_ID"," MODIFY_ID"," RECORD_TIME"," REMARK"," MAINTENANCE_TYPE" };
-        string[] value = {hdID.Value,listApt.SelectedValue,listShift.SelectedValue,listTeam.SelectedValue,txtDate.Text,txtBtime.Text,txtEtime.Text,listolder.SelectedValue,listnewer.SelectedValue,System.DateTime.Now.ToString("yyyy-MM-dd"),txtRemark.Text,listtype.SelectedValue};
+       MSYS.DAL.DbOperator opt =new MSYS.DAL.DbOperator();
+       string[] seg = { "ID", "MAINTENANCE_TYPE", "WORKSHOP_CODE", " SHIFT_CODE", " TEAM_CODE", " HANDOVER_DATE", " B_TIME", " E_TIME", " CREATE_ID", " MODIFY_ID", " RECORD_TIME", " REMARK" };
+       string[] value = { hdID.Value, listtype.SelectedValue, listApt.SelectedValue, listShift.SelectedValue, listTeam.SelectedValue, txtDate.Text, txtBtime.Text, txtEtime.Text, listolder.SelectedValue, listnewer.SelectedValue, System.DateTime.Now.ToString("yyyy-MM-dd"), txtRemark.Text };
         List<string> commandlist = new List<string>();
-        commandlist.Add(opt.InsertDatastr(seg, value, "HT_EQ_MT_SHIFT"));       
+        commandlist.Add(opt.getMergeStr(seg, value,2, "HT_EQ_MT_SHIFT"));       
         if (GridView2.Rows.Count > 0)
         {
             for (int i = 0; i < GridView2.Rows.Count; i++)
@@ -168,7 +209,7 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
 
                 string[] seg1 = {  "SHIFT_MAIN_ID","MAINTENANCE_TYPE","MANAGE_STATUS","BUZ_ID" };
                 string[] value1 = { hdID.Value, listtype.SelectedValue, "1", key };
-                commandlist.Add(opt.InsertDatastr(seg1, value1, "HT_EQ_MT_SHIFT_DETAIL")); 
+                commandlist.Add(opt.getMergeStr(seg1, value1,2, "HT_EQ_MT_SHIFT_DETAIL")); 
             }
         }
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "新增机电交接班记录成功" : "新增机电交接班记录失败";
@@ -176,9 +217,10 @@ public partial class Device_ElctrcShift : MSYS.Web.BasePage
         InsertTlog(log_message);
       
     }
-  
-  
-       
- 
-  
+
+
+
+
+
+   
 }

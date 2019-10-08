@@ -210,7 +210,10 @@ public class RealDataHandler : IHttpHandler
 
         MSYS.Common.SPCFunctions spc = new MSYS.Common.SPCFunctions(array, upper, lower);
         string[] colname = { "工艺点", "总点数", "最大值", "最小值", "均值", "合格率", "超上限率", "超下限率", "标准差", "绝对差", "CPK", "开始时间", "结束时间" };
-        object[] colvalue = { name, spc.count, spc.max.ToString("0.00"), spc.min.ToString("0.00"), spc.avg.ToString("0.00"), spc.passrate.ToString("0.00"), spc.uprate.ToString("0.00"), spc.downrate.ToString("0.00"), spc.absdev.ToString("0.00"), spc.stddev.ToString("0.00"), spc.Cpk.ToString("0.00"), start, end };
+        string formatstr = "0.00";
+        if (name == "回填加料Ⅰ加料精度")
+            formatstr = "0.0000";
+        object[] colvalue = { name, spc.count, spc.max.ToString(formatstr), spc.min.ToString(formatstr), spc.avg.ToString(formatstr), spc.passrate.ToString(formatstr), spc.uprate.ToString(formatstr), spc.downrate.ToString(formatstr), spc.absdev.ToString(formatstr), spc.stddev.ToString(formatstr), spc.Cpk.ToString(formatstr), start, end };
         if (colname.Length == colvalue.Length)
         {
             StringBuilder str = new StringBuilder("");

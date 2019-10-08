@@ -23,6 +23,8 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
         txtStart.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
         txtStop.Text = System.DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(DropDownListShift, "select * from ht_sys_shift where is_del='0' and is_valid='1'", "shift_name", "shift_code");
+        opt.bindDropDownList(DropDownListTeam, "select * from ht_sys_team where is_del='0' and is_valid='1'", "team_name", "team_code");
         opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group order by F_CODE", "F_NAME", "F_CODE");
         opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0' order by prod_code", "PROD_NAME", "PROD_CODE");
         opt.bindDropDownList(listPrdctPlan, "select PLAN_NO from ht_prod_month_plan_detail where EXE_STATUS <> '3' and is_DEL = '0' and FLAVOR_STATUS = '1' order by Plan_no", "PLAN_NO", "PLAN_NO");
@@ -196,7 +198,7 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
             commandlist.Add("update HT_PROD_MONTH_PLAN_DETAIL set  FLAVOR_STATUS = '2' where PLAN_NO = '" + planno + "' and FLAVOR_STATUS = '1'");
             MSYS.Web.StorageOpt st = new MSYS.Web.StorageOpt();
             ////调用接口，变更库存////
-         string flag = st.InOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
+         string flag = st.XiangInOrOut(id, ((MSYS.Data.SysUser)Session["User"]).text, ((MSYS.Data.SysUser)Session["User"]).id);
             /////
          if (flag.Length > 9 && flag.Substring(0, 9) == "notenough")
          {
@@ -251,6 +253,8 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
           
             txtBatchNum.Text = data.Tables[0].Rows[0]["BATCHNUM"].ToString();
 
+            DropDownListShift.SelectedValue = data.Tables[0].Rows[0]["shift_code"].ToString();
+            DropDownListTeam.SelectedValue = data.Tables[0].Rows[0]["team_code"].ToString();
             txtValiddate.Text = data.Tables[0].Rows[0]["EXPIRED_DATE"].ToString();
           
           
@@ -395,49 +399,46 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         List<string> commandlist = new List<string>();
         string log_message;
-        if (txtPrdctdate.Text == "" || txtValiddate.Text == "" || txtBatchNum.Text == "" || listPrdctPlan.SelectedValue == "" || listPrdct.SelectedValue == "")
+        if (txtPrdctdate.Text == "" || txtValiddate.Text == ""|| listPrdctPlan.SelectedValue == "" || listPrdct.SelectedValue == "" || DropDownListTeam.SelectedValue.ToString()=="" || DropDownListShift.SelectedValue.ToString()=="")
         {
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('请输入必要信息!!')", true);
             return;
         }
       
             //生成领用主表记录
-            string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "BATCHNUM", "STRG_TYPE" };
-            string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, listPrdctPlan.SelectedValue, txtBatchNum.Text, "0" };
+            string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "BATCHNUM", "STRG_TYPE" ,"team_code", "shift_code"};
+            string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, listPrdctPlan.SelectedValue, "", "0", DropDownListTeam.SelectedValue.ToString(), DropDownListShift.SelectedValue.ToString() };
 
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_FLAVOR"));
             commandlist.Add("delete from HT_STRG_FLAVOR_SUB where MAIN_CODE = '" + txtCode.Text + "'");
             //根据生产计划对应的配方明细生成原料领用明细           
-            commandlist.Add("insert into HT_STRG_FLAVOR_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_num*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.coat_flag as mater_flag,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLASS_NAME as cls_code from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join HT_QA_FLA_FORMULA_detail g3 on g3.formula_code = g2.FLA_FORMULA_CODE and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
+            //commandlist.Add("insert into HT_STRG_FLAVOR_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_num*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.coat_flag as mater_flag,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLASS_NAME as cls_code from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join HT_QA_FLA_FORMULA_detail g3 on g3.formula_code = g2.FLA_FORMULA_CODE and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
+           // commandlist.Add("insert into HT_STRG_FLAVOR_SUB  select '' as ID, g3.mater_code as MATER_CODE,g4.data_origin_flag as STORAGE,g3.batch_num*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code as UNIT_CODE , '0' as IS_DEL,g3.coat_flag as mater_flag,'" + txtCode.Text.Trim() + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY , '' as cls_code, '' as REMNANT, ''as PIECE_NUM from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join HT_QA_FLA_FORMULA_detail g3 on g3.formula_code = g2.FLA_FORMULA_CODE and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
+            commandlist.Add("insert into HT_STRG_FLAVOR_SUB  select '' as ID, g3.mater_code as MATER_CODE,g4.data_origin_flag as STORAGE,g3.batch_num*1 as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code as UNIT_CODE , '0' as IS_DEL,g3.coat_flag as mater_flag,'" + txtCode.Text.Trim() + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY , '' as cls_code, '' as REMNANT, ''as PIECE_NUM from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join HT_QA_FLA_FORMULA_detail g3 on g3.formula_code = g2.FLA_FORMULA_CODE and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成原料领用主表记录成功" : "生成原料领用主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
             //////计算出入库单总各类型总量
-            update_MainAmount(txtCode.Text);
+            DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from HT_STRG_FLAVOR_SUB t  where t.main_code = '" + txtCode.Text + "' group by  t.mater_flag");
+            if (res != null && res.Tables[0].Rows.Count > 0)
+            {
+                double CABOSUM=0;
+                foreach (DataRow row in res.Tables[0].Rows)
+                {
+
+                        if(row["amount"].ToString()!="")
+                            CABOSUM += Convert.ToDouble(row["amount"].ToString());
+                   
+                }
+                txtStemSum.Text = CABOSUM.ToString("0.00");
+                
+                string[] seg1 = { "ORDER_SN", "CABOSUM"};
+                string[] value1 = { txtCode.Text, txtStemSum.Text};
+                opt.MergeInto(seg1, value1, 1, "HT_STRG_FLAVOR");
+            }
       
         bindGrid1();
         bindGrid2();
-    }
-
-    protected void update_MainAmount(string code)
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from HT_STRG_FLAVOR_SUB t  where t.main_code = '" + code + "' group by  t.mater_flag");
-        if (res != null && res.Tables[0].Rows.Count > 0)
-        {
-            double CABOSUM = 0;
-            foreach (DataRow row in res.Tables[0].Rows)
-            {
-
-                CABOSUM += Convert.ToDouble(row["amount"].ToString());
-
-            }
-            txtStemSum.Text = CABOSUM.ToString("0.00");
-
-            string[] seg1 = { "ORDER_SN", "CABOSUM" };
-            string[] value1 = { txtCode.Text, txtStemSum.Text };
-            opt.MergeInto(seg1, value1, 1, "HT_STRG_FLAVOR");
-        }
     }
 
     protected void btnAdd_Click(object sender, EventArgs e)
@@ -515,7 +516,6 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
             }
         }
         bindGrid2();
-        update_MainAmount(txtCode.Text);
 
     }
 
@@ -541,26 +541,65 @@ public partial class Product_StorageFlaOut : MSYS.Web.BasePage
 
     protected void btnGrid2Save_Click(object sender, EventArgs e)
     {
-      
-            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-            if (txtCode.Text == "")
-                txtCode.Text = "SF" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,10) ='SF" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
-            Button btn = (Button)sender;
-            GridViewRow row = (GridViewRow)btn.NamingContainer;
-            string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();
-            if (ID == "0")
+
+        /*MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        if (txtCode.Text == "")
+            txtCode.Text = "SF" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,10) ='SF" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        Button btn = (Button)sender;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+        string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();
+        if (ID == "0")
+        {
+            ID = opt.GetSegValue("select STRGMATER_ID_SEQ.nextval as id from dual", "ID");
+        }
+        string[] seg = { "ID", "STORAGE", "CLS_CODE", "unit_code", "mater_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
+        string[] value = { ID, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue, ((DropDownList)row.FindControl("listGridType")).SelectedValue, ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridcode")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };
+
+        string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_FLAVOR_SUB") == "Success" ? "保存原料领用明细成功" : "保存原料领用明细失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+        bindGrid2();*/
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        if (txtCode.Text == "")
+            txtCode.Text = "SF" + System.DateTime.Now.ToString("yyyyMMdd") + (Convert.ToInt16(opt.GetSegValue("select count(ORDER_SN) as ordernum from HT_STRG_FLAVOR where substr(ORDER_SN,1,10) ='SF" + System.DateTime.Now.ToString("yyyyMMdd") + "'", "ordernum")) + 1).ToString().PadLeft(3, '0');
+        Button btn = (Button)sender;
+        GridViewRow row = (GridViewRow)btn.NamingContainer;
+        string ID = GridView2.DataKeys[row.RowIndex].Value.ToString();
+        if (ID == "0")
+        {
+            ID = opt.GetSegValue("select STRGFLA_ID_SEQ.nextval as id from dual", "ID");
+        }
+        string[] seg = { "ID", "STORAGE", "unit_code", "mater_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
+        string[] value = { ID, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue, ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridcode")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };
+
+        string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_FLAVOR_SUB") == "Success" ? "保存原料领用明细成功" : "保存原料领用明细失败";
+        log_message += "--详情:" + string.Join(",", value);
+        InsertTlog(log_message);
+        update_MainAmount(txtCode.Text);
+        bindGrid2();
+       
+
+    }
+
+    protected void update_MainAmount(string code)
+    {
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from HT_STRG_FLAVOR_SUB t  where t.main_code = '" + code + "' group by  t.mater_flag");
+        if (res != null && res.Tables[0].Rows.Count > 0)
+        {
+            double CABOSUM = 0;
+            foreach (DataRow row in res.Tables[0].Rows)
             {
-                ID = opt.GetSegValue("select STRGFLA_ID_SEQ.nextval as id from dual", "ID");
+
+                CABOSUM += Convert.ToDouble(row["amount"].ToString());
+
             }
-            string[] seg = { "ID", "STORAGE", "unit_code", "mater_code", "ORIGINAL_DEMAND", "MAIN_CODE" };
-            string[] value = { ID, ((DropDownList)row.FindControl("listGridstrg")).SelectedValue,  ((TextBox)row.FindControl("txtGridUnit")).Text, ((TextBox)row.FindControl("txtGridcode")).Text, ((TextBox)row.FindControl("txtGridAmount")).Text, txtCode.Text };
+            txtStemSum.Text = CABOSUM.ToString("0.00");
 
-            string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_FLAVOR_SUB") == "Success" ? "保存原料领用明细成功" : "保存原料领用明细失败";
-            log_message += "--详情:" + string.Join(",", value);
-            InsertTlog(log_message);
-            bindGrid2();
-         update_MainAmount(txtCode.Text);
-
+            string[] seg1 = { "ORDER_SN", "CABOSUM" };
+            string[] value1 = { txtCode.Text, txtStemSum.Text };
+            opt.MergeInto(seg1, value1, 1, "HT_STRG_FLAVOR");
+        }
     }
 
     protected void listPrdctPlan_SelectedIndexChanged(object sender, EventArgs e)

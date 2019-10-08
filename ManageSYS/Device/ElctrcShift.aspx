@@ -51,7 +51,7 @@
                                 <asp:TextBox ID="txtStopDate" runat="server" class="dfinput1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td> 
-                                <asp:RadioButton ID="rdElec" runat="server" Text="电气维修" GroupName="mtType" Checked="True" />
+                                <asp:RadioButton ID="rdElec" runat="server" Text="电气维修" GroupName="mtType" Checked="True"  />
                                 <asp:RadioButton ID="rdMchnc" runat="server" Text="机械维修" GroupName="mtType"  />
                             </td>
                         </tr>
@@ -97,6 +97,7 @@
                             </asp:GridView>
                         </ContentTemplate>
                         <Triggers><asp:AsyncPostBackTrigger  ControlID = "btnSearch"/>
+                        
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -192,7 +193,7 @@
                                             下班次注意事项
                                         </td>
                                         <td colspan="5">
-                                            <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="50px" TextMode="MultiLine"
+                                            <asp:TextBox ID="txtRemark" runat="server" class="dfinput1" Height="150px" TextMode="MultiLine"
                                                 Width="800px"></asp:TextBox>
                                         </td>
                                     </tr>   
@@ -218,9 +219,7 @@
         <script type="text/javascript">
             $("#usual1 ul").idTabs(); 
         </script>
-        <script type="text/javascript">
-            $('.tablelist tbody tr:odd').addClass('odd');
-        </script>
+      
     </div>
     </form>
 </body>

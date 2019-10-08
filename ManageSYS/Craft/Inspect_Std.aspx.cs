@@ -464,7 +464,7 @@ public partial class Inspect_Std : MSYS.Web.BasePage
             string[] seg = { "INSPECT_CODE", "STDD_CODE", "UPPER_VALUE", "LOWER_VALUE", "MINUS_SCORE", "REMARK", "CREATE_ID", "CREATE_TIME" };
 
             string[] value = { ((DropDownList)row.FindControl("listInspect")).SelectedValue,listVersion.SelectedValue, ((TextBox)row.FindControl("txtUpper")).Text, ((TextBox)row.FindControl("txtLower")).Text, ((TextBox)row.FindControl("txtScore")).Text, ((TextBox)row.FindControl("txtRemark")).Text, ((MSYS.Data.SysUser)Session["User"]).id, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") };
-            commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_QLT_INSPECT_STDD_SUB"));
+            commandlist.Add(opt.getMergeStr(seg, value,2, "HT_QLT_INSPECT_STDD_SUB"));
         }
         string log_message = opt.TransactionCommand(commandlist) == "Success" ? "保存过程检测标准成功" : "保存过程检测标准失败";
         //if (log_message == "保存过程检测标准成功")

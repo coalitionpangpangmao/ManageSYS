@@ -67,6 +67,8 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
+        System.Diagnostics.Debug.WriteLine("开始更新");
+        ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "update", "alert('开始更新！！！')", true);
         MSYS.Web.UpdateMarclassInfo info = new MSYS.Web.UpdateMarclassInfo();
         MSYS.Web.UpdateMaterialInfo info2 = new MSYS.Web.UpdateMaterialInfo();
         //  string str = info.GetXmlStr();
@@ -76,6 +78,7 @@ public partial class Craft_MateriaMain : MSYS.Web.BasePage
         }
         else
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "update", "alert('更新失败，请检查网络设置及数据运行情况！！！')", true);
+        System.Diagnostics.Debug.WriteLine("更新结束");
     }
     #region tab1
     protected void bindData(string mtr_code)

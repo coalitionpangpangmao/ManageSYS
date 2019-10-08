@@ -17,15 +17,13 @@ namespace MSYS
             public TimeSegType type;//BEGIN 只有任务头，END 只有任务尾，BOTH 头尾都有，ALL生产进行中
             public string planno;
             public string nodecode;
-            public string batchStart;
-            public TimeSeg(string btime, string etime, TimeSegType type, string planno, string paracode, string batchstart)
+            public TimeSeg(string btime, string etime, TimeSegType type, string planno, string paracode)
             {
                 this.starttime = btime;
                 this.endtime = etime;
                 this.type = type;
                 this.planno = planno;
                 this.nodecode = paracode;
-                this.batchStart = batchstart;
             }
         };
 
@@ -37,8 +35,7 @@ namespace MSYS
             public string planno;
             public string sectioncode;
             public string pathcode;
-            public string batchstart;
-            public SectionTimeSeg(string btime, string etime, TimeSegType type, string planno, string sectioncode, string pathcode,string batchstart)
+            public SectionTimeSeg(string btime, string etime, TimeSegType type, string planno, string sectioncode, string pathcode)
             {
                 this.starttime = btime;
                 this.endtime = etime;
@@ -46,7 +43,6 @@ namespace MSYS
                 this.planno = planno;
                 this.sectioncode = sectioncode;
                 this.pathcode = pathcode;
-                this.batchstart = batchstart;
             }
         };
         public struct Gaptime
@@ -213,13 +209,13 @@ namespace MSYS
         {
             List<TimeSeg> listTimeseg = new List<TimeSeg>();
             DbOperator opt = new DbOperator();
-            string query = "select starttime, starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select starttime,endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and endtime between '" + btime + "' and '" + etime + "'  order by rstime";
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and endtime between '" + btime + "' and '" + etime + "'  order by rstime";
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < data.Tables[0].Rows.Count; i++)
                 {
-                    TimeSeg seg = new TimeSeg();
+                    TimeSeg seg;
                     seg.nodecode = nodeid;
                     seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
 
@@ -229,7 +225,6 @@ namespace MSYS
                         {
                             seg.starttime = btime;
                             seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();
-                            seg.batchStart = data.Tables[0].Rows[i]["starttime"].ToString();
                             // seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.END;
                             listTimeseg.Add(seg);
@@ -238,7 +233,6 @@ namespace MSYS
                         {
                             seg.starttime = data.Tables[0].Rows[i]["rstime"].ToString();
                             seg.endtime = etime;
-                            seg.batchStart = data.Tables[0].Rows[i]["starttime"].ToString();
                             // seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.BEGIN;
                             listTimeseg.Add(seg);
@@ -252,7 +246,6 @@ namespace MSYS
                         {
                             seg.starttime = data.Tables[0].Rows[i]["rstime"].ToString();
                             seg.endtime = etime;
-                            seg.batchStart = data.Tables[0].Rows[i]["starttime"].ToString();
                             // seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.BEGIN;
                             listTimeseg.Add(seg);
@@ -268,7 +261,6 @@ namespace MSYS
                         {
                             seg.starttime = data.Tables[0].Rows[i - 1]["rstime"].ToString();
                             seg.endtime = data.Tables[0].Rows[i]["rstime"].ToString();
-                            seg.batchStart = data.Tables[0].Rows[i]["starttime"].ToString();
                             //  seg.planno = data.Tables[0].Rows[i]["PLANNO"].ToString();
                             seg.type = TimeSegType.BOTH;
                             listTimeseg.Add(seg);
@@ -284,7 +276,7 @@ namespace MSYS
                 data = opt.CreateDataSetOra(query);
                 if (data != null && data.Tables[0].Rows.Count > 0)
                 {
-                    TimeSeg seg = new TimeSeg(btime, etime, TimeSegType.ALL, data.Tables[0].Rows[0]["PLANNO"].ToString(), nodeid, data.Tables[0].Rows[0]["starttime"].ToString());
+                    TimeSeg seg = new TimeSeg(btime, etime, TimeSegType.ALL, data.Tables[0].Rows[0]["PLANNO"].ToString(), nodeid);
                     listTimeseg.Add(seg);
                 }
 
@@ -379,7 +371,7 @@ namespace MSYS
                                 pathcode = path.Substring(5);
                         }
                     }
-                    SectionTimeSeg seg = new SectionTimeSeg(btime, etime, TimeSegType.ALL, data.Tables[0].Rows[0]["PLANNO"].ToString(), section, pathcode, data.Tables[0].Rows[0]["starttime"].ToString());
+                    SectionTimeSeg seg = new SectionTimeSeg(btime, etime, TimeSegType.ALL, data.Tables[0].Rows[0]["PLANNO"].ToString(), section, pathcode);
                     listTimeseg.Add(seg);
                 }
 
@@ -438,12 +430,11 @@ namespace MSYS
             seg.endtime = etime;
             seg.nodecode = nodeid;
             DbOperator opt = new DbOperator();
-            string query = "select starttime, starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select starttime, endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and  endtime between '" + btime + "' and '" + etime + "'   union select starttime, endtime as rstime,'a' as tag,PLANNO  from ht_prod_report t where t.section_code =  '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "'  and  starttime <  '" + btime + "' and endtime > '" + etime + "' order by rstime";
+            string query = "select starttime as rstime, 'b' as tag,PLANNO from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and STARTTIME between '" + btime + "' and '" + etime + "' union select endtime as rstime,'e' as tag,PLANNO  from ht_prod_report t where t.section_code = '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "' and  endtime between '" + btime + "' and '" + etime + "'   union select endtime as rstime,'a' as tag,PLANNO  from ht_prod_report t where t.section_code =  '" + nodeid.Substring(0, 5) + "' and PROD_CODE = '" + prodcode + "'  and  starttime <  '" + btime + "' and endtime > '" + etime + "' order by rstime";
             DataSet data = opt.CreateDataSetOra(query);
             if (data != null && data.Tables[0].Rows.Count > 0)
             {
                 seg.planno = data.Tables[0].Rows[0]["PLANNO"].ToString();
-                seg.batchStart = data.Tables[0].Rows[0]["starttime"].ToString();
                 if (data.Tables[0].Rows.Count == 1)
                 {
                     if (data.Tables[0].Rows[0]["tag"].ToString() == "e")
@@ -478,17 +469,16 @@ namespace MSYS
 
         public List<Gaptime> GetGapTime(List<ParaInfo> paralist, string tagvalue, int headdelay, int taildelay, int gaptime)//获取两段时间间的断流信息
         {
-            List<Gaptime> gaplist = new List<Gaptime>(); ;
             if (paralist == null || paralist.Count < 20)
-                return gaplist;
-
+                return null;
+            List<Gaptime> gaplist = null;
             DateTime starttime = Convert.ToDateTime(paralist.ToArray()[0].timestamp);
             DateTime endtime = Convert.ToDateTime(paralist.ToArray()[paralist.Count - 1].timestamp);
             List<ParaInfo> reslist = paralist.FindAll(s => s.value < Convert.ToDouble(tagvalue));
 
             if (reslist != null && reslist.Count > gaptime / 5)
             {
-
+                gaplist = new List<Gaptime>();
                 while (starttime < endtime && reslist.Count > gaptime / 5)
                 {
                     DateTime GapStarttime;
@@ -558,14 +548,9 @@ namespace MSYS
             int gap_tdelay = Convert.ToInt32(row["gap_tdelay"].ToString());//断流后
             #endregion
             #region   //////////////////////寻找数据批头尾、料头尾  以及断流信息///////////////////////////////////////////////////////////////////////
-            List<ParaInfo> paralist;
-            if (seg.type == TimeSegType.ALL && Convert.ToDateTime(seg.starttime) - Convert.ToDateTime(seg.batchStart) < new TimeSpan(1, 0, 0))
-            {
-                paralist = getParaRecord(tagname, "5", Convert.ToDateTime(seg.batchStart), Convert.ToDateTime(seg.endtime));
-                seg.type = TimeSegType.BEGIN;
-            }
-            else
-                paralist = getParaRecord(tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(seg.endtime));
+
+
+            List<ParaInfo> paralist = getParaRecord(tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(seg.endtime));
             if (gapctrl)
             {
                 if (tagname != "" && tailRst != "" && interval != "")
@@ -577,22 +562,8 @@ namespace MSYS
                     /////////自动寻找批头批尾/////////
                     if (seg.type == TimeSegType.BEGIN || seg.type == TimeSegType.BOTH)//寻找批头
                     {
-                        DateTime temptime = Convert.ToDateTime(paralist.Find(s => s.value < Convert.ToDouble(tailRst)).timestamp);
 
-
-                        if (temptime - Convert.ToDateTime(seg.batchStart) > new TimeSpan(0, 30, 0))
-                        {
-
-                            info.batchBtime = Convert.ToDateTime(seg.batchStart).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                        }
-                        else
-                        {
-                            temptime = temptime.AddSeconds(batchheadDelay);
-                            if (temptime - Convert.ToDateTime(seg.starttime) > new TimeSpan(0))
-                                info.batchBtime = temptime.ToString("yyyy-MM-dd HH:mm:ss");
-                        }
-                        if (Convert.ToDateTime(info.batchBtime) - Convert.ToDateTime(seg.starttime) < new TimeSpan(0))
-                            info.batchBtime = seg.starttime;
+                        info.batchBtime = Convert.ToDateTime(paralist.Find(s => s.value < Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
                     }
                     if (seg.type == TimeSegType.END || seg.type == TimeSegType.BOTH)//寻找批尾
                     {
@@ -608,8 +579,6 @@ namespace MSYS
                             info.batchEtime = Convert.ToDateTime(paralist.FindLast(s => s.value > Convert.ToDouble(tailRst)).timestamp).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
 
                     }
-
-
                     ////////////////////////////////自动寻找料头料尾////////////////////////////////////////////////////////////////
                     if (seg.type == TimeSegType.BEGIN || seg.type == TimeSegType.BOTH)//寻找料头
                     {
@@ -627,22 +596,22 @@ namespace MSYS
                     info.tagname = tagname;
                     info.interval = interval;
                     //////将计算的时间存入数据库/////////
-                    //string[] bseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "BATCH_BTIME", "BATCH_ETIME", "GAP_BTIME", "GAP_ETIME", "TYPE", };
-                    //string[] bvalue = { "0", seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), info.batchBtime, info.batchEtime, info.tailBtime, info.tailEtime, "0" };
-                    //opt.MergeInto(bseg, bvalue, 5, "HT_QLT_GAP_COLLECTION");
+                    string[] bseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "BATCH_BTIME", "BATCH_ETIME", "GAP_BTIME", "GAP_ETIME", "TYPE", };
+                    string[] bvalue = { "0", seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), info.batchBtime, info.batchEtime, info.tailBtime, info.tailEtime, "0" };
+                    opt.MergeInto(bseg, bvalue, 5, "HT_QLT_GAP_COLLECTION");
                     ////////////////////选取数据/判断是否断料,并记录下相应的断料时间//////              
 
                     gaptime = info.gapinfo;
-                    //int orderno = 1;
-                    //string[] gapseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "GAPTIME ", "GAP_BTIME", "GAP_ETIME", "TYPE" };
-                    //if (gaptime != null)
-                    //{
-                    //    foreach (Gaptime time in gaptime)
-                    //    {
-                    //        string[] gapvalue = { (orderno++).ToString(), seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), time.gaptime.ToString(), time.starttime, time.endtime, "1" };
-                    //        opt.MergeInto(gapseg, gapvalue, 5, "HT_QLT_GAP_COLLECTION");
-                    //    }
-                    //}
+                    int orderno = 1;
+                    string[] gapseg = { "ORDERNO", "PLANNO", "STARTTIME", "ENDTIME", "SECTION_CODE", "GAPTIME ", "GAP_BTIME", "GAP_ETIME", "TYPE" };
+                    if (gaptime != null)
+                    {
+                        foreach (Gaptime time in gaptime)
+                        {
+                            string[] gapvalue = { (orderno++).ToString(), seg.planno, seg.starttime, seg.endtime, seg.nodecode.Substring(0, 5), time.gaptime.ToString(), time.starttime, time.endtime, "1" };
+                            opt.MergeInto(gapseg, gapvalue, 5, "HT_QLT_GAP_COLLECTION");
+                        }
+                    }
 
                 }
             }
@@ -651,58 +620,58 @@ namespace MSYS
                 //如果不是断流判定点，则读取该工艺段判定点的信息，获取批头批尾、料头料尾，以及断流区间信息
                 string ctrlpoint = row["ctrl_point"].ToString();
                 seg.nodecode = ctrlpoint;
-                //DataSet gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '0' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
-                //////如果数据库有己计算的断流判定点结果
-                //if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
-                //{
-                //    DataRow brow = gapdata.Tables[0].Rows[0];
-                //    info.batchBtime = Convert.ToDateTime(brow["BATCH_BTIME"].ToString()).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                //    info.batchEtime = Convert.ToDateTime(brow["BATCH_ETIME"].ToString()).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                //    info.tailBtime = Convert.ToDateTime(brow["GAP_BTIME"].ToString()).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                //    info.tailEtime = Convert.ToDateTime(brow["GAP_ETIME"].ToString()).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                //    gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '1' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
-                //    if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
-                //    {
-                //        if (gaptime == null)
-                //            gaptime = new List<Gaptime>();
-                //        else
-                //            gaptime.Clear();
-                //        foreach (DataRow grow in gapdata.Tables[0].Rows)
-                //        {
-                //            Gaptime time = new Gaptime();
-                //            time.gaptime = Convert.ToInt32(grow["gaptime"].ToString());
-                //            time.starttime = Convert.ToDateTime(grow["GAP_BTIME"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                //            time.endtime = Convert.ToDateTime(grow["GAP_ETIME"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
-
-                //            gaptime.Add(time);
-                //        }
-                //        info.gapinfo = gaptime;
-                //        info.paralist = paralist;
-                //        info.tagname = tagname;
-                //        info.interval = interval;
-                //    }
-                //}
-                ////如果没有
-                //else
-                //{
-                info = GetParaSegInfo(seg);
-                info.batchBtime = Convert.ToDateTime(info.batchBtime).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                info.batchEtime = Convert.ToDateTime(info.batchEtime).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                info.tailBtime = Convert.ToDateTime(info.tailBtime).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                info.tailEtime = Convert.ToDateTime(info.tailEtime).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");
-                List<Gaptime> gaps = new List<Gaptime>();
-                foreach (Gaptime gap in info.gapinfo)
+                DataSet gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '0' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
+                ////如果数据库有己计算的断流判定点结果
+                if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
                 {
-                    Gaptime g = new Gaptime();
-                    g.starttime = Convert.ToDateTime(gap.starttime).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                    g.endtime = Convert.ToDateTime(gap.endtime).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
-                    gaps.Add(g);
-                }
-                info.gapinfo = gaps;
-                info.paralist = paralist;
-                info.tagname = tagname;
-                info.interval = interval;
+                    DataRow brow = gapdata.Tables[0].Rows[0];
+                    info.batchBtime = Convert.ToDateTime(brow["BATCH_BTIME"].ToString()).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    info.batchEtime = Convert.ToDateTime(brow["BATCH_ETIME"].ToString()).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    info.tailBtime = Convert.ToDateTime(brow["GAP_BTIME"].ToString()).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    info.tailEtime = Convert.ToDateTime(brow["GAP_ETIME"].ToString()).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    gapdata = opt.CreateDataSetOra("select * from HT_QLT_GAP_COLLECTION where TYPE = '1' and  PLANNO = '" + seg.planno + "' and STARTTIME = '" + seg.starttime + "' and ENDTIME = '" + seg.endtime + "' and SECTION_CODE = '" + ctrlpoint.Substring(0, 5) + "' ");
+                    if (gapdata != null && gapdata.Tables[0].Rows.Count > 0)
+                    {
+                        if (gaptime == null)
+                            gaptime = new List<Gaptime>();
+                        else
+                            gaptime.Clear();
+                        foreach (DataRow grow in gapdata.Tables[0].Rows)
+                        {
+                            Gaptime time = new Gaptime();
+                            time.gaptime = Convert.ToInt32(grow["gaptime"].ToString());
+                            time.starttime = Convert.ToDateTime(grow["GAP_BTIME"].ToString()).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                            time.endtime = Convert.ToDateTime(grow["GAP_ETIME"].ToString()).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
 
+                            gaptime.Add(time);
+                        }
+                        info.gapinfo = gaptime;
+                        info.paralist = paralist;
+                        info.tagname = tagname;
+                        info.interval = interval;
+                    }
+                }
+                //如果没有
+                else
+                {
+                    info = GetParaSegInfo(seg);
+                    info.batchBtime = Convert.ToDateTime(info.batchBtime).AddSeconds(batchheadDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    info.batchEtime = Convert.ToDateTime(info.batchEtime).AddSeconds(batchtailDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    info.tailBtime = Convert.ToDateTime(info.tailBtime).AddSeconds(headDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    info.tailEtime = Convert.ToDateTime(info.tailEtime).AddSeconds(tailDelay).ToString("yyyy-MM-dd HH:mm:ss");
+                    List<Gaptime> gaps = new List<Gaptime>();
+                    foreach (Gaptime gap in info.gapinfo)
+                    {
+                        Gaptime g = new Gaptime();
+                        g.starttime = Convert.ToDateTime(gap.starttime).AddSeconds(gap_hdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                        g.endtime = Convert.ToDateTime(gap.endtime).AddSeconds(gap_tdelay).ToString("yyyy-MM-dd HH:mm:ss");
+                        gaps.Add(g);
+                    }
+                    info.gapinfo = gaps;
+                    info.paralist = paralist;
+                    info.tagname = tagname;
+                    info.interval = interval;
+                }
             }
             #endregion
             return info;
@@ -711,21 +680,22 @@ namespace MSYS
         public List<ParaRes> GetIHOrgDataSet(TimeSeg seg)
         {
             paraSeginfo info = GetParaSegInfo(seg);
+            List<ParaInfo> paralist = new List<ParaInfo>();
 
             #region 选择数据
             if (info.batchBtime == "" || info.batchEtime == "")
                 return null;
             if (string.Compare(seg.endtime, info.batchEtime) < 0)
-                info.paralist = getParaRecord(info.tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(info.batchEtime));
+                paralist = info.paralist.FindAll(s => Convert.ToDateTime(s.timestamp) - Convert.ToDateTime(info.batchBtime) >= new TimeSpan(0) && Convert.ToDateTime(s.timestamp) - Convert.ToDateTime(info.batchEtime) <= new TimeSpan(0));
+                  
 
-
-            if (info.paralist != null && info.paralist.Count > 20)
+            if (paralist != null && paralist.Count > 20)
             {
 
-                int count = info.paralist.Count;
+                int count = paralist.Count;
                 List<ParaRes> reslist = new List<ParaRes>();
                 int countN = 0;
-                foreach (ParaInfo res in info.paralist)
+                foreach (ParaInfo res in paralist)
                 {
 
                     if (countN == Convert.ToInt16(info.interval) / 5)
@@ -777,7 +747,7 @@ namespace MSYS
             if (info.batchBtime == "" || info.batchEtime == "")
                 return null;
             if (string.Compare(seg.endtime, info.batchEtime) < 0)
-                info.paralist = getParaRecord(info.tagname, "5", Convert.ToDateTime(seg.starttime), Convert.ToDateTime(info.batchEtime));
+                info.paralist = getParaRecord(info.tagname, "5", Convert.ToDateTime(info.batchBtime), Convert.ToDateTime(info.batchEtime));
 
             if (info.paralist != null && info.paralist.Count > 20)
             {
@@ -788,7 +758,7 @@ namespace MSYS
                 foreach (ParaInfo res in info.paralist)
                 {
 
-                    if (++countN == Convert.ToInt16(info.interval) / 5)
+                    if (countN == Convert.ToInt16(info.interval) / 5)
                     {
                         ParaRes para = new ParaRes();
                         para.timestamp = res.timestamp;
@@ -819,6 +789,8 @@ namespace MSYS
                         countN = 0;
                         reslist.Add(para);
                     }
+                    else
+                        countN++;
                 }
                 return reslist;
             }

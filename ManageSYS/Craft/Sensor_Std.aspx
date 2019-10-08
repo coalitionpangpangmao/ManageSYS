@@ -16,7 +16,7 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">质量分析与评估</a></li>
+                <li><a href="#">工艺管理</a></li>
                 <li><a href="#">感观评测标准</a></li>
             </ul>
         </div>

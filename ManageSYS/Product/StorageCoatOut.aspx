@@ -213,10 +213,10 @@
                                                 Enabled="False">
                                             </asp:DropDownList>
                                         </td>
-                                        <td width="100">投料批次
+                                        <td width="100" style="visibility:hidden">投料批次
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBatchNum" runat="server" class="dfinput1"></asp:TextBox>
+                                            <asp:TextBox Visible="false" ID="txtBatchNum" runat="server" class="dfinput1"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -242,6 +242,20 @@
                                             <asp:DropDownList ID="listCreator" runat="server" CssClass="drpdwnlist"
                                                 Enabled="False">
                                             </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                                                        <tr>
+                                        <td width="100">班组
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="DropDownListTeam" runat="server" CssClass="drpdwnlist">
+                                             </asp:DropDownList>
+                                        </td>
+                                        <td width="100">班时
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="DropDownListShift" runat="server" CssClass="drpdwnlist">
+                                             </asp:DropDownList>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -293,12 +307,12 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField   HeaderText="计量单位" SortExpression="计量单位">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="txtGridUnit" runat="server" DataValueField="计量单位" DataTextField="计量单位"
+                                            <asp:TextBox ID="txtGridUnit" runat="server" ReadOnly="true" Visible="false" DataValueField="计量单位" DataTextField="计量单位"
                                                 CssClass="tbinput"></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField   HeaderText="领料量" SortExpression="领料量">
+                                    <asp:TemplateField   HeaderText="领料量(Kg)" SortExpression="领料量">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtGridAmount" runat="server" DataValueField="领料量" DataTextField="领料量" onkeyup="value=value.replace(/[^\d\.]/g,'')"
                                                 CssClass="tbinput"></asp:TextBox>
@@ -308,11 +322,8 @@
                                         <ItemTemplate>
                                             <asp:DropDownList ID="listGridstrg" runat="server" CssClass="drpdwnlist">
                                                 <asp:ListItem> </asp:ListItem>
-                                                <asp:ListItem Value="1">库存商品库</asp:ListItem>
-                                                <asp:ListItem Value="2">烟厂原料库</asp:ListItem>
-                                                <asp:ListItem Value="3">鑫源原料库</asp:ListItem>
-                                                <asp:ListItem Value="4">烟厂免费原料库</asp:ListItem>
-                                                <asp:ListItem Value="5">鑫源免费原料库</asp:ListItem>
+                                                <asp:ListItem Value="4">辅料库</asp:ListItem>
+                                                <asp:ListItem Value="5">化学品库</asp:ListItem>
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>

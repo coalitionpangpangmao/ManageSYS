@@ -53,14 +53,14 @@ public class InspectSave : IHttpHandler {
                  //log_message += "--详情:" + string.Join(",", value);
                  if (j["isUpdate"].ToString() == "1")
                  {
-                     string sql = "select STATUS from HT_QLT_INSPECT_EVENT t WHERE t.Creat_Id = '" + j["recordId"] + "'";
-                     DataSet code = opt.CreateDataSetOra(sql);
+                    // string sql = "select STATUS from HT_QLT_INSPECT_EVENT t WHERE t.Creat_Id = '" + j["recordId"] + "'";
+                    // DataSet code = opt.CreateDataSetOra(sql);
                      //string isUpdatable = code.Tables[0].Rows[0][0].ToString();
-                     if (0 != code.Tables[0].Rows.Count && code.Tables[0].Rows[0][0].ToString() != "0")
-                     {
-                         return;
-                     }
-                     string qu = "select * from HT_QLT_INSPECT_RECORD where  RECORD_TIME = '" + j["dates"][0].ToString() + "' and INSPECT_CODE='" + j["inspectID"][i] + "' and prod_code = '" + j["prod"] + "' and is_del=0 and team_id='" + j["dates"][3] + "' and shift_id=" + j["dates"][1] + "";
+                    // if (0 != code.Tables[0].Rows.Count && code.Tables[0].Rows[0][0].ToString() != "0")
+                    // {
+                    //     return;
+                   //  }
+                     string qu = "select * from HT_QLT_INSPECT_RECORD where  RECORD_TIME = '" + j["dates"][0].ToString() + "' and INSPECT_CODE='" + j["inspectID"][i] + "' and prod_code = '" + j["prod"] + "' and is_del=0 and team_id='" + j["dates"][3] + "' and shift_id='" + j["dates"][1] + "'";
                      System.Diagnostics.Debug.WriteLine(qu);
                      DataSet ds = opt.CreateDataSetOra(qu);
                      if (ds.Tables[0].Rows.Count == 0)
@@ -70,7 +70,7 @@ public class InspectSave : IHttpHandler {
                          opt.CreateDataSetOra(insert);
                          continue;
                      }
-                     string update = "UPDATE HT_QLT_INSPECT_RECORD SET INSPECT_VALUE= '" + j["data"][i].ToString() + "' where  RECORD_TIME = '" + j["dates"][0].ToString() + "' and INSPECT_CODE='" + j["inspectID"][i] + "' and prod_code = '" + j["prod"] + "' and is_del=0 and team_id='" + j["dates"][3] + "' and shift_id="+j["dates"][1]+"";
+                     string update = "UPDATE HT_QLT_INSPECT_RECORD SET INSPECT_VALUE= '" + j["data"][i].ToString() + "' where  RECORD_TIME = '" + j["dates"][0].ToString() + "' and INSPECT_CODE='" + j["inspectID"][i] + "' and prod_code = '" + j["prod"] + "' and is_del=0 and team_id='" + j["dates"][3] + "' and shift_id='"+j["dates"][1]+"'";
                      System.Diagnostics.Debug.WriteLine(j["data"][i].ToString());
                      System.Diagnostics.Debug.WriteLine(j["inspectID"][i].ToString());
                      System.Diagnostics.Debug.WriteLine("结束");

@@ -24,6 +24,7 @@
         });
 
 
+
     </script>
 </head>
 <body>
@@ -44,8 +45,10 @@
                     <tr>
                         <td colspan="7" align="center"> 
                             请选择日期：
-                           <input id="time" class="dfinput1" onclick="WdatePicker()"/>
-
+                           <input id="time" class="dfinput1" onchange="initProduct()" onclick="WdatePicker()"/>
+                            选择产品：
+                            <select id="productlist" class="dfinput1">
+                            </select>
                             <div style="display:inline-block" class="btnview" onclick="triggerButton()">查询</div>
                             <div id="btnPrint" style="display:inline-block" class="btnpatch" onclick="$('#Msysexport').printArea();">打印</div>
                             <input id="Button1" type="button" value="打印" class="btnpatch" onclick="$('#app').printArea();" />
@@ -135,21 +138,46 @@
             changeWH();
         });
 
-        function triggerButton() {
+        function initProduct() {
             var time = document.getElementById('time').value.toString();
-            app.search(time);
+            axios({
+                method: 'post',
+                url: '../Response/GetCurrentProduct.ashx',
+                dataType: 'json',
+                data: {
+                    methodName: 'getMonthData',
+                    time: time
+        
+                }
+            }).then((val) => {
+                console.log(val);
+            val = val.data;
+            for(var i=0; i<val.length; i++){
+                $('#productlist').append("<option value='"+val[i]["prodcode"]+"'>"+val[i]["prodname"]+"</option>");
+            }
+        });
         }
+      
 
-        function changeWH() {
+            function triggerButton() {
+                var time = document.getElementById('time').value.toString();
+                var prodnode = document.getElementById('productlist');
+                var prodcode = prodnode.options[prodnode.selectedIndex].value;
+                console.log(time, prodcode);
+                app.search(time, prodcode);
+                
+            }
 
-            $("#Frame1").height($(document).height() - 100);
+            function changeWH() {
+
+                $("#Frame1").height($(document).height() - 100);
             
-            //$("#Frame1").width($(document).width());
-        }
+                //$("#Frame1").width($(document).width());
+            }
 
-        window.onresize = function () {
-            changeWH();
-        }
+            window.onresize = function () {
+                changeWH();
+            }
     </script>
 </body>
 

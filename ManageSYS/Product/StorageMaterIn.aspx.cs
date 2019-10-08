@@ -23,6 +23,8 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         txtStart.Text = System.DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
         txtStop.Text = System.DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+        opt.bindDropDownList(DropDownListShift, "select * from ht_sys_shift where is_del='0' and is_valid='1'", "shift_name", "shift_code");
+        opt.bindDropDownList(DropDownListTeam, "select * from ht_sys_team where is_del='0' and is_valid='1'", "team_name", "team_code");
         opt.bindDropDownList(listApt, "select F_CODE,F_NAME from ht_svr_org_group order by F_CODE", "F_NAME", "F_CODE");
         opt.bindDropDownList(listPrdct, "select prod_code,prod_name from ht_pub_prod_design where is_valid = '1' and is_del = '0' order by prod_code", "PROD_NAME", "PROD_CODE");
        
@@ -243,6 +245,8 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
                 listPrdct.SelectedValue = temp;
             else
                 listPrdct.SelectedValue = "";
+            DropDownListShift.SelectedValue = data.Tables[0].Rows[0]["shift_code"].ToString();
+            DropDownListTeam.SelectedValue = data.Tables[0].Rows[0]["team_code"].ToString();
             txtChipSum.Text = data.Tables[0].Rows[0]["PEICESSUM"].ToString();
             txtStemSum.Text = data.Tables[0].Rows[0]["CABOSUM"].ToString();
             listCreator.SelectedValue = data.Tables[0].Rows[0]["CREATOR_ID"].ToString();
@@ -389,7 +393,7 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         List<string> commandlist = new List<string>();
         string log_message;
-        if (txtPrdctdate.Text == "" || txtValiddate.Text == "" || (listStrgOut.SelectedValue == "" && txtStrgOut.Text == "")|| listPrdct.SelectedValue == "")
+        if (txtPrdctdate.Text == "" || txtValiddate.Text == "" || (listStrgOut.SelectedValue == "" && txtStrgOut.Text == "")|| listPrdct.SelectedValue == "" ||DropDownListTeam.SelectedValue.ToString()=="" || DropDownListShift.SelectedValue.ToString()=="")
         {
             ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('请输入必要信息!!')", true);
             return;
@@ -397,8 +401,8 @@ public partial class Product_StorageMaterIn : MSYS.Web.BasePage
       
             //生成领用主表记录
         string relationcode = (listStrgOut.SelectedValue == "") ? txtStrgOut.Text:listStrgOut.SelectedValue;
-        string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "RELATION_CODE", "STRG_TYPE" };
-        string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, txtPlanno.Text, relationcode, "1" };
+        string[] seg = { "ORDER_SN", "OUT_DATE", "EXPIRED_DATE", "MODIFY_TIME", "WARE_HOUSE_ID", "DEPT_ID", "CREATOR_ID", "MONTHPLANNO", "RELATION_CODE", "STRG_TYPE", "team_code", "shift_code" };
+        string[] value = { txtCode.Text, txtPrdctdate.Text, txtValiddate.Text, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), listStorage.SelectedValue, listApt.SelectedValue, listCreator.SelectedValue, txtPlanno.Text, relationcode, "1", DropDownListTeam.SelectedValue.ToString(), DropDownListShift.SelectedValue.ToString() };
 
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_MATERIA"));
             commandlist.Add("delete from HT_STRG_MATER_SUB where MAIN_CODE = '" + txtCode.Text + "'");

@@ -279,10 +279,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_PlanService_WsPlanForGSInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/StoreService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StoreService\</RelPath>
-      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.20/xymis/services/StoreService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

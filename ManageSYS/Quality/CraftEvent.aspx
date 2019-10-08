@@ -65,7 +65,7 @@
 
 
                         <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="14" AutoGenerateColumns="False"
-                            DataKeyNames="id,type">
+                            DataKeyNames="id,type,prod_code,para_code">
                             <Columns>
                                 <asp:TemplateField     >
                                     <ItemTemplate>
@@ -92,6 +92,12 @@
                                         <asp:Button ID="btngrid1Sure" runat="server" Text="确认" CssClass="btn1" OnClick="btngrid1Sure_Click" />
                                         <asp:Button ID="btngrid1fdback" runat="server" Text="反馈" CssClass="btn1" OnClick="btngrid1fdback_Click" />
                                         <asp:Button ID="btngrid1done" runat="server" Text="完成" CssClass="btn1" OnClick="btngrid1done_Click" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField      HeaderText="查看">
+                                    <ItemTemplate>
+                                        <asp:Button ID="btngrid1View" runat="server" Text="查看" CssClass="btn1" OnClick="btngrid1View_Click" />
+                                       
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -205,6 +211,43 @@
 
             </div>
 
+
+            <div class="shade">
+                <div class="info" style="width: 700px;height:450px">
+                    <div class="tiphead">
+                        <span>数据点详情</span><a onclick="$('.shade').fadeOut(100);"></a>
+                    </div>
+                    <div class="gridinfo">
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <div  >
+                                     <asp:Label ID="lbPoint" runat="server" style=" display: inline"></asp:Label>
+                                                 <asp:Label ID="lbpara_code" runat="server" class="btnhide" ></asp:Label>
+                                                 <asp:Label ID="lbprod_code" runat="server" class="btnhide"></asp:Label>
+                                                <asp:Label ID="lbsTime" runat="server"  style=" display: inline"></asp:Label>~<asp:Label ID="lbeTime" runat="server" style=" display: inline"></asp:Label>
+                                                <asp:RadioButton ID="rdShowAll" runat="server" GroupName="showAll" Text="全部显示" /> 
+                                                 <asp:RadioButton ID="rdUnQualified" runat="server" GroupName="showAll" Text="不合格点" /> 
+                                                <asp:Button ID="btnPointView" runat="server" Text="查看" class="btnview" OnClick ="btnPointView_Click"/>
+                                                 <asp:Button ID="btnExport" runat="server" Text="导出" class="btnset" OnClick="btnExport_Click"/>
+                                </div>
+                                <div  style="height: 350px; overflow: scroll">
+                                   <asp:GridView ID="GridView3" runat="server" class="grid"  >   
+                                                    <HeaderStyle CssClass="gridheader" />
+                                                    <RowStyle CssClass="gridrow" />
+                                                    <AlternatingRowStyle CssClass="gridalterrow" />
+                                                </asp:GridView>
+                                </div>                                
+                                
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                               <asp:AsyncPostBackTrigger ControlID ="btnPointView" />
+                                <asp:AsyncPostBackTrigger ControlID ="btnExport" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script type="text/javascript">
