@@ -25,7 +25,7 @@ public partial class Product_SeasonPlan : MSYS.Web.BasePage
 
     protected void bindGrid1()
     {
-        string query = "select distinct g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g4.total as 计划总产量,'吨' as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g  left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' left join (select sum(s.total_output) as total,r.id from ht_prod_season_plan r left join ht_prod_season_plan_detail s on s.quarter_plan_id = r.id  and s.is_del = '0' where r.is_del = '0' group by r.id) g4 on g4.id = g.id where g.is_del = '0' order by 计划名";
+        string query = "select distinct g.id,g.plan_name as 计划名, g.plan_year as 年份,g.quarter as 季度,g4.total as 计划总产量,'吨' as 单位,g1.name as 审批状态,g2.issue_name as 下发状态 ,g3.name as 编制人  from ht_prod_season_plan g  left join ht_inner_aprv_status g1 on g1.id = g.flow_status left join HT_INNER_BOOL_DISPLAY g2 on g2.id = g.issued_status left join ht_svr_user g3 on g3.id = g.create_id and g3.is_del = '0' left join (select sum(s.total_output) as total,r.id from ht_prod_season_plan r left join ht_prod_season_plan_detail s on s.quarter_plan_id = r.id  and s.is_del = '0' where r.is_del = '0' group by r.id) g4 on g4.id = g.id where g.is_del = '0' order by 计划名 desc";
         if (txtYears.Text != "")
             query += " and g.plan_year = '" + txtYears.Text + "'";
         if (listSeason.SelectedValue != "")

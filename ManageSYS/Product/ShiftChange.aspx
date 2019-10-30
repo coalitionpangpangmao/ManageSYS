@@ -101,6 +101,34 @@
         </div>
         <div id="tab2" class="tabson">
             <div class="framelist">
+                <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:HiddenField ID="HiddenField1" runat="server" />
+                            <asp:GridView ID="GridView3" runat="server" class="grid" DataKeyNames="SHIFT_MAIN_ID,plan_no" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                AutoGenerateColumns="False" PageSize="12">
+                                <Columns>
+                                     <asp:BoundField    DataField="日期" HeaderText="日期" />
+                                     <asp:BoundField    DataField="班组" HeaderText="班组" />
+                                     <asp:BoundField    DataField="班时" HeaderText="班时" />
+                                     <asp:BoundField    DataField="计划号" HeaderText="计划号" />
+                                     <asp:BoundField    DataField="交班人" HeaderText="交班人" />
+                                     <asp:BoundField    DataField="接班人" HeaderText="接班人" />
+                                    <asp:TemplateField      HeaderText="操作">
+                                        <ItemTemplate>
+                                            <asp:Button ID="btnGrid3View" runat="server" Text="查看" CssClass="btn1 auth" OnClick="btnGrid3View_Click"  />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <HeaderStyle CssClass="gridheader" />
+                                 <RowStyle CssClass="gridrow" />
+                                 <AlternatingRowStyle CssClass="gridalterrow" />                                   
+                            </asp:GridView>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="GridView1" />
+                            <asp:AsyncPostBackTrigger ControlID ="btnSave" />
+                        </Triggers>
+                    </asp:UpdatePanel>
                 <div class="listtitle">
                     交接班详情<span style="position: relative; float: right">
                         <asp:Button ID="btnSave" runat="server" Text="保存" class="btnmodify auth" OnClick="btnSave_Click" />

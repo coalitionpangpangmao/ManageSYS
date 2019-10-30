@@ -45,6 +45,7 @@
 
             });
             $(".file").click(function () {
+                var prodcode =$(this).parent().parent().parent().find('span').eq(0).attr('value').toString();
                 $('.folder').removeClass("selectedbold");
                 $('.file').removeClass("selectedbold");
                 $(this).addClass("selectedbold");
@@ -52,16 +53,19 @@
                 if (code.substr(0, 5) == '70306') {
                     $('#tabtop2').click();
                     $('#hdcode1').attr('value', code);
+                    $('#hdcode1prod').attr('value', prodcode);
                     $('#btnUpdate1').click();
                 }
                 else if (code.substr(0, 5) == '70308') {
                     $('#tabtop3').click();
                     $('#hdcode2').attr('value', code);
+                    $('#hdcode2prod').attr('value', prodcode);
                     $('#btnUpdate2').click();
                 }
                 else {
                     $('#tabtop4').click();
                     $('#hdcode3').attr('value', code);
+                    $('#hdcode3prod').attr('value', prodcode);
                     $('#btnUpdate3').click();
                 }
             });
@@ -195,6 +199,7 @@
                                             &nbsp;&nbsp;
                             <asp:Button ID="btnModify1" class="btnmodify  auth" runat="server" Text="保存" OnClick="btnModify1_Click" />&nbsp;
                             <asp:HiddenField ID="hdcode1" runat="server" />
+                                             <asp:HiddenField ID="hdcode1prod" runat="server" />
                                             <asp:Button ID="btnUpdate1" runat="server" Text="Button" CssClass="btnhide" OnClick="btnUpdate1_Click" />
                                         </span>
                                     </div>
@@ -512,6 +517,7 @@
                                                 &nbsp;&nbsp;
                                 <asp:Button ID="btnModify2" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify2_Click" />&nbsp;
                                 <asp:HiddenField ID="hdcode2" runat="server" />
+                                                <asp:HiddenField ID="hdcode2prod" runat="server"/>
                                                 <asp:Button ID="btnUpdate2" runat="server" Text="Button" CssClass="btnhide" OnClick="btnUpdate2_Click" />
                                             </span>
                                         </div>
@@ -838,6 +844,7 @@
                                                 &nbsp;&nbsp;
                                 <asp:Button ID="btnModify3" class="btnmodify auth" runat="server" Text="保存" OnClick="btnModify3_Click" />&nbsp;
                                 <asp:HiddenField ID="hdcode3" runat="server" />
+                                                 <asp:HiddenField ID="hdcode3prod" runat="server" />
                                                 <asp:Button ID="btnUpdate3" runat="server" Text="Button" CssClass="btnhide" OnClick="btnUpdate3_Click" />
                                             </span>
                                         </div>

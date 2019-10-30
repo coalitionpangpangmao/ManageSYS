@@ -115,7 +115,7 @@ public partial class Product_Plan : MSYS.Web.BasePage
         MSYS.Web.PlanService.WsPlanForGSInterfaceService service = new MSYS.Web.PlanService.WsPlanForGSInterfaceService();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         System.Diagnostics.Debug.WriteLine(System.DateTime.Now.Month.ToString());
-        string month = "0" + System.DateTime.Now.Month.ToString();
+        string month = System.DateTime.Now.Month.ToString().Length<2? "0" + System.DateTime.Now.Month.ToString():System.DateTime.Now.Month.ToString();
         prodAssignPlan[] pb = service.getProdAssignForGS(System.DateTime.Now.Year.ToString(), month);
         prodAssignVO[] pvo = service.getProdAssignListForGS(System.DateTime.Now.Year.ToString(), month);
         string[] seg = { "id", "PLAN_NAME", "B_FLOW_STATUS", "ISSUED_STATUS", "PLAN_TIME", "IS_DEL", "REMARK" ,"CREATE_ID"};

@@ -17,6 +17,7 @@ namespace DataCollect
         private NotifyIcon notifyIcon = null;
         private System.Threading.Timer QualityTimer = null;//质量采集线程
         private System.Threading.Timer ReportTimer = null;//报表记录线程
+        private System.Threading.Timer CheckTimer = null;//检查是否正常运行线程
         public Form1()
         {
             InitializeComponent();          
@@ -56,6 +57,10 @@ namespace DataCollect
              if (ReportTimer == null)
              {
                  ReportTimer = new System.Threading.Timer(new System.Threading.TimerCallback(InsertProdReport), null, 0, 60 * 1000);
+             }
+             if (CheckTimer == null)
+             {
+                 CheckTimer = new System.Threading.Timer(new System.Threading.TimerCallback(CheckThread), null, 0, 30 * 60 * 1000);
              }
          }
         #region  隐藏托盘
@@ -135,7 +140,7 @@ namespace DataCollect
         public void Qua_Start_Click(object sender, EventArgs e)
         {
             InsertProdReportAsTime(QuaTime.Text.Substring(0, 10));
-            //QltRecoder.insertQuaReport(Convert.ToDateTime(QuaTime.Text));
+            QltRecoder.insertQuaReport(Convert.ToDateTime(QuaTime.Text));
             // ProdRecoder.ProdRecord(QuaTime.Text,"");
             //         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             //DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where date_begin between '2018-12-01' and '2018-12-15'");
@@ -178,160 +183,7 @@ namespace DataCollect
 #endregion
 
         #region 质量统计
-        //private void InsertQuaReport(object source)
-        //{
-                
-        //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        //    DataSet times = opt.CreateDataSetOra("select date_begin  as time from ht_prod_schedule where substr(date_begin,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "' union select date_end  as time  from ht_prod_schedule where substr(date_end,1,10) = '" + System.DateTime.Now.ToString("yyyy-MM-dd") + "'");
-        //    if (times != null && times.Tables[0].Rows.Count > 0)
-        //    {
-        //        foreach (DataRow time in times.Tables[0].Rows)
-        //        {
-        //            if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) > new TimeSpan(3,50, 0) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) < new TimeSpan(4, 40, 0))
-        //            {
-        //                //对每一班组的生产过程数据进行统计分析计算     
-        //                insertQuaReport(System.DateTime.Now.AddHours(-8));
-        //            }
-        //        }
-        //    }          
-        //}
-        //private void insertQuaReport(DateTime date)
-        //{
-        //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-           
-        //   // string datetime = System.DateTime.Now.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
-        //    string datetime = date.ToString("yyyy-MM-dd HH:mm:ss");
-        //    //  string datetime = "2018-09-13 09:30:00";
-        //    DataSet data = opt.CreateDataSetOra("select * from ht_prod_schedule t  where date_begin <='" + datetime + "' and date_end >= '" + datetime + "'");
-        //    if (data != null && data.Tables[0].Rows.Count > 0)
-        //    {
-        //        DataRow row = data.Tables[0].Rows[0];
-        //        string starttime = row["date_begin"].ToString();
-        //        string midtime = Convert.ToDateTime(starttime).AddHours(4).ToString("yyyy-MM-dd HH:mm:ss");
-        //        string endtime = row["date_end"].ToString();
-        //        InsertSectionQuaReport(starttime, midtime);
-        //        InsertSectionQuaReport(midtime, endtime);
-        //    }
-        //}
-        //private void InsertQuaReport(object source, System.Timers.ElapsedEventArgs e)
-        //{
-        //    //对每一班组的生产过程数据进行统计分析计算
-        //    string datetime = System.DateTime.Now.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
-        //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        //    DataSet data = opt.CreateDataSetOra("select * from ht_prod_schedule t  where date_begin <='" + datetime + "' and date_end >= '" + datetime + "'");
-        //    if (data != null && data.Tables[0].Rows.Count > 0)
-        //    {
-        //        DataRow row = data.Tables[0].Rows[0];
-        //        string starttime = row["date_begin"].ToString();
-        //        string midtime = Convert.ToDateTime(starttime).AddHours(4).ToString("yyyy-MM-dd HH:mm:ss");
-        //        string endtime = row["date_end"].ToString();
-        //        InsertSectionQuaReport(starttime, midtime);
-        //        InsertSectionQuaReport(midtime, endtime);
-        //    }
-        //}
-
-        //private void InsertSectionQuaReport(string starttime, string endtime)
-        //{
-        //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        //    DataSet data = opt.CreateDataSetOra("select distinct r.section_code ,r.section_name from ht_pub_tech_section r left join ht_pub_tech_para s on substr(s.para_code,1,5) = r.section_code and s.is_del = '0' and s.is_valid = '1' where r.is_del = '0' and r.is_valid = '1' and  s.para_type like '___1%'   order by r.section_code");
-        //    IHDataOpt ihopt = new IHDataOpt();
-        //    foreach (DataRow row in data.Tables[0].Rows)
-        //    {
-        //        //判断该工艺段是否有批次报告记录
-        //        int count =Convert.ToInt16( opt.GetSegValue( "select count(rowid) as count from ht_qlt_data_record t where substr(para_code,1,5) = '" + row["section_code"].ToString() + "' and b_time <= '" + starttime + "' and e_time >= '" + endtime + "'","count"));
-        //        string query = "select r.para_code from ht_pub_tech_para r where substr(r.para_code,1,5) = '" + row["section_code"].ToString() + "' and r.para_type like '___1%'";
-        //        DataSet pointsets = opt.CreateDataSetOra(query);                
-        //        if (count < pointsets.Tables[0].Rows.Count && ihopt.TaskShiftNum(starttime, endtime, row["section_code"].ToString()) > 0)
-        //        {                    
-        //            foreach (DataRow prow in pointsets.Tables[0].Rows)
-        //            {
-        //                insertPointQuaReport(starttime, endtime, prow["para_code"].ToString());
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void insertPointQuaReport(string starttime, string endtime, string para_code)
-        //{
-        //    IHDataOpt ihopt = new IHDataOpt();
-        //    List<IHDataOpt.TimeSeg> timesegs = ihopt.TimeCut(starttime, endtime, para_code);
-        //    foreach (IHDataOpt.TimeSeg seg in timesegs)
-        //    {
-        //        InsertRecord(seg);
-        //    }
-        //}
-        ///// <summary>
-        ///// 插入某工艺点质量统计报告
-        ///// </summary>
-        ///// <param name="seg">开始、结束时间、数据点code、计划号</param>     
-        //protected void InsertRecord(IHDataOpt.TimeSeg seg)
-        //{
-            
-        //    MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        //    int recordnum = Convert.ToInt16( opt.GetSegValue("select count(rowid) as count  from ht_qlt_data_record  where plan_id = '" + seg.planno + "' and para_code = '" + seg.nodecode + "'  and b_time = '" + seg.starttime + "' and e_time = '" + seg.endtime + "'", "count"));
-        //    //if (recordnum > 0)
-        //    //    return;
-
-        //    string teamcode = opt.GetSegValue("select team_code  from ht_prod_schedule where date_begin <='" + seg.starttime + "' and date_end >='" + seg.endtime + "' and work_staus = '1'", "team_code");
-
-        //    IHDataOpt ihopt = new IHDataOpt();
-        //    //根据开始、结束时间、数据点code、计划号获取原始数据，返回的数据为三列：时间、值、状态；状态为料头、料尾、过程值、断流
-        //    DataTable dt = ihopt.GetIHOrgDataSet(seg);
-        //    if (dt == null)
-        //        return;
-        //    string gaptime = "";
-        //    string is_gap = "0";
-        //    List<IHDataOpt.Gaptime> gaplist = ihopt.gaptimes();
-        //    if (gaplist == null) gaptime = "0";
-        //    else
-        //    {
-        //        int timecount = 0;
-        //        foreach (IHDataOpt.Gaptime time in gaplist)
-        //        {
-        //            timecount += time.gaptime;
-        //        }
-        //        gaptime = timecount.ToString();
-        //    }
-        //    if (gaptime != "0")
-        //        is_gap = "1";
-        //    //////////////////////////////////////////////////////////////////////////////////////////
-        //    double[] samples = null;
-        //    if (dt != null && dt.Rows.Count > 0)
-        //    {
-
-        //        var Rows = from dt1 in dt.AsEnumerable()
-        //                   where dt1.Field<string>("状态") == "过程值"
-        //                   select dt1;
-        //        DataView rsl = Rows.AsDataView();
-        //        int count = rsl.Count;
-        //        samples = new double[count];
-        //        int i = 0;
-        //        foreach (DataRow row in Rows)
-        //        {
-        //            samples[i] = Convert.ToDouble(row["值"].ToString());
-        //            i++;
-        //        }
-        //    }
-        //    ///////////////根据原始数据计算算统计数据///////////////////////////////////////////////////////
-
-        //    if (samples != null && samples.GetLength(0) > 0)
-        //    {
-        //        DataSet set = opt.CreateDataSetOra("select s.para_code,s.value,s.upper_limit,s.lower_limit from ht_pub_prod_design r left join ht_tech_stdd_code_detail s on r.tech_stdd_code = s.tech_code  where r.prod_code = '" + seg.planno.Substring(8, 7) + "' and s.para_code = '" + seg.nodecode + "'");
-        //        if (set != null && set.Tables[0].Select().GetLength(0) > 0 && set.Tables[0].Select()[0]["value"].ToString() != "" && set.Tables[0].Select()[0]["upper_limit"].ToString() != "" && set.Tables[0].Select()[0]["lower_limit"].ToString() != "")
-        //        {
-        //            string CL = set.Tables[0].Select()[0]["value"].ToString();
-        //            string upvalue = set.Tables[0].Select()[0]["upper_limit"].ToString();
-        //            string lowvalue = set.Tables[0].Select()[0]["lower_limit"].ToString();
-
-        //            SPCFunctions spc = new SPCFunctions(samples, Convert.ToDouble(upvalue), Convert.ToDouble(lowvalue));
-        //            string[] tableseg = { "PLAN_ID", "PROD_CODE", "PARA_CODE", "TEAM", "B_TIME", "E_TIME", "AVG", "COUNT", "MIN", "MAX", "QUANUM", "QUARATE", "UPCOUNT", "UPRATE", "DOWNCOUNT", "DOWNRATE", "STDDEV", "ABSDEV", "IS_GAP", "CPK", "VAR", "RANGE", "GAP_TIME"};
-        //            string[] tablevalue = { seg.planno, seg.planno.Substring(8, 7), seg.nodecode, teamcode, seg.starttime, seg.endtime, spc.avg.ToString(), spc.count.ToString(), spc.min.ToString(), spc.max.ToString(), spc.passcount.ToString(), spc.passrate.ToString("f4"), spc.upcount.ToString(), spc.uprate.ToString("f4"), spc.downcount.ToString(), spc.downrate.ToString("f4"), spc.stddev.ToString("f4"), spc.absdev.ToString("f4"), is_gap,spc.Cpk.ToString("f4"), spc.var.ToString("f4"), spc.Range.ToString("f4"), gaptime };
-        //            opt.MergeInto(tableseg, tablevalue, 6,"HT_QLT_DATA_RECORD");
-        //        }
-        //    }
-
-
-        //}
+        
 
 
         private void InsertQuaReport(object source)
@@ -343,11 +195,21 @@ namespace DataCollect
             {
                 foreach (DataRow time in times.Tables[0].Rows)
                 {
-                    if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) > new TimeSpan(3, 50, 0) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) < new TimeSpan(4, 40, 0))
+                    if (System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) > new TimeSpan(0, 20, 0) && System.DateTime.Now - Convert.ToDateTime(time["time"].ToString()) < new TimeSpan(0, 50, 0))
                     {
-                        //对每一班组的生产过程数据进行统计分析计算     
-                        QltRecoder.insertQuaReport(System.DateTime.Now.AddHours(-8));
-                      //  insertQuaReport(System.DateTime.Now.AddHours(-8));
+                        //对每一班组的生产过程数据进行统计分析计算 
+                        try
+                        {
+                            QltRecoder.insertQuaReport(System.DateTime.Now.AddHours(-8));
+                        }
+                        catch (Exception )
+                        {
+                            if (QualityTimer != null)
+                            {
+                                QualityTimer.Dispose();
+                                QualityTimer = null;
+                            }
+                        }
                     }
                 }
             }
@@ -394,7 +256,17 @@ namespace DataCollect
             }
         }
         #endregion
-
+        protected void CheckThread(object o)
+        {
+            if (QualityTimer == null)
+            {
+                QualityTimer = new System.Threading.Timer(new System.Threading.TimerCallback(InsertQuaReport), null, 0, 30 * 60 * 1000);
+            }
+            if (ReportTimer == null)
+            {
+                ReportTimer = new System.Threading.Timer(new System.Threading.TimerCallback(InsertProdReport), null, 0, 60 * 1000);
+            }
+        }
      
 
 

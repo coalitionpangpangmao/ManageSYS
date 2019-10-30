@@ -113,7 +113,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
 
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-       InsertLocalFromMaster();
+        InsertLocalFromMaster();
         bindGrid();
         initView();
         ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "alert('同步完成');", true);
@@ -183,8 +183,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
                 listcoat.SelectedValue = data.Tables[0].Rows[0]["Coat_FORMULA_CODE"].ToString();
             if (data.Tables[0].Rows[0]["QLT_CODE"].ToString() != "" && data.Tables[0].Rows[0]["QLT_CODE"].ToString().Length>3)
                 listqlt.SelectedValue = data.Tables[0].Rows[0]["QLT_CODE"].ToString();
-            //if (data.Tables[0].Rows[0]["INSPECT_STDD"].ToString() != ""&& data.Tables[0].Rows[0]["INSPECT_STDD"].ToString().Length>3)
-              //  listisp.SelectedValue = data.Tables[0].Rows[0]["INSPECT_STDD"].ToString();
+            if (data.Tables[0].Rows[0]["INSPECT_STDD"].ToString() != ""&& data.Tables[0].Rows[0]["INSPECT_STDD"].ToString().Length>3)
+                listisp.SelectedValue = data.Tables[0].Rows[0]["INSPECT_STDD"].ToString();
             txtValue.Text = data.Tables[0].Rows[0]["SENSOR_SCORE"].ToString();
             txtDscpt.Text = data.Tables[0].Rows[0]["REMARK"].ToString();
             if(data.Tables[0].Rows[0]["PATH_CODE"].ToString() != "")
@@ -427,7 +427,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             commandlist.Clear();
             if (prod.xyProdCode.Substring(0, 3) != "703")
                 continue;
-            string mformcode = ((prod.materFormulaCode == null) || prod.materFormulaCode.Length <= 3) ? "" : "7030" + (Convert.ToInt32(prod.materFormulaCode)+14).ToString();
+            string mformcode = ((prod.materFormulaCode == null) || prod.materFormulaCode.Length <= 3) ? "" : "7030" + (Convert.ToInt32(prod.materFormulaCode)+20).ToString();
             string aformcode = ((prod.auxFormulaCode == null) || prod.auxFormulaCode.Length <= 3) ? "" : "703" + prod.auxFormulaCode;
             string cformcode = ((prod.coatFormulaCode == null) || prod.coatFormulaCode.Length <= 3) ? "" : "7030" + (Convert.ToInt32(prod.coatFormulaCode)+3).ToString();
             string[] value = { prod.id.ToString(),prod.xyProdCode, prod.prodName, prod.packName, Convert.ToInt32(prod.handMode).ToString()
@@ -532,7 +532,7 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
         {
             string[] seg = { "ID", "FORMULA_CODE", "FORMULA_NAME", "ADJUST", "B_DATE", "CABO_SUM", "CONTROL_STATUS", "CREATE_DATE", "CREATE_DEPT_ID", "CREATE_ID", "E_DATE", "EXECUTEBATCH", "FLOW_STATUS", "IS_DEL", "IS_VALID", "MODIFY_ID", "MODIFY_TIME", "PIECE_NUM", "PIECES_SUM", "PROD_CODE", "REMARK", "SMALLS_NUM", "STANDARD_VOL", "STEM_NUM", "STICKS_NUM" };
            // string formcode = info.formulaCode == "" ? "" : "703" + info.formulaCode; //"703" + (Convert.ToInt32(prod.materFormulaCode)+12).ToString()
-            string formcode = info.formulaCode == "" ? "" : "7030" + (Convert.ToInt32(info.formulaCode) + 14).ToString();
+            string formcode = info.formulaCode == "" ? "" : "7030" + (Convert.ToInt32(info.formulaCode) + 20).ToString();
             string[] value = { id,formcode,info.formulaName,info.adjust,info.BDate.ToString("yyyy-MM-dd HH:mm:ss"),info.caboSum.ToString(),info.controlStatus,info.createDate,info.createDept,info.createId,info.EDate.ToString("yyyy-MM-dd HH:mm:ss"),info.executeBatch.ToString(),info.flowStatus,info.isDel,"1",
                                      info.modifyId,info.modifyTime,info.pieceNum.ToString(),info.piecesSum.ToString(),prodCode,info.remark,info.smallsNum.ToString(),info.standardVol,info.stemNum.ToString(),info.sticksNum.ToString()};
             temp = opt.getMergeStr(seg, value, 2, "HT_QA_MATER_FORMULA");
@@ -544,11 +544,17 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
             if (info.ygSubList != null && info.ygSubList.Length > 0)
             {
                 string[] subseg = { "ID", "MATER_CODE", "BATCH_SIZE", "FRONT_GROUP", "IS_DEL", "MATER_FLAG", "FORMULA_CODE", "MATER_SORT", "REMARK" };
+                //string[] materseg = { "MATERIAL_CODE", "MATERIAL_NAME" };
                 foreach (tQaMaterFormulaDetail detail in info.ygSubList)
                 {
                     //string[] subvalue = { detail.id.ToString(), detail.materCode, detail.batchSize.ToString(), detail.frontGroup, "0", detail.materFlag, "703" + info.formulaCode, detail.materSort.ToString(), detail.remark };
                     string[] subvalue = { detail.id.ToString(), detail.materCode, detail.batchSize.ToString(), detail.frontGroup, "0", detail.materFlag, formcode, detail.materSort.ToString(), detail.remark };
+                    //string[] matervalue = { detail.materCode.ToString(), detail.materName.ToString() };
+                    string matersql = "update HT_PUB_MATERIEL set material_name = '"+detail.materName+"' where material_code = '"+detail.materCode+"'";
+                    opt.CreateDataSetOra(matersql);
+                    //opt.getMergeStr(materseg, matervalue, 2, "HT_PUB_MATERIEL");
                     System.Diagnostics.Debug.WriteLine(detail.materFlag);
+                    
                     temp = opt.getMergeStr(subseg, subvalue, 2, "HT_QA_MATER_FORMULA_DETAIL");
                     //       commandlist.Add(temp);
                     if (opt.UpDateOra(temp) != "Success")
@@ -564,6 +570,8 @@ public partial class Craft_Prdct : MSYS.Web.BasePage
                     //string[] subvalue = { detail.id.ToString(), detail.materCode, detail.batchSize.ToString(), detail.frontGroup, detail.isDel, detail.materFlag, id, detail.materSort.ToString(), detail.remark };
                    // string[] subvalue = { detail.id.ToString(), id, detail.materCode, detail.batchSize.ToString(), detail.frontGroup, "0", detail.materFlag, detail.materSort.ToString(), detail.remark };
                     string[] subvalue = { detail.id.ToString(), formcode, detail.materCode, detail.batchSize.ToString(), detail.frontGroup, "0", detail.materFlag, detail.materSort.ToString(), detail.remark };
+                    string matersql = "update HT_PUB_MATERIEL set material_name = '" + detail.materName + "' where material_code = '" + detail.materCode + "'";
+                    opt.CreateDataSetOra(matersql);
                     temp = opt.getMergeStr(subseg, subvalue, 2, "HT_QA_MATER_FORMULA_DETAIL");
                     //         commandlist.Add(temp);
                     if (opt.UpDateOra(temp) != "Success")

@@ -25,6 +25,8 @@
         <div class="mainbox">
               <div class="listtitle">
                         查询条件<span style="position: relative; float: right">
+                            <asp:RadioButton ID="rdAll" runat="server" GroupName="rdType" Text="统计" Checked="True" />
+                             <asp:RadioButton ID="rdDetail" runat="server" GroupName="rdType" Text="明细" />
                                <asp:Button ID="btnSearch" runat="server" Text="查询" CssClass="btnview" OnClick="btnSearch_Click" />
                         </span>
                     </div>
@@ -77,7 +79,31 @@
             <div>
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="15" HeaderStyle-Wrap="False" RowStyle-Wrap="False">
+                        <asp:GridView ID="GridView1" runat="server" class="grid" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="15" HeaderStyle-Wrap="False" RowStyle-Wrap="False" AutoGenerateColumns="False" DataKeyNames="prod_code,para_code,开始时间,结束时间">															
+                            <Columns>                              
+                                 <asp:BoundField    HeaderText="产品" DataField="产品" />
+                                 <asp:BoundField    HeaderText="工艺点" DataField="工艺点" />
+                                 <asp:BoundField    HeaderText="班组" DataField="班组" />
+                                 <asp:BoundField    HeaderText="开始时间" DataField="开始时间" />
+                                 <asp:BoundField    HeaderText="结束时间" DataField="结束时间" />
+                                 <asp:BoundField    HeaderText="均值" DataField="均值" />
+                                 <asp:BoundField    HeaderText="采样点数" DataField="采样点数" />
+                                 <asp:BoundField    HeaderText="最小值" DataField="最小值" />
+                                  <asp:BoundField    HeaderText="最大值" DataField="最大值" />
+                                 <asp:BoundField    HeaderText="合格率" DataField="合格率" />
+                                 <asp:BoundField    HeaderText="超上限率" DataField="超上限率" />
+                                 <asp:BoundField    HeaderText="超下限率" DataField="超下限率" />
+                                 <asp:BoundField    HeaderText="标准差" DataField="标准差" />  
+                                 <asp:BoundField    HeaderText="绝对差" DataField="绝对差" />
+                                 <asp:BoundField    HeaderText="范围" DataField="范围" />
+                                 <asp:BoundField    HeaderText="CPK" DataField="CPK" /> 
+                                <asp:TemplateField      HeaderText="导出">
+                                    <ItemTemplate>
+                                        <asp:Button ID="btngrid1View" runat="server" Text="导出" CssClass="btn1" OnClick="btngrid1View_Click" />
+                                       
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
 
                             <HeaderStyle CssClass="gridheader" />
                             <RowStyle CssClass="gridrow" BorderStyle="Solid" BorderWidth="1" />
@@ -99,6 +125,7 @@
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
+                         <asp:PostBackTrigger ControlID="GridView1" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

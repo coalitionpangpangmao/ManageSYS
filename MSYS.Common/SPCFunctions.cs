@@ -97,7 +97,7 @@ namespace MSYS.Common
                 sum2 += Math.Abs(this.Samples[i] - this.avg);
             }
             this.var = sum / (this.count - 1);
-            this.absdev = Math.Sqrt(sum2/(this.count -1));
+            this.absdev = Math.Sqrt(sum2/this.count);
             this.stddev = Math.Sqrt(this.var);
             this.Range = this.max - this.min;
             this.Cp = (this.USL - this.LSL) / (6 * this.stddev);
@@ -150,7 +150,7 @@ namespace MSYS.Common
                 sum2 += Math.Abs(this.Samples[i] - this.avg);
             }
             this.var = sum / (this.count - 1);
-            this.absdev = Math.Sqrt(sum2 / (this.count - 1));
+            this.absdev = Math.Sqrt(sum2 / this.count );
             this.stddev = Math.Sqrt(this.var);
             this.Range = this.max - this.min;
             this.Cp = (this.USL - this.LSL) / (6 * this.stddev);
@@ -188,7 +188,7 @@ namespace MSYS.Common
                 sum2 += Math.Abs(this.Samples[i] - this.avg);
             }
             this.var = sum / (this.count - 1);
-            this.absdev = Math.Sqrt(sum2 / (this.count - 1));
+            this.absdev = Math.Sqrt(sum2 /this.count );
             this.stddev = Math.Sqrt(this.var);
             this.Range = this.max - this.min;
         }

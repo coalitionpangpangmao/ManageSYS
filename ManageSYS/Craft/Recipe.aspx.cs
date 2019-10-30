@@ -45,7 +45,8 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                tvHtml += "<li ><span class='folder'  value = '" + row["prod_code"].ToString() + "'>" + row["prod_name"].ToString() + "</span>";
+                //$(this).find('span').eq(0).attr('value').toString()
+                tvHtml += "<li><span class='folder'  value = '" + row["prod_code"].ToString() + "'>" + row["prod_name"].ToString() + "</span>";
 
                 tvHtml += InitTreeRecipe(row["prod_code"].ToString());
                 tvHtml += "</li>";
@@ -59,15 +60,14 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     public string InitTreeRecipe(string prod_code)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-        //DataSet data = opt.CreateDataSetOra("select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_mater_formula where prod_code ='" + prod_code + "' and is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
-        DataSet data = opt.CreateDataSetOra("select h.formula_code as 配方编码，h.formula_name as 配方名称,h.b_date as 启用时间,h.CREATE_ID as 编辑人员,h.is_valid as 是否有效  from ht_qa_mater_formula h left join ht_pub_prod_design s on h.formula_code = s.mater_formula_code where s.prod_code ='" + prod_code + "' and h.is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
+        DataSet data = opt.CreateDataSetOra("select h.formula_code as 配方编码，h.formula_name as 配方名称,h.b_date as 启用时间,h.CREATE_ID as 编辑人员,h.is_valid as 是否有效  from ht_qa_mater_formula h left join ht_pub_prod_design s on s.mater_formula_code = h.formula_code where s.prod_code ='" + prod_code + "' and h.is_del ='0' union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_coat_formula where prod_code = '" + prod_code + "' and is_del ='0'  union select formula_code as 配方编码，formula_name as 配方名称,b_date as 启用时间,CREATE_ID as 编辑人员,is_valid as 是否有效  from ht_qa_FLA_formula  where prod_code = '" + prod_code + "'  and is_del ='0'");
         if (data != null && data.Tables[0].Rows.Count > 0)
         {
             string tvHtml = "<ul>";
             DataRow[] rows = data.Tables[0].Select();
             foreach (DataRow row in rows)
             {
-                tvHtml += "<li ><span class='file'  value = '" + row["配方编码"].ToString() + "'>" + row["配方名称"].ToString() + "</span></li>";
+                tvHtml += "<li><span class='file'  value = '" + row["配方编码"].ToString() + "'>" + row["配方名称"].ToString() + "</span></li>";
             }
             tvHtml += "</ul>";
             return tvHtml;
@@ -253,7 +253,9 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         {
             txtCode1.Text = data.Tables[0].Rows[0]["配方编号"].ToString();
             txtName1.Text = data.Tables[0].Rows[0]["配方名称"].ToString();
-            listPro1.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
+            //listPro1.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
+            //listPro1.SelectedValue = hdcode1.Value.Split('|')[1].ToString();
+            listPro1.SelectedValue = hdcode1prod.Value.ToString();
             txtVersion1.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate1.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate1.Text = data.Tables[0].Rows[0]["结束日期"].ToString();
@@ -273,7 +275,7 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
             txtVersion1.Text = "";
             txtExeDate1.Text = "";
             txtEndDate1.Text = "";
-            //  listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
+            //listStatus.SelectedValue = data.Tables[0].Rows[0]["受控状态"].ToString();
             listCreator1.SelectedValue = "";
             txtCrtDate1.Text = "";
             listCrtApt1.SelectedValue = "";
@@ -785,9 +787,9 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     {
         string query;
         if (hdcode2.Value.Length == 8)
-            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode2.Value + "'";
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and FORMULA_CODE = '" + hdcode2.Value.Split('|')[0] + "'";
         else
-            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and PROD_CODE = '" + hdcode2.Value + "'";
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_coat_formula where is_del = '0' and PROD_CODE = '" + hdcode2.Value.Split('|')[0] + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from ht_qa_coat_formula_detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
@@ -795,7 +797,8 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         {
             txtCode2.Text = data.Tables[0].Rows[0]["配方编号"].ToString();
             txtName2.Text = data.Tables[0].Rows[0]["配方名称"].ToString();
-            listPro2.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
+            //listPro2.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
+            listPro2.SelectedValue = hdcode2prod.Value.ToString();
             txtVersion2.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate2.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate2.Text = data.Tables[0].Rows[0]["结束日期"].ToString();
@@ -1265,9 +1268,9 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
     {
         string query;
         if (hdcode3.Value.Length == 8)
-            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_FLA_formula where is_del = '0' and FORMULA_CODE = '" + hdcode3.Value + "'";
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_FLA_formula where is_del = '0' and FORMULA_CODE = '" + hdcode3.Value.Split('|')[0] + "'";
         else
-            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_FLA_formula where is_del = '0' and PROD_CODE = '" + hdcode3.Value + "'";
+            query = "select FORMULA_CODE  as 配方编号,FORMULA_NAME  as 配方名称,PROD_CODE  as 产品编码,STANDARD_VOL  as 标准版本号,B_DATE  as 执行日期,E_DATE  as 结束日期,CONTROL_STATUS  as 受控状态,CREATE_ID  as 编制人,CREATE_DATE  as 编制日期,CREATE_DEPT_ID  as 编制部门,REMARK  as 备注,is_valid from ht_qa_FLA_formula where is_del = '0' and PROD_CODE = '" + hdcode3.Value.Split('|')[0] + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         opt.UpDateOra("delete from ht_qa_FLA_formula_detail where is_valid = '0'");
         DataSet data = opt.CreateDataSetOra(query);
@@ -1275,7 +1278,8 @@ public partial class Craft_Recipe : MSYS.Web.BasePage
         {
             txtCode3.Text = data.Tables[0].Rows[0]["配方编号"].ToString();
             txtName3.Text = data.Tables[0].Rows[0]["配方名称"].ToString();
-            listPro3.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
+            //listPro3.SelectedValue = data.Tables[0].Rows[0]["产品编码"].ToString();
+            listPro3.SelectedValue = hdcode3prod.Value.ToString();
             txtVersion3.Text = data.Tables[0].Rows[0]["标准版本号"].ToString();
             txtExeDate3.Text = data.Tables[0].Rows[0]["执行日期"].ToString();
             txtEndDate3.Text = data.Tables[0].Rows[0]["结束日期"].ToString();

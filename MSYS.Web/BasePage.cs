@@ -88,11 +88,17 @@ namespace MSYS.Web
                         this.m_isHasRight = true;
                         this.m_rightID = s.id;
                     }
-                }             
+                }
+
+
             
             ////////////////////////////////////////////////////////////////////////////////////////////
             Control myControl1 = FindControl("UpdatePanel1");
             Control myControl2 = FindControl("UpdatePanel2");
+
+            if (myControl1 != null && ((SysUser)Session["User"]).UserRoleID.ToString()!="004") {
+                ScriptManager.RegisterStartupScript(myControl1, this.Page.GetType(), "show1", "<script>$('.adjust').hide();</script>", false);
+            }
             if (this.m_isHasRight)
             {
                 if (myControl1 == null && myControl2 == null)

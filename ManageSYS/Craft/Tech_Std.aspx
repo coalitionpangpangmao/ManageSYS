@@ -186,7 +186,7 @@
                                         <asp:Button ID="btnSave2" runat="server" Text="保存" CssClass="btnmodify auth" OnClick="btnSave2_Click" />                                       
                                     </span>
                                 </div>
-                                <div style="overflow: scroll; height: 300px">
+                                <div style="overflow: scroll; height: 500px">
                                 
                                             <asp:GridView ID="GridView2" runat="server" class="grid" AutoGenerateColumns="False">
                                                 <Columns>
@@ -209,7 +209,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField      HeaderText="标准值" SortExpression="标准值">
                                                         <ItemTemplate>
-                                                            <asp:TextBox ID="txtValueM" runat="server" DataValueField="标准值" DataTextField="标准值"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
+                                                            <asp:TextBox ID="txtValueM" runat="server" DataValueField="标准值" DataTextField="标准值"  onkeyup="value = value.replace(/^[^(-?\d+)(\.\d+)?$]/g,'')"
                                                                 CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
@@ -268,7 +268,7 @@
                                         <asp:Button ID="UpdateGrid" runat="server" CssClass="btnhide" OnClick="UpdateGrid_Click" />
                                     </span>
                                 </div>
-                                <div style="overflow: scroll; height: 300px">
+                                <div style="overflow: scroll; height: 500px">
                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
                                             <asp:GridView ID="GridView1" runat="server" class="grid" AutoGenerateColumns="False">
@@ -292,8 +292,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField      HeaderText="标准值" SortExpression="标准值">
                                                         <ItemTemplate>
-                                                            <asp:TextBox ID="txtValueM" runat="server" DataValueField="标准值" DataTextField="标准值"  onkeyup="value=value.replace(/[^\d\.]/g,'')" 
-                                                                CssClass="tbinput"></asp:TextBox>
+                                                            <asp:TextBox ID="txtValueM" runat="server" DataValueField="标准值" DataTextField="标准值"  onkeyup="value=value.replace(/[^\d\.]/g,'')" CssClass="tbinput"></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField      HeaderText="上限" SortExpression="上限">

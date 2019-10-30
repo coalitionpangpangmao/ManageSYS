@@ -109,7 +109,7 @@
 
                                         <asp:TemplateField  >
                                             <ItemTemplate>
-                                                <asp:Button ID="btnGridAlter" runat="server" Text="调整计划" class="btn1 auth" OnClick="btnGridAlter_Click" Width="75" OnClientClick ="$('#tabtop2').click();" />
+                                                <asp:Button ID="btnGridAlter" runat="server" Text="调整计划" class="btn1 adjust" OnClick="btnGridAlter_Click" Width="75" OnClientClick ="$('#tabtop2').click();" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

@@ -125,6 +125,31 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         }
     }
 
+    protected void bindGrid3()
+    {
+        try
+        {
+            string query = "select g.INSPECT_DATE as 日期,h.shift_name as 班组,k.team_name as 班时, g.plan_no as 计划号,j.name as 交班人,l.name as 接班人,g.plan_no,g.SHIFT_MAIN_ID from ht_prod_shiftchg g left join ht_sys_shift h on h.shift_code = g.shift_code left join ht_sys_team k on k.team_code = g.team_code left join ht_svr_user j on j.id = g.shift_id left join ht_svr_user l on l.id = g.succ_id where g.shift_main_id = '" + hdID.Value + "'";
+            MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+            DataSet data = opt.CreateDataSetOra(query);
+            if (data != null && data.Tables[0].Rows.Count > 0)
+            {
+                GridView3.DataSource = data;
+                GridView3.DataBind();
+            }
+            else
+            {
+                GridView3.DataSource = null;
+                GridView3.DataBind();
+            }
+        }
+        catch (Exception e)
+        {
+            string str = e.Message;
+        }
+       
+    }
+
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
@@ -136,7 +161,8 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
         string id = GridView1.DataKeys[rowIndex].Value.ToString();
         hdID.Value = id;
-        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组, g3.prod_code as 牌号,g3.planno as 计划号,g4.output_vl,g4.shift_id,g4.succ_id,g4.remark,g4.create_id,g4.devicestatus,g4.qlt_status,g4.scean_status,g.date_end from Ht_Prod_Schedule g   left join ht_prod_report g3 on (g.date_end between g3.starttime and g3.endtime)  or (g.date_end >g3.starttime and g3.endtime is null) left join ht_prod_shiftchg g4 on g4.shift_main_id = g.id   where g.id = '" + id + "'";
+        bindGrid3();
+        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组, g3.prod_code as 牌号,g3.planno as 计划号,g4.output_vl,g4.shift_id,g4.succ_id,g4.remark,g4.create_id,g4.devicestatus,g4.qlt_status,g4.scean_status,g.DATE_BEGIN,g.date_end from Ht_Prod_Schedule g   left join ht_prod_report g3 on (g.date_end between g3.starttime and g3.endtime)  or (g.date_end >g3.starttime and g3.endtime is null) left join ht_prod_shiftchg g4 on g4.shift_main_id = g.id   where g.id = '" + id + "'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
         DataSet data = opt.CreateDataSetOra(query);
@@ -161,12 +187,56 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
             txtRemark.Text = row["remark"].ToString();
 
             string endtime = row["date_end"].ToString();
-            opt.bindDropDownList(listPlanno, "select distinct planno from  ht_prod_report  where  ('" + endtime + "' between starttime and endtime)  or ('" + endtime + "' >starttime and endtime is null) ", "planno", "planno");
+            string starttime = row["DATE_BEGIN"].ToString();
+            opt.bindDropDownList(listPlanno, "select distinct planno from  ht_prod_report  where ('" + starttime + "' between starttime and endtime) or   ('" + endtime + "' between starttime and endtime)  or ('" + endtime + "' >starttime and endtime is null) ", "planno", "planno");
             listPlanno.SelectedValue = row["计划号"].ToString();
 
         }
         bindGrid2();
        
+       
+    }
+
+    protected void btnGrid3View_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;       
+        int rowIndex = ((GridViewRow)btn.NamingContainer).RowIndex;
+        string id = GridView3.DataKeys[rowIndex].Values[0].ToString();
+        hdID.Value = id;
+        string planno = GridView3.DataKeys[rowIndex].Values[0].ToString();
+
+        string query = "select g.work_date as 日期,g.shift_code as 班时,g.team_code as 班组, g3.prod_code as 牌号,g3.planno as 计划号,g4.output_vl,g4.shift_id,g4.succ_id,g4.remark,g4.create_id,g4.devicestatus,g4.qlt_status,g4.scean_status,g.date_end from Ht_Prod_Schedule g   left join ht_prod_report g3 on (g.date_end between g3.starttime and g3.endtime)  or (g.date_end >g3.starttime and g3.endtime is null) left join ht_prod_shiftchg g4 on g4.shift_main_id = g.id   where g.id = '" + id + "' and g4.plan_no = '" + planno + "'";
+        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
+
+        DataSet data = opt.CreateDataSetOra(query);
+        if (data != null && data.Tables[0].Rows.Count > 0)
+        {
+            DataRow row = data.Tables[0].Rows[0];
+            txtDate.Text = row["日期"].ToString();
+            listShift.SelectedValue = row["班时"].ToString();
+            listTeam.SelectedValue = row["班组"].ToString();
+            listProd.SelectedValue = row["牌号"].ToString();
+            txtEditor.Text = row["create_id"].ToString();
+            if (txtEditor.Text == "")
+                txtEditor.Text = ((MSYS.Data.SysUser)Session["User"]).text;
+            else
+                txtEditor.Text = opt.GetSegValue("select name from ht_svr_user where id = '" + txtEditor.Text + "'", "name");
+            txtOutput.Text = row["output_vl"].ToString();
+            listOlder.SelectedValue = row["shift_id"].ToString();
+            listNewer.SelectedValue = row["succ_id"].ToString();
+            txtDevice.Text = row["devicestatus"].ToString();
+            txtQlt.Text = row["qlt_status"].ToString();
+            txtScean.Text = row["scean_status"].ToString();
+            txtRemark.Text = row["remark"].ToString();
+
+            string endtime = row["date_end"].ToString();
+            opt.bindDropDownList(listPlanno, "select distinct planno from  ht_prod_report  where  ('" + endtime + "' between starttime and endtime)  or ('" + endtime + "' >starttime and endtime is null) ", "planno", "planno");
+            listPlanno.SelectedValue = row["计划号"].ToString();
+
+        }
+        bindGrid2();
+
+
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {
@@ -180,6 +250,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         InsertTlog(log_message);
         ScriptManager.RegisterStartupScript(UpdatePanel2, this.Page.GetType(), "alert", "alert('" + log_message + "')", true);
         bindGrid1();
+        bindGrid3();
 
     }
     protected void btnExport_Click(object sender, EventArgs e)
@@ -196,7 +267,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
     {
         try
         {
-            string query = "select t.mater_code as 物料名称,t.mater_vl as 数量,t.bz_unit as 单位,t.remark as 备注 from ht_prod_shiftchg_detail t where t.shift_main_id = '" + hdID.Value + "'";
+            string query = "select t.mater_code as 物料名称,t.mater_vl as 数量,t.bz_unit as 单位,t.remark as 备注 from ht_prod_shiftchg_detail t where t.shift_main_id = '" + hdID.Value + "' and t.PLAN_NO = '" + listPlanno.SelectedValue + "'";
             MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
             DataSet set = opt.CreateDataSetOra(query);
             DataTable data = new DataTable();
@@ -257,7 +328,7 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
                 if (((CheckBox)GridView2.Rows[i].FindControl("chk")).Checked)
                 {
                     string mtr_code = ((DropDownList)GridView2.Rows[i].FindControl("listMater")).SelectedValue;
-                    string query = "update ht_prod_shiftchg_detail set IS_DEL = '1'  where mater_code = '" + mtr_code + "' and SHIFT_MAIN_ID = '" + hdID.Value + "'";
+                    string query = "update ht_prod_shiftchg_detail set IS_DEL = '1'  where mater_code = '" + mtr_code + "' and SHIFT_MAIN_ID = '" + hdID.Value + "'  and t.PLAN_NO = '" + listPlanno.SelectedValue + "'";
                     MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
                     string log_message = opt.UpDateOra(query) == "Success" ? "删除生产交接班明细成功" : "删除生产交接班明细失败";
                     log_message += "--标识:" + ID;
@@ -278,10 +349,10 @@ public partial class Product_ShiftChange : MSYS.Web.BasePage
         GridViewRow row = (GridViewRow)btn.NamingContainer;
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
 
-        string[] seg = { "SHIFT_MAIN_ID", "mater_code", "mater_vl", "bz_unit", "remark" };
-        string[] value = { hdID.Value, ((DropDownList)row.FindControl("listMater")).SelectedValue, ((TextBox)row.FindControl("txtAmount")).Text, ((TextBox)row.FindControl("txtUnit")).Text, ((TextBox)row.FindControl("txtDescpt")).Text };
+        string[] seg = { "SHIFT_MAIN_ID", "mater_code", "PLAN_NO", "mater_vl", "bz_unit", "remark" };
+        string[] value = { hdID.Value, ((DropDownList)row.FindControl("listMater")).SelectedValue, listPlanno.SelectedValue, ((TextBox)row.FindControl("txtAmount")).Text, ((TextBox)row.FindControl("txtUnit")).Text, ((TextBox)row.FindControl("txtDescpt")).Text };
 
-        string log_message = opt.MergeInto(seg, value, 2, "HT_PROD_SHIFTCHG_DETAIL") == "Success" ? "保存生产交接班信息成功" : "保存生产交接班信息失败";
+        string log_message = opt.MergeInto(seg, value, 3, "HT_PROD_SHIFTCHG_DETAIL") == "Success" ? "保存生产交接班信息成功" : "保存生产交接班信息失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
 
