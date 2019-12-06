@@ -326,8 +326,8 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
     #region tab2
     protected void bindGrid2()
     {
-
-        string query = " select m.material_name as 物料名称, m.mat_type as 物料分类, s.STORAGE as  仓库,s.CLS_CODE as   类型 ,s.unit_code as  计量单位, s.mater_code as   原料编码, s.original_demand as   领料量, s.ID  from ht_strg_mater_sub s left join ht_pub_materiel m on s.mater_code = m.material_code where s.main_code = '" + txtCode.Text + "' and s.IS_DEL = '0'";
+        //string choice = DropDownType.SelectedValue.ToString()=="BOTH"? "": "and s.mater_flag='"+DropDownType.SelectedValue.ToString()+"'";
+        string query = " select m.material_name as 物料名称, m.mat_type as 物料分类, s.STORAGE as  仓库,s.CLS_CODE as   类型 ,s.unit_code as  计量单位, s.mater_code as   原料编码, s.original_demand as   领料量, s.ID  from ht_strg_mater_sub s left join ht_pub_materiel m on s.mater_code = m.material_code where s.main_code = '" + txtCode.Text + "' and s.IS_DEL = '0' ";// +choice;
 
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet data = opt.CreateDataSetOra(query);
@@ -415,8 +415,22 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
 
             commandlist.Add(opt.getMergeStr(seg, value, 1, "HT_STRG_MATERIA"));
             commandlist.Add("delete from HT_STRG_MATER_SUB where MAIN_CODE = '" + txtCode.Text + "'");
-            //根据生产计划对应的配方明细生成原料领用明细           
-            commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLS_CODE from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
+            //根据生产计划对应的配方明细生成原料领用明细
+            if (DropDownType.SelectedValue == "BOTH")
+            {
+                commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLS_CODE from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null");
+            }
+            if (DropDownType.SelectedValue == "YG")
+            {
+                commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLS_CODE from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null and g3.mater_flag='YG'");
+                //commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,0 as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLS_CODE from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null and g3.mater_flag='SP'"); 
+            }
+            if (DropDownType.SelectedValue == "SP")
+            {
+                commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,g3.batch_size*" + txtBatchNum.Text + " as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLS_CODE from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null and g3.mater_flag='SP'");
+                //commandlist.Add("insert into HT_STRG_MATER_SUB  select '' as ID, g3.mater_code ,g4.data_origin_flag as STORAGE,0 as ORIGINAL_DEMAND, '' as REAL_DEMAND,'' as Remark,g4.unit_code , '0' as IS_DEL,g3.MATER_FLAG,'" + txtCode.Text + "' as MAIN_CODE,'' as PACKNUM ,'' as SUBSTANCE, '' as ODDQTY ,g3.CLS_CODE from ht_prod_month_plan_detail g1 left join ht_pub_prod_design g2 on g1.prod_code = g2.prod_code left join ht_qa_mater_formula_detail g3 on g3.formula_code = g2.mater_formula_code and g3.is_del = '0' left join ht_pub_materiel g4 on g4.material_code = g3.mater_code where g1.plan_no = '" + listPrdctPlan.SelectedValue + "' and g3.mater_code is not null and g3.mater_flag='YG'");
+            }
+            
             log_message = opt.TransactionCommand(commandlist) == "Success" ? "生成原料领用主表记录成功" : "生成原料领用主表记录失败";
             log_message += "--详情:" + string.Join(",", value);
             InsertTlog(log_message);
@@ -446,7 +460,7 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
     protected void btnAdd_Click(object sender, EventArgs e)
     {
 
-        string query = "select m.material_name as 物料名称, m.mat_type as 物料分类, s.STORAGE as  仓库,s.CLS_CODE as   类型 ,s.unit_code as  计量单位, s.mater_code as   原料编码, s.original_demand as   领料量, s.ID  from ht_strg_mater_sub s left join ht_pub_materiel m on s.mater_code = m.material_code where s.main_code = '" + txtCode.Text + "' and s.IS_DEL = '0'";
+        string query = " select STORAGE as  仓库,CLS_CODE as   类型 ,unit_code as  计量单位,mater_code as   原料编码,original_demand as   领料量,ID  from ht_strg_mater_sub where main_code = '" + txtCode.Text + "'  and IS_DEL = '0'";
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         DataSet set = opt.CreateDataSetOra(query);
         DataTable data = new DataTable();
@@ -472,17 +486,14 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
             {
                 DataRowView mydrv = data.DefaultView[i];
                 GridViewRow row = GridView2.Rows[i];
-
                 ((DropDownList)GridView2.Rows[i].FindControl("listGridstrg")).SelectedValue = mydrv["仓库"].ToString();
-                
-                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
-                if (((TextBox)row.FindControl("txtGridcode")).Text == "" || ((TextBox)row.FindControl("txtGridcode")).Text =="0")
-                {
-                    ((TextBox)row.FindControl("txtGridcode")).Enabled = true;
 
-                }
-                ((TextBox)row.FindControl("GridType1")).Text = mydrv["物料分类"].ToString();
-                ((TextBox)row.FindControl("GridName1")).Text = mydrv["物料名称"].ToString();
+                DropDownList list = (DropDownList)row.FindControl("listGridType");
+                list.SelectedValue = mydrv["类型"].ToString();
+                opt.bindDropDownList((DropDownList)row.FindControl("listGridName"), "select material_code,material_name from ht_pub_materiel  where  is_del = '0' and mat_category = '原材料' and  substr(type_code,1,4) ='" + list.SelectedValue + "' or substr(mater_code,1,4) = '" + list.SelectedValue + "'", "material_name", "material_code");
+                ((TextBox)row.FindControl("txtGridcode")).Text = mydrv["原料编码"].ToString();
+                ((DropDownList)row.FindControl("listGridName")).SelectedValue = mydrv["原料编码"].ToString();
+                ((TextBox)GridView2.Rows[i].FindControl("txtGridUnit")).Text = mydrv["计量单位"].ToString();
                 ((TextBox)GridView2.Rows[i].FindControl("txtGridAmount")).Text = mydrv["领料量"].ToString();
 
             }
@@ -563,32 +574,10 @@ public partial class Product_StorageMaterOut : MSYS.Web.BasePage
         string log_message = opt.MergeInto(seg, value, 1, "HT_STRG_MATER_SUB") == "Success" ? "保存原料领用明细成功" : "保存原料领用明细失败";
         log_message += "--详情:" + string.Join(",", value);
         InsertTlog(log_message);
-        update_MainAmount(txtCode.Text);
         bindGrid2();
 
     }
-    protected void update_MainAmount(string code)
-    {
-        MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
-         DataSet res = opt.CreateDataSetOra("select sum(t.original_demand) as amount ,t.mater_flag from ht_strg_mater_sub t  where t.main_code = '" + txtCode.Text + "' group by  t.mater_flag");
-            if (res != null && res.Tables[0].Rows.Count > 0)
-            {
-                double CABOSUM=0, PEICESSUM=0;
-                foreach (DataRow row in res.Tables[0].Rows)
-                {
-                    if (row["mater_flag"].ToString() == "YG" )
-                        CABOSUM += Convert.ToDouble(row["amount"].ToString());
-                    if (row["mater_flag"].ToString() == "SP")
-                        PEICESSUM += Convert.ToDouble(row["amount"].ToString());
-                }
-                txtStemSum.Text = CABOSUM.ToString("0.00");
-                txtChipSum.Text = PEICESSUM.ToString("0.00");
-                string[] seg1 = { "ORDER_SN", "CABOSUM", "PEICESSUM" };
-                string[] value1 = { txtCode.Text, txtStemSum.Text,txtChipSum.Text};
-                opt.MergeInto(seg1, value1, 1, "HT_STRG_MATERIA");
-                bindGrid1();
-        }
-    }
+
     protected void listPrdctPlan_SelectedIndexChanged(object sender, EventArgs e)
     {
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();

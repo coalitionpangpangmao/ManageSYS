@@ -10,7 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using Newtonsoft.Json;
 [Serializable]
 public struct RequestDataJSON
 {
@@ -30,8 +29,6 @@ public struct ResponseData
     public List<string> xAxis;
     public List<double> yAxis;
     public string statics;
-    public double max;
-    public double min;
 }
 [Serializable]
 public struct pointData
@@ -95,12 +92,8 @@ public class RealDataHandler : IHttpHandler
         }
         else
             datainfo = handleEquipData(PostedData);
-    //    var responseData = javaScriptSerializer.Serialize(datainfo);
-     //   context.Response.ContentType = "text/plain";
-    //    context.Response.Write(responseData);
-
-        object responseData = JsonConvert.SerializeObject(datainfo);
-        context.Response.ContentType = "application/json";
+        var responseData = javaScriptSerializer.Serialize(datainfo);
+        context.Response.ContentType = "text/plain";
         context.Response.Write(responseData);
         }
         catch (Exception ee)
@@ -130,12 +123,13 @@ public class RealDataHandler : IHttpHandler
                 if (stdinfo != null && stdinfo.Tables[0].Rows.Count > 0)
                 {
                     row = stdinfo.Tables[0].Rows[0];
-                    if (!(row["upper_limit"].ToString() == "" || row["lower_limit"].ToString() == "" || row["value"].ToString() == "" || row["eer_dev"].ToString() == ""))
+                    if (!(row["upper_limit"].ToString() == "" || row["lower_limit"].ToString() == "" || row["value"].ToString() == "" ))
                     {
                         datainfo.upper = Convert.ToDouble(row["upper_limit"].ToString());
                         datainfo.lower = Convert.ToDouble(row["lower_limit"].ToString());
                         datainfo.value = Convert.ToDouble(row["value"].ToString());
-                        datainfo.errdev = Convert.ToDouble(row["eer_dev"].ToString());
+                        string err = row["eer_dev"].ToString();
+                        datainfo.errdev = err == "" ? 0 : Convert.ToDouble(err);
                     }
                 }       
             }
@@ -165,8 +159,6 @@ public class RealDataHandler : IHttpHandler
                          }
                      }
                      datainfo.statics = getStatics(datainfo.pointname, datainfo.yAxis.ToArray(), datainfo.upper, datainfo.lower, starttime, endtime);
-                     datainfo.min = datainfo.yAxis.Min();
-                     datainfo.max = datainfo.yAxis.Max();
                  }
             }
 
@@ -177,7 +169,7 @@ public class RealDataHandler : IHttpHandler
     {       
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //query prod_code
-        string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' and t.section_code ='" + PostedData.point.Substring(0, 5) + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "'  and t.section_code ='" + PostedData.point.Substring(0, 5) + "'  union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "'  and t.section_code ='" + PostedData.point.Substring(0, 5) + "'  order by starttime", "Prod_code");
+        string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
         if (prodcode != "NoRecord")
             return getData(prodcode, PostedData.point, PostedData.startTime, PostedData.stopTime);
         else return new ResponseData();
@@ -189,7 +181,7 @@ public class RealDataHandler : IHttpHandler
         List<ResponseData> datainfo = new List<ResponseData>();
         MSYS.DAL.DbOperator opt = new MSYS.DAL.DbOperator();
         //query prod_code
-        string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' and t.section_code ='" + PostedData.point.Substring(0, 5) + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "'  and t.section_code ='" + PostedData.point.Substring(0, 5) + "'  union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "'  and t.section_code ='" + PostedData.point.Substring(0, 5) + "'  order by starttime", "Prod_code");
+        string prodcode = opt.GetSegValue("select prod_code,starttime from ht_prod_report t where t.starttime <= '" + PostedData.startTime + "' and t.endtime >='" + PostedData.stopTime + "' union select prod_code,starttime from ht_prod_report t where t.endtime > '" + PostedData.startTime + "' and t.endtime <'" + PostedData.stopTime + "' union select prod_code,starttime from  ht_prod_report t where t.starttime >'" + PostedData.startTime + "' and t.starttime <'" + PostedData.stopTime + "' order by starttime", "Prod_code");
         //query poininfo
         DataSet pointinfo = opt.CreateDataSetOra("select t.para_name, t.para_code from ht_pub_tech_para t  where  t.EQUIP_CODE = '" + PostedData.point + "' and t.para_type like '___1%'");
         if (pointinfo != null && pointinfo.Tables[0].Rows.Count > 0)
@@ -210,10 +202,7 @@ public class RealDataHandler : IHttpHandler
 
         MSYS.Common.SPCFunctions spc = new MSYS.Common.SPCFunctions(array, upper, lower);
         string[] colname = { "工艺点", "总点数", "最大值", "最小值", "均值", "合格率", "超上限率", "超下限率", "标准差", "绝对差", "CPK", "开始时间", "结束时间" };
-        string formatstr = "0.00";
-        if (name == "回填加料Ⅰ加料精度")
-            formatstr = "0.0000";
-        object[] colvalue = { name, spc.count, spc.max.ToString(formatstr), spc.min.ToString(formatstr), spc.avg.ToString(formatstr), spc.passrate.ToString(formatstr), spc.uprate.ToString(formatstr), spc.downrate.ToString(formatstr), spc.absdev.ToString(formatstr), spc.stddev.ToString(formatstr), spc.Cpk.ToString(formatstr), start, end };
+        object[] colvalue = { name, spc.count, spc.max.ToString("0.00"), spc.min.ToString("0.00"), spc.avg.ToString("0.00"), spc.passrate.ToString("0.00"), spc.uprate.ToString("0.00"), spc.downrate.ToString("0.00"), spc.absdev.ToString("0.00"), spc.stddev.ToString("0.00"), spc.Cpk.ToString("0.00"), start, end };
         if (colname.Length == colvalue.Length)
         {
             StringBuilder str = new StringBuilder("");

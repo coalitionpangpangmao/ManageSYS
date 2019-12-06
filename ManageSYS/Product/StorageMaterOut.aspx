@@ -147,7 +147,6 @@
                             <asp:AsyncPostBackTrigger ControlID="btnCreate" />
                             <asp:AsyncPostBackTrigger ControlID="btnGridDel" />
                             <asp:AsyncPostBackTrigger ControlID="btnCkAll1" />
-                             <asp:AsyncPostBackTrigger ControlID="GridView2" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -260,6 +259,15 @@
                                             <asp:DropDownList ID="DropDownListShift" runat="server" CssClass="drpdwnlist">
                                              </asp:DropDownList>
                                         </td>
+                                                                                <td width="100">物料成分
+                                        </td>
+                                           <td>
+                                            <asp:DropDownList ID="DropDownType" runat="server" CssClass="drpdwnlist">
+                                                <asp:ListItem Value="BOTH">长梗+碎片</asp:ListItem>
+                                                <asp:ListItem Value="YG">长梗</asp:ListItem>
+                                                <asp:ListItem Value="SP">碎片</asp:ListItem>
+                                             </asp:DropDownList>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -269,7 +277,6 @@
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID="listPrdctPlan" />
                             <asp:AsyncPostBackTrigger ControlID="btnReset" />
-                            <asp:AsyncPostBackTrigger ControlID="GridView2" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </div>
@@ -279,7 +286,7 @@
                             <div class="listtitle" style="margin-top: 10px">
                                 领用明细<span style="position: relative; float: right">
                                     <asp:Button ID="btnCreate" runat="server" CssClass="btnview" Text="按明细生成领退单" Visible ="false"                                        OnClick="btnCreate_Click" Width="160px" />  <asp:Button ID="btnCkAll" runat="server" CssClass="btnset" Text="全选" OnClick="btnCkAll_Click" />
-                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" />
+                                    <asp:Button ID="btnAdd" runat="server" CssClass="btnadd  auth" Text="新增" OnClick="btnAdd_Click" Visible ="false"/>
                                   
                                     <asp:Button ID="btnDelSel" runat="server" CssClass="btndel auth" Text="删除" OnClick="btnDelSel_Click" OnClientClick="javascript:return confirm('确认删除？');" />
                                 </span>

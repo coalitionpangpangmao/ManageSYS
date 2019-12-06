@@ -17,7 +17,7 @@
         <div class="place">
             <span>位置：</span>
             <ul class="placeul">
-                <li><a href="#">质量评估与分析</a></li>
+                <li><a href="#">工艺管理</a></li>
                  <li><a href="#">工艺事件管理</a></li>
                 <li><a href="#">工艺事件处理</a></li>
             </ul>

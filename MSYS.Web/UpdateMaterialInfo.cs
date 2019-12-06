@@ -31,7 +31,7 @@ namespace MSYS.Web
             foreach (tPubMateriel materia in mat)
             {
                 string[] value = { materia.id.ToString(), materia.materialCode, materia.materialName, materia.typeCode, materia.specVal, materia.modelVal, materia.isValid, materia.isDel, materia.typeFlag, materia.unitCode, materia.dataOriginFlag, materia.pkMaterial, materia.factory, materia.matYear, materia.matCategory, materia.matType, materia.matLevel, materia.matVariety, materia.matPack, materia.matPlace, materia.remark, materia.matType2, materia.matPlaceName, materia.matProvince, materia.matCity, materia.pkMarbasclass, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), materia.costprice.ToString(), materia.xyMaterialCode, materia.pkMattaxes, materia.pieceWeight };
-                string temp = opt.getMergeStr(matseg, value, 2, "HT_PUB_MATERIEL");
+                string temp = opt.getMergeStr(matseg, value, 3, "HT_PUB_MATERIEL");
                 commandlist.Add(temp);
                 if (opt.UpDateOra(temp) != "Success")
                     System.Diagnostics.Debug.Write(temp);

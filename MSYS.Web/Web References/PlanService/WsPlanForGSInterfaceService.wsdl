@@ -114,6 +114,7 @@
       </xs:complexType>
       <xs:complexType name="prodAssignPlan">
         <xs:sequence>
+          <xs:element minOccurs="0" name="createId" type="xs:string" />
           <xs:element minOccurs="0" name="id" type="xs:string" />
           <xs:element minOccurs="0" name="issuedStatus" type="xs:string" />
           <xs:element minOccurs="0" name="planName" type="xs:string" />

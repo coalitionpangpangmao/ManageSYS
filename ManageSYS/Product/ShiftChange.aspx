@@ -305,6 +305,7 @@
                             <asp:AsyncPostBackTrigger ControlID="btnSave" />
                             <asp:AsyncPostBackTrigger ControlID="GridView1" />
                             <asp:AsyncPostBackTrigger ControlID="Gridview2" />
+                             <asp:AsyncPostBackTrigger ControlID="Gridview3" />
                             <asp:AsyncPostBackTrigger ControlID="btnAdd" />
                             <asp:AsyncPostBackTrigger ControlID="btnckAll" />
                             <asp:AsyncPostBackTrigger ControlID="btnDelSel" />                           

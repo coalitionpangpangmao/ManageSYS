@@ -2668,6 +2668,8 @@ namespace MSYS.Web.StoreService {
         
         private string clocationidField;
         
+        private string clocationCodeField;
+        
         private string locationNameField;
         
         private string cstateidField;
@@ -2906,6 +2908,17 @@ namespace MSYS.Web.StoreService {
             }
             set {
                 this.clocationidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string clocationCode {
+            get {
+                return this.clocationCodeField;
+            }
+            set {
+                this.clocationCodeField = value;
             }
         }
         

@@ -235,10 +235,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/baseDataService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/baseDataService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\MateriaService\</RelPath>
-      <UpdateFromURL>http://10.43.171.20/xymis/services/baseDataService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/baseDataService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -246,10 +246,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_MateriaService_WsBaseDataInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/EquipService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/EquipService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\EquipService\</RelPath>
-      <UpdateFromURL>http://10.43.171.20/xymis/services/EquipService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/EquipService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -257,10 +257,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_EquipService_EquipServiceInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/MisMasterDataService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/MisMasterDataService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\MasterService\</RelPath>
-      <UpdateFromURL>http://10.43.171.20/xymis/services/MisMasterDataService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/MisMasterDataService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -268,10 +268,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_MasterService_MisMasterDataServiceInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/planForGSService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/planForGSService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PlanService\</RelPath>
-      <UpdateFromURL>http://10.43.171.20/xymis/services/planForGSService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/planForGSService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -279,10 +279,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>MSYS_Web_PlanService_WsPlanForGSInterfaceService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://10.43.171.20/xymis/services/StoreService%3fwsdl">
+    <WebReferenceUrl Include="http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StoreService\</RelPath>
-      <UpdateFromURL>http://10.43.171.20/xymis/services/StoreService%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://10.43.171.22:8081/xymis/services/StoreService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

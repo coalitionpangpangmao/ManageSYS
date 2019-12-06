@@ -101,6 +101,7 @@
               <xs:element minOccurs="0" name="mName" type="xs:string" />
               <xs:element minOccurs="0" name="unitName" type="xs:string" />
               <xs:element minOccurs="0" name="clocationid" type="xs:string" />
+              <xs:element minOccurs="0" name="clocationCode" type="xs:string" />
               <xs:element minOccurs="0" name="locationName" type="xs:string" />
               <xs:element minOccurs="0" name="cstateid" type="xs:string" />
               <xs:element minOccurs="0" name="cwarehouseid" type="xs:string" />

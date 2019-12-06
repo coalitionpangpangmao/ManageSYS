@@ -132,13 +132,13 @@ namespace MSYS.Web
                        if (info != null)
                         {
                            sub.materName = info.mName.ToString();//接口
-                           if (info.cwarehouseid.ToString() != "")
+                           if (info.cwarehouseid != null)
                            {
                                sub.warehouseCode = info.cwarehouseid.ToString();//从接口获得
                                r.cwarehouseid = sub.warehouseCode;
                                sub.warehouseName = info.warehouseName.ToString();
                            }  
-                           if(info.locationName.ToString()!="")
+                           if(info.locationName!=null)
                                 sub.materLocation = info.locationName.ToString();
                             //if (row["STRG_TYPE"].ToString() == "0" && (Convert.ToDouble(info.sumonhand) < Convert.ToDouble(drow["ORIGINAL_DEMAND"].ToString())))
                             //{

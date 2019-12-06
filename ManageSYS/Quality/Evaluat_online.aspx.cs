@@ -95,7 +95,7 @@ public partial class Quality_Evaluat_online : MSYS.Web.BasePage
 
         StringBuilder str = new StringBuilder();
         str.Append(" <table  id = 'Msysexport'  class = 'reporttable'>");
-        str.Append("<thead>  <tr><th colspan ='4'> 鑫源再造梗丝线在线评测报告</th></tr></thead>");
+        str.Append("<thead>  <tr><th colspan ='4'> 在线评测报告</th></tr></thead>");
         str.Append("<tbody>");
         str.Append(" <tr><th  width ='25%'>产品名称</th><td >");
         str.Append(row.Cells[1].Text);

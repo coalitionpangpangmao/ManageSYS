@@ -129,13 +129,13 @@ public partial class Product_Plan : MSYS.Web.BasePage
         string cid = "";
         foreach (prodAssignPlan p in pb)
         {
-           // if (p.planNo.ToString().Substring(0, 2) != "GS")
-             //   continue;
+            if (p.planNo.ToString().Substring(0, 2) != "GS")
+                continue;
             monthid = p.id;
             string sqllog = "select id from ht_svr_user where loginname = '"+pvo[0].planNo + "'";
             if(pvo[0].createId != null)
                 cid = opt.CreateDataSetOra(sqllog).Tables[0].Rows[0][0].ToString();
-            string[] value = { p.id, p.planName, "2", p.issuedStatus, p.planTime.Substring(0,7), "0", p.remark, cid};
+            string[] value = { p.id, p.planName, "2", p.issuedStatus, p.planNo.Substring(2,4)+"-"+p.planNo.Substring(6,2), "0", p.remark, cid};
             //  string[] value2 = { p.id };
             opt.MergeInto(seg, value, 2, "HT_PROD_MONTH_PLAN");
             // opt.getMergeStr(seg2, value2, 1, "HT_PROD_MONTH_PLAN_DETAIL");
@@ -143,8 +143,8 @@ public partial class Product_Plan : MSYS.Web.BasePage
         }
         foreach (prodAssignVO p in pvo)
         {
-           // if (p.planNo.ToString().Substring(0, 2) != "GS")
-             //   continue;
+            //if (p.planNo.ToString().Substring(0, 2) != "GS")
+                //continue;
            // string sql = "select xy_prod_code from ht_pub_prod_design where prod_code = " + p.prodCode;
            // DataSet ds = opt.CreateDataSetOra(sql);
             //string xy_prod_code = ds.Tables[0].Rows[0][0].ToString();

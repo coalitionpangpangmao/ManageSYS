@@ -2424,6 +2424,8 @@ namespace MSYS.Web.PlanService {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://webservice.dhcc.com/")]
     public partial class prodAssignPlan {
         
+        private string createIdField;
+        
         private string idField;
         
         private string issuedStatusField;
@@ -2437,6 +2439,17 @@ namespace MSYS.Web.PlanService {
         private string remarkField;
         
         private string bFlowStatusField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string createId {
+            get {
+                return this.createIdField;
+            }
+            set {
+                this.createIdField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
